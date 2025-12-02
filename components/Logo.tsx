@@ -1,7 +1,7 @@
 export default function Logo() {
   return (
     <div className="flex items-center">
-      <div className="relative h-10 md:h-12 w-auto flex-shrink-0">
+      <div className="relative h-8 md:h-10 w-auto flex-shrink-0">
         <img
           src="/logo.png"
           alt="Teknoritma Logo"

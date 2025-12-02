@@ -62,45 +62,47 @@ export default function Hero() {
         </svg>
       </div>
 
-      <div className="relative z-10 px-5 md:px-10 pt-20 md:pt-24 pb-10 md:pb-16">
+      <div className="relative z-10 px-5 md:px-10 pt-12 md:pt-16 pb-10 md:pb-16">
         {/* Content - Overlay on video, aligned left */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="space-y-10 max-w-2xl"
+          className="space-y-8 max-w-2xl relative"
         >
-            {/* Badge */}
-            <motion.span
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent/10 backdrop-blur-sm text-accent-dark rounded-full text-xs font-bold uppercase tracking-wider border border-accent/20 mb-6"
-            >
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              {t("hero.badge")}
-            </motion.span>
-
-            {/* Title */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex items-center gap-4 flex-wrap"
-            >
-              <img
-                src="/Picture1.gif"
-                alt="Sarus"
-                className="h-12 md:h-16 lg:h-20 w-auto object-contain"
-              />
-              <span>
-                {t("hero.titlePrefix")}{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
-                  {t("hero.titleHighlight")}
+            {/* Title with Logo and Badge */}
+            <div className="flex items-baseline gap-3 md:gap-4 flex-wrap">
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex items-baseline gap-3 md:gap-4 flex-wrap"
+              >
+                <img
+                  src="/Picture1.gif"
+                  alt="Sarus"
+                  className="h-12 md:h-16 lg:h-20 w-auto object-contain flex-shrink-0"
+                />
+                <span>
+                  {t("hero.titlePrefix")}{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+                    {t("hero.titleHighlight")}
+                  </span>
+                  {language === "en" && ` ${t("hero.titleSuffix")}`}
                 </span>
-                {language === "en" && ` ${t("hero.titleSuffix")}`}
-              </span>
-            </motion.h1>
+              </motion.h1>
+              
+              {/* Badge - Right side of logo */}
+              <motion.span
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 backdrop-blur-sm text-accent-dark rounded-full text-xs font-bold uppercase tracking-wider border border-accent/20 flex-shrink-0"
+              >
+                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                {t("hero.badge")}
+              </motion.span>
+            </div>
 
             {/* Description */}
             <motion.p
@@ -153,17 +155,21 @@ export default function Hero() {
               </svg>
               <span>{t("hero.locationLine")}</span>
             </motion.div>
+        </motion.div>
 
-            {/* Metrics */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-              className="grid grid-cols-3 gap-8 pt-8 border-t border-neutral-border"
-            >
+        {/* Metrics - Centered on page */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          className="relative z-10 w-full pt-8 border-t border-neutral-border"
+        >
+          <div className="max-w-7xl mx-auto px-5 md:px-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 lg:gap-16">
               {metrics.map((metric, idx) => {
                 let labelKey = "users";
                 if (metric.value.includes("80")) labelKey = "patients";
+                if (metric.value.includes("40")) labelKey = "applications";
                 if (metric.value.includes("HIMSS")) labelKey = "himss";
                 
                 return (
@@ -172,25 +178,34 @@ export default function Hero() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.9 + idx * 0.1 }}
-                    className="group"
+                    className="group text-center min-w-0"
                   >
-                    <div className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent mb-2">
+                    <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent mb-2 md:mb-3 break-words overflow-visible">
                       {metric.value.includes("+") || 
                        metric.value.includes("%") || 
                        metric.value.includes("/") || 
-                       metric.value.includes("HIMSS") ? (
-                        metric.value
+                       metric.value.includes("HIMSS") ||
+                       metric.value.includes(",") ? (
+                        <span className="block">{metric.value}</span>
                       ) : (
-                        <AnimatedCounter target={parseInt(metric.value) || 0} />
+                        <AnimatedCounter target={parseInt(metric.value.replace(/,/g, "")) || 0} />
                       )}
                     </div>
-                    <div className="text-sm text-neutral-body leading-relaxed">
-                      {t(`metrics.${labelKey}`)}
+                    <div className="text-xs md:text-sm lg:text-base text-neutral-body leading-relaxed break-words px-1">
+                      {labelKey === "himss" ? (
+                        <div className="space-y-0">
+                          <div>EMRAM/O-EMRAM</div>
+                          <div>Level 7</div>
+                        </div>
+                      ) : (
+                        <span className="block">{t(`metrics.${labelKey}`)}</span>
+                      )}
                     </div>
                   </motion.div>
                 );
               })}
-            </motion.div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

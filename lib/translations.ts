@@ -19,8 +19,9 @@ export const translations: Record<string, any> = {
       locationLine: "Ankara · Hacettepe Teknokent · Türkiye, CIS Ülkeleri ve Körfez Bölgesi",
     },
     metrics: {
-      users: "sağlık kullanıcısı",
+      users: "kullanıcı",
       patients: "hasta verisi",
+      applications: "Uygulama",
       himss: "EMRAM/O-EMRAM Level 7",
     },
     cta: {
@@ -63,8 +64,9 @@ export const translations: Record<string, any> = {
       locationLine: "Ankara · Hacettepe Technopark · Turkey, CIS Countries and Gulf Region",
     },
     metrics: {
-      users: "healthcare users",
+      users: "users",
       patients: "patient data",
+      applications: "Applications",
       himss: "EMRAM/O-EMRAM Level 7",
     },
     cta: {

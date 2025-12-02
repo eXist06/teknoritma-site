@@ -42,8 +42,9 @@ export const hero: HeroContent = {
 };
 
 export const metrics: Metric[] = [
-  { value: "35,000+", label: "sağlık kullanıcısı" },
+  { value: "45,000", label: "kullanıcı" },
   { value: "80M+", label: "hasta verisi" },
+  { value: "40+", label: "Uygulama" },
   { value: "HIMSS", label: "EMRAM/O-EMRAM Level 7" },
 ];
 
