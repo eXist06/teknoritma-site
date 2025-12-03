@@ -17,28 +17,27 @@ export default function Header() {
       { label: t("nav.products"), href: `${base}#products`, hasDropdown: true },
       { label: t("nav.sarus"), href: `${base}#projects` },
       { label: t("nav.about"), href: `${base}#about` },
-      { label: t("nav.careers"), href: `${base}#careers` },
+      { label: t("nav.careers"), href: language === "en" ? "/en/careers" : "/kariyer" },
       { label: t("nav.contact"), href: `${base}#contact` },
     ];
   };
 
   const getProductsSubmenu = () => {
-    const base = language === "en" ? "/en" : "";
     if (language === "en") {
       return [
-        { label: t("nav.productsSubmenu.emr"), href: `${base}#products` },
-        { label: t("nav.productsSubmenu.cloud"), href: `${base}#products` },
-        { label: t("nav.productsSubmenu.pacs"), href: `${base}#products` },
-        { label: t("nav.productsSubmenu.lis"), href: `${base}#products` },
-        { label: t("nav.productsSubmenu.icp"), href: `${base}#products` },
+        { label: t("nav.productsSubmenu.emr"), href: "/en/products/sarus-emr" },
+        { label: t("nav.productsSubmenu.cloud"), href: "/en/products/sarus-cloud" },
+        { label: t("nav.productsSubmenu.pacs"), href: "/en/products/sarus-pacs" },
+        { label: t("nav.productsSubmenu.lis"), href: "/en/products/sarus-lis" },
+        { label: t("nav.productsSubmenu.icp"), href: "/en/products/sarus-icp" },
       ];
     } else {
       return [
-        { label: t("nav.productsSubmenu.hbs"), href: `${base}#products` },
-        { label: t("nav.productsSubmenu.cloud"), href: `${base}#products` },
-        { label: t("nav.productsSubmenu.pacs"), href: `${base}#products` },
-        { label: t("nav.productsSubmenu.lbs"), href: `${base}#products` },
-        { label: t("nav.productsSubmenu.icp"), href: `${base}#products` },
+        { label: t("nav.productsSubmenu.hbs"), href: "/urunler/sarus" },
+        { label: t("nav.productsSubmenu.cloud"), href: "/urunler/sarus-bulut" },
+        { label: t("nav.productsSubmenu.pacs"), href: "/urunler/sarus-pacs" },
+        { label: t("nav.productsSubmenu.lbs"), href: "/urunler/sarus-lbs" },
+        { label: t("nav.productsSubmenu.icp"), href: "/urunler/sarus-icp" },
       ];
     }
   };
@@ -48,7 +47,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-0 md:px-5">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href={`${language === "en" ? "/en" : ""}#hero`} className="flex items-center group pl-0 md:pl-1">
+          <a href={language === "en" ? "/en" : "/"} className="flex items-center group pl-0 md:pl-1">
             <Logo />
           </a>
 

@@ -1,0 +1,192 @@
+{
+  "jobs": [
+    {
+      "id": "job-1764761503434",
+      "title": "Yazılım Uzmanı ",
+      "titleEn": "Software Engineer ",
+      "department": "Yazılım Departmanı ",
+      "departmentEn": "Sarus Dev",
+      "location": "Ankara ",
+      "locationEn": "Ankara",
+      "type": "full-time",
+      "typeEn": "Full-time",
+      "remote": "office",
+      "remoteEn": "Office-based",
+      "description": "Yazılım uzmanı alınacaktır.",
+      "descriptionEn": "Detail",
+      "requirements": [
+        "Deneme"
+      ],
+      "requirementsEn": [
+        "Trail"
+      ],
+      "benefits": [],
+      "benefitsEn": [],
+      "createdAt": "2025-12-03T11:31:43.434Z",
+      "updatedAt": "2025-12-03T11:31:43.434Z",
+      "isActive": true
+    }
+  ],
+  "content": {
+    "hero": {
+      "title": "Birlikte daha sağlıklı bir dünya yaratalım",
+      "titleEn": "Let's create a healthier world together",
+      "subtitle": "Teknoritma'da başlayın.",
+      "subtitleEn": "Start right here at Teknoritma."
+    },
+    "unleashPotential": {
+      "title": "Potansiyelinizi ortaya çıkarın",
+      "titleEn": "Unleash your potential",
+      "paragraphs": [
+        "Hastalar için olağanüstü olanı mümkün kılmak tutku gerektirir. İşbirliğiyle beslenen yenilik kültürümüz, yeni olasılıkları keşfetmemize ve güçlü fikirleri gerçeğe dönüştürmemize olanak tanır.",
+        "Küresel ekibimize katıldığınızda, sağlık hizmetlerini ileriye taşımak için benzersiz verilerin, gelişmiş analitiklerin, son teknoloji teknolojilerin ve derin sağlık ve bilimsel uzmanlığın gücünden yararlanacaksınız.",
+        "Becerilerinizin sizi nereye götürebileceğini görün."
+      ],
+      "paragraphsEn": [
+        "It takes passion to make the extraordinary possible for patients. Fueled by collaboration, our culture of innovation enables us to explore new possibilities and bring powerful ideas to reality.",
+        "When you join our global team, you'll harness the power of unparalleled data, advanced analytics, cutting-edge technologies and deep healthcare and scientific expertise to drive healthcare forward.",
+        "See where your skills can take you."
+      ],
+      "ctaText": "Tüm işleri görüntüle",
+      "ctaTextEn": "View all jobs"
+    },
+    "featuredCareers": {
+      "title": "Öne çıkan kariyerler",
+      "titleEn": "Featured careers",
+      "categories": [
+        {
+          "id": 0,
+          "title": "Yazılım Geliştirme",
+          "titleEn": "Software Development",
+          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
+          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+        },
+        {
+          "id": 1,
+          "title": "Sağlık Bilişimi",
+          "titleEn": "Healthcare IT",
+          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
+          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+        },
+        {
+          "id": 2,
+          "title": "Klinik Sistemler",
+          "titleEn": "Clinical Systems",
+          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
+          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+        },
+        {
+          "id": 3,
+          "title": "Veri Analitiği",
+          "titleEn": "Data Analytics",
+          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
+          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+        },
+        {
+          "id": 4,
+          "title": "Proje Yönetimi",
+          "titleEn": "Project Management",
+          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
+          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+        },
+        {
+          "id": 5,
+          "title": "Stajyerlik",
+          "titleEn": "Internships",
+          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
+          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+        }
+      ]
+    },
+    "testimonials": [
+      {
+        "quote": "Teknoritma'da, sağlık teknolojisinin ön saflarında yer alıyorum. İlham verici ve işbirlikçi bir ekiple çalışmak, sürekli olarak mümkün olanın sınırlarını zorlamamı sağlıyor.",
+        "quoteEn": "At Teknoritma, I'm at the forefront of healthcare innovation, surrounded by inspiring, collaborative individuals who continuously push the boundaries of what's possible.",
+        "name": "Ahmet Yılmaz",
+        "role": "Kıdemli Yazılım Mühendisi",
+        "roleEn": "Senior Software Engineer",
+        "department": "Ürün Geliştirme",
+        "departmentEn": "Product Development"
+      },
+      {
+        "quote": "Teknoritma bana yatırım yapıyor, yeteneklerimi ortaya çıkarıyor ve yeni fırsatlar için becerilerimi geliştirmeme yardımcı oluyor. Yaptığım her şey hastaların sağlığı ve refahının iyileştirilmesine katkıda bulunuyor.",
+        "quoteEn": "Teknoritma invests in me, awakens my talent, and helps me develop skills for new opportunities. Everything I do contributes to the improvement of patients' health and well-being.",
+        "name": "Ayşe Demir",
+        "role": "Klinik Sistemler Uzmanı",
+        "roleEn": "Clinical Systems Specialist",
+        "department": "Uygulama",
+        "departmentEn": "Implementation"
+      },
+      {
+        "quote": "Burada çalışmak, teknoloji aracılığıyla sağlık hizmetlerini dönüştüren bir ekibin parçası olmak demek. Yaptığımız etki gerçek ve anlamlı.",
+        "quoteEn": "Working here means being part of a team that's transforming healthcare through technology. The impact we make is real and meaningful.",
+        "name": "Mehmet Kaya",
+        "role": "Veri Analitiği Lideri",
+        "roleEn": "Data Analytics Lead",
+        "department": "Analitik",
+        "departmentEn": "Analytics"
+      }
+    ],
+    "companyCards": [
+      {
+        "title": "Şirketimiz",
+        "titleEn": "Our company",
+        "description": "Daha sağlıklı bir dünya yaratmak amacımızdır. Geniş uzmanlık, yenilik ve güçlü yetenekler oraya nasıl ulaştığımızdır.",
+        "descriptionEn": "Creating a healthier world is our purpose. Broad expertise, innovation and powerful capabilities is how we get there.",
+        "linkText": "DAHA FAZLA BİLGİ",
+        "linkTextEn": "LEARN MORE"
+      },
+      {
+        "title": "Kültür",
+        "titleEn": "Culture",
+        "description": "Etki yaratma tutkumuz, birlikte çalıştığımız insanlar, yeni fikirleri hayata geçirme merakı ve her zaman daha iyisini yapmaya odaklanma ile beslenir.",
+        "descriptionEn": "Our passion to make an impact is fueled by the people we work with, a curiosity to bring new ideas to life, and a focus on always doing better.",
+        "linkText": "Daha Fazla Bilgi",
+        "linkTextEn": "Learn More"
+      },
+      {
+        "title": "Teknoritma'da Aidiyet",
+        "titleEn": "Belonging at Teknoritma",
+        "description": "Farklı deneyimlerin ve bakış açılarının yeniliği tetiklediği bir aidiyet kültürü yaşayın.",
+        "descriptionEn": "Experience a culture of belonging, where different experiences and perspectives spark innovation.",
+        "linkText": "Daha Fazla Bilgi",
+        "linkTextEn": "Learn More"
+      }
+    ],
+    "talentNetwork": {
+      "title": "Yetenek Ağımıza Katılın",
+      "titleEn": "Join our Talent Network",
+      "description": "Bağlantıda kalalım. Kariyer hedeflerinizle eşleşen yeni fırsatlar mevcut olduğunda uyarı almak için kaydolun.",
+      "descriptionEn": "Let's stay connected. Sign up to receive alerts when new opportunities become available that match your career ambitions.",
+      "buttonText": "Ağımıza Katılın",
+      "buttonTextEn": "Join Our Network"
+    },
+    "exploreLife": {
+      "title": "Teknoritma'da yaşamı keşfedin",
+      "titleEn": "Explore life at Teknoritma",
+      "stories": [
+        {
+          "title": "Yazılım Mühendisi olarak bir gün",
+          "titleEn": "A day in the life as a Software Engineer",
+          "description": "Teknoritma'nın Ankara ofisinde yazılım geliştirmede çalışmanın nasıl bir şey olduğunu ekibimizden bir üye paylaşıyor.",
+          "descriptionEn": "Join our team member as they share what it's like to work in software development at Teknoritma's Ankara office.",
+          "url": "/kariyer/hikayeler/yazilim-muhendisi-gunu"
+        },
+        {
+          "title": "Teknoritma'ya katılmanın 5 nedeni",
+          "titleEn": "5 reasons to join Teknoritma",
+          "description": "İnsanların Teknoritma'yı seçmesinin sayısız nedeni var; işbirlikçi insanlar, fırsatların genişliği ve derinliği ve çok daha fazlası.",
+          "descriptionEn": "There are countless reasons people choose Teknoritma; the collaborative people, the breadth and depth of opportunities, and so much more.",
+          "url": "/kariyer/hikayeler/5-neden"
+        },
+        {
+          "title": "Büyümeyi güçlendirmek: Kariyer yolculuğu",
+          "titleEn": "Empowering growth: Career journey",
+          "description": "Teknoritma ile bir kariyer yolculuğuna çıkmak dönüştürücü bir deneyim oldu. Dikkat çekici büyümeyi öğrenmek için izleyin.",
+          "descriptionEn": "Embarking on a career journey with Teknoritma has been a transformative experience. Watch to learn more about the remarkable growth.",
+          "url": "/kariyer/hikayeler/kariyer-yolculugu"
+        }
+      ]
+    }
+  }
+}
