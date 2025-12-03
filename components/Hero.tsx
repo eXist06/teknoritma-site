@@ -333,8 +333,20 @@ export default function Hero() {
                   <span className="text-4xl md:text-5xl lg:text-6xl flex flex-col break-words overflow-visible gap-0.5 md:gap-1 max-w-4xl">
                     <span className="whitespace-normal leading-normal text-neutral-heading">
                       {language === "en" 
-                        ? "The Next Wave of Healthcare" 
-                        : "Sağlıkta dijital dönüşümün lideri"}
+                        ? (
+                          <>
+                            The{" "}
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Next Wave</span>{" "}
+                            of Healthcare
+                          </>
+                        )
+                        : (
+                          <>
+                            Sağlıkta dijital{" "}
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">dönüşümün</span>{" "}
+                            lideri
+                          </>
+                        )}
                     </span>
                   </span>
                 </motion.h1>

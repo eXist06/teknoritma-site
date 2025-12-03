@@ -3,10 +3,18 @@ export const translations: Record<string, any> = {
     nav: {
       home: "Ana Sayfa",
       products: "Ürünler",
-      sarus: "Sarus",
+      sarus: "Bilgi Merkezi",
       projects: "Projeler",
       about: "Hakkımızda",
       contact: "İletişim",
+      careers: "Kariyer",
+      productsSubmenu: {
+        hbs: "Sarus HBS",
+        cloud: "Sarus Bulut",
+        pacs: "Sarus PACS",
+        lbs: "Sarus LBS",
+        icp: "Sarus ICP",
+      },
     },
     hero: {
       titlePrefix: "Sağlık tesislerinin",
@@ -139,10 +147,18 @@ export const translations: Record<string, any> = {
     nav: {
       home: "Home",
       products: "Products",
-      sarus: "Sarus",
+      sarus: "Knowledge Center",
       projects: "Projects",
       about: "About",
       contact: "Contact",
+      careers: "Careers",
+      productsSubmenu: {
+        emr: "Sarus EMR",
+        cloud: "Sarus Cloud",
+        pacs: "Sarus PACS",
+        lis: "Sarus LIS",
+        icp: "Sarus ICP",
+      },
     },
     hero: {
       titlePrefix: "The digital",

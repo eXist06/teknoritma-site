@@ -120,9 +120,9 @@ export default function SarusHISPage() {
             >
               <div className="relative w-full aspect-square bg-white/80 backdrop-blur-md rounded-3xl border border-neutral-border/50 shadow-2xl flex items-center justify-center overflow-hidden p-8">
                 <img
-                  src="/Picture1.gif"
-                  alt="SarusHIS Logo"
-                  className="w-full h-auto max-w-md mx-auto object-contain"
+                  src="/Klinik_Portal_Yapisi.png"
+                  alt="Klinik Portal Yapısı"
+                  className="w-full h-auto max-w-full mx-auto object-contain"
                 />
               </div>
             </motion.div>
