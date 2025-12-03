@@ -42,10 +42,10 @@ export const hero: HeroContent = {
 };
 
 export const metrics: Metric[] = [
-  { value: "45,000", label: "kullanıcı" },
-  { value: "80M+", label: "hasta verisi" },
+  { value: "48,000+", label: "Kullanıcı" },
+  { value: "80M+", label: "Hasta" },
   { value: "40+", label: "Uygulama" },
-  { value: "HIMSS", label: "EMRAM/O-EMRAM Level 7" },
+  { value: "HIMSS", label: "EMRAM/O-EMRAM Seviye 7" },
 ];
 
 export const footerLinks: FooterLink[] = [

@@ -1,41 +1,132 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { metrics } from "@/content/site";
 import AnimatedCounter from "./AnimatedCounter";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
+import { useState, useEffect } from "react";
+import Orb from "./Orb";
+import Threads from "./Threads";
 
 export default function Hero() {
   const { language, t } = useI18n();
   const basePath = language === "en" ? "/en" : "";
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const totalSlides = 2;
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  // Auto-play carousel - change slide every 12 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    }, 12000); // 12 seconds
+
+    return () => clearInterval(interval);
+  }, [totalSlides]);
+
+  // Touch handlers for swipe - only on carousel container
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart === null || touchEnd === null) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    if (isLeftSwipe) nextSlide();
+    if (isRightSwipe) prevSlide();
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-start overflow-hidden bg-gradient-to-br from-background via-background-alt to-background"
+      className={`relative min-h-screen flex items-start overflow-hidden ${
+        currentSlide === 0 
+          ? "bg-gradient-to-br from-background via-background-alt to-background"
+          : "bg-white"
+      }`}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
-      {/* Video Background - Extends behind text, cropped from bottom */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute left-0 top-0 right-0 bottom-[30%] md:bottom-[25%]">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover object-center"
-            style={{ objectPosition: 'center top' }}
-            preload="auto"
-          >
-            <source src="/Teknoritma.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+      {/* Video Background - Only for slide 1 */}
+      {currentSlide === 0 && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key="video-slide-1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8 }}
+              className="absolute inset-0"
+            >
+              <div className="absolute left-0 top-0 right-0 bottom-[30%] md:bottom-[25%]">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover object-center"
+                  style={{ objectPosition: 'center top' }}
+                  preload="auto"
+                >
+                  <source src="/Teknoritma.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+          
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background/60" />
         </div>
-        
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background/60" />
-      </div>
+      )}
+
+      {/* Threads Background - Only for slide 2 */}
+      {currentSlide === 1 && (
+        <div className="absolute inset-0 overflow-hidden bg-white z-0">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key="threads-slide-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8 }}
+              className="absolute inset-0 z-0"
+            >
+              <Threads 
+                color={[0.2, 0.4, 0.8]} 
+                amplitude={1.2} 
+                distance={0.75} 
+                enableMouseInteraction={true}
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      )}
 
       {/* Modern Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -62,14 +153,61 @@ export default function Hero() {
         </svg>
       </div>
 
-      <div className="relative z-10 px-5 md:px-10 pt-12 md:pt-16 pb-10 md:pb-16">
-        {/* Content - Overlay on video, aligned left */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-4 md:mt-6"
+      {/* Navigation Controls - Bottom left corner like IQVIA */}
+      <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 z-40 flex items-center gap-3 md:gap-4">
+        {/* Previous Button */}
+        <button
+          onClick={prevSlide}
+          className="p-2 md:p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-300 hover:scale-110"
+          aria-label="Previous slide"
         >
+          <svg className="w-5 h-5 md:w-6 md:h-6 text-neutral-heading" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        {/* Dot Indicators */}
+        <div className="flex gap-2 items-center">
+          {Array.from({ length: totalSlides }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`transition-all duration-300 rounded-full ${
+                currentSlide === index
+                  ? "w-2 h-2 bg-white"
+                  : "w-2 h-2 bg-white/50 hover:bg-white/70"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Next Button */}
+        <button
+          onClick={nextSlide}
+          className="p-2 md:p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-300 hover:scale-110"
+          aria-label="Next slide"
+        >
+          <svg className="w-5 h-5 md:w-6 md:h-6 text-neutral-heading" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <div className="relative z-20 px-5 md:px-10 pt-12 md:pt-16 pb-10 md:pb-16 w-full h-full">
+        {/* Carousel Container - Full width and height */}
+        <div className="relative w-full h-full min-h-[calc(100vh-8rem)]">
+          <AnimatePresence mode="wait">
+            {/* Slide 1: Sarus */}
+            {currentSlide === 0 && (
+              <motion.div
+                key="slide-1"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-4 md:mt-6"
+              >
             {/* Title */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -169,15 +307,90 @@ export default function Hero() {
                 </motion.button>
               </a>
             </motion.div>
-        </motion.div>
+              </motion.div>
+            )}
 
-        {/* Metrics - Centered on page */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="relative z-10 w-full pt-8 border-t border-neutral-border mt-20 md:mt-24"
-        >
+            {/* Slide 2: Teknoritma */}
+            {currentSlide === 1 && (
+              <motion.div
+                key="slide-2"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-4 md:mt-6 z-30"
+              >
+                {/* Title */}
+                <motion.h1
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.8 }}
+                  className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-6 md:mb-8"
+                >
+                  <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black">
+                    Sarus
+                  </span>
+                  <span className="text-4xl md:text-5xl lg:text-6xl flex flex-col break-words overflow-visible gap-0.5 md:gap-1 max-w-4xl">
+                    <span className="whitespace-normal leading-normal text-neutral-heading">
+                      {language === "en" 
+                        ? "The Next Wave of Healthcare" 
+                        : "Sağlıkta dijital dönüşümün lideri"}
+                    </span>
+                  </span>
+                </motion.h1>
+
+                {/* Description */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.6 }}
+                  className="text-lg md:text-xl text-neutral-body leading-relaxed max-w-2xl"
+                >
+                  {language === "en"
+                    ? "Founded by professionals with over 20 years of health informatics experience, Teknoritma offers innovative solutions through the Sarus Digital Health Platform."
+                    : "20 yılı aşkın sağlık bilişimi deneyimine sahip profesyoneller tarafından kurulan Teknoritma, Sarus Dijital Sağlık Platformu aracılığıyla yenilikçi çözümler sunmaktadır."}
+                </motion.p>
+
+                {/* CTAs */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.6 }}
+                  className="flex flex-wrap items-center gap-4 pt-2 mt-4 md:mt-5"
+                >
+                  <a href={`${basePath}#about`}>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="group px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all duration-300 shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40"
+                    >
+                      {language === "en" ? "Learn More" : "Daha Fazla Bilgi"}
+                      <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                    </motion.button>
+                  </a>
+                  <a href={`${basePath}#contact`}>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-8 py-4 border-2 border-neutral-border text-neutral-heading rounded-full font-semibold hover:border-primary hover:text-primary transition-all duration-300 hover:bg-primary/5"
+                    >
+                      {language === "en" ? "Contact Us" : "İletişim"}
+                    </motion.button>
+                  </a>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Metrics - Show only on first slide */}
+        {currentSlide === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="relative z-20 w-full pt-8 border-t border-neutral-border mt-20 md:mt-24"
+          >
           <div className="max-w-7xl mx-auto px-5 md:px-10 ml-8 md:ml-16">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 lg:gap-16">
               {metrics.map((metric, idx) => {
@@ -200,16 +413,16 @@ export default function Hero() {
                        metric.value.includes("/") || 
                        metric.value.includes("HIMSS") ||
                        metric.value.includes(",") ? (
-                        <span className="block">{metric.value}</span>
+                        <span className="inline-flex items-baseline whitespace-nowrap">{metric.value}</span>
                       ) : (
                         <AnimatedCounter target={parseInt(metric.value.replace(/,/g, "")) || 0} />
                       )}
                     </div>
-                    <div className="text-xs md:text-sm lg:text-base text-neutral-body leading-relaxed break-words px-1">
+                    <div className="text-xs md:text-sm lg:text-base font-medium tracking-wide text-neutral-body leading-relaxed break-words px-1">
                       {labelKey === "himss" ? (
-                        <div className="space-y-0">
+                        <div className="space-y-0 font-medium tracking-wide">
                           <div>EMRAM/O-EMRAM</div>
-                          <div>Level 7</div>
+                          <div>{language === "en" ? "Stage 7" : "Seviye 7"}</div>
                         </div>
                       ) : (
                         <span className="block">{t(`metrics.${labelKey}`)}</span>
@@ -220,7 +433,8 @@ export default function Hero() {
               })}
             </div>
           </div>
-        </motion.div>
+          </motion.div>
+        )}
       </div>
     </section>
   );

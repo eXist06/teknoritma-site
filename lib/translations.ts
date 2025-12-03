@@ -9,7 +9,7 @@ export const translations: Record<string, any> = {
       contact: "İletişim",
     },
     hero: {
-      titlePrefix: "Sağlık sistemlerinin",
+      titlePrefix: "Sağlık tesislerinin",
       titleHighlight: "dijital omurgası",
       description:
         "20 yılı aşkın sağlık bilişimi deneyimine sahip profesyoneller tarafından kurulan Teknoritma, Sarus Dijital Sağlık Platformu aracılığıyla yenilikçi çözümler sunmaktadır. Türkiye ve çevre bölgelerdeki ilk %100 web tabanlı hastane bilgi sistemi olan Sarus, sağlık profesyonelleri, hastalar ve sağlık tedarikçilerini birbirine bağlayan kapsamlı bir dijital sağlık ekosistemi sunar. Dünyanın en büyük sağlık kampüslerinin tercihi olan platformumuz, sağlık sürekliliğindeki tüm katılımcılar için benzersiz bir dijital deneyim sağlar.",
@@ -23,10 +23,10 @@ export const translations: Record<string, any> = {
       },
     },
     metrics: {
-      users: "kullanıcı",
-      patients: "hasta verisi",
+      users: "Kullanıcı",
+      patients: "Hasta",
       applications: "Uygulama",
-      himss: "EMRAM/O-EMRAM Level 7",
+      himss: "EMRAM/O-EMRAM Seviye 7",
     },
     cta: {
       requestDemo: "Demo Talep Et",
@@ -147,7 +147,7 @@ export const translations: Record<string, any> = {
     hero: {
       titlePrefix: "The digital",
       titleHighlight: "backbone",
-      titleSuffix: "of healthcare systems",
+      titleSuffix: "of healthcare facilities",
       description:
         "Founded by professionals with over 20 years of health informatics experience, Teknoritma offers innovative solutions through the Sarus Digital Health Platform. Sarus, Turkey's and the surrounding regions' first 100% web-based hospital information system, provides a comprehensive digital health ecosystem that connects healthcare professionals, patients, and healthcare suppliers. Our platform, preferred by the world's largest healthcare campuses, provides a unique digital experience for all participants in the healthcare continuum.",
       primaryCta: "Explore SarusHIS",
@@ -160,10 +160,10 @@ export const translations: Record<string, any> = {
       },
     },
     metrics: {
-      users: "users",
-      patients: "patient data",
+      users: "Users",
+      patients: "Patients",
       applications: "Applications",
-      himss: "EMRAM/O-EMRAM Level 7",
+      himss: "EMRAM/O-EMRAM Stage 7",
     },
     cta: {
       requestDemo: "Request Demo",
