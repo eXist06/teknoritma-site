@@ -83,7 +83,8 @@ const fragmentShader = `
     );
   }
 
-  void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+  void main() {
+    vec2 fragCoord = gl_FragCoord.xy;
     vec2 uv = fragCoord / iResolution.xy;
     float line_strength = 1.0;
     for (int i = 0; i < u_line_count; i++) {
@@ -100,11 +101,7 @@ const fragmentShader = `
         ));
     }
     float colorVal = 1.0 - line_strength;
-    fragColor = vec4(uColor * colorVal, colorVal);
-  }
-
-  void main() {
-    mainImage(gl_FragColor, gl_FragCoord.xy);
+    gl_FragColor = vec4(uColor * colorVal, colorVal);
   }
 `;
 
@@ -126,7 +123,7 @@ const Threads = ({
   ...rest 
 }: ThreadsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const animationFrameId = useRef<number>();
+  const animationFrameId = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (!containerRef.current) return;
