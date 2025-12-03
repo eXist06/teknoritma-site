@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { contactSection } from "@/content/site";
+import { useI18n } from "@/lib/i18n";
 
 export default function ContactSection() {
+  const { language, t } = useI18n();
   return (
     <section id="contact" className="py-20 md:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-5 md:px-10">
@@ -14,10 +15,10 @@ export default function ContactSection() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-heading mb-4">
-              {contactSection.title}
+              {t("contact.title")}
             </h2>
             <p className="text-lg text-neutral-body mb-8 leading-relaxed">
-              {contactSection.description}
+              {t("contact.description")}
             </p>
             <div className="space-y-3 text-neutral-body">
               <div>
@@ -52,23 +53,23 @@ export default function ContactSection() {
               <div className="grid md:grid-cols-2 gap-4">
                 <input
                   type="text"
-                  placeholder="Ad Soyad"
+                  placeholder={t("contact.name")}
                   className="w-full px-5 py-3.5 rounded-xl border border-neutral-border bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 />
                 <input
                   type="text"
-                  placeholder="Kurum"
+                  placeholder={language === "en" ? "Organization" : "Kurum"}
                   className="w-full px-5 py-3.5 rounded-xl border border-neutral-border bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 />
               </div>
               <input
                 type="email"
-                placeholder="E-posta"
+                placeholder={t("contact.email")}
                 className="w-full px-5 py-3.5 rounded-xl border border-neutral-border bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
               />
               <textarea
                 rows={5}
-                placeholder="Mesajınız"
+                placeholder={t("contact.message")}
                 className="w-full px-5 py-3.5 rounded-xl border border-neutral-border bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
               />
               <motion.button
@@ -77,7 +78,7 @@ export default function ContactSection() {
                 type="submit"
                 className="w-full px-6 py-4 bg-primary text-white rounded-full font-bold hover:bg-primary-dark transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
               >
-                Gönder
+                {t("contact.send")}
                 <span className="inline-block ml-2">→</span>
               </motion.button>
               <p className="text-xs text-neutral-muted text-center pt-2">

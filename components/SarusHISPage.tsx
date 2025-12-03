@@ -2,53 +2,56 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-
-const features = [
-  {
-    icon: "🏥",
-    title: "Kapsamlı Entegrasyon",
-    description: "Tıbbi, idari ve mali süreçleri sorunsuz bir şekilde entegre ederek hastane operasyonlarını optimize eder.",
-  },
-  {
-    icon: "💻",
-    title: "%100 Web Tabanlı",
-    description: "Türkiye'nin ilk %100 web tabanlı hastane bilgi sistemi. Web tarayıcıları üzerinden kurulum gerektirmeden erişim.",
-  },
-  {
-    icon: "📱",
-    title: "Mobil Desteği",
-    description: "iOS ve Android platformlarında mobil uygulamalar ile sağlık profesyonelleri ve yöneticilerin ihtiyaçlarına cevap verir.",
-  },
-  {
-    icon: "🔧",
-    title: "Microsoft .NET Teknolojisi",
-    description: "Microsoft .NET teknolojisi üzerine kurulu, TÜBİTAK destekli güvenilir ve ölçeklenebilir altyapı.",
-  },
-  {
-    icon: "🏗️",
-    title: "Çok Katmanlı Yapı",
-    description: "Verimli ve akıcı hastane süreçleri için çok katmanlı mimari yapı ile tasarlanmış sistem.",
-  },
-  {
-    icon: "🌐",
-    title: "Dijital Sağlık Platformu",
-    description: "Sarus Digital Health Platform'un bir parçası olarak diğer gelişmiş uygulamalarla sorunsuz entegrasyon.",
-  },
-];
-
-const technicalSpecs = [
-  { category: "Mimari", value: "Çok katmanlı web mimarisi" },
-  { category: "Teknoloji", value: "Microsoft .NET" },
-  { category: "Platform Desteği", value: "Web tarayıcıları, iOS, Android" },
-  { category: "Entegrasyon", value: "XML Web Servisleri" },
-  { category: "Destek", value: "TÜBİTAK destekli" },
-  { category: "Validasyon", value: "HIMSS EMRAM/O-EMRAM Level 7" },
-  { category: "Kullanıcı Sayısı", value: "35,000+ sağlık kullanıcısı" },
-  { category: "Hasta Verisi", value: "80M+ hasta verisi yönetimi" },
-  { category: "Coğrafi Kapsam", value: "Türkiye, CIS Ülkeleri, Körfez Bölgesi" },
-];
+import { useI18n } from "@/lib/i18n";
 
 export default function SarusHISPage() {
+  const { language, t } = useI18n();
+  const basePath = language === "en" ? "/en" : "";
+
+  const features = [
+    {
+      icon: "🏥",
+      title: t("sarus.features.integration.title"),
+      description: t("sarus.features.integration.description"),
+    },
+    {
+      icon: "💻",
+      title: t("sarus.features.webBased.title"),
+      description: t("sarus.features.webBased.description"),
+    },
+    {
+      icon: "📱",
+      title: t("sarus.features.mobile.title"),
+      description: t("sarus.features.mobile.description"),
+    },
+    {
+      icon: "🔧",
+      title: t("sarus.features.dotnet.title"),
+      description: t("sarus.features.dotnet.description"),
+    },
+    {
+      icon: "🏗️",
+      title: t("sarus.features.multilayered.title"),
+      description: t("sarus.features.multilayered.description"),
+    },
+    {
+      icon: "🌐",
+      title: t("sarus.features.platform.title"),
+      description: t("sarus.features.platform.description"),
+    },
+  ];
+
+  const technicalSpecs = [
+    { category: t("sarus.technical.specs.architecture"), value: t("sarus.technical.values.architecture") },
+    { category: t("sarus.technical.specs.technology"), value: t("sarus.technical.values.technology") },
+    { category: t("sarus.technical.specs.platform"), value: t("sarus.technical.values.platform") },
+    { category: t("sarus.technical.specs.integration"), value: t("sarus.technical.values.integration") },
+    { category: t("sarus.technical.specs.support"), value: t("sarus.technical.values.support") },
+    { category: t("sarus.technical.specs.validation"), value: t("sarus.technical.values.validation") },
+    { category: t("sarus.technical.specs.users"), value: t("sarus.technical.values.users") },
+    { category: t("sarus.technical.specs.patients"), value: t("sarus.technical.values.patients") },
+    { category: t("sarus.technical.specs.geography"), value: t("sarus.technical.values.geography") },
+  ];
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -66,17 +69,17 @@ export default function SarusHISPage() {
               transition={{ duration: 0.6 }}
             >
               <Link
-                href="/#products"
+                href={`${basePath}#products`}
                 className="inline-flex items-center gap-2 text-sm text-neutral-body hover:text-primary transition-colors mb-8"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
-                Ürünlere Dön
+                {t("sarus.backToProducts")}
               </Link>
 
               <span className="inline-block px-4 py-2 bg-primary/10 text-primary-dark rounded-full text-xs font-bold uppercase tracking-wider mb-6 border border-primary/20">
-                Ana Ürün
+                {t("sarus.mainProduct")}
               </span>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading mb-6 leading-tight">
@@ -84,11 +87,11 @@ export default function SarusHISPage() {
               </h1>
 
             <p className="text-2xl md:text-3xl font-bold text-primary mb-6">
-              Kapsamlı Hastane Bilgi Sistemi
+              {t("sarus.tagline")}
             </p>
 
             <p className="text-xl text-neutral-body leading-relaxed mb-8">
-              SarusHIS, hastanelerin verimliliğini artırmak için tıbbi, idari ve mali süreçleri sorunsuz bir şekilde entegre eden kapsamlı bir Hastane Bilgi Sistemidir. Türkiye'nin ilk %100 web tabanlı hastane bilgi sistemi olarak, modern sağlık kurumlarının dijital dönüşümünde öncü rol oynar.
+              {t("sarus.description")}
             </p>
 
               <div className="flex flex-wrap gap-4">
@@ -97,14 +100,14 @@ export default function SarusHISPage() {
                   whileTap={{ scale: 0.95 }}
                   className="px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all duration-300 shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40"
                 >
-                  Demo Talep Et
+                  {t("sarus.requestDemo")}
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-8 py-4 border-2 border-neutral-border text-neutral-heading rounded-full font-semibold hover:border-primary hover:text-primary transition-all duration-300 hover:bg-primary/5"
                 >
-                  İletişime Geç
+                  {t("sarus.contact")}
                 </motion.button>
               </div>
             </motion.div>
@@ -137,10 +140,10 @@ export default function SarusHISPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-4">
-              Özellikler
+              {t("sarus.features.title")}
             </h2>
             <p className="text-xl text-neutral-body max-w-3xl mx-auto">
-              Modern hastanelerin ihtiyaçlarına cevap veren kapsamlı özellikler
+              {t("sarus.features.subtitle")}
             </p>
           </motion.div>
 
@@ -184,10 +187,10 @@ export default function SarusHISPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-4">
-              Teknik Özellikler
+              {t("sarus.technical.title")}
             </h2>
             <p className="text-xl text-neutral-body max-w-3xl mx-auto">
-              Güvenilir ve ölçeklenebilir teknoloji altyapısı
+              {t("sarus.technical.subtitle")}
             </p>
           </motion.div>
 
@@ -202,10 +205,10 @@ export default function SarusHISPage() {
                 <thead className="bg-background-alt">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-bold text-neutral-heading uppercase tracking-wider">
-                      Kategori
+                      {t("sarus.technical.category")}
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-bold text-neutral-heading uppercase tracking-wider">
-                      Özellik
+                      {t("sarus.technical.feature")}
                     </th>
                   </tr>
                 </thead>
@@ -243,10 +246,10 @@ export default function SarusHISPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-6">
-              SarusHIS ile Dijital Dönüşümünüze Başlayın
+              {t("sarus.cta.title")}
             </h2>
             <p className="text-xl text-neutral-body mb-8 leading-relaxed">
-              Modern hastane yönetimi için kapsamlı çözümümüz hakkında daha fazla bilgi almak veya demo talep etmek için bizimle iletişime geçin.
+              {t("sarus.cta.description")}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <motion.button
@@ -254,15 +257,15 @@ export default function SarusHISPage() {
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all duration-300 shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40"
               >
-                Demo Talep Et
+                {t("sarus.requestDemo")}
               </motion.button>
-              <Link href="/#contact">
+              <Link href={`${basePath}#contact`}>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-8 py-4 border-2 border-neutral-border text-neutral-heading rounded-full font-semibold hover:border-primary hover:text-primary transition-all duration-300 hover:bg-primary/5"
                 >
-                  İletişime Geç
+                  {t("sarus.contact")}
                 </motion.button>
               </Link>
             </div>

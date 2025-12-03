@@ -27,7 +27,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-0 md:px-5">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href={`${language === "en" ? "/en" : ""}/`} className="flex items-center group pl-0 md:pl-1">
+          <a href={`${language === "en" ? "/en" : ""}#hero`} className="flex items-center group pl-0 md:pl-1">
             <Logo />
           </a>
 

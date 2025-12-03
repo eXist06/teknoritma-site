@@ -7,12 +7,12 @@ export default function LanguageSwitcher() {
   const { language, setLanguage } = useI18n();
 
   return (
-    <div className="flex items-center gap-1 bg-white/80 backdrop-blur-sm rounded-full border border-neutral-border p-1">
+    <div className="flex items-center gap-1 bg-neutral-100 rounded-full p-1">
       <motion.button
+        onClick={() => setLanguage("tr")}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => setLanguage("tr")}
-        className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-all duration-300 ${
+        className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-300 ${
           language === "tr"
             ? "bg-primary text-white shadow-md"
             : "text-neutral-body hover:text-neutral-heading"
@@ -21,10 +21,10 @@ export default function LanguageSwitcher() {
         TR
       </motion.button>
       <motion.button
+        onClick={() => setLanguage("en")}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => setLanguage("en")}
-        className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-all duration-300 ${
+        className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-300 ${
           language === "en"
             ? "bg-primary text-white shadow-md"
             : "text-neutral-body hover:text-neutral-heading"
@@ -35,4 +35,3 @@ export default function LanguageSwitcher() {
     </div>
   );
 }
-

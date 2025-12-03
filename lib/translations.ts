@@ -9,14 +9,18 @@ export const translations: Record<string, any> = {
       contact: "İletişim",
     },
     hero: {
-      badge: "HIMSS EMRAM/O-EMRAM Level 7",
       titlePrefix: "Sağlık sistemlerinin",
       titleHighlight: "dijital omurgası",
       description:
         "20 yılı aşkın sağlık bilişimi deneyimine sahip profesyoneller tarafından kurulan Teknoritma, Sarus Dijital Sağlık Platformu aracılığıyla yenilikçi çözümler sunmaktadır. Türkiye ve çevre bölgelerdeki ilk %100 web tabanlı hastane bilgi sistemi olan Sarus, sağlık profesyonelleri, hastalar ve sağlık tedarikçilerini birbirine bağlayan kapsamlı bir dijital sağlık ekosistemi sunar. Dünyanın en büyük sağlık kampüslerinin tercihi olan platformumuz, sağlık sürekliliğindeki tüm katılımcılar için benzersiz bir dijital deneyim sağlar.",
       primaryCta: "SarusHIS'i İncele",
       secondaryCta: "Tüm Ürünler",
-      locationLine: "Ankara · Hacettepe Teknokent · Türkiye, CIS Ülkeleri ve Körfez Bölgesi",
+      badges: {
+        himss: "HIMSS EMRAM / O-EMRAM Seviye 7",
+        robust: "HL7 / FHIR Native, Modüler ve Ölçeklenebilir Mimari",
+        support: "Kurumsal Düzeyde Güvenilirlik ve Tam Destek",
+        ai: "AI - Karar Destek Sistemleri",
+      },
     },
     metrics: {
       users: "kullanıcı",
@@ -40,7 +44,95 @@ export const translations: Record<string, any> = {
     },
     products: {
       otherProducts: "Diğer Ürünlerimiz",
-      exploreDetails: "Detaylı İncele",
+      exploreDetails: "SarusHIS'i Detaylı İncele",
+    },
+    sarus: {
+      backToProducts: "Ürünlere Dön",
+      mainProduct: "Ana Ürün",
+      tagline: "Kapsamlı Hastane Bilgi Sistemi",
+      description: "SarusHIS, hastanelerin verimliliğini artırmak için tıbbi, idari ve mali süreçleri sorunsuz bir şekilde entegre eden kapsamlı bir Hastane Bilgi Sistemidir. Türkiye'nin ilk %100 web tabanlı hastane bilgi sistemi olarak, modern sağlık kurumlarının dijital dönüşümünde öncü rol oynar.",
+      requestDemo: "Demo Talep Et",
+      contact: "İletişime Geç",
+      features: {
+        title: "Özellikler",
+        subtitle: "Modern hastanelerin ihtiyaçlarına cevap veren kapsamlı özellikler",
+        integration: {
+          title: "Kapsamlı Entegrasyon",
+          description: "Tıbbi, idari ve mali süreçleri sorunsuz bir şekilde entegre ederek hastane operasyonlarını optimize eder.",
+        },
+        webBased: {
+          title: "%100 Web Tabanlı",
+          description: "Türkiye'nin ilk %100 web tabanlı hastane bilgi sistemi. Web tarayıcıları üzerinden kurulum gerektirmeden erişim.",
+        },
+        mobile: {
+          title: "Mobil Desteği",
+          description: "iOS ve Android platformlarında mobil uygulamalar ile sağlık profesyonelleri ve yöneticilerin ihtiyaçlarına cevap verir.",
+        },
+        dotnet: {
+          title: "Microsoft .NET Teknolojisi",
+          description: "Microsoft .NET teknolojisi üzerine kurulu, TÜBİTAK destekli güvenilir ve ölçeklenebilir altyapı.",
+        },
+        multilayered: {
+          title: "Çok Katmanlı Yapı",
+          description: "Verimli ve akıcı hastane süreçleri için çok katmanlı mimari yapı ile tasarlanmış sistem.",
+        },
+        platform: {
+          title: "Dijital Sağlık Platformu",
+          description: "Sarus Digital Health Platform'un bir parçası olarak diğer gelişmiş uygulamalarla sorunsuz entegrasyon.",
+        },
+      },
+      technical: {
+        title: "Teknik Özellikler",
+        subtitle: "Güvenilir ve ölçeklenebilir teknoloji altyapısı",
+        category: "Kategori",
+        feature: "Özellik",
+        specs: {
+          architecture: "Mimari",
+          technology: "Teknoloji",
+          platform: "Platform Desteği",
+          integration: "Entegrasyon",
+          support: "Destek",
+          validation: "Validasyon",
+          users: "Kullanıcı Sayısı",
+          patients: "Hasta Verisi",
+          geography: "Coğrafi Kapsam",
+        },
+        values: {
+          architecture: "Çok katmanlı web mimarisi",
+          technology: "Microsoft .NET",
+          platform: "Web tarayıcıları, iOS, Android",
+          integration: "XML Web Servisleri",
+          support: "TÜBİTAK destekli",
+          validation: "HIMSS EMRAM/O-EMRAM Level 7",
+          users: "35,000+ sağlık kullanıcısı",
+          patients: "80M+ hasta verisi yönetimi",
+          geography: "Türkiye, CIS Ülkeleri, Körfez Bölgesi",
+        },
+      },
+      cta: {
+        title: "SarusHIS ile Dijital Dönüşümünüze Başlayın",
+        description: "Modern hastane yönetimi için kapsamlı çözümümüz hakkında daha fazla bilgi almak veya demo talep etmek için bizimle iletişime geçin.",
+      },
+    },
+    contact: {
+      title: "Projenizi birlikte planlayalım",
+      description: "Mevcut HIS/PACS/LIS altyapınızı, hedeflerinizi ve zaman planınızı paylaşın; sizin için örnek bir faz planı ve yol haritası oluşturalım.",
+      name: "Ad Soyad",
+      email: "E-posta",
+      message: "Mesaj",
+      send: "Gönder",
+    },
+    support: {
+      title: "Teknoritma destek ve proje yönetimi yaklaşımı",
+      highlights: "Öne çıkan başlıklar",
+    },
+    segments: {
+      title: "Çözüm alanlarımız",
+      subtitle: "Farklı ölçek ve yapıdaki sağlık kurumları için özelleştirilmiş",
+    },
+    timeline: {
+      title: "Zaman içinde Sarus",
+      subtitle: "Sarus; Türkiye'nin ilk web tabanlı hastane bilgi sistemi olarak",
     },
   },
   en: {
@@ -53,7 +145,6 @@ export const translations: Record<string, any> = {
       contact: "Contact",
     },
     hero: {
-      badge: "HIMSS EMRAM/O-EMRAM Level 7",
       titlePrefix: "The digital",
       titleHighlight: "backbone",
       titleSuffix: "of healthcare systems",
@@ -61,7 +152,12 @@ export const translations: Record<string, any> = {
         "Founded by professionals with over 20 years of health informatics experience, Teknoritma offers innovative solutions through the Sarus Digital Health Platform. Sarus, Turkey's and the surrounding regions' first 100% web-based hospital information system, provides a comprehensive digital health ecosystem that connects healthcare professionals, patients, and healthcare suppliers. Our platform, preferred by the world's largest healthcare campuses, provides a unique digital experience for all participants in the healthcare continuum.",
       primaryCta: "Explore SarusHIS",
       secondaryCta: "All Products",
-      locationLine: "Ankara · Hacettepe Technopark · Turkey, CIS Countries and Gulf Region",
+      badges: {
+        himss: "HIMSS EMRAM / O-EMRAM Level 7 Ready",
+        robust: "HL7 / FHIR Native, Modular & Scalable Architecture",
+        support: "Enterprise-Grade Reliability with 24/7 Support",
+        ai: "AI-Driven Decision Support",
+      },
     },
     metrics: {
       users: "users",
@@ -78,11 +174,102 @@ export const translations: Record<string, any> = {
       legal: "Legal",
       copyright: "© {year} Teknoritma Yazılım Hizmetleri A.Ş. All rights reserved.",
       madeIn: "Made with ❤️ in Ankara",
+      products: "Products",
+      projects: "Projects",
+      support: "Support Services",
+      contact: "Contact",
     },
     products: {
       otherProducts: "Other Products",
-      exploreDetails: "Explore Details",
+      exploreDetails: "Explore SarusHIS Details",
+    },
+    sarus: {
+      backToProducts: "Back to Products",
+      mainProduct: "Main Product",
+      tagline: "Comprehensive Hospital Information System",
+      description: "SarusHIS is a comprehensive Hospital Information System that seamlessly integrates medical, administrative, and financial processes to enhance hospital efficiency. As Turkey's first 100% web-based hospital information system, it plays a pioneering role in the digital transformation of modern healthcare institutions.",
+      requestDemo: "Request Demo",
+      contact: "Contact Us",
+      features: {
+        title: "Features",
+        subtitle: "Comprehensive features that meet the needs of modern hospitals",
+        integration: {
+          title: "Comprehensive Integration",
+          description: "Optimizes hospital operations by seamlessly integrating medical, administrative, and financial processes.",
+        },
+        webBased: {
+          title: "100% Web-Based",
+          description: "Turkey's first 100% web-based hospital information system. Access through web browsers without installation.",
+        },
+        mobile: {
+          title: "Mobile Support",
+          description: "Meets the needs of healthcare professionals and administrators with mobile applications on iOS and Android platforms.",
+        },
+        dotnet: {
+          title: "Microsoft .NET Technology",
+          description: "Reliable and scalable infrastructure built on Microsoft .NET technology with TÜBİTAK support.",
+        },
+        multilayered: {
+          title: "Multi-Layered Architecture",
+          description: "System designed with multi-layered architecture for efficient and smooth hospital processes.",
+        },
+        platform: {
+          title: "Digital Health Platform",
+          description: "Seamless integration with other advanced applications as part of the Sarus Digital Health Platform.",
+        },
+      },
+      technical: {
+        title: "Technical Specifications",
+        subtitle: "Reliable and scalable technology infrastructure",
+        category: "Category",
+        feature: "Feature",
+        specs: {
+          architecture: "Architecture",
+          technology: "Technology",
+          platform: "Platform Support",
+          integration: "Integration",
+          support: "Support",
+          validation: "Validation",
+          users: "User Count",
+          patients: "Patient Data",
+          geography: "Geographic Coverage",
+        },
+        values: {
+          architecture: "Multi-layered web architecture",
+          technology: "Microsoft .NET",
+          platform: "Web browsers, iOS, Android",
+          integration: "XML Web Services",
+          support: "TÜBİTAK supported",
+          validation: "HIMSS EMRAM/O-EMRAM Level 7",
+          users: "35,000+ healthcare users",
+          patients: "80M+ patient data management",
+          geography: "Turkey, CIS Countries, Gulf Region",
+        },
+      },
+      cta: {
+        title: "Start Your Digital Transformation with SarusHIS",
+        description: "Contact us to learn more about our comprehensive solution for modern hospital management or to request a demo.",
+      },
+    },
+    contact: {
+      title: "Let's plan your project together",
+      description: "Share your existing HIS/PACS/LIS infrastructure, goals, and timeline; we'll create a sample phase plan and roadmap for you.",
+      name: "Full Name",
+      email: "Email",
+      message: "Message",
+      send: "Send",
+    },
+    support: {
+      title: "Teknoritma support and project management approach",
+      highlights: "Key highlights",
+    },
+    segments: {
+      title: "Our solution areas",
+      subtitle: "Customized for healthcare institutions of different scales and structures",
+    },
+    timeline: {
+      title: "Sarus over time",
+      subtitle: "Sarus; as Turkey's first web-based hospital information system",
     },
   },
 };
-

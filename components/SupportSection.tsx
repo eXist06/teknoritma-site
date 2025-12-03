@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { supportIntro, supportHighlights } from "@/content/support";
+import { useI18n } from "@/lib/i18n";
 
 export default function SupportSection() {
+  const { t } = useI18n();
   return (
     <section id="support" className="py-20 md:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-5 md:px-10">
@@ -14,7 +16,7 @@ export default function SupportSection() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-heading mb-6">
-              Teknoritma destek ve proje yönetimi yaklaşımı
+              {t("support.title")}
             </h2>
             <div className="space-y-4 text-neutral-body leading-relaxed">
               <p>{supportIntro.paragraph1}</p>
@@ -33,7 +35,7 @@ export default function SupportSection() {
             
             <div className="relative z-10">
               <h3 className="text-lg font-bold text-neutral-heading mb-8">
-                {supportHighlights.title}
+                {t("support.highlights")}
               </h3>
               <ul className="space-y-5">
                 {supportHighlights.points.map((point, idx) => (

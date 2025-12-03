@@ -68,58 +68,86 @@ export default function Hero() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="space-y-8 max-w-2xl relative"
+          className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-4 md:mt-6"
         >
-            {/* Title with Logo and Badge */}
-            <div className="flex items-baseline gap-3 md:gap-4 flex-wrap">
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex items-baseline gap-3 md:gap-4 flex-wrap"
-              >
-                <img
-                  src="/Picture1.gif"
-                  alt="Sarus"
-                  className="h-12 md:h-16 lg:h-20 w-auto object-contain flex-shrink-0"
-                />
-                <span>
-                  {t("hero.titlePrefix")}{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+            {/* Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-6 md:mb-8"
+            >
+              <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black">Sarus</span>
+              {language === "en" ? (
+                <span className="text-4xl md:text-5xl lg:text-6xl flex flex-wrap items-baseline break-words overflow-visible gap-1 md:gap-1.5 max-w-4xl">
+                  <span className="whitespace-normal leading-normal text-neutral-heading mr-2 md:mr-2.5">{t("hero.titlePrefix")}</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent whitespace-normal break-words leading-normal">
                     {t("hero.titleHighlight")}
                   </span>
-                  {language === "en" && ` ${t("hero.titleSuffix")}`}
+                  <span className="whitespace-normal leading-normal text-neutral-heading -mt-3 md:-mt-4">{t("hero.titleSuffix")}</span>
                 </span>
-              </motion.h1>
-              
-              {/* Badge - Right side of logo */}
-              <motion.span
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 backdrop-blur-sm text-accent-dark rounded-full text-xs font-bold uppercase tracking-wider border border-accent/20 flex-shrink-0"
-              >
-                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                {t("hero.badge")}
-              </motion.span>
-            </div>
+              ) : (
+                <span className="text-4xl md:text-5xl lg:text-6xl flex flex-col break-words overflow-visible gap-0.5 md:gap-1 max-w-4xl">
+                  <span className="whitespace-normal leading-normal">{t("hero.titlePrefix")}</span>
+                  <span className="whitespace-normal break-words leading-relaxed pb-1 md:pb-2 -mt-4 md:-mt-5 flex flex-wrap items-baseline gap-2 md:gap-2.5">
+                    <span className="text-neutral-heading">dijital</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">omurgası</span>
+                  </span>
+                </span>
+              )}
+            </motion.h1>
 
-            {/* Description */}
-            <motion.p
+            {/* Feature Highlights - Modern Bullet List */}
+            <motion.ul
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="text-xl text-neutral-body leading-relaxed max-w-2xl"
+              className="flex flex-col gap-3 md:gap-3.5 -mt-2 md:-mt-3 list-none"
             >
-              {t("hero.description")}
-            </motion.p>
+              <motion.li
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+                className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
+              >
+                <span className="text-xl">🏆</span>
+                <span className="font-medium">{t("hero.badges.himss")}</span>
+              </motion.li>
+              <motion.li
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7, duration: 0.5 }}
+                className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
+              >
+                <span className="text-green-600 text-lg">✔</span>
+                <span className="font-medium">{t("hero.badges.robust")}</span>
+              </motion.li>
+              <motion.li
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.8, duration: 0.5 }}
+                className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
+              >
+                <span className="text-green-600 text-lg">✔</span>
+                <span className="font-medium">{t("hero.badges.support")}</span>
+              </motion.li>
+              <motion.li
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.9, duration: 0.5 }}
+                className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
+              >
+                <span className="text-green-600 text-lg">✔</span>
+                <span className="font-medium">{t("hero.badges.ai")}</span>
+              </motion.li>
+            </motion.ul>
 
             {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
-              className="flex flex-wrap items-center gap-4 pt-2"
+              className="flex flex-wrap items-center gap-4 pt-2 mt-4 md:mt-5"
             >
               <Link href={`${basePath}/urunler/sarus`}>
                 <motion.button
@@ -141,20 +169,6 @@ export default function Hero() {
                 </motion.button>
               </a>
             </motion.div>
-
-            {/* Location */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="flex items-center gap-2 text-sm text-neutral-muted pt-2"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>{t("hero.locationLine")}</span>
-            </motion.div>
         </motion.div>
 
         {/* Metrics - Centered on page */}
@@ -162,9 +176,9 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          className="relative z-10 w-full pt-8 border-t border-neutral-border"
+          className="relative z-10 w-full pt-8 border-t border-neutral-border mt-20 md:mt-24"
         >
-          <div className="max-w-7xl mx-auto px-5 md:px-10">
+          <div className="max-w-7xl mx-auto px-5 md:px-10 ml-8 md:ml-16">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 lg:gap-16">
               {metrics.map((metric, idx) => {
                 let labelKey = "users";

@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
+import { LanguageAwareHtml } from "@/components/LanguageAwareHtml";
 
 export const metadata: Metadata = {
   title: "Teknoritma - Sağlık Bilişim Çözümleri",
@@ -39,12 +40,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr" className="scroll-smooth">
+    <html lang="tr" className="scroll-smooth" suppressHydrationWarning>
       <body className="antialiased">
         <Providers>
-          <Header />
-          {children}
-          <Footer />
+          <LanguageAwareHtml>
+            <Header />
+            {children}
+            <Footer />
+          </LanguageAwareHtml>
         </Providers>
       </body>
     </html>

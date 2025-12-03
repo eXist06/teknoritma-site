@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { segments } from "@/content/segments";
+import { useI18n } from "@/lib/i18n";
 
 export default function SegmentsSection() {
+  const { language, t } = useI18n();
   return (
     <section id="segments" className="py-20 md:py-32 bg-background-alt">
       <div className="max-w-7xl mx-auto px-5 md:px-10">
@@ -14,10 +16,10 @@ export default function SegmentsSection() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-heading mb-4">
-            Çözüm alanlarımız
+            {t("segments.title")}
           </h2>
           <p className="text-lg text-neutral-body max-w-2xl mx-auto">
-            Farklı ölçek ve yapıdaki sağlık kurumları için özelleştirilmiş
+            {t("segments.subtitle")}
             çözümler sunuyoruz.
           </p>
         </motion.div>

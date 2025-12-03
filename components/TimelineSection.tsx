@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { timelineItems } from "@/content/timeline";
+import { useI18n } from "@/lib/i18n";
 
 export default function TimelineSection() {
+  const { t } = useI18n();
   return (
     <section id="projects" className="py-20 md:py-32 bg-background-alt">
       <div className="max-w-7xl mx-auto px-5 md:px-10">
@@ -14,10 +16,10 @@ export default function TimelineSection() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-heading mb-4">
-            Zaman içinde Sarus
+            {t("timeline.title")}
           </h2>
           <p className="text-lg text-neutral-body max-w-2xl mx-auto">
-            Sarus; Türkiye'nin ilk web tabanlı hastane bilgi sistemi olarak
+            {t("timeline.subtitle")}
             başladığı yolculuğunu, şehir hastaneleri ve yüksek yatak kapasiteli
             referans projelerle sürdürüyor.
           </p>

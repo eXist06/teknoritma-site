@@ -1,6 +1,6 @@
 import SarusHISPage from "@/components/SarusHISPage";
 
-export default function SarusPageEN() {
+export default function SarusHISPageEN() {
   return <SarusHISPage />;
 }
 
