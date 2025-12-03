@@ -472,7 +472,7 @@ export default function CareersPage() {
                   } 
                   className="text-primary font-medium hover:underline"
                 >
-                  {card.link}
+                  {language === "en" ? card.linkTextEn : card.linkText}
                 </a>
               </motion.div>
             ))}

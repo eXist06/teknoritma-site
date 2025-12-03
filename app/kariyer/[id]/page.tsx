@@ -1,6 +1,7 @@
 import JobDetailPage from "@/components/JobDetailPage";
 
-export default function JobDetailRoute({ params }: { params: { id: string } }) {
-  return <JobDetailPage jobId={params.id} />;
+export default async function JobDetailRoute({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  return <JobDetailPage jobId={id} />;
 }
 

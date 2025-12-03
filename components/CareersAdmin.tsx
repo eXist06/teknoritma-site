@@ -470,7 +470,7 @@ function JobEditModal({
                 value={formData.type}
                 onChange={(e) => {
                   const type = e.target.value as JobPosting["type"];
-                  const typeEnMap: Record<string, string> = {
+                  const typeEnMap: Record<JobPosting["type"], JobPosting["typeEn"]> = {
                     "full-time": "Full-time",
                     "part-time": "Part-time",
                     contract: "Contract",
@@ -498,7 +498,7 @@ function JobEditModal({
                 value={formData.remote}
                 onChange={(e) => {
                   const remote = e.target.value as JobPosting["remote"];
-                  const remoteEnMap: Record<string, string> = {
+                  const remoteEnMap: Record<JobPosting["remote"], JobPosting["remoteEn"]> = {
                     remote: "Remote",
                     hybrid: "Hybrid",
                     office: "Office-based",
@@ -889,7 +889,7 @@ function ContentEditor({
               <div key={category.id} className="border border-neutral-border rounded-lg p-4">
                 <div className="flex justify-between items-center mb-3">
                   <h4 className="font-medium text-neutral-heading">
-                    Category {category.number}
+                    Category {category.id + 1}
                   </h4>
                 </div>
                 <div className="grid md:grid-cols-2 gap-4 mb-3">
