@@ -19,7 +19,8 @@ async function sendViaSMTP(
   to: string,
   subject: string,
   html?: string,
-  text?: string
+  text?: string,
+  attachments?: Array<{ filename: string; path: string }>
 ) {
   try {
     const transporter = nodemailer.createTransport({
@@ -32,13 +33,22 @@ async function sendViaSMTP(
       },
     });
 
-    const info = await transporter.sendMail({
+    const mailOptions: any = {
       from: `"${settings.fromName}" <${settings.fromEmail}>`,
       to,
       subject,
       text,
       html,
-    });
+    };
+
+    if (attachments && attachments.length > 0) {
+      mailOptions.attachments = attachments.map(att => ({
+        filename: att.filename,
+        path: att.path,
+      }));
+    }
+
+    const info = await transporter.sendMail(mailOptions);
 
     console.log(`[SMTP] ✅ Email sent successfully to ${to}, messageId: ${info.messageId}`);
     return { success: true, messageId: info.messageId };
@@ -56,7 +66,8 @@ async function sendViaMailjet(
   to: string,
   subject: string,
   html?: string,
-  text?: string
+  text?: string,
+  attachments?: Array<{ filename: string; path: string }>
 ) {
   // Dynamic import for Mailjet
   const MailjetModule = await import("node-mailjet");
@@ -66,23 +77,36 @@ async function sendViaMailjet(
     settings.mailjetApiSecret || settings.apiSecret
   );
 
-  const request = mailjet.post("send", { version: "v3.1" }).request({
-    Messages: [
+  const messageData: any = {
+    From: {
+      Email: settings.fromEmail,
+      Name: settings.fromName,
+    },
+    To: [
       {
-        From: {
-          Email: settings.fromEmail,
-          Name: settings.fromName,
-        },
-        To: [
-          {
-            Email: to,
-          },
-        ],
-        Subject: subject,
-        TextPart: text,
-        HTMLPart: html,
+        Email: to,
       },
     ],
+    Subject: subject,
+    TextPart: text,
+    HTMLPart: html,
+  };
+
+  // Add attachments if provided
+  if (attachments && attachments.length > 0) {
+    messageData.Attachments = attachments.map(att => {
+      const fileContent = fs.readFileSync(att.path);
+      const base64Content = fileContent.toString('base64');
+      return {
+        Filename: att.filename,
+        ContentType: 'application/pdf',
+        Base64Content: base64Content,
+      };
+    });
+  }
+
+  const request = mailjet.post("send", { version: "v3.1" }).request({
+    Messages: [messageData],
   });
 
   const result: any = await request;
@@ -97,7 +121,8 @@ async function sendViaSendGrid(
   to: string,
   subject: string,
   html?: string,
-  text?: string
+  text?: string,
+  attachments?: Array<{ filename: string; path: string }>
 ) {
   // Dynamic import for SendGrid
   const sgMailModule = await import("@sendgrid/mail");
@@ -115,6 +140,20 @@ async function sendViaSendGrid(
     ...(html && { html }),
   };
 
+  // Add attachments if provided
+  if (attachments && attachments.length > 0) {
+    msg.attachments = attachments.map(att => {
+      const fileContent = fs.readFileSync(att.path);
+      const base64Content = fileContent.toString('base64');
+      return {
+        content: base64Content,
+        filename: att.filename,
+        type: 'application/pdf',
+        disposition: 'attachment',
+      };
+    });
+  }
+
   const result = await sgMail.send(msg);
   return { success: true, messageId: result[0]?.headers?.["x-message-id"] };
 }
@@ -124,7 +163,8 @@ async function sendViaSES(
   to: string,
   subject: string,
   html?: string,
-  text?: string
+  text?: string,
+  attachments?: Array<{ filename: string; path: string }>
 ) {
   const AWS = await import("aws-sdk");
   const ses = new AWS.SES({
@@ -133,6 +173,30 @@ async function sendViaSES(
     secretAccessKey: settings.sesSecretAccessKey || settings.apiSecret,
   });
 
+  // For attachments, we need to use sendRawEmail instead of sendEmail
+  if (attachments && attachments.length > 0) {
+    const nodemailer = await import("nodemailer");
+    const transporter = nodemailer.createTransport({
+      SES: { ses, aws: AWS } as any,
+    });
+
+    const mailOptions: any = {
+      from: `"${settings.fromName}" <${settings.fromEmail}>`,
+      to,
+      subject,
+      text,
+      html,
+      attachments: attachments.map(att => ({
+        filename: att.filename,
+        path: att.path,
+      })),
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    return { success: true, messageId: info.messageId };
+  }
+
+  // No attachments, use regular sendEmail
   const params: AWS.SES.SendEmailRequest = {
     Source: `"${settings.fromName}" <${settings.fromEmail}>`,
     Destination: {
@@ -159,11 +223,13 @@ export async function sendEmail({
   subject,
   html,
   text,
+  attachments,
 }: {
   to: string;
   subject: string;
   html?: string;
   text?: string;
+  attachments?: Array<{ filename: string; path: string }>;
 }) {
   const settings = getEmailSettings();
 
@@ -204,7 +270,7 @@ export async function sendEmail({
           };
         }
         console.log("[EMAIL SERVICE] Sending via Mailjet...");
-        const mailjetResult = await sendViaMailjet(settings, to, subject, html, text);
+        const mailjetResult = await sendViaMailjet(settings, to, subject, html, text, attachments);
         console.log(`[EMAIL SERVICE] Mailjet result:`, mailjetResult);
         return mailjetResult;
 
@@ -217,7 +283,7 @@ export async function sendEmail({
           };
         }
         console.log("[EMAIL SERVICE] Sending via SendGrid...");
-        const sendgridResult = await sendViaSendGrid(settings, to, subject, html, text);
+        const sendgridResult = await sendViaSendGrid(settings, to, subject, html, text, attachments);
         console.log(`[EMAIL SERVICE] SendGrid result:`, sendgridResult);
         return sendgridResult;
 
@@ -233,7 +299,7 @@ export async function sendEmail({
           };
         }
         console.log("[EMAIL SERVICE] Sending via AWS SES...");
-        const sesResult = await sendViaSES(settings, to, subject, html, text);
+        const sesResult = await sendViaSES(settings, to, subject, html, text, attachments);
         console.log(`[EMAIL SERVICE] SES result:`, sesResult);
         return sesResult;
 
@@ -248,7 +314,7 @@ export async function sendEmail({
         }
         console.log("[EMAIL SERVICE] Sending via SMTP...");
         try {
-          const smtpResult = await sendViaSMTP(settings, to, subject, html, text);
+          const smtpResult = await sendViaSMTP(settings, to, subject, html, text, attachments);
           console.log(`[EMAIL SERVICE] SMTP result:`, smtpResult);
           return smtpResult;
         } catch (smtpError: any) {

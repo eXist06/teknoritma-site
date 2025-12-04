@@ -29,7 +29,7 @@ export default function AdminSettingsPage() {
     email: "",
     name: "",
     organization: "",
-    category: "general" as "ik" | "general",
+    category: ["general"] as ("ik" | "general")[],
   });
   const [settings, setSettings] = useState<SystemSettings>({
     email: {
@@ -107,8 +107,13 @@ export default function AdminSettingsPage() {
         const allSubscribers = data.subscribers || [];
         // Filter by category
         const filtered = selectedCategory === "all" 
-          ? allSubscribers 
-          : allSubscribers.filter((s: MailingSubscriber) => s.category === selectedCategory);
+          ? allSubscribers
+          : allSubscribers.filter((s: MailingSubscriber) => {
+              if (Array.isArray(s.category)) {
+                return s.category.includes(selectedCategory);
+              }
+              return s.category === selectedCategory;
+            });
         setSubscribers(filtered);
       }
     } catch (error) {
@@ -179,7 +184,15 @@ export default function AdminSettingsPage() {
         setShowAddUser(false);
         await loadUsers();
       } else {
-        setMessage(`❌ Hata: ${data.error || "Kullanıcı eklenemedi"}`);
+        let errorMessage = data.error || "Kullanıcı eklenemedi";
+        if (data.error?.includes("already exists")) {
+          if (data.error.includes("Email")) {
+            errorMessage = "Bu e-posta adresi zaten kullanılıyor. Lütfen farklı bir e-posta adresi deneyin.";
+          } else if (data.error.includes("Username")) {
+            errorMessage = "Bu kullanıcı adı zaten kullanılıyor. Lütfen farklı bir kullanıcı adı deneyin.";
+          }
+        }
+        setMessage(`❌ Hata: ${errorMessage}`);
       }
     } catch (error) {
       setMessage("❌ Bir hata oluştu");
@@ -339,7 +352,7 @@ export default function AdminSettingsPage() {
 
       if (response.ok && data.success) {
         setMessage("✅ Abone başarıyla eklendi!");
-        setNewSubscriber({ email: "", name: "", organization: "", category: "general" });
+        setNewSubscriber({ email: "", name: "", organization: "", category: ["general"] });
         setShowAddSubscriber(false);
         await loadSubscribers();
         setTimeout(() => setMessage(""), 3000);
@@ -502,19 +515,60 @@ export default function AdminSettingsPage() {
                       <label className="block text-sm font-medium mb-2">
                         Kategori *
                       </label>
-                      <select
-                        value={newSubscriber.category}
-                        onChange={(e) =>
-                          setNewSubscriber({
-                            ...newSubscriber,
-                            category: e.target.value as "ik" | "general",
-                          })
-                        }
-                        className="w-full px-4 py-2 border border-neutral-border rounded-lg"
-                      >
-                        <option value="general">Genel Bildirimler</option>
-                        <option value="ik">IK Aboneleri</option>
-                      </select>
+                      <div className="space-y-2">
+                        <label className="flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={Array.isArray(newSubscriber.category) ? newSubscriber.category.includes("general") : newSubscriber.category === "general"}
+                            onChange={(e) => {
+                              const currentCategories = Array.isArray(newSubscriber.category) 
+                                ? newSubscriber.category 
+                                : newSubscriber.category ? [newSubscriber.category] : [];
+                              if (e.target.checked) {
+                                if (!currentCategories.includes("general")) {
+                                  setNewSubscriber({
+                                    ...newSubscriber,
+                                    category: [...currentCategories, "general"] as ("ik" | "general")[],
+                                  });
+                                }
+                              } else {
+                                setNewSubscriber({
+                                  ...newSubscriber,
+                                  category: currentCategories.filter(c => c !== "general") as ("ik" | "general")[],
+                                });
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          <span>Genel Bildirimler</span>
+                        </label>
+                        <label className="flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={Array.isArray(newSubscriber.category) ? newSubscriber.category.includes("ik") : newSubscriber.category === "ik"}
+                            onChange={(e) => {
+                              const currentCategories = Array.isArray(newSubscriber.category) 
+                                ? newSubscriber.category 
+                                : newSubscriber.category ? [newSubscriber.category] : [];
+                              if (e.target.checked) {
+                                if (!currentCategories.includes("ik")) {
+                                  setNewSubscriber({
+                                    ...newSubscriber,
+                                    category: [...currentCategories, "ik"] as ("ik" | "general")[],
+                                  });
+                                }
+                              } else {
+                                setNewSubscriber({
+                                  ...newSubscriber,
+                                  category: currentCategories.filter(c => c !== "ik") as ("ik" | "general")[],
+                                });
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          <span>IK Aboneleri</span>
+                        </label>
+                      </div>
                     </div>
                     <div>
                       <label className="block text-sm font-medium mb-2">
@@ -556,7 +610,7 @@ export default function AdminSettingsPage() {
                     <button
                       onClick={() => {
                         setShowAddSubscriber(false);
-                        setNewSubscriber({ email: "", name: "", organization: "", category: "general" });
+                        setNewSubscriber({ email: "", name: "", organization: "", category: ["general"] });
                       }}
                       className="px-4 py-2 bg-neutral-border text-neutral-heading rounded-lg hover:bg-neutral-border/80 transition-colors"
                     >
@@ -612,7 +666,14 @@ export default function AdminSettingsPage() {
                       const data = await response.json();
                       const allSubscribers = data.subscribers || [];
                       const filtered = allSubscribers.filter((s: MailingSubscriber) => {
-                        const matchesCategory = selectedCategory === "all" || s.category === selectedCategory;
+                        let matchesCategory = true;
+                        if (selectedCategory !== "all") {
+                          if (Array.isArray(s.category)) {
+                            matchesCategory = s.category.includes(selectedCategory);
+                          } else {
+                            matchesCategory = s.category === selectedCategory;
+                          }
+                        }
                         const matchesSearch = !search || 
                           s.email.toLowerCase().includes(search) ||
                           s.name?.toLowerCase().includes(search) ||
@@ -654,13 +715,27 @@ export default function AdminSettingsPage() {
                           <td className="px-4 py-2 text-sm">{subscriber.name || "-"}</td>
                           <td className="px-4 py-2 text-sm">{subscriber.organization || "-"}</td>
                           <td className="px-4 py-2 text-sm">
-                            <span className={`px-2 py-1 rounded text-xs font-medium ${
-                              subscriber.category === "ik"
-                                ? "bg-blue-100 text-blue-800"
-                                : "bg-green-100 text-green-800"
-                            }`}>
-                              {subscriber.category === "ik" ? "IK" : "Genel"}
-                            </span>
+                            {Array.isArray(subscriber.category) ? (
+                              <div className="flex gap-1 flex-wrap">
+                                {subscriber.category.map((cat, idx) => (
+                                  <span key={idx} className={`px-2 py-1 rounded text-xs font-medium ${
+                                    cat === "ik"
+                                      ? "bg-blue-100 text-blue-800"
+                                      : "bg-green-100 text-green-800"
+                                  }`}>
+                                    {cat === "ik" ? "IK" : "Genel"}
+                                  </span>
+                                ))}
+                              </div>
+                            ) : (
+                              <span className={`px-2 py-1 rounded text-xs font-medium ${
+                                subscriber.category === "ik"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : "bg-green-100 text-green-800"
+                              }`}>
+                                {subscriber.category === "ik" ? "IK" : "Genel"}
+                              </span>
+                            )}
                           </td>
                           <td className="px-4 py-2 text-sm">
                             <span className="px-2 py-1 bg-primary/10 text-primary rounded text-xs">

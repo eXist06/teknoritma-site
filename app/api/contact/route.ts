@@ -89,10 +89,14 @@ export async function POST(request: NextRequest) {
     try {
       const mailingList = readMailingList();
       const generalSubscribers = mailingList.subscribers.filter(
-        (subscriber) => 
-          subscriber.category === "general" && 
-          subscriber.active && 
-          subscriber.email.toLowerCase() !== email.toLowerCase()
+        (subscriber) => {
+          const hasGeneralCategory = Array.isArray(subscriber.category) 
+            ? subscriber.category.includes("general")
+            : subscriber.category === "general";
+          return hasGeneralCategory &&
+            subscriber.active &&
+            subscriber.email.toLowerCase() !== email.toLowerCase();
+        }
       );
 
       console.log(`[CONTACT] Found ${generalSubscribers.length} general subscribers to notify (excluding ${email})`);

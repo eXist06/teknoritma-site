@@ -1572,6 +1572,69 @@ function ContentEditor({
                   />
                 </div>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-neutral-heading mb-2">
+                  {currentLang === "en" ? "Photo" : "Fotoğraf"}
+                </label>
+                <div className="flex items-center gap-4">
+                  {testimonial.photo && (
+                    <img
+                      src={testimonial.photo}
+                      alt={testimonial.name}
+                      className="w-20 h-20 rounded-full object-cover border-2 border-neutral-border"
+                    />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+
+                      const formData = new FormData();
+                      formData.append("file", file);
+
+                      try {
+                        const response = await fetch("/api/careers/upload-image", {
+                          method: "POST",
+                          body: formData,
+                        });
+
+                        const data = await response.json();
+                        if (response.ok && data.url) {
+                          const newTestimonials = [...content.testimonials];
+                          newTestimonials[index] = { ...testimonial, photo: data.url };
+                          onChange({
+                            ...content,
+                            testimonials: newTestimonials,
+                          });
+                        } else {
+                          alert(data.error || "Failed to upload image");
+                        }
+                      } catch (error) {
+                        alert("Failed to upload image");
+                      }
+                    }}
+                    className="flex-1 px-4 py-2 border border-neutral-border rounded-lg"
+                  />
+                  {testimonial.photo && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newTestimonials = [...content.testimonials];
+                        newTestimonials[index] = { ...testimonial, photo: undefined };
+                        onChange({
+                          ...content,
+                          testimonials: newTestimonials,
+                        });
+                      }}
+                      className="px-4 py-2 bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition-colors"
+                    >
+                      {currentLang === "en" ? "Remove" : "Kaldır"}
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           ))}
           <button
@@ -1584,6 +1647,7 @@ function ContentEditor({
                 roleEn: "",
                 department: "",
                 departmentEn: "",
+                photo: undefined,
               };
               onChange({
                 ...content,

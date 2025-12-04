@@ -102,11 +102,12 @@
       {
         "quote": "Teknoritma'da, sağlık teknolojisinin ön saflarında yer alıyorum. İlham verici ve işbirlikçi bir ekiple çalışmak, sürekli olarak mümkün olanın sınırlarını zorlamamı sağlıyor.",
         "quoteEn": "At Teknoritma, I'm at the forefront of healthcare innovation, surrounded by inspiring, collaborative individuals who continuously push the boundaries of what's possible.",
-        "name": "Ahmet Yılmaz",
-        "role": "Kıdemli Yazılım Mühendisi",
-        "roleEn": "Senior Software Engineer",
+        "name": "Şadi Çavuş",
+        "role": "Yazılım Müdürü",
+        "roleEn": "Software Manager",
         "department": "Ürün Geliştirme",
-        "departmentEn": "Product Development"
+        "departmentEn": "Product Development",
+        "photo": "/uploads/careers/1764879694202_ngrok.jpeg"
       },
       {
         "quote": "Teknoritma bana yatırım yapıyor, yeteneklerimi ortaya çıkarıyor ve yeni fırsatlar için becerilerimi geliştirmeme yardımcı oluyor. Yaptığım her şey hastaların sağlığı ve refahının iyileştirilmesine katkıda bulunuyor.",
@@ -195,5 +196,29 @@
       "descriptionEn": "",
       "image": "/uploads/careers/1764846227657_png-transparent-radar-computer-icons-conical-scanning-geek-logo-computer-business-line.png"
     }
-  }
+  },
+  "talentNetwork": [
+    {
+      "id": "1764878345758",
+      "firstName": "cem",
+      "lastName": "salas",
+      "email": "cemsalas@gmail.com",
+      "jobCategory": "healthcare-it",
+      "city": "ankara",
+      "remoteWorkplace": "remote",
+      "createdAt": "2025-12-04T19:59:05.758Z"
+    },
+    {
+      "id": "1764879155075",
+      "firstName": "cem",
+      "lastName": "salas",
+      "email": "cemsalas@gmail.com",
+      "phone": "05333389329",
+      "jobCategory": "software-development",
+      "city": "Ankara",
+      "remoteWorkplace": "remote",
+      "cvFileName": "1764879155054_CompanyProfile__1_.pdf",
+      "createdAt": "2025-12-04T20:12:35.075Z"
+    }
+  ]
 }

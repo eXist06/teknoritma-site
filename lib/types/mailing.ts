@@ -7,7 +7,7 @@ export interface MailingSubscriber {
   organization?: string;
   subscribedAt: string;
   source: "contact" | "demo" | "talent-network" | "manual";
-  category: MailingCategory;
+  category: MailingCategory | MailingCategory[]; // Support both single category and array
   tags?: string[];
   active: boolean;
 }

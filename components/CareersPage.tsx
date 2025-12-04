@@ -18,10 +18,14 @@ export default function CareersPage() {
     firstName: "",
     lastName: "",
     email: "",
+    phone: "",
     jobCategory: "",
     city: "",
     remoteWorkplace: "",
   });
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [talentFormStep, setTalentFormStep] = useState<"form" | "verify">("form");
+  const [talentVerificationCode, setTalentVerificationCode] = useState("");
   const [talentFormSubmitting, setTalentFormSubmitting] = useState(false);
   const [talentFormMessage, setTalentFormMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -103,25 +107,29 @@ export default function CareersPage() {
     name: t.name,
     role: language === "en" ? t.roleEn : t.role,
     department: language === "en" ? t.departmentEn : t.department,
+    photo: t.photo,
   })) || (language === "en"
     ? [
         {
           quote: "At Teknoritma, I'm at the forefront of healthcare innovation, surrounded by inspiring, collaborative individuals who continuously push the boundaries of what's possible.",
           name: "Ahmet Yılmaz",
           role: "Senior Software Engineer",
-          department: "Product Development"
+          department: "Product Development",
+          photo: undefined
         },
         {
           quote: "Teknoritma invests in me, awakens my talent, and helps me develop skills for new opportunities. Everything I do contributes to the improvement of patients' health and well-being.",
           name: "Ayşe Demir",
           role: "Clinical Systems Specialist",
-          department: "Implementation"
+          department: "Implementation",
+          photo: undefined
         },
         {
           quote: "Working here means being part of a team that's transforming healthcare through technology. The impact we make is real and meaningful.",
           name: "Mehmet Kaya",
           role: "Data Analytics Lead",
-          department: "Analytics"
+          department: "Analytics",
+          photo: undefined
         }
       ]
     : [
@@ -129,19 +137,22 @@ export default function CareersPage() {
           quote: "Teknoritma'da, sağlık teknolojisinin ön saflarında yer alıyorum. İlham verici ve işbirlikçi bir ekiple çalışmak, sürekli olarak mümkün olanın sınırlarını zorlamamı sağlıyor.",
           name: "Ahmet Yılmaz",
           role: "Kıdemli Yazılım Mühendisi",
-          department: "Ürün Geliştirme"
+          department: "Ürün Geliştirme",
+          photo: undefined
         },
         {
           quote: "Teknoritma bana yatırım yapıyor, yeteneklerimi ortaya çıkarıyor ve yeni fırsatlar için becerilerimi geliştirmeme yardımcı oluyor. Yaptığım her şey hastaların sağlığı ve refahının iyileştirilmesine katkıda bulunuyor.",
           name: "Ayşe Demir",
           role: "Klinik Sistemler Uzmanı",
-          department: "Uygulama"
+          department: "Uygulama",
+          photo: undefined
         },
         {
           quote: "Burada çalışmak, teknoloji aracılığıyla sağlık hizmetlerini dönüştüren bir ekibin parçası olmak demek. Yaptığımız etki gerçek ve anlamlı.",
           name: "Mehmet Kaya",
           role: "Veri Analitiği Lideri",
-          department: "Analitik"
+          department: "Analitik",
+          photo: undefined
         }
       ]);
 
@@ -465,6 +476,15 @@ export default function CareersPage() {
               transition={{ duration: 0.4 }}
               className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-8 md:p-12 text-center"
             >
+              {testimonials[currentTestimonial].photo && (
+                <div className="mb-6 flex justify-center">
+                  <img
+                    src={testimonials[currentTestimonial].photo}
+                    alt={testimonials[currentTestimonial].name}
+                    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+                  />
+                </div>
+              )}
               <p className="text-xl md:text-2xl text-neutral-heading mb-6 italic leading-relaxed">
                 "{testimonials[currentTestimonial].quote}"
               </p>
@@ -689,130 +709,284 @@ export default function CareersPage() {
             className="bg-neutral-light rounded-2xl p-8 md:p-12"
             onSubmit={async (e) => {
               e.preventDefault();
-              if (!talentFormData.email) {
-                setTalentFormMessage({ type: "error", text: language === "en" ? "Email is required" : "E-posta gereklidir" });
-                return;
-              }
-              setTalentFormSubmitting(true);
-              setTalentFormMessage(null);
-              try {
-                const response = await fetch("/api/careers/talent-network", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(talentFormData),
-                });
-                const data = await response.json();
-                if (response.ok) {
-                  setTalentFormMessage({
-                    type: "success",
-                    text: language === "en" ? "Thank you! We'll keep you updated on new opportunities." : "Teşekkürler! Yeni fırsatlar hakkında sizi bilgilendireceğiz.",
+              
+              if (talentFormStep === "form") {
+                // Step 1: Send verification code
+                if (!talentFormData.email) {
+                  setTalentFormMessage({ type: "error", text: language === "en" ? "Email is required" : "E-posta gereklidir" });
+                  return;
+                }
+                if (cvFile && cvFile.type !== "application/pdf") {
+                  setTalentFormMessage({ type: "error", text: language === "en" ? "CV must be a PDF file" : "CV PDF formatında olmalıdır" });
+                  return;
+                }
+                
+                setTalentFormSubmitting(true);
+                setTalentFormMessage(null);
+                
+                try {
+                  const response = await fetch("/api/careers/talent-network/send-verification", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: talentFormData.email }),
                   });
-                  setTalentFormData({
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    jobCategory: "",
-                    city: "",
-                    remoteWorkplace: "",
-                  });
-                } else {
+                  
+                  const data = await response.json();
+                  
+                  if (response.ok && data.success) {
+                    setTalentFormStep("verify");
+                    setTalentFormMessage({
+                      type: "success",
+                      text: language === "en" 
+                        ? "Verification code sent to your email. Please check your inbox." 
+                        : "Doğrulama kodu e-posta adresinize gönderildi. Lütfen gelen kutunuzu kontrol edin.",
+                    });
+                  } else {
+                    setTalentFormMessage({
+                      type: "error",
+                      text: data.error || (language === "en" ? "Failed to send verification code" : "Doğrulama kodu gönderilemedi"),
+                    });
+                  }
+                } catch (error) {
                   setTalentFormMessage({
                     type: "error",
-                    text: data.error || (language === "en" ? "Something went wrong. Please try again." : "Bir hata oluştu. Lütfen tekrar deneyin."),
+                    text: language === "en" ? "An error occurred. Please try again." : "Bir hata oluştu. Lütfen tekrar deneyin.",
                   });
+                } finally {
+                  setTalentFormSubmitting(false);
                 }
-              } catch (error) {
-                setTalentFormMessage({
-                  type: "error",
-                  text: language === "en" ? "Something went wrong. Please try again." : "Bir hata oluştu. Lütfen tekrar deneyin.",
-                });
-              } finally {
-                setTalentFormSubmitting(false);
+              } else {
+                // Step 2: Verify code and submit form
+                if (!talentVerificationCode || talentVerificationCode.length !== 6) {
+                  setTalentFormMessage({
+                    type: "error",
+                    text: language === "en" 
+                      ? "Please enter a valid 6-digit verification code" 
+                      : "Lütfen geçerli bir 6 haneli doğrulama kodu girin",
+                  });
+                  return;
+                }
+                
+                setTalentFormSubmitting(true);
+                setTalentFormMessage(null);
+                
+                try {
+                  const formData = new FormData();
+                  formData.append("firstName", talentFormData.firstName);
+                  formData.append("lastName", talentFormData.lastName);
+                  formData.append("email", talentFormData.email);
+                  formData.append("phone", talentFormData.phone);
+                  formData.append("jobCategory", talentFormData.jobCategory);
+                  formData.append("city", talentFormData.city);
+                  formData.append("remoteWorkplace", talentFormData.remoteWorkplace);
+                  formData.append("verificationCode", talentVerificationCode);
+                  if (cvFile) {
+                    formData.append("cv", cvFile);
+                  }
+
+                  const response = await fetch("/api/careers/talent-network", {
+                    method: "POST",
+                    body: formData,
+                  });
+                  const data = await response.json();
+                  
+                  if (response.ok) {
+                    setTalentFormMessage({
+                      type: "success",
+                      text: language === "en" ? "Thank you! We'll keep you updated on new opportunities." : "Teşekkürler! Yeni fırsatlar hakkında sizi bilgilendireceğiz.",
+                    });
+                    setTalentFormData({
+                      firstName: "",
+                      lastName: "",
+                      email: "",
+                      phone: "",
+                      jobCategory: "",
+                      city: "",
+                      remoteWorkplace: "",
+                    });
+                    setCvFile(null);
+                    setTalentVerificationCode("");
+                    setTalentFormStep("form");
+                  } else {
+                    setTalentFormMessage({
+                      type: "error",
+                      text: data.error || (language === "en" ? "Something went wrong. Please try again." : "Bir hata oluştu. Lütfen tekrar deneyin."),
+                    });
+                  }
+                } catch (error) {
+                  setTalentFormMessage({
+                    type: "error",
+                    text: language === "en" ? "Something went wrong. Please try again." : "Bir hata oluştu. Lütfen tekrar deneyin.",
+                  });
+                } finally {
+                  setTalentFormSubmitting(false);
+                }
               }
             }}
           >
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div>
+            {talentFormStep === "form" ? (
+              <>
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-heading mb-2">
+                      {language === "en" ? "First Name" : "Ad"}
+                    </label>
+                    <input
+                      type="text"
+                      value={talentFormData.firstName}
+                      onChange={(e) => setTalentFormData({ ...talentFormData, firstName: e.target.value })}
+                      className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-heading mb-2">
+                      {language === "en" ? "Last Name" : "Soyad"}
+                    </label>
+                    <input
+                      type="text"
+                      value={talentFormData.lastName}
+                      onChange={(e) => setTalentFormData({ ...talentFormData, lastName: e.target.value })}
+                      className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                </div>
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-neutral-heading mb-2">
+                    {language === "en" ? "Email*" : "E-posta*"}
+                  </label>
+                  <input
+                    type="email"
+                    value={talentFormData.email}
+                    onChange={(e) => setTalentFormData({ ...talentFormData, email: e.target.value })}
+                    placeholder={language === "en" ? "Email" : "E-posta"}
+                    required
+                    className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-neutral-heading mb-2">
+                    {language === "en" ? "Phone*" : "Cep Telefonu*"}
+                  </label>
+                  <input
+                    type="tel"
+                    value={talentFormData.phone}
+                    onChange={(e) => setTalentFormData({ ...talentFormData, phone: e.target.value })}
+                    placeholder={language === "en" ? "Phone number" : "Cep telefonu"}
+                    required
+                    className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-neutral-heading mb-2">
+                    {language === "en" ? "CV (PDF only)" : "CV (Sadece PDF)"}
+                  </label>
+                  <input
+                    type="file"
+                    accept=".pdf,application/pdf"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null;
+                      if (file && file.type !== "application/pdf") {
+                        setTalentFormMessage({ 
+                          type: "error", 
+                          text: language === "en" ? "CV must be a PDF file" : "CV PDF formatında olmalıdır" 
+                        });
+                        e.target.value = "";
+                        return;
+                      }
+                      setCvFile(file);
+                    }}
+                    className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  {cvFile && (
+                    <p className="mt-2 text-sm text-neutral-body">
+                      {language === "en" ? "Selected:" : "Seçilen:"} {cvFile.name}
+                    </p>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="mb-6">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                  <p className="text-sm text-blue-800">
+                    {language === "en" 
+                      ? `Verification code sent to ${talentFormData.email}. Please check your inbox and enter the code below.`
+                      : `Doğrulama kodu ${talentFormData.email} adresine gönderildi. Lütfen gelen kutunuzu kontrol edin ve aşağıya kodu girin.`}
+                  </p>
+                </div>
                 <label className="block text-sm font-medium text-neutral-heading mb-2">
-                  {language === "en" ? "First Name" : "Ad"}
+                  {language === "en" ? "Verification Code*" : "Doğrulama Kodu*"}
                 </label>
                 <input
                   type="text"
-                  value={talentFormData.firstName}
-                  onChange={(e) => setTalentFormData({ ...talentFormData, firstName: e.target.value })}
-                  className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  value={talentVerificationCode}
+                  onChange={(e) => setTalentVerificationCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  placeholder={language === "en" ? "Enter 6-digit code" : "6 haneli kodu girin"}
+                  maxLength={6}
+                  required
+                  className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-center text-2xl tracking-widest"
                 />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTalentFormStep("form");
+                    setTalentVerificationCode("");
+                    setTalentFormMessage(null);
+                  }}
+                  className="mt-4 text-sm text-primary hover:underline"
+                >
+                  {language === "en" ? "← Back to form" : "← Forma dön"}
+                </button>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-neutral-heading mb-2">
-                  {language === "en" ? "Last Name" : "Soyad"}
-                </label>
-                <input
-                  type="text"
-                  value={talentFormData.lastName}
-                  onChange={(e) => setTalentFormData({ ...talentFormData, lastName: e.target.value })}
-                  className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-            </div>
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-neutral-heading mb-2">
-                {language === "en" ? "Email*" : "E-posta*"}
-              </label>
-              <input
-                type="email"
-                value={talentFormData.email}
-                onChange={(e) => setTalentFormData({ ...talentFormData, email: e.target.value })}
-                placeholder={language === "en" ? "Email" : "E-posta"}
-                required
-                className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-neutral-heading mb-2">
-                {language === "en" ? "Job Category" : "İş Kategorisi"}
-              </label>
-              <select
-                value={talentFormData.jobCategory}
-                onChange={(e) => setTalentFormData({ ...talentFormData, jobCategory: e.target.value })}
-                className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                <option value="">{language === "en" ? "Select a Job Category" : "Bir İş Kategorisi Seçin"}</option>
-                <option value="software-development">{language === "en" ? "Software Development" : "Yazılım Geliştirme"}</option>
-                <option value="healthcare-it">{language === "en" ? "Healthcare IT" : "Sağlık Bilişimi"}</option>
-                <option value="clinical-systems">{language === "en" ? "Clinical Systems" : "Klinik Sistemler"}</option>
-                <option value="data-analytics">{language === "en" ? "Data Analytics" : "Veri Analitiği"}</option>
-                <option value="project-management">{language === "en" ? "Project Management" : "Proje Yönetimi"}</option>
-                <option value="internship">{language === "en" ? "Internship" : "Stajyerlik"}</option>
-              </select>
-            </div>
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-neutral-heading mb-2">
-                {language === "en" ? "City" : "Şehir"}
-              </label>
-              <input
-                type="text"
-                value={talentFormData.city}
-                onChange={(e) => setTalentFormData({ ...talentFormData, city: e.target.value })}
-                placeholder={language === "en" ? "Type to Search for a Location" : "Konum Aramak İçin Yazın"}
-                className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-            <div className="mb-8">
-              <label className="block text-sm font-medium text-neutral-heading mb-2">
-                {language === "en" ? "Remote / Workplace" : "Uzaktan / İş Yeri"}
-              </label>
-              <select
-                value={talentFormData.remoteWorkplace}
-                onChange={(e) => setTalentFormData({ ...talentFormData, remoteWorkplace: e.target.value })}
-                className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                <option value="">{language === "en" ? "Select..." : "Seçin..."}</option>
-                <option value="remote">{language === "en" ? "REMOTE" : "UZAKTAN"}</option>
-                <option value="hybrid">{language === "en" ? "HYBRID" : "HİBRİT"}</option>
-                <option value="office">{language === "en" ? "OFFICE-BASED" : "OFİS TABANLI"}</option>
-              </select>
-            </div>
+            )}
+            {talentFormStep === "form" && (
+              <>
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-neutral-heading mb-2">
+                    {language === "en" ? "Job Category" : "İş Kategorisi"}
+                  </label>
+                  <select
+                    value={talentFormData.jobCategory}
+                    onChange={(e) => setTalentFormData({ ...talentFormData, jobCategory: e.target.value })}
+                    className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="">{language === "en" ? "Select a Job Category" : "Bir İş Kategorisi Seçin"}</option>
+                    <option value="software-development">{language === "en" ? "Software Development" : "Yazılım Geliştirme"}</option>
+                    <option value="healthcare-it">{language === "en" ? "Healthcare IT" : "Sağlık Bilişimi"}</option>
+                    <option value="clinical-systems">{language === "en" ? "Clinical Systems" : "Klinik Sistemler"}</option>
+                    <option value="data-analytics">{language === "en" ? "Data Analytics" : "Veri Analitiği"}</option>
+                    <option value="project-management">{language === "en" ? "Project Management" : "Proje Yönetimi"}</option>
+                    <option value="internship">{language === "en" ? "Internship" : "Stajyerlik"}</option>
+                  </select>
+                </div>
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-neutral-heading mb-2">
+                    {language === "en" ? "City" : "Şehir"}
+                  </label>
+                  <input
+                    type="text"
+                    value={talentFormData.city}
+                    onChange={(e) => setTalentFormData({ ...talentFormData, city: e.target.value })}
+                    placeholder={language === "en" ? "Type to Search for a Location" : "Konum Aramak İçin Yazın"}
+                    className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <div className="mb-8">
+                  <label className="block text-sm font-medium text-neutral-heading mb-2">
+                    {language === "en" ? "Remote / Workplace" : "Uzaktan / İş Yeri"}
+                  </label>
+                  <select
+                    value={talentFormData.remoteWorkplace}
+                    onChange={(e) => setTalentFormData({ ...talentFormData, remoteWorkplace: e.target.value })}
+                    className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="">{language === "en" ? "Select..." : "Seçin..."}</option>
+                    <option value="remote">{language === "en" ? "REMOTE" : "UZAKTAN"}</option>
+                    <option value="hybrid">{language === "en" ? "HYBRID" : "HİBRİT"}</option>
+                    <option value="office">{language === "en" ? "OFFICE-BASED" : "OFİS TABANLI"}</option>
+                  </select>
+                </div>
+              </>
+            )}
             {talentFormMessage && (
               <div
                 className={`mb-6 p-4 rounded-lg ${
@@ -831,15 +1005,11 @@ export default function CareersPage() {
             >
               {talentFormSubmitting
                 ? language === "en"
-                  ? "Submitting..."
-                  : "Gönderiliyor..."
-                : content?.talentNetwork
-                ? language === "en"
-                  ? content.talentNetwork.buttonTextEn
-                  : content.talentNetwork.buttonText
-                : language === "en"
-                ? "Join Our Network"
-                : "Ağımıza Katılın"}
+                  ? talentFormStep === "form" ? "Sending..." : "Submitting..."
+                  : talentFormStep === "form" ? "Gönderiliyor..." : "İşleniyor..."
+                : talentFormStep === "form"
+                ? (language === "en" ? "Send Verification Code" : "Doğrulama Kodu Gönder")
+                : (language === "en" ? "Submit Application" : "Başvuruyu Gönder")}
             </button>
           </motion.form>
         </div>

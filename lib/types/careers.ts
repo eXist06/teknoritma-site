@@ -49,6 +49,7 @@ export interface CareersContent {
     }[];
   };
   testimonials: {
+    id?: string;
     quote: string;
     quoteEn: string;
     name: string;
@@ -56,6 +57,7 @@ export interface CareersContent {
     roleEn: string;
     department: string;
     departmentEn: string;
+    photo?: string;
   }[];
   companyCards: {
     title: string;
