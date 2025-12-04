@@ -63,7 +63,35 @@ export default function AdminSettingsPage() {
       .then((res) => res.json())
       .then((data) => {
         if (data.settings) {
-          setSettings(data.settings);
+          // Ensure email property exists with defaults
+          const defaultEmailSettings = {
+            provider: "smtp" as const,
+            enabled: false,
+            smtpHost: "",
+            smtpPort: 587,
+            smtpUser: "",
+            smtpPassword: "",
+            smtpSecure: false,
+            apiKey: "",
+            apiSecret: "",
+            fromEmail: "",
+            fromName: "",
+            mailjetApiKey: "",
+            mailjetApiSecret: "",
+            sendgridApiKey: "",
+            sesRegion: "us-east-1",
+            sesAccessKeyId: "",
+            sesSecretAccessKey: "",
+          };
+
+          setSettings({
+            email: {
+              ...defaultEmailSettings,
+              ...(data.settings.email || {}), // Merge if exists
+            },
+            siteName: data.settings.siteName || "",
+            siteUrl: data.settings.siteUrl || "",
+          });
         }
       })
       .catch((error) => {
@@ -986,7 +1014,7 @@ export default function AdminSettingsPage() {
                 <input
                   type="checkbox"
                   id="emailEnabled"
-                  checked={settings.email.enabled}
+                  checked={settings?.email?.enabled ?? false}
                   onChange={(e) =>
                     setSettings({
                       ...settings,
