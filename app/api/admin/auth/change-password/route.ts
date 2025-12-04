@@ -78,14 +78,18 @@ export async function POST(request: NextRequest) {
 
     // Yeni şifreyi hash'le
     const newPasswordHash = await bcrypt.hash(newPassword, 10);
+    console.log(`[CHANGE PASSWORD] Updating password for user: ${user.username}, email: ${user.email}`);
 
     // Kullanıcıyı güncelle
     user.passwordHash = newPasswordHash;
     user.isFirstLogin = false;
-    user.email = email || user.email;
+    if (email) {
+      user.email = email;
+    }
     user.updatedAt = new Date().toISOString();
 
     writeAdminData(data);
+    console.log(`[CHANGE PASSWORD] Password updated successfully for user: ${user.username}`);
 
     return NextResponse.json({ success: true });
   } catch (error) {

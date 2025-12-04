@@ -28,9 +28,19 @@ export async function POST(request: NextRequest) {
     }
 
     const data = readAdminData();
+
+    // Check if no users exist - redirect to first login
+    if (data.users.length === 0) {
+      return NextResponse.json(
+        { error: "No admin users found. Please use first login page." },
+        { status: 403 }
+      );
+    }
+
     const user = data.users.find((u: any) => u.username === username);
 
     if (!user) {
+      console.error(`[LOGIN] User not found: ${username}. Available users:`, data.users.map((u: any) => u.username));
       // Rate limiting için kısa bir delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return NextResponse.json(
@@ -39,8 +49,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log(`[LOGIN] Attempting login for user: ${username}, email: ${user.email}`);
     const isValid = await bcrypt.compare(password, user.passwordHash);
+    console.log(`[LOGIN] Password validation result: ${isValid}`);
+    
     if (!isValid) {
+      console.error(`[LOGIN] Invalid password for user: ${username}`);
+      // Rate limiting için kısa bir delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return NextResponse.json(
         { error: "Invalid credentials" },
@@ -85,4 +100,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

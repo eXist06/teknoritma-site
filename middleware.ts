@@ -7,10 +7,11 @@ const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-pr
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Admin sayfalarını koru (login ve change-password hariç)
+  // Admin sayfalarını koru (login, first-login ve change-password hariç)
   if (
     (pathname.startsWith("/admin") || pathname.startsWith("/en/admin")) &&
     !pathname.includes("/login") &&
+    !pathname.includes("/first-login") &&
     !pathname.includes("/change-password") &&
     !pathname.includes("/reset-password")
   ) {

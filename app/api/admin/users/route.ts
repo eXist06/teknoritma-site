@@ -36,13 +36,24 @@ function writeAdminData(data: any) {
   fs.writeFileSync(ADMIN_DATA_PATH, JSON.stringify(data, null, 2), "utf8");
 }
 
-async function verifyAdminRole(request: NextRequest): Promise<boolean> {
+async function verifyAdminRole(request: NextRequest): Promise<{ isAdmin: boolean; error?: string }> {
   const payload = await verifyToken(request);
-  if (!payload) return false;
+  if (!payload) {
+    return { isAdmin: false, error: "No token payload" };
+  }
 
   const adminData = readAdminData();
   const user = adminData.users.find((u: AdminUser) => u.id === payload.userId);
-  return user?.role === "admin";
+  
+  if (!user) {
+    return { isAdmin: false, error: `User not found with ID: ${payload.userId}` };
+  }
+  
+  if (user.role !== "admin") {
+    return { isAdmin: false, error: `User role is '${user.role}', admin required` };
+  }
+  
+  return { isAdmin: true };
 }
 
 export async function GET(request: NextRequest) {
@@ -53,9 +64,13 @@ export async function GET(request: NextRequest) {
     }
 
     // Only admin can view all users
-    const isAdmin = await verifyAdminRole(request);
-    if (!isAdmin) {
-      return NextResponse.json({ error: "Forbidden - Admin access required" }, { status: 403 });
+    const adminCheck = await verifyAdminRole(request);
+    if (!adminCheck.isAdmin) {
+      console.error("[USERS API] Admin check failed:", adminCheck.error);
+      return NextResponse.json({ 
+        error: "Forbidden - Admin access required",
+        details: adminCheck.error 
+      }, { status: 403 });
     }
 
     const adminData = readAdminData();
@@ -80,9 +95,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Only admin can create users
-    const isAdmin = await verifyAdminRole(request);
-    if (!isAdmin) {
-      return NextResponse.json({ error: "Forbidden - Admin access required" }, { status: 403 });
+    const adminCheck = await verifyAdminRole(request);
+    if (!adminCheck.isAdmin) {
+      console.error("[USERS API] Admin check failed:", adminCheck.error);
+      return NextResponse.json({ 
+        error: "Forbidden - Admin access required",
+        details: adminCheck.error 
+      }, { status: 403 });
     }
 
     const body = await request.json();
@@ -159,9 +178,13 @@ export async function PUT(request: NextRequest) {
     }
 
     // Only admin can update users
-    const isAdmin = await verifyAdminRole(request);
-    if (!isAdmin) {
-      return NextResponse.json({ error: "Forbidden - Admin access required" }, { status: 403 });
+    const adminCheck = await verifyAdminRole(request);
+    if (!adminCheck.isAdmin) {
+      console.error("[USERS API] Admin check failed:", adminCheck.error);
+      return NextResponse.json({ 
+        error: "Forbidden - Admin access required",
+        details: adminCheck.error 
+      }, { status: 403 });
     }
 
     const body = await request.json();
@@ -252,9 +275,13 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Only admin can delete users
-    const isAdmin = await verifyAdminRole(request);
-    if (!isAdmin) {
-      return NextResponse.json({ error: "Forbidden - Admin access required" }, { status: 403 });
+    const adminCheck = await verifyAdminRole(request);
+    if (!adminCheck.isAdmin) {
+      console.error("[USERS API] Admin check failed:", adminCheck.error);
+      return NextResponse.json({ 
+        error: "Forbidden - Admin access required",
+        details: adminCheck.error 
+      }, { status: 403 });
     }
 
     const { searchParams } = new URL(request.url);

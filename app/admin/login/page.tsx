@@ -10,7 +10,6 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [setupRequired, setSetupRequired] = useState(false);
 
   useEffect(() => {
     // Setup kontrolü
@@ -18,32 +17,15 @@ export default function AdminLoginPage() {
       .then((res) => res.json())
       .then((data) => {
         if (!data.setup) {
-          setSetupRequired(true);
+          // Redirect to first login page if no users exist
+          router.push("/admin/first-login");
         }
       })
       .catch(() => {
-        setSetupRequired(true);
+        // Redirect to first login page if check fails
+        router.push("/admin/first-login");
       });
-  }, []);
-
-  const handleSetup = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("/api/admin/auth/setup", {
-        method: "POST",
-      });
-      if (response.ok) {
-        setSetupRequired(false);
-        alert("Initial admin user created. Username: ik, Password: 516708");
-      } else {
-        setError("Setup failed");
-      }
-    } catch (error) {
-      setError("Setup failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,34 +57,6 @@ export default function AdminLoginPage() {
     }
   };
 
-  if (setupRequired) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-light">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full"
-        >
-          <h2 className="text-2xl font-bold mb-4">Initial Setup Required</h2>
-          <p className="text-neutral-body mb-6">
-            Click the button below to create the initial admin user.
-          </p>
-          {error && (
-            <div className="bg-red-50 text-red-800 p-3 rounded-lg text-sm mb-4">
-              {error}
-            </div>
-          )}
-          <button
-            onClick={handleSetup}
-            disabled={loading}
-            className="w-full px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50"
-          >
-            {loading ? "Setting up..." : "Setup Admin"}
-          </button>
-        </motion.div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-light">
@@ -149,7 +103,7 @@ export default function AdminLoginPage() {
             disabled={loading}
             className="w-full px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Giriş yapılıyor..." : "Login"}
           </button>
         </form>
       </motion.div>

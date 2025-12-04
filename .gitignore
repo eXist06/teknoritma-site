@@ -23,6 +23,7 @@
 
 # admin data (contains sensitive information)
 lib/data/admin-data.json
+lib/data/first-login-passwords.json
 
 # debug
 npm-debug.log*
