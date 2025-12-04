@@ -1,0 +1,13 @@
+{
+  "verifications": [
+    {
+      "id": "1764865723898",
+      "email": "cemsalas@gmail.com",
+      "code": "353815",
+      "createdAt": "2025-12-04T16:28:43.898Z",
+      "expiresAt": "2025-12-04T16:43:43.898Z",
+      "verified": true,
+      "attempts": 1
+    }
+  ]
+}

@@ -109,14 +109,15 @@ export default function Header() {
           {/* CTA Buttons and Language Switcher */}
           <div className="hidden md:flex items-center gap-3">
             <LanguageSwitcher />
-            <motion.button
+            <motion.a
+              href={language === "en" ? "/en/request-demo" : "/demo-talep"}
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.95 }}
               className="relative px-6 py-3 text-sm font-medium text-white bg-primary rounded-full hover:bg-primary-dark transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 tracking-wide uppercase overflow-hidden group"
             >
               <span className="relative z-10">{t("cta.requestDemo")}</span>
               <span className="absolute inset-0 bg-gradient-to-r from-primary-dark to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </motion.button>
+            </motion.a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -190,13 +191,15 @@ export default function Header() {
                   <div className="flex justify-center mb-2">
                     <LanguageSwitcher />
                   </div>
-                  <motion.button
+                  <motion.a
+                    href={language === "en" ? "/en/request-demo" : "/demo-talep"}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full px-4 py-3 text-sm font-medium text-white bg-primary rounded-full tracking-wide uppercase shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-full px-4 py-3 text-sm font-medium text-white bg-primary rounded-full tracking-wide uppercase shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 text-center block"
                   >
                     {t("cta.requestDemo")}
-                  </motion.button>
+                  </motion.a>
                 </div>
               </nav>
             </motion.div>

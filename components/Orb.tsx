@@ -274,3 +274,4 @@ export default function Orb({ hue = 0, hoverIntensity = 0.2, rotateOnHover = tru
   return <div ref={ctnDom} className="absolute inset-0 w-full h-full" />;
 }
 
+

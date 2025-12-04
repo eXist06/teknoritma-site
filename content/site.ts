@@ -49,9 +49,9 @@ export const metrics: Metric[] = [
 ];
 
 export const footerLinks: FooterLink[] = [
-  { label: "KVKK Aydınlatma Metni", href: "#" },
-  { label: "Çerez Politikası", href: "#" },
-  { label: "Kullanım Şartları", href: "#" },
+  { label: "KVKK Aydınlatma Metni", href: "/yasal/kvkk" },
+  { label: "Çerez Politikası", href: "/yasal/cerez-politikasi" },
+  { label: "Kullanım Şartları", href: "/yasal/kullanim-sartlari" },
 ];
 
 export const contactSection = {

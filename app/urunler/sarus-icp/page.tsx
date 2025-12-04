@@ -4,3 +4,4 @@ export default function SarusIcpPage() {
   return <SarusHISPage />;
 }
 
+

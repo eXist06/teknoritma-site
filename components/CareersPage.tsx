@@ -14,11 +14,44 @@ export default function CareersPage() {
   const [jobs, setJobs] = useState<JobPosting[]>([]);
   const [content, setContent] = useState<CareersContent | null>(null);
   const [loading, setLoading] = useState(true);
+  const [talentFormData, setTalentFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    jobCategory: "",
+    city: "",
+    remoteWorkplace: "",
+  });
+  const [talentFormSubmitting, setTalentFormSubmitting] = useState(false);
+  const [talentFormMessage, setTalentFormMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
+  const [filteredJobs, setFilteredJobs] = useState<JobPosting[]>([]);
 
   useEffect(() => {
     fetchJobs();
     fetchContent();
   }, []);
+
+  useEffect(() => {
+    let filtered = [...jobs];
+    if (searchKeyword.trim()) {
+      const keyword = searchKeyword.toLowerCase();
+      filtered = filtered.filter(
+        (job) =>
+          (language === "en" ? job.titleEn : job.title).toLowerCase().includes(keyword) ||
+          (language === "en" ? job.descriptionEn : job.description).toLowerCase().includes(keyword) ||
+          (language === "en" ? job.departmentEn : job.department).toLowerCase().includes(keyword)
+      );
+    }
+    if (searchLocation.trim()) {
+      const location = searchLocation.toLowerCase();
+      filtered = filtered.filter((job) =>
+        (language === "en" ? job.locationEn : job.location).toLowerCase().includes(location)
+      );
+    }
+    setFilteredJobs(filtered);
+  }, [jobs, searchKeyword, searchLocation, language]);
 
   const fetchJobs = async () => {
     try {
@@ -116,6 +149,7 @@ export default function CareersPage() {
     title: language === "en" ? s.titleEn : s.title,
     description: language === "en" ? s.descriptionEn : s.description,
     url: s.url,
+    image: s.image,
   })) || (language === "en"
     ? [
         {
@@ -188,21 +222,57 @@ export default function CareersPage() {
             transition={{ delay: 0.2, duration: 0.6 }}
             className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-neutral-border/50"
           >
-            <div className="flex flex-col md:flex-row gap-4">
-              <input
-                type="text"
-                placeholder={language === "en" ? "Keyword Search" : "Anahtar Kelime Ara"}
-                className="flex-1 px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <input
-                type="text"
-                placeholder={language === "en" ? "City, State, or ZIP" : "Şehir, İl veya Posta Kodu"}
-                className="flex-1 px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <button className="px-8 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors">
-                {language === "en" ? "Search Jobs" : "İş Ara"}
-              </button>
-            </div>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const keyword = searchKeyword.trim();
+                const location = searchLocation.trim();
+                let filtered = [...jobs];
+                if (keyword) {
+                  const kw = keyword.toLowerCase();
+                  filtered = filtered.filter(
+                    (job) =>
+                      (language === "en" ? job.titleEn : job.title).toLowerCase().includes(kw) ||
+                      (language === "en" ? job.descriptionEn : job.description).toLowerCase().includes(kw) ||
+                      (language === "en" ? job.departmentEn : job.department).toLowerCase().includes(kw)
+                  );
+                }
+                if (location) {
+                  const loc = location.toLowerCase();
+                  filtered = filtered.filter((job) =>
+                    (language === "en" ? job.locationEn : job.location).toLowerCase().includes(loc)
+                  );
+                }
+                setFilteredJobs(filtered);
+                const jobsSection = document.getElementById("jobs");
+                if (jobsSection) {
+                  jobsSection.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
+              <div className="flex flex-col md:flex-row gap-4">
+                <input
+                  type="text"
+                  value={searchKeyword}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
+                  placeholder={language === "en" ? "Keyword Search" : "Anahtar Kelime Ara"}
+                  className="flex-1 px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <input
+                  type="text"
+                  value={searchLocation}
+                  onChange={(e) => setSearchLocation(e.target.value)}
+                  placeholder={language === "en" ? "City, State, or ZIP" : "Şehir, İl veya Posta Kodu"}
+                  className="flex-1 px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <button
+                  type="submit"
+                  className="px-8 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
+                >
+                  {language === "en" ? "Search Jobs" : "İş Ara"}
+                </button>
+              </div>
+            </form>
             <p className="mt-4 text-sm text-neutral-body text-center">
               {language === "en" ? (
                 <>
@@ -344,10 +414,20 @@ export default function CareersPage() {
                   {language === "en" ? "Learn more" : "Daha fazla bilgi"}
                 </a>
               </div>
-              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl h-64 md:h-80 flex items-center justify-center">
-                <span className="text-neutral-body text-lg">
-                  {language === "en" ? "Category Image" : "Kategori Görseli"}
-                </span>
+              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl h-64 md:h-80 overflow-hidden">
+                {content?.featuredCareers?.categories[selectedCategory]?.image ? (
+                  <img
+                    src={content.featuredCareers.categories[selectedCategory].image}
+                    alt={content.featuredCareers.categories[selectedCategory].title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <span className="text-neutral-body text-lg">
+                      {language === "en" ? "Category Image" : "Kategori Görseli"}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
@@ -460,8 +540,14 @@ export default function CareersPage() {
                 transition={{ delay: index * 0.1, duration: 0.6 }}
                 className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow"
               >
-                <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg h-48 mb-6 flex items-center justify-center">
-                  <span className="text-neutral-body">{card.title}</span>
+                <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg h-48 mb-6 overflow-hidden">
+                  {card.image ? (
+                    <img src={card.image} alt={card.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-neutral-body">{card.title}</span>
+                    </div>
+                  )}
                 </div>
                 <h3 className="text-2xl font-bold text-neutral-heading mb-4">{card.title}</h3>
                 <p className="text-neutral-body mb-6 leading-relaxed">{card.description}</p>
@@ -477,6 +563,91 @@ export default function CareersPage() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Culture Section */}
+      <section id="culture" className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-neutral-heading mb-6">
+              {language === "en" ? "Culture" : "Kültür"}
+            </h2>
+            <p className="text-lg md:text-xl text-neutral-body mb-4 leading-relaxed">
+              {content?.companyCards?.[1]
+                ? language === "en"
+                  ? content.companyCards[1].descriptionEn
+                  : content.companyCards[1].description
+                : language === "en"
+                ? "Our passion to make an impact is fueled by the strength of the people we work with, our curiosity to bring new ideas to life, and our focus on always doing better."
+                : "Etki yaratma tutkumuz; birlikte çalıştığımız insanların gücü, yeni fikirleri hayata geçirme merakımız ve her zaman daha iyisini yapmaya odaklanmamızla beslenir."}
+            </p>
+            <p className="text-lg md:text-xl text-neutral-body leading-relaxed">
+              {language === "en"
+                ? "At Teknoritma, we believe that our culture is our greatest asset. It's what drives us to innovate, collaborate, and make a meaningful impact in healthcare technology."
+                : "Teknoritma'da, kültürümüzün en büyük varlığımız olduğuna inanıyoruz. Sağlık teknolojisinde yenilik yapmamızı, işbirliği kurmamızı ve anlamlı bir etki yaratmamızı sağlayan budur."}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Belonging Section */}
+      <section id="belonging" className="py-16 md:py-24 bg-neutral-light">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto"
+          >
+            {content?.belonging?.image && (
+              <div className="mb-8 rounded-xl overflow-hidden">
+                <img
+                  src={content.belonging.image}
+                  alt={content.belonging.title}
+                  className="w-full h-64 md:h-96 object-cover"
+                />
+              </div>
+            )}
+            <div className="text-center">
+              <h2 className="text-4xl md:text-5xl font-bold text-neutral-heading mb-6">
+                {content?.belonging?.title
+                  ? language === "en"
+                    ? content.belonging.titleEn
+                    : content.belonging.title
+                  : language === "en"
+                  ? "Belonging at Teknoritma"
+                  : "Teknoritma'da Aidiyet"}
+              </h2>
+              <p className="text-lg md:text-xl text-neutral-body mb-4 leading-relaxed">
+                {content?.belonging?.description
+                  ? language === "en"
+                    ? content.belonging.descriptionEn
+                    : content.belonging.description
+                  : content?.companyCards?.[2]
+                  ? language === "en"
+                    ? content.companyCards[2].descriptionEn
+                    : content.companyCards[2].description
+                  : language === "en"
+                  ? "Experience a culture of belonging, where different experiences and perspectives spark innovation."
+                  : "Farklı deneyimlerin ve bakış açılarının yeniliği tetiklediği bir aidiyet kültürü yaşayın."}
+              </p>
+              {content?.belonging?.additionalDescription && (
+                <p className="text-lg md:text-xl text-neutral-body leading-relaxed">
+                  {language === "en"
+                    ? content.belonging.additionalDescriptionEn || content.belonging.additionalDescription
+                    : content.belonging.additionalDescription}
+                </p>
+              )}
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -516,6 +687,49 @@ export default function CareersPage() {
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.6 }}
             className="bg-neutral-light rounded-2xl p-8 md:p-12"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              if (!talentFormData.email) {
+                setTalentFormMessage({ type: "error", text: language === "en" ? "Email is required" : "E-posta gereklidir" });
+                return;
+              }
+              setTalentFormSubmitting(true);
+              setTalentFormMessage(null);
+              try {
+                const response = await fetch("/api/careers/talent-network", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(talentFormData),
+                });
+                const data = await response.json();
+                if (response.ok) {
+                  setTalentFormMessage({
+                    type: "success",
+                    text: language === "en" ? "Thank you! We'll keep you updated on new opportunities." : "Teşekkürler! Yeni fırsatlar hakkında sizi bilgilendireceğiz.",
+                  });
+                  setTalentFormData({
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    jobCategory: "",
+                    city: "",
+                    remoteWorkplace: "",
+                  });
+                } else {
+                  setTalentFormMessage({
+                    type: "error",
+                    text: data.error || (language === "en" ? "Something went wrong. Please try again." : "Bir hata oluştu. Lütfen tekrar deneyin."),
+                  });
+                }
+              } catch (error) {
+                setTalentFormMessage({
+                  type: "error",
+                  text: language === "en" ? "Something went wrong. Please try again." : "Bir hata oluştu. Lütfen tekrar deneyin.",
+                });
+              } finally {
+                setTalentFormSubmitting(false);
+              }
+            }}
           >
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div>
@@ -524,6 +738,8 @@ export default function CareersPage() {
                 </label>
                 <input
                   type="text"
+                  value={talentFormData.firstName}
+                  onChange={(e) => setTalentFormData({ ...talentFormData, firstName: e.target.value })}
                   className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
@@ -533,6 +749,8 @@ export default function CareersPage() {
                 </label>
                 <input
                   type="text"
+                  value={talentFormData.lastName}
+                  onChange={(e) => setTalentFormData({ ...talentFormData, lastName: e.target.value })}
                   className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
@@ -543,7 +761,10 @@ export default function CareersPage() {
               </label>
               <input
                 type="email"
+                value={talentFormData.email}
+                onChange={(e) => setTalentFormData({ ...talentFormData, email: e.target.value })}
                 placeholder={language === "en" ? "Email" : "E-posta"}
+                required
                 className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
@@ -551,11 +772,18 @@ export default function CareersPage() {
               <label className="block text-sm font-medium text-neutral-heading mb-2">
                 {language === "en" ? "Job Category" : "İş Kategorisi"}
               </label>
-              <select className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                <option>{language === "en" ? "Select a Job Category" : "Bir İş Kategorisi Seçin"}</option>
-                <option>{language === "en" ? "Software Development" : "Yazılım Geliştirme"}</option>
-                <option>{language === "en" ? "Healthcare IT" : "Sağlık Bilişimi"}</option>
-                <option>{language === "en" ? "Clinical Systems" : "Klinik Sistemler"}</option>
+              <select
+                value={talentFormData.jobCategory}
+                onChange={(e) => setTalentFormData({ ...talentFormData, jobCategory: e.target.value })}
+                className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="">{language === "en" ? "Select a Job Category" : "Bir İş Kategorisi Seçin"}</option>
+                <option value="software-development">{language === "en" ? "Software Development" : "Yazılım Geliştirme"}</option>
+                <option value="healthcare-it">{language === "en" ? "Healthcare IT" : "Sağlık Bilişimi"}</option>
+                <option value="clinical-systems">{language === "en" ? "Clinical Systems" : "Klinik Sistemler"}</option>
+                <option value="data-analytics">{language === "en" ? "Data Analytics" : "Veri Analitiği"}</option>
+                <option value="project-management">{language === "en" ? "Project Management" : "Proje Yönetimi"}</option>
+                <option value="internship">{language === "en" ? "Internship" : "Stajyerlik"}</option>
               </select>
             </div>
             <div className="mb-6">
@@ -564,6 +792,8 @@ export default function CareersPage() {
               </label>
               <input
                 type="text"
+                value={talentFormData.city}
+                onChange={(e) => setTalentFormData({ ...talentFormData, city: e.target.value })}
                 placeholder={language === "en" ? "Type to Search for a Location" : "Konum Aramak İçin Yazın"}
                 className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               />
@@ -572,18 +802,38 @@ export default function CareersPage() {
               <label className="block text-sm font-medium text-neutral-heading mb-2">
                 {language === "en" ? "Remote / Workplace" : "Uzaktan / İş Yeri"}
               </label>
-              <select className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                <option>{language === "en" ? "Select..." : "Seçin..."}</option>
-                <option>{language === "en" ? "REMOTE" : "UZAKTAN"}</option>
-                <option>{language === "en" ? "HYBRID" : "HİBRİT"}</option>
-                <option>{language === "en" ? "OFFICE-BASED" : "OFİS TABANLI"}</option>
+              <select
+                value={talentFormData.remoteWorkplace}
+                onChange={(e) => setTalentFormData({ ...talentFormData, remoteWorkplace: e.target.value })}
+                className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="">{language === "en" ? "Select..." : "Seçin..."}</option>
+                <option value="remote">{language === "en" ? "REMOTE" : "UZAKTAN"}</option>
+                <option value="hybrid">{language === "en" ? "HYBRID" : "HİBRİT"}</option>
+                <option value="office">{language === "en" ? "OFFICE-BASED" : "OFİS TABANLI"}</option>
               </select>
             </div>
+            {talentFormMessage && (
+              <div
+                className={`mb-6 p-4 rounded-lg ${
+                  talentFormMessage.type === "success"
+                    ? "bg-green-50 text-green-800 border border-green-200"
+                    : "bg-red-50 text-red-800 border border-red-200"
+                }`}
+              >
+                {talentFormMessage.text}
+              </div>
+            )}
             <button
               type="submit"
-              className="w-full px-8 py-4 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors text-lg"
+              disabled={talentFormSubmitting}
+              className="w-full px-8 py-4 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors text-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {content?.talentNetwork
+              {talentFormSubmitting
+                ? language === "en"
+                  ? "Submitting..."
+                  : "Gönderiliyor..."
+                : content?.talentNetwork
                 ? language === "en"
                   ? content.talentNetwork.buttonTextEn
                   : content.talentNetwork.buttonText
@@ -643,14 +893,37 @@ export default function CareersPage() {
       </section>
 
       {/* Job Listings Section */}
-      {jobs.length > 0 && (
+      {(filteredJobs.length > 0 || jobs.length > 0) && (
         <section id="jobs" className="py-16 md:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 md:px-8">
-            <h2 className="text-4xl md:text-5xl font-bold text-neutral-heading mb-12 text-center">
-              {language === "en" ? "Open Positions" : "Açık Pozisyonlar"}
-            </h2>
-            <div className="space-y-6">
-              {jobs.map((job) => (
+            <div className="flex items-center justify-between mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-neutral-heading">
+                {language === "en" ? "Open Positions" : "Açık Pozisyonlar"}
+              </h2>
+              {(searchKeyword || searchLocation) && (
+                <button
+                  onClick={() => {
+                    setSearchKeyword("");
+                    setSearchLocation("");
+                    setFilteredJobs([]);
+                  }}
+                  className="text-sm text-primary hover:underline"
+                >
+                  {language === "en" ? "Clear filters" : "Filtreleri temizle"}
+                </button>
+              )}
+            </div>
+            {filteredJobs.length === 0 && (searchKeyword || searchLocation) ? (
+              <div className="text-center py-12">
+                <p className="text-lg text-neutral-body">
+                  {language === "en"
+                    ? "No jobs found matching your search criteria."
+                    : "Arama kriterlerinize uygun iş bulunamadı."}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {(filteredJobs.length > 0 ? filteredJobs : jobs).map((job) => (
                 <motion.div
                   key={job.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -727,8 +1000,9 @@ export default function CareersPage() {
                     </div>
                   </div>
                 </motion.div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}

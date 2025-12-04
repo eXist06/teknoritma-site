@@ -4,3 +4,4 @@ export default function AdminCareersPageEN() {
   return <CareersAdmin />;
 }
 
+

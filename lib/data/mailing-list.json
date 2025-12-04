@@ -1,0 +1,26 @@
+{
+  "subscribers": [
+    {
+      "id": "1764849889270",
+      "email": "haluksafi@gmail.com",
+      "name": "Haluk Safi",
+      "organization": "GM",
+      "subscribedAt": "2025-12-04T12:04:49.270Z",
+      "source": "manual",
+      "category": "general",
+      "tags": [],
+      "active": true
+    },
+    {
+      "id": "1764851243149",
+      "email": "cemsalas@gmail.com",
+      "name": "Cem Salas",
+      "organization": "Teknoritma",
+      "subscribedAt": "2025-12-04T12:27:23.149Z",
+      "source": "manual",
+      "category": "general",
+      "tags": [],
+      "active": true
+    }
+  ]
+}

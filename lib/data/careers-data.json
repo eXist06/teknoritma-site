@@ -39,12 +39,12 @@
       "titleEn": "Unleash your potential",
       "paragraphs": [
         "Hastalar için olağanüstü olanı mümkün kılmak tutku gerektirir. İşbirliğiyle beslenen yenilik kültürümüz, yeni olasılıkları keşfetmemize ve güçlü fikirleri gerçeğe dönüştürmemize olanak tanır.",
-        "Küresel ekibimize katıldığınızda, sağlık hizmetlerini ileriye taşımak için benzersiz verilerin, gelişmiş analitiklerin, son teknoloji teknolojilerin ve derin sağlık ve bilimsel uzmanlığın gücünden yararlanacaksınız.",
+        "Küresel ekibimize katıldığınızda, sağlık hizmetlerini ileriye taşımak için benzersiz verilerin, gelişmiş analitiklerin, son teknoloji çözümlerin ve derin sağlık ile bilimsel uzmanlığın gücünden yararlanma fırsatı bulacaksınız.",
         "Becerilerinizin sizi nereye götürebileceğini görün."
       ],
       "paragraphsEn": [
         "It takes passion to make the extraordinary possible for patients. Fueled by collaboration, our culture of innovation enables us to explore new possibilities and bring powerful ideas to reality.",
-        "When you join our global team, you'll harness the power of unparalleled data, advanced analytics, cutting-edge technologies and deep healthcare and scientific expertise to drive healthcare forward.",
+        "When you join our global team, you'll harness the power of unparalleled data, advanced analytics, cutting-edge solutions and deep healthcare and scientific expertise to drive healthcare forward.",
         "See where your skills can take you."
       ],
       "ctaText": "Tüm işleri görüntüle",
@@ -58,43 +58,43 @@
           "id": 0,
           "title": "Yazılım Geliştirme",
           "titleEn": "Software Development",
-          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
-          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+          "description": "Gerçek sorunları çözen ölçeklenebilir yazılımlar geliştiriyoruz. Modern teknolojileri kullanarak hastanelerin, hekimlerin ve sağlık çalışanlarının ihtiyaçlarına yönelik yenilikçi uygulamalar üretiyoruz. Backend, frontend, mobil ve tam yığın geliştirme alanlarında uzman ekiplerle çalışarak sürdürülebilir ve kullanıcı odaklı çözümler sunuyoruz.",
+          "descriptionEn": "We develop scalable software that solves real problems. Using modern technologies, we create innovative applications tailored to the needs of hospitals, physicians, and healthcare workers. Working with expert teams in backend, frontend, mobile, and full-stack development, we deliver sustainable and user-focused solutions."
         },
         {
           "id": 1,
           "title": "Sağlık Bilişimi",
           "titleEn": "Healthcare IT",
-          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
-          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+          "description": "Sağlık verisini dijital dönüşümle buluşturuyoruz. Kamu hastaneleri, PPP projeleri ve uluslararası sağlık kuruluşları için entegre bilgi sistemleri geliştiriyor; klinik süreçlerin dijitalleşmesine katkı sağlıyoruz. Sağlık mevzuatı, HL7-FHIR gibi standartlarla uyumlu, güvenli ve akıllı bilişim altyapıları tasarlıyoruz.",
+          "descriptionEn": "We bring healthcare data together with digital transformation. We develop integrated information systems for public hospitals, PPP projects, and international healthcare organizations, contributing to the digitization of clinical processes. We design secure and intelligent informatics infrastructures compatible with healthcare regulations and standards such as HL7-FHIR."
         },
         {
           "id": 2,
           "title": "Klinik Sistemler",
           "titleEn": "Clinical Systems",
-          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
-          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+          "description": "Klinik işleyişi hızlandıran ve kaliteyi artıran sistemler tasarlıyoruz. Hastanelerde kullanılan laboratuvar, görüntüleme, ameliyathane, eczane, yatak yönetimi gibi kritik süreçlerin uçtan uca dijitalleştirilmesini sağlıyoruz. Saha çalışmaları, kullanıcı analizleri ve klinik iş akışlarına uygun yazılım tasarımları ile hasta güvenliğine katkıda bulunuyoruz.",
+          "descriptionEn": "We design systems that accelerate clinical operations and improve quality. We enable end-to-end digitization of critical processes used in hospitals such as laboratory, imaging, operating room, pharmacy, and bed management. Through field studies, user analyses, and software designs aligned with clinical workflows, we contribute to patient safety."
         },
         {
           "id": 3,
           "title": "Veri Analitiği",
           "titleEn": "Data Analytics",
-          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
-          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+          "description": "Sağlık verisini anlamlandırarak karar süreçlerine destek oluyoruz. Büyük veri, raporlama, iş zekâsı ve tahmine dayalı analiz yöntemleriyle hastanelerin operasyonel performansını iyileştirmeye yardımcı oluyoruz. Veri modelleme, dashboard geliştirme ve ölçülebilir metriklerle kurumların stratejik hedeflerine ulaşmasını sağlıyoruz.",
+          "descriptionEn": "We support decision-making processes by making sense of healthcare data. We help improve hospitals' operational performance through big data, reporting, business intelligence, and predictive analytics methods. Through data modeling, dashboard development, and measurable metrics, we enable institutions to achieve their strategic goals."
         },
         {
           "id": 4,
           "title": "Proje Yönetimi",
           "titleEn": "Project Management",
-          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
-          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+          "description": "Karmaşık projeleri başarıyla yöneten disiplinli bir ekibin parçası olabilirsiniz. Şehir hastaneleri, kamu projeleri ve uluslararası projelerde uçtan uca proje takibi yürütüyor; planlama, risk yönetimi, paydaş iletişimi ve kalite kontrol süreçlerini yönetiyoruz. Hem teknik ekiplerle hem de kurumlarla koordineli çalışarak projelerin zamanında ve başarıyla tamamlanmasını sağlıyoruz.",
+          "descriptionEn": "You can be part of a disciplined team that successfully manages complex projects. We conduct end-to-end project tracking in city hospitals, public projects, and international projects; managing planning, risk management, stakeholder communication, and quality control processes. Working in coordination with both technical teams and institutions, we ensure projects are completed on time and successfully."
         },
         {
           "id": 5,
           "title": "Stajyerlik",
           "titleEn": "Internships",
-          "description": "Sağlık teknolojisini bir sonraki seviyeye taşıyın. Klinik gelişimi yeniden düşünmeye ve hasta sonuçlarını iyileştirmeye yardımcı olacak kanıta dayalı çözümleri etkinleştirmek için verileri, şirket içi teknolojileri ve analitikleri akıllıca bağlayın.",
-          "descriptionEn": "Take healthcare technology to the next level. Intelligently connect data, in-house technologies, and analytics to enable evidenced-based solutions that will help reimagine clinical development and improve patient outcomes."
+          "description": "Geleceğin teknoloji profesyonellerini yetiştiriyoruz. Gerçek projelerde görev alma fırsatı, mentorluk desteği, teknik eğitimler ve takım çalışması kültürüyle genç yeteneklere deneyim kazandırıyoruz. Yazılım geliştirme, veri analitiği, sağlık bilişimi ve proje yönetimi alanlarında kariyer yolculuğuna güçlü bir başlangıç sunuyoruz.",
+          "descriptionEn": "We train the technology professionals of the future. We provide young talents with experience through opportunities to work on real projects, mentorship support, technical training, and a teamwork culture. We offer a strong start to career journeys in software development, data analytics, healthcare informatics, and project management."
         }
       ]
     },
@@ -131,16 +131,16 @@
       {
         "title": "Şirketimiz",
         "titleEn": "Our company",
-        "description": "Daha sağlıklı bir dünya yaratmak amacımızdır. Geniş uzmanlık, yenilik ve güçlü yetenekler oraya nasıl ulaştığımızdır.",
-        "descriptionEn": "Creating a healthier world is our purpose. Broad expertise, innovation and powerful capabilities is how we get there.",
+        "description": "Daha sağlıklı bir dünya yaratmak temel amacımızdır. Bu amaca; geniş uzmanlığımız, yenilikçi yaklaşımımız ve güçlü yeteneklerimizle ulaşıyoruz.",
+        "descriptionEn": "Creating a healthier world is our fundamental purpose. We achieve this purpose through our broad expertise, innovative approach, and powerful capabilities.",
         "linkText": "DAHA FAZLA BİLGİ",
         "linkTextEn": "LEARN MORE"
       },
       {
         "title": "Kültür",
         "titleEn": "Culture",
-        "description": "Etki yaratma tutkumuz, birlikte çalıştığımız insanlar, yeni fikirleri hayata geçirme merakı ve her zaman daha iyisini yapmaya odaklanma ile beslenir.",
-        "descriptionEn": "Our passion to make an impact is fueled by the people we work with, a curiosity to bring new ideas to life, and a focus on always doing better.",
+        "description": "Etki yaratma tutkumuz; birlikte çalıştığımız insanların gücü, yeni fikirleri hayata geçirme merakımız ve her zaman daha iyisini yapmaya odaklanmamızla beslenir.",
+        "descriptionEn": "Our passion to make an impact is fueled by the strength of the people we work with, our curiosity to bring new ideas to life, and our focus on always doing better.",
         "linkText": "Daha Fazla Bilgi",
         "linkTextEn": "Learn More"
       },
@@ -162,8 +162,8 @@
       "buttonTextEn": "Join Our Network"
     },
     "exploreLife": {
-      "title": "Teknoritma'da yaşamı keşfedin",
-      "titleEn": "Explore life at Teknoritma",
+      "title": "Teknoritma'ya Katılmanın Nedenleri",
+      "titleEn": "Reasons to Join Teknoritma",
       "stories": [
         {
           "title": "Yazılım Mühendisi olarak bir gün",
@@ -187,6 +187,13 @@
           "url": "/kariyer/hikayeler/kariyer-yolculugu"
         }
       ]
+    },
+    "culture": {
+      "title": "",
+      "titleEn": "",
+      "description": "",
+      "descriptionEn": "",
+      "image": "/uploads/careers/1764846227657_png-transparent-radar-computer-icons-conical-scanning-geek-logo-computer-business-line.png"
     }
   }
 }

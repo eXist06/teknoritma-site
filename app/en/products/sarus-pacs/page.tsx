@@ -4,3 +4,4 @@ export default function SarusPacsPage() {
   return <SarusHISPage />;
 }
 
+

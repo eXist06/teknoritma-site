@@ -45,6 +45,7 @@ export interface CareersContent {
       titleEn: string;
       description: string;
       descriptionEn: string;
+      image?: string;
     }[];
   };
   testimonials: {
@@ -63,7 +64,26 @@ export interface CareersContent {
     descriptionEn: string;
     linkText: string;
     linkTextEn: string;
+    image?: string;
   }[];
+  culture?: {
+    title: string;
+    titleEn: string;
+    description: string;
+    descriptionEn: string;
+    additionalDescription?: string;
+    additionalDescriptionEn?: string;
+    image?: string;
+  };
+  belonging?: {
+    title: string;
+    titleEn: string;
+    description: string;
+    descriptionEn: string;
+    additionalDescription?: string;
+    additionalDescriptionEn?: string;
+    image?: string;
+  };
   talentNetwork: {
     title: string;
     titleEn: string;
@@ -81,7 +101,9 @@ export interface CareersContent {
       description: string;
       descriptionEn: string;
       url: string;
+      image?: string;
     }[];
   };
 }
+
 

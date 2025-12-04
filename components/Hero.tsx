@@ -8,6 +8,7 @@ import { useI18n } from "@/lib/i18n";
 import { useState, useEffect } from "react";
 import Orb from "./Orb";
 import Threads from "./Threads";
+import TypewriterText from "./TypewriterText";
 
 export default function Hero() {
   const { language, t } = useI18n();
@@ -15,6 +16,7 @@ export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [typewriterKey, setTypewriterKey] = useState(0); // Key to reset typewriters on slide change
   const totalSlides = 2;
 
   const nextSlide = () => {
@@ -37,6 +39,13 @@ export default function Hero() {
 
     return () => clearInterval(interval);
   }, [totalSlides]);
+
+  // Reset typewriter effect when slide changes
+  useEffect(() => {
+    if (currentSlide === 0) {
+      setTypewriterKey((prev) => prev + 1);
+    }
+  }, [currentSlide]);
 
   // Touch handlers for swipe - only on carousel container
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -235,7 +244,7 @@ export default function Hero() {
               )}
             </motion.h1>
 
-            {/* Feature Highlights - Modern Bullet List */}
+            {/* Feature Highlights - Modern Bullet List with Typewriter Effect */}
             <motion.ul
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -249,7 +258,14 @@ export default function Hero() {
                 className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
               >
                 <span className="text-xl">🏆</span>
-                <span className="font-medium">{t("hero.badges.himss")}</span>
+                <span className="font-medium">
+                  <TypewriterText 
+                    key={`himss-${typewriterKey}`}
+                    text={t("hero.badges.himss")} 
+                    speed={40}
+                    delay={600}
+                  />
+                </span>
               </motion.li>
               <motion.li
                 initial={{ opacity: 0, x: -20 }}
@@ -258,7 +274,14 @@ export default function Hero() {
                 className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
               >
                 <span className="text-green-600 text-lg">✔</span>
-                <span className="font-medium">{t("hero.badges.robust")}</span>
+                <span className="font-medium">
+                  <TypewriterText 
+                    key={`robust-${typewriterKey}`}
+                    text={t("hero.badges.robust")} 
+                    speed={35}
+                    delay={2500}
+                  />
+                </span>
               </motion.li>
               <motion.li
                 initial={{ opacity: 0, x: -20 }}
@@ -267,7 +290,14 @@ export default function Hero() {
                 className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
               >
                 <span className="text-green-600 text-lg">✔</span>
-                <span className="font-medium">{t("hero.badges.support")}</span>
+                <span className="font-medium">
+                  <TypewriterText 
+                    key={`support-${typewriterKey}`}
+                    text={t("hero.badges.support")} 
+                    speed={35}
+                    delay={5000}
+                  />
+                </span>
               </motion.li>
               <motion.li
                 initial={{ opacity: 0, x: -20 }}
@@ -276,7 +306,14 @@ export default function Hero() {
                 className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
               >
                 <span className="text-green-600 text-lg">✔</span>
-                <span className="font-medium">{t("hero.badges.ai")}</span>
+                <span className="font-medium">
+                  <TypewriterText 
+                    key={`ai-${typewriterKey}`}
+                    text={t("hero.badges.ai")} 
+                    speed={35}
+                    delay={7500}
+                  />
+                </span>
               </motion.li>
             </motion.ul>
 

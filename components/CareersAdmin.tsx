@@ -145,12 +145,29 @@ export default function CareersAdmin() {
                   🇬🇧 EN
                 </Link>
               </div>
-              <Link
-                href={currentLang === "en" ? "/en/careers" : "/kariyer"}
-                className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-medium"
-              >
-                {currentLang === "en" ? "← Back to Careers" : "← Kariyer Sayfasına Dön"}
-              </Link>
+              <div className="flex gap-2">
+                <Link
+                  href={currentLang === "en" ? "/en/admin/settings" : "/admin/settings"}
+                  className="px-4 py-2 bg-neutral-border text-neutral-heading rounded-lg hover:bg-neutral-border/80 transition-colors text-sm font-medium"
+                >
+                  {currentLang === "en" ? "⚙️ Settings" : "⚙️ Ayarlar"}
+                </Link>
+                <button
+                  onClick={async () => {
+                    await fetch("/api/admin/auth/logout", { method: "POST" });
+                    window.location.href = "/admin/login";
+                  }}
+                  className="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium"
+                >
+                  {currentLang === "en" ? "Logout" : "Çıkış"}
+                </button>
+                <Link
+                  href={currentLang === "en" ? "/en/careers" : "/kariyer"}
+                  className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-medium"
+                >
+                  {currentLang === "en" ? "← Back to Careers" : "← Kariyer Sayfasına Dön"}
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -608,6 +625,72 @@ function JobEditModal({
   );
 }
 
+function ImageUpload({
+  value,
+  onChange,
+  label,
+}: {
+  value?: string;
+  onChange: (url: string) => void;
+  label: string;
+}) {
+  const [uploading, setUploading] = useState(false);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/careers/upload-image", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (response.ok && data.url) {
+        onChange(data.url);
+      } else {
+        alert(data.error || "Failed to upload image");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("Failed to upload image");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <label className="block text-sm font-medium text-neutral-heading">{label}</label>
+      {value && (
+        <div className="relative w-full h-48 border border-neutral-border rounded-lg overflow-hidden mb-2">
+          <img src={value} alt="Preview" className="w-full h-full object-cover" />
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+          >
+            ×
+          </button>
+        </div>
+      )}
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        disabled={uploading}
+        className="w-full px-4 py-2 border border-neutral-border rounded-lg text-sm"
+      />
+      {uploading && <p className="text-sm text-neutral-body">Uploading...</p>}
+    </div>
+  );
+}
+
 function ContentEditor({
   content,
   onChange,
@@ -966,9 +1049,369 @@ function ContentEditor({
                     />
                   </div>
                 </div>
+                <div className="mt-4">
+                  <ImageUpload
+                    value={category.image}
+                    onChange={(url) => {
+                      const newCategories = [...content.featuredCareers.categories];
+                      newCategories[index] = { ...category, image: url };
+                      onChange({
+                        ...content,
+                        featuredCareers: { ...content.featuredCareers, categories: newCategories },
+                      });
+                    }}
+                    label="Category Image"
+                  />
+                </div>
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Culture Section */}
+      <div className="border border-neutral-border rounded-lg p-6">
+        <h3 className="text-xl font-bold text-neutral-heading mb-4">
+          {currentLang === "en" ? "Culture Section" : "Kültür Bölümü"}
+        </h3>
+        <div className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Title (TR)
+              </label>
+              <input
+                type="text"
+                value={content.culture?.title || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    culture: {
+                      ...(content.culture || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      title: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Title (EN)
+              </label>
+              <input
+                type="text"
+                value={content.culture?.titleEn || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    culture: {
+                      ...(content.culture || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      titleEn: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg"
+              />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Description (TR)
+              </label>
+              <textarea
+                value={content.culture?.description || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    culture: {
+                      ...(content.culture || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      description: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg h-24"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Description (EN)
+              </label>
+              <textarea
+                value={content.culture?.descriptionEn || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    culture: {
+                      ...(content.culture || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      descriptionEn: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg h-24"
+              />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Additional Description (TR)
+              </label>
+              <textarea
+                value={content.culture?.additionalDescription || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    culture: {
+                      ...(content.culture || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      additionalDescription: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg h-24"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Additional Description (EN)
+              </label>
+              <textarea
+                value={content.culture?.additionalDescriptionEn || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    culture: {
+                      ...(content.culture || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      additionalDescriptionEn: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg h-24"
+              />
+            </div>
+          </div>
+          <ImageUpload
+            value={content.culture?.image}
+            onChange={(url) =>
+              onChange({
+                ...content,
+                culture: {
+                  ...(content.culture || {
+                    title: "",
+                    titleEn: "",
+                    description: "",
+                    descriptionEn: "",
+                  }),
+                  image: url,
+                },
+              })
+            }
+            label="Culture Image"
+          />
+        </div>
+      </div>
+
+      {/* Belonging Section */}
+      <div className="border border-neutral-border rounded-lg p-6">
+        <h3 className="text-xl font-bold text-neutral-heading mb-4">
+          {currentLang === "en" ? "Belonging Section" : "Aidiyet Bölümü"}
+        </h3>
+        <div className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Title (TR)
+              </label>
+              <input
+                type="text"
+                value={content.belonging?.title || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    belonging: {
+                      ...(content.belonging || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      title: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Title (EN)
+              </label>
+              <input
+                type="text"
+                value={content.belonging?.titleEn || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    belonging: {
+                      ...(content.belonging || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      titleEn: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg"
+              />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Description (TR)
+              </label>
+              <textarea
+                value={content.belonging?.description || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    belonging: {
+                      ...(content.belonging || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      description: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg h-24"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Description (EN)
+              </label>
+              <textarea
+                value={content.belonging?.descriptionEn || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    belonging: {
+                      ...(content.belonging || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      descriptionEn: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg h-24"
+              />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Additional Description (TR)
+              </label>
+              <textarea
+                value={content.belonging?.additionalDescription || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    belonging: {
+                      ...(content.belonging || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      additionalDescription: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg h-24"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Additional Description (EN)
+              </label>
+              <textarea
+                value={content.belonging?.additionalDescriptionEn || ""}
+                onChange={(e) =>
+                  onChange({
+                    ...content,
+                    belonging: {
+                      ...(content.belonging || {
+                        title: "",
+                        titleEn: "",
+                        description: "",
+                        descriptionEn: "",
+                      }),
+                      additionalDescriptionEn: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg h-24"
+              />
+            </div>
+          </div>
+          <ImageUpload
+            value={content.belonging?.image}
+            onChange={(url) =>
+              onChange({
+                ...content,
+                belonging: {
+                  ...(content.belonging || {
+                    title: "",
+                    titleEn: "",
+                    description: "",
+                    descriptionEn: "",
+                  }),
+                  image: url,
+                },
+              })
+            }
+            label="Belonging Image"
+          />
         </div>
       </div>
 
@@ -1274,6 +1717,20 @@ function ContentEditor({
                   />
                 </div>
               </div>
+              <div className="mt-4">
+                <ImageUpload
+                  value={card.image}
+                  onChange={(url) => {
+                    const newCards = [...content.companyCards];
+                    newCards[index] = { ...card, image: url };
+                    onChange({
+                      ...content,
+                      companyCards: newCards,
+                    });
+                  }}
+                  label="Card Image"
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -1540,6 +1997,20 @@ function ContentEditor({
                       });
                     }}
                     className="w-full px-4 py-2 border border-neutral-border rounded-lg"
+                  />
+                </div>
+                <div className="mt-4">
+                  <ImageUpload
+                    value={story.image}
+                    onChange={(url) => {
+                      const newStories = [...content.exploreLife.stories];
+                      newStories[index] = { ...story, image: url };
+                      onChange({
+                        ...content,
+                        exploreLife: { ...content.exploreLife, stories: newStories },
+                      });
+                    }}
+                    label="Story Image"
                   />
                 </div>
               </div>
