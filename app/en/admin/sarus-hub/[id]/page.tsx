@@ -94,18 +94,18 @@ export default function AdminSarusHubEditPageEN() {
   const handleImageUpload = async (file: File) => {
     setImageUploading(true);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
+      const uploadFormData = new FormData();
+      uploadFormData.append("file", file);
 
       const response = await fetch("/api/sarus-hub/upload-image", {
         method: "POST",
-        body: formData,
+        body: uploadFormData,
       });
 
       const data = await response.json();
 
       if (response.ok && data.url) {
-        setFormData({ ...formData, image: data.url });
+        setFormData((prev) => ({ ...prev, image: data.url }));
       } else {
         alert(data.error || "Failed to upload image");
       }
@@ -120,18 +120,19 @@ export default function AdminSarusHubEditPageEN() {
   const handleVideoUpload = async (file: File) => {
     setVideoUploading(true);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
+      const uploadFormData = new FormData();
+      uploadFormData.append("file", file);
 
       const response = await fetch("/api/sarus-hub/upload-video", {
         method: "POST",
-        body: formData,
+        body: uploadFormData,
       });
 
       const data = await response.json();
 
       if (response.ok && data.url) {
-        setFormData({ ...formData, video: data.url });
+        setFormData((prev) => ({ ...prev, video: data.url }));
+        alert("Video uploaded successfully!");
       } else {
         alert(data.error || "Failed to upload video");
       }
@@ -144,8 +145,8 @@ export default function AdminSarusHubEditPageEN() {
   };
 
   const handleSave = async (status: SarusHubItemStatus) => {
-    if (!formData.title || !formData.slug || !formData.summary || !formData.content) {
-      alert("Please fill in all required fields");
+    if (!formData.title || !formData.slug) {
+      alert("Please fill in title and slug fields");
       return;
     }
 
@@ -272,7 +273,7 @@ export default function AdminSarusHubEditPageEN() {
 
             <div>
               <label className="block text-sm font-medium text-neutral-heading mb-2">
-                Summary *
+                Summary
               </label>
               <textarea
                 value={formData.summary || ""}
@@ -285,7 +286,7 @@ export default function AdminSarusHubEditPageEN() {
 
           {/* Content */}
           <div className="space-y-4 rounded-lg border border-neutral-border p-6">
-            <h2 className="text-lg font-semibold text-neutral-heading">Content *</h2>
+            <h2 className="text-lg font-semibold text-neutral-heading">Content</h2>
             <RichTextEditor
               content={formData.content || ""}
               onChange={(content) => setFormData({ ...formData, content })}
@@ -453,23 +454,41 @@ export default function AdminSarusHubEditPageEN() {
                 Video
               </label>
               {formData.video && (
-                <video
-                  src={formData.video}
-                  controls
-                  className="w-full rounded-lg mb-2"
-                />
+                <div className="mb-2">
+                  <video
+                    src={formData.video}
+                    controls
+                    className="w-full rounded-lg mb-2"
+                    onError={() => {
+                      alert("Video preview failed to load. Please check the video format (MP4 recommended).");
+                    }}
+                  />
+                  <p className="text-xs text-neutral-body">
+                    Video URL: {formData.video}
+                  </p>
+                </div>
               )}
               <input
                 type="file"
-                accept="video/*"
+                accept="video/mp4,video/webm,video/quicktime"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) handleVideoUpload(file);
+                  if (file) {
+                    // Check file type
+                    if (!file.type.startsWith("video/")) {
+                      alert("Please select a valid video file (MP4, WebM or QuickTime)");
+                      return;
+                    }
+                    handleVideoUpload(file);
+                  }
                 }}
                 disabled={videoUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
               />
               {videoUploading && <p className="text-sm text-neutral-body mt-2">Uploading...</p>}
+              <p className="text-xs text-neutral-body mt-1">
+                Note: MP4 format provides the best compatibility across all browsers. .mov files may not work in some browsers.
+              </p>
             </div>
           </div>
 

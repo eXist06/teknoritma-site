@@ -23,10 +23,13 @@ export default function AdminDashboardPage() {
 
         // Get user role
         const userResponse = await fetch("/api/admin/auth/me");
-        if (userResponse.ok) {
-          const data = await userResponse.json();
-          setUserRole(data.user?.role || null);
+        if (!userResponse.ok) {
+          router.push("/admin/login");
+          return;
         }
+
+        const data = await userResponse.json();
+        setUserRole(data.user?.role || null);
       } catch {
         router.push("/admin/login");
       } finally {
