@@ -123,7 +123,7 @@ export default function ContactSection() {
     }
   };
   return (
-    <section id="contact" className="py-20 md:py-32 bg-background">
+    <section id="contact" className="py-20 md:py-32 bg-background scroll-mt-20">
       <div className="max-w-7xl mx-auto px-5 md:px-10">
         <div className="grid md:grid-cols-2 gap-12">
           <motion.div
@@ -149,7 +149,8 @@ export default function ContactSection() {
               </div>
               <div>Telefon: +90 312 227 00 15</div>
               <div>
-                Adres: Hacettepe Teknokent, 1596. Cadde, Çankaya / Ankara
+                {language === "en" ? "Address: " : "Adres: "}
+                Hacettepe Teknoloji Geliştirme Bölgesi, Üniversiteler Mahallesi, 1596. Cadde, Safir C Blok (Bina No:6), 3. Kat, No:35, Beytepe/Çankaya/Ankara, 06800 Türkiye
               </div>
             </div>
           </motion.div>

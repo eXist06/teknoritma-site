@@ -3,7 +3,7 @@ export const translations: Record<string, any> = {
     nav: {
       home: "Ana Sayfa",
       products: "Ürünler",
-      sarus: "Bilgi Merkezi",
+      sarus: "Sarus-HUB",
       projects: "Projeler",
       about: "Hakkımızda",
       contact: "İletişim",
@@ -147,7 +147,7 @@ export const translations: Record<string, any> = {
     nav: {
       home: "Home",
       products: "Products",
-      sarus: "Knowledge Center",
+      sarus: "Sarus-HUB",
       projects: "Projects",
       about: "About",
       contact: "Contact",

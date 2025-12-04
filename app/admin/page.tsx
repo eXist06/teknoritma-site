@@ -1,27 +1,51 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { UserRole } from "@/lib/types/admin";
 
 export default function AdminDashboardPage() {
   const router = useRouter();
+  const [userRole, setUserRole] = useState<UserRole | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Token kontrolü
+    // Token kontrolü ve role bilgisi
     const checkAuth = async () => {
       try {
         const response = await fetch("/api/admin/auth/check-first-login");
         if (!response.ok) {
           router.push("/admin/login");
+          return;
+        }
+
+        // Get user role
+        const userResponse = await fetch("/api/admin/auth/me");
+        if (userResponse.ok) {
+          const data = await userResponse.json();
+          setUserRole(data.user?.role || null);
         }
       } catch {
         router.push("/admin/login");
+      } finally {
+        setLoading(false);
       }
     };
     checkAuth();
   }, [router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-neutral-light flex items-center justify-center">
+        <div className="text-neutral-body">Yükleniyor...</div>
+      </div>
+    );
+  }
+
+  const isAdmin = userRole === "admin";
+  const isSarusHub = userRole === "sarus-hub";
 
   return (
     <div className="min-h-screen bg-neutral-light py-8">
@@ -35,28 +59,45 @@ export default function AdminDashboardPage() {
             Admin Dashboard
           </h1>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Link
-              href="/admin/careers"
-              className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 hover:shadow-lg transition-shadow border border-neutral-border"
-            >
-              <h2 className="text-xl font-bold text-neutral-heading mb-2">
-                Careers Management
-              </h2>
-              <p className="text-neutral-body">
-                Manage job postings and careers page content
-              </p>
-            </Link>
-            <Link
-              href="/admin/settings"
-              className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 hover:shadow-lg transition-shadow border border-neutral-border"
-            >
-              <h2 className="text-xl font-bold text-neutral-heading mb-2">
-                System Settings
-              </h2>
-              <p className="text-neutral-body">
-                Configure email settings and system preferences
-              </p>
-            </Link>
+            {isAdmin && (
+              <Link
+                href="/admin/careers"
+                className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 hover:shadow-lg transition-shadow border border-neutral-border"
+              >
+                <h2 className="text-xl font-bold text-neutral-heading mb-2">
+                  Careers Management
+                </h2>
+                <p className="text-neutral-body">
+                  Manage job postings and careers page content
+                </p>
+              </Link>
+            )}
+            {isAdmin && (
+              <Link
+                href="/admin/settings"
+                className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 hover:shadow-lg transition-shadow border border-neutral-border"
+              >
+                <h2 className="text-xl font-bold text-neutral-heading mb-2">
+                  System Settings
+                </h2>
+                <p className="text-neutral-body">
+                  Configure email settings and system preferences
+                </p>
+              </Link>
+            )}
+            {(isAdmin || isSarusHub) && (
+              <Link
+                href="/admin/sarus-hub"
+                className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 hover:shadow-lg transition-shadow border border-neutral-border"
+              >
+                <h2 className="text-xl font-bold text-neutral-heading mb-2">
+                  Sarus-HUB
+                </h2>
+                <p className="text-neutral-body">
+                  Content management: case studies, news, insights
+                </p>
+              </Link>
+            )}
             <button
               onClick={async () => {
                 await fetch("/api/admin/auth/logout", { method: "POST" });

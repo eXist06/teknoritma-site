@@ -63,6 +63,7 @@ export default function UserEditForm({ user, onSave, onCancel, loading }: UserEd
           <option value="admin">Admin - Tam Yetki</option>
           <option value="ik">IK - İnsan Kaynakları</option>
           <option value="knowledge-base">Bilgi Merkezi - Knowledge Base</option>
+          <option value="sarus-hub">Sarus-HUB - İçerik Yönetimi</option>
         </select>
       </div>
       <div>
@@ -94,5 +95,6 @@ export default function UserEditForm({ user, onSave, onCancel, loading }: UserEd
     </form>
   );
 }
+
 
 

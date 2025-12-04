@@ -114,9 +114,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!["admin", "ik", "knowledge-base"].includes(role)) {
+    if (!["admin", "ik", "knowledge-base", "sarus-hub"].includes(role)) {
       return NextResponse.json(
-        { error: "Invalid role. Must be: admin, ik, or knowledge-base" },
+        { error: "Invalid role. Must be: admin, ik, knowledge-base, or sarus-hub" },
         { status: 400 }
       );
     }
@@ -233,9 +233,9 @@ export async function PUT(request: NextRequest) {
     }
 
     if (role && role !== user.role) {
-      if (!["admin", "ik", "knowledge-base"].includes(role)) {
+      if (!["admin", "ik", "knowledge-base", "sarus-hub"].includes(role)) {
         return NextResponse.json(
-          { error: "Invalid role. Must be: admin, ik, or knowledge-base" },
+          { error: "Invalid role. Must be: admin, ik, knowledge-base, or sarus-hub" },
           { status: 400 }
         );
       }

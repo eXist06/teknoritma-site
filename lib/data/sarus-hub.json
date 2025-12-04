@@ -1,0 +1,77 @@
+{
+  "items": [
+    {
+      "id": "ankara-city-hospital-sarus",
+      "type": "case-study",
+      "title": "Ankara Şehir Hastanesi: 4.000+ Yataklı Mega Kompleksin Dijital Omurgası",
+      "slug": "ankara-sehir-hastanesi-sarus-case-study",
+      "summary": "Sarus HIS, dünyanın en büyük sağlık kampüslerinden biri olan Ankara Şehir Hastanesi'nde klinik ve idari operasyonları tek dijital omurgada birleştiriyor.",
+      "content": "<p>Sarus HIS, dünyanın en büyük sağlık kampüslerinden biri olan Ankara Şehir Hastanesi'nde klinik ve idari operasyonları tek dijital omurgada birleştiriyor.</p><p>Bu proje, mega hastane komplekslerinde dijital dönüşümün başarılı bir örneğidir.</p>",
+      "hospital": "Ankara Şehir Hastanesi",
+      "country": "Türkiye",
+      "segment": "City Hospital",
+      "tags": [
+        "HIS",
+        "Mega Hospital",
+        "City Hospital",
+        "EMR"
+      ],
+      "publishedAt": "2025-11-15T10:00:00Z",
+      "featured": true,
+      "readingMinutes": 6,
+      "status": "published",
+      "author": "Teknoritma",
+      "language": "tr",
+      "createdAt": "2025-11-15T10:00:00Z",
+      "updatedAt": "2025-11-15T10:00:00Z"
+    },
+    {
+      "id": "1764884928345",
+      "type": "news",
+      "title": "Bahcelievler Himss 7",
+      "slug": "himss-7",
+      "summary": "bahcelievler kazandık",
+      "content": "<p>kutlayalım</p>",
+      "hospital": "Bahcelievler Devlet Hastanesi",
+      "country": "Türkiye",
+      "segment": "Public",
+      "tags": [
+        "himss 7"
+      ],
+      "publishedAt": "2025-12-04T21:48:48.345Z",
+      "featured": false,
+      "status": "published",
+      "author": "Cem Salas",
+      "image": "",
+      "video": "/uploads/sarus-hub/videos/1764885372968_Bahcelievler.mp4",
+      "language": "tr",
+      "createdAt": "2025-12-04T21:48:48.345Z",
+      "updatedAt": "2025-12-04T21:58:04.406Z",
+      "readingMinutes": 2
+    },
+    {
+      "id": "1764886518020",
+      "type": "case-study",
+      "title": "Mesk kurulum",
+      "slug": "mesk",
+      "summary": "dnemee",
+      "content": "<p>dejehee</p>",
+      "hospital": "Mesk",
+      "country": "Türkiye",
+      "segment": "PPP",
+      "tags": [
+        "Mega"
+      ],
+      "publishedAt": "2025-12-04T22:15:18.020Z",
+      "featured": true,
+      "readingMinutes": 2,
+      "status": "published",
+      "author": "Cem Salas",
+      "image": "/uploads/sarus-hub/1764886514426_radar.png",
+      "video": "",
+      "language": "en",
+      "createdAt": "2025-12-04T22:15:18.020Z",
+      "updatedAt": "2025-12-04T22:16:13.271Z"
+    }
+  ]
+}

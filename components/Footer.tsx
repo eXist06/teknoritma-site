@@ -42,8 +42,10 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <span className="text-neutral-300">
-                  Hacettepe Teknokent, 1596. Cadde<br />
-                  Çankaya / Ankara
+                  Hacettepe Teknoloji Geliştirme Bölgesi<br />
+                  Üniversiteler Mahallesi, 1596. Cadde<br />
+                  Safir C Blok (Bina No:6), 3. Kat, No:35<br />
+                  Beytepe/Çankaya/Ankara, 06800 Türkiye
                 </span>
               </div>
               <div className="flex items-center gap-2">

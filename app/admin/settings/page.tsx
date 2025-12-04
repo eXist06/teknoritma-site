@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { SystemSettings, EmailProvider, AdminUser, UserRole } from "@/lib/types/admin";
@@ -8,6 +9,9 @@ import { MailingSubscriber } from "@/lib/types/mailing";
 import UserEditForm from "@/components/UserEditForm";
 
 export default function AdminSettingsPage() {
+  const router = useRouter();
+  const [authorized, setAuthorized] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const [subscribers, setSubscribers] = useState<MailingSubscriber[]>([]);
   const [showMailingList, setShowMailingList] = useState(false);
   const [showEmailQueue, setShowEmailQueue] = useState(false);
@@ -59,6 +63,37 @@ export default function AdminSettingsPage() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    // Check authorization
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/admin/auth/me");
+        if (!response.ok) {
+          router.push("/admin/login");
+          return;
+        }
+
+        const data = await response.json();
+        const role: UserRole = data.user?.role;
+
+        // Sadece admin erişebilir
+        if (role !== "admin") {
+          router.push("/admin");
+          return;
+        }
+
+        setAuthorized(true);
+      } catch {
+        router.push("/admin/login");
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+    checkAuth();
+  }, [router]);
+
+  useEffect(() => {
+    if (!authorized) return;
+    
     fetch("/api/admin/settings")
       .then((res) => res.json())
       .then((data) => {
@@ -420,6 +455,18 @@ export default function AdminSettingsPage() {
       setLoading(false);
     }
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-neutral-body">Yükleniyor...</div>
+      </div>
+    );
+  }
+
+  if (!authorized) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-neutral-light py-8">
@@ -963,6 +1010,7 @@ export default function AdminSettingsPage() {
                         <option value="admin">Admin - Tam Yetki</option>
                         <option value="ik">IK - İnsan Kaynakları</option>
                         <option value="knowledge-base">Bilgi Merkezi - Knowledge Base</option>
+                        <option value="sarus-hub">Sarus-HUB - İçerik Yönetimi</option>
                       </select>
                     </div>
                   </div>
@@ -1009,9 +1057,17 @@ export default function AdminSettingsPage() {
                                 ? "bg-red-100 text-red-800"
                                 : user.role === "ik"
                                 ? "bg-blue-100 text-blue-800"
+                                : user.role === "sarus-hub"
+                                ? "bg-purple-100 text-purple-800"
                                 : "bg-green-100 text-green-800"
                             }`}>
-                              {user.role === "admin" ? "Admin" : user.role === "ik" ? "IK" : "Bilgi Merkezi"}
+                              {user.role === "admin" 
+                                ? "Admin" 
+                                : user.role === "ik" 
+                                ? "IK" 
+                                : user.role === "sarus-hub"
+                                ? "Sarus-HUB"
+                                : "Bilgi Merkezi"}
                             </span>
                           </td>
                           <td className="px-4 py-2 text-sm">

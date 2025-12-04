@@ -28,7 +28,11 @@ export async function middleware(request: NextRequest) {
     }
 
     try {
-      await jwtVerify(token, new TextEncoder().encode(JWT_SECRET));
+      const { payload } = await jwtVerify(token, new TextEncoder().encode(JWT_SECRET));
+      
+      // Role check for Sarus-HUB will be done in API routes
+      // Middleware only checks token validity
+      
       return NextResponse.next();
     } catch {
       const url = request.nextUrl.clone();

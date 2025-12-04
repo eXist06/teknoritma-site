@@ -57,6 +57,17 @@ export default function AdminDashboardPageEn() {
                 Configure email settings and system preferences
               </p>
             </Link>
+            <Link
+              href="/en/admin/sarus-hub"
+              className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 hover:shadow-lg transition-shadow border border-neutral-border"
+            >
+              <h2 className="text-xl font-bold text-neutral-heading mb-2">
+                Sarus-HUB
+              </h2>
+              <p className="text-neutral-body">
+                Content management: case studies, news, insights
+              </p>
+            </Link>
             <button
               onClick={async () => {
                 await fetch("/api/admin/auth/logout", { method: "POST" });

@@ -58,7 +58,7 @@ export default function LegalPage({ type }: { type: "kvkk" | "cookie" | "terms" 
             title: "7. İletişim",
             content: `KVKK kapsamındaki haklarınızı kullanmak için aşağıdaki iletişim kanallarını kullanabilirsiniz:
 E-posta: kvkk@teknoritma.com.tr
-Adres: Hacettepe Teknokent, 1596. Cadde, Çankaya / Ankara`,
+Adres: Hacettepe Teknoloji Geliştirme Bölgesi, Üniversiteler Mahallesi, 1596. Cadde, Safir C Blok (Bina No:6), 3. Kat, No:35, Beytepe/Çankaya/Ankara, 06800 Türkiye`,
           },
         ],
       },
@@ -112,7 +112,7 @@ Adres: Hacettepe Teknokent, 1596. Cadde, Çankaya / Ankara`,
             title: "7. Contact",
             content: `To exercise your rights under KVKK, you can use the following contact channels:
 Email: kvkk@teknoritma.com.tr
-Address: Hacettepe Teknokent, 1596. Cadde, Çankaya / Ankara`,
+Address: Hacettepe Teknoloji Geliştirme Bölgesi, Üniversiteler Mahallesi, 1596. Cadde, Safir C Blok (Bina No:6), 3. Kat, No:35, Beytepe/Çankaya/Ankara, 06800 Türkiye`,
           },
         ],
       },
@@ -310,7 +310,7 @@ Address: Hacettepe Teknokent, 1596. Cadde, Çankaya / Ankara`,
             <p className="text-sm text-neutral-body mt-2">
               E-posta: {type === "kvkk" ? "kvkk@teknoritma.com.tr" : "info@teknoritma.com.tr"}
               <br />
-              {language === "en" ? "Address" : "Adres"}: Hacettepe Teknokent, 1596. Cadde, Çankaya / Ankara
+              {language === "en" ? "Address" : "Adres"}: Hacettepe Teknoloji Geliştirme Bölgesi, Üniversiteler Mahallesi, 1596. Cadde, Safir C Blok (Bina No:6), 3. Kat, No:35, Beytepe/Çankaya/Ankara, 06800 Türkiye
             </p>
           </div>
         </div>
@@ -318,6 +318,7 @@ Address: Hacettepe Teknokent, 1596. Cadde, Çankaya / Ankara`,
     </div>
   );
 }
+
 
 
 

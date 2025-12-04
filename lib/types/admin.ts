@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "ik" | "knowledge-base";
+export type UserRole = "admin" | "ik" | "knowledge-base" | "sarus-hub";
 
 export interface AdminUser {
   id: string;
