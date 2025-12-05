@@ -49,7 +49,7 @@ export const translations: Record<string, any> = {
       requestDemo: "Demo Talep Et",
     },
     footer: {
-      description: "Orta ve büyük ölçekli hastaneler için uçtan uca sağlık bilişim çözümleri sunuyoruz. Türkiye'nin ilk %100 web tabanlı hastane bilgi sistemi Sarus ile dijital dönüşümünüzü destekliyoruz.",
+      description: "",
       quickLinks: "Hızlı Bağlantılar",
       legal: "Yasal",
       copyright: "© {year} Teknoritma Yazılım Hizmetleri A.Ş. Tüm hakları saklıdır.",
@@ -204,7 +204,7 @@ export const translations: Record<string, any> = {
       requestDemo: "Request Demo",
     },
     footer: {
-      description: "We provide end-to-end health informatics solutions for medium and large-scale hospitals. We support your digital transformation with Sarus, Turkey's first 100% web-based hospital information system.",
+      description: "",
       quickLinks: "Quick Links",
       legal: "Legal",
       copyright: "© {year} Teknoritma Yazılım Hizmetleri A.Ş. All rights reserved.",

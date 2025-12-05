@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { translations } from "./translations";
+import { getRouteInLanguage } from "./route-mapping";
 
 type Language = "tr" | "en";
 
@@ -18,6 +19,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [language, setLanguageState] = useState<Language>("tr");
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     // Check if URL starts with /en
@@ -26,25 +28,14 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     } else {
       setLanguageState("tr");
     }
+    setIsInitialized(true);
   }, [pathname]);
+
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    let currentPath = pathname;
-    // Remove /en prefix if exists
-    if (currentPath.startsWith("/en")) {
-      currentPath = currentPath.replace(/^\/en/, "") || "/";
-    }
-    // Remove /tr prefix if exists (for consistency)
-    if (currentPath.startsWith("/tr")) {
-      currentPath = currentPath.replace(/^\/tr/, "") || "/";
-    }
-    
-    if (lang === "en") {
-      router.push(`/en${currentPath}`);
-    } else {
-      router.push(currentPath);
-    }
+    const targetPath = getRouteInLanguage(pathname, lang);
+    router.push(targetPath);
   };
 
   const t = (key: string): string => {

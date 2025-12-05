@@ -108,6 +108,15 @@ export default function Hero() {
                   Your browser does not support the video tag.
                 </video>
               </div>
+              
+              {/* Ankara Şehir Hastanesi Label - Bottom Right */}
+              <div className="absolute bottom-[30%] md:bottom-[25%] right-4 md:right-6 lg:right-8 z-10">
+                <div className="bg-black/40 backdrop-blur-sm px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-white/20">
+                  <p className="text-white/70 text-xs md:text-sm font-medium whitespace-nowrap">
+                    {language === "en" ? "Ankara City Hospital" : "Ankara Şehir Hastanesi"}
+                  </p>
+                </div>
+              </div>
             </motion.div>
           </AnimatePresence>
           

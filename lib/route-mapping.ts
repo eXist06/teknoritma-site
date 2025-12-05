@@ -1,11 +1,6 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { jwtVerify } from "jose";
-
-const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
-
-// Route mapping for language switching (inline version for middleware)
-const routeMapping: Record<string, string> = {
+// Route mapping between Turkish and English versions
+export const routeMapping: Record<string, string> = {
+  // Turkish to English
   "/hakkimizda": "/en/about",
   "/kariyer": "/en/careers",
   "/urunler/sarus": "/en/products/sarus",
@@ -19,6 +14,8 @@ const routeMapping: Record<string, string> = {
   "/sarus-hub": "/en/sarus-hub",
   "/demo-talep": "/en/request-demo",
   "/kariyer/hikayeler": "/en/careers/stories",
+  
+  // English to Turkish
   "/en/about": "/hakkimizda",
   "/en/careers": "/kariyer",
   "/en/products/sarus": "/urunler/sarus",
@@ -34,17 +31,24 @@ const routeMapping: Record<string, string> = {
   "/en/careers/stories": "/kariyer/hikayeler",
 };
 
-function getRouteInLanguage(path: string, targetLang: "tr" | "en"): string {
+/**
+ * Get the equivalent route in the target language
+ */
+export function getRouteInLanguage(path: string, targetLang: "tr" | "en"): string {
+  // Normalize path
   let normalizedPath = path;
   
+  // Remove /en prefix if exists
   if (normalizedPath.startsWith("/en")) {
     normalizedPath = normalizedPath.replace(/^\/en/, "") || "/";
   }
   
+  // Handle root path
   if (normalizedPath === "/") {
     return targetLang === "en" ? "/en" : "/";
   }
   
+  // Handle dynamic routes (e.g., /kariyer/[id], /sarus-hub/[slug])
   const pathParts = normalizedPath.split("/").filter(Boolean);
   
   // Handle /kariyer/[id] -> /en/careers/[id]
@@ -63,6 +67,13 @@ function getRouteInLanguage(path: string, targetLang: "tr" | "en"): string {
   
   // Handle /sarus-hub/[slug] -> /en/sarus-hub/[slug]
   if (pathParts[0] === "sarus-hub" && pathParts.length === 2) {
+    return targetLang === "en"
+      ? `/en/sarus-hub/${pathParts[1]}`
+      : `/sarus-hub/${pathParts[1]}`;
+  }
+  
+  // Handle /en/sarus-hub/[slug] -> /sarus-hub/[slug]
+  if (normalizedPath.startsWith("/sarus-hub/") && pathParts.length === 2) {
     return targetLang === "en"
       ? `/en/sarus-hub/${pathParts[1]}`
       : `/sarus-hub/${pathParts[1]}`;
@@ -89,98 +100,19 @@ function getRouteInLanguage(path: string, targetLang: "tr" | "en"): string {
   
   // Check direct mapping
   if (targetLang === "en") {
+    // Turkish to English
     if (routeMapping[normalizedPath]) {
       return routeMapping[normalizedPath];
     }
+    // If no mapping, add /en prefix
     return `/en${normalizedPath}`;
   } else {
+    // English to Turkish
     const enPath = `/en${normalizedPath}`;
     if (routeMapping[enPath]) {
       return routeMapping[enPath];
     }
+    // If no mapping, remove /en prefix
     return normalizedPath;
   }
 }
-
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const url = request.nextUrl.clone();
-
-  // Auto-detect language for root path only (first visit)
-  if (pathname === "/" && !request.cookies.get("lang_preference")) {
-    const acceptLanguage = request.headers.get("accept-language");
-    let preferredLang = "tr";
-    
-    if (acceptLanguage) {
-      const languages = acceptLanguage.split(",").map(lang => lang.split(";")[0].trim().toLowerCase());
-      if (languages.some(lang => lang.startsWith("en"))) {
-        preferredLang = "en";
-      }
-    }
-    
-    // Set cookie and redirect
-    url.pathname = preferredLang === "en" ? "/en" : "/";
-    const response = NextResponse.redirect(url);
-    response.cookies.set("lang_preference", preferredLang, { maxAge: 365 * 24 * 60 * 60 });
-    return response;
-  }
-
-  // Admin sayfalarını koru (login, first-login ve change-password hariç)
-  if (
-    (pathname.startsWith("/admin") || pathname.startsWith("/en/admin")) &&
-    !pathname.includes("/login") &&
-    !pathname.includes("/first-login") &&
-    !pathname.includes("/change-password") &&
-    !pathname.includes("/reset-password")
-  ) {
-    const token = request.cookies.get("admin_token")?.value;
-
-    if (!token) {
-      if (pathname.startsWith("/en/admin")) {
-        url.pathname = "/en/admin/login";
-      } else {
-        url.pathname = "/admin/login";
-      }
-      return NextResponse.redirect(url);
-    }
-
-    try {
-      const { payload } = await jwtVerify(token, new TextEncoder().encode(JWT_SECRET));
-      
-      // Role check for Sarus-HUB will be done in API routes
-      // Middleware only checks token validity
-      
-      return NextResponse.next();
-    } catch {
-      if (pathname.startsWith("/en/admin")) {
-        url.pathname = "/en/admin/login";
-      } else {
-        url.pathname = "/admin/login";
-      }
-      return NextResponse.redirect(url);
-    }
-  }
-
-  return NextResponse.next();
-}
-
-export const config = {
-  matcher: [
-    "/admin/:path*",
-    "/en/admin/:path*",
-    "/",
-    "/hakkimizda",
-    "/kariyer/:path*",
-    "/urunler/:path*",
-    "/yasal/:path*",
-    "/sarus-hub/:path*",
-    "/demo-talep",
-    "/en/about",
-    "/en/careers/:path*",
-    "/en/products/:path*",
-    "/en/legal/:path*",
-    "/en/sarus-hub/:path*",
-    "/en/request-demo",
-  ],
-};
-
