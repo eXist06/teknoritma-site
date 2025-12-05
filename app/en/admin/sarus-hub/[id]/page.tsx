@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import RichTextEditor from "@/components/RichTextEditor";
 import { SarusHubItem, SarusHubItemType, SarusHubItemStatus, SarusHubItemLanguage } from "@/lib/types/sarus-hub";
+import { UserRole } from "@/lib/types/admin";
 
 const typeLabels: Record<SarusHubItemType, string> = {
   "case-study": "Case Study",
@@ -18,6 +19,8 @@ export default function AdminSarusHubEditPageEN() {
   const id = params.id as string;
   const isNew = id === "new";
 
+  const [authorized, setAuthorized] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState<Partial<SarusHubItem>>({
@@ -43,10 +46,35 @@ export default function AdminSarusHubEditPageEN() {
   const [videoUploading, setVideoUploading] = useState(false);
 
   useEffect(() => {
-    if (!isNew) {
-      fetchItem();
-    }
-  }, [id, isNew]);
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/admin/auth/me");
+        if (!response.ok) {
+          router.push("/en/admin/login");
+          return;
+        }
+
+        const data = await response.json();
+        const role: UserRole = data.user?.role;
+
+        // Sarus-hub veya admin erişebilir
+        if (role !== "admin" && role !== "sarus-hub") {
+          router.push("/en/admin");
+          return;
+        }
+
+        setAuthorized(true);
+        if (!isNew) {
+          fetchItem();
+        }
+      } catch {
+        router.push("/en/admin/login");
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+    checkAuth();
+  }, [id, isNew, router]);
 
   const fetchItem = async () => {
     try {
@@ -182,6 +210,18 @@ export default function AdminSarusHubEditPageEN() {
       setSaving(false);
     }
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-neutral-body">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!authorized) {
+    return null;
+  }
 
   if (loading) {
     return (

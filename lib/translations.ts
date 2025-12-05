@@ -29,6 +29,15 @@ export const translations: Record<string, any> = {
         support: "Kurumsal Düzeyde Güvenilirlik ve Tam Destek",
         ai: "AI - Karar Destek Sistemleri",
       },
+      slide3: {
+        title: "Sınırların ötesinde...",
+        bullets: {
+          multilang: "Çoklu dil desteği (EN / AR / RU)",
+          integration: "Hızlı entegrasyon (Sarus ICP)",
+          project: "Güçlü proje yönetimi kültürü",
+          compliance: "FHIR / HL7 / DICOM uyumluluğu",
+        },
+      },
     },
     metrics: {
       users: "Kullanıcı",
@@ -173,6 +182,16 @@ export const translations: Record<string, any> = {
         robust: "HL7 / FHIR Native, Modular & Scalable Architecture",
         support: "Enterprise-Grade Reliability with 24/7 Support",
         ai: "AI-Driven Decision Support",
+      },
+      slide3: {
+        title: "",
+        subtitle: "Trusted in 5 Countries!",
+        bullets: {
+          multilang: "Multi-language support (EN / AR / RU)",
+          integration: "Rapid integration (Sarus ICP)",
+          project: "Strong project management culture",
+          compliance: "FHIR / HL7 / DICOM compliance",
+        },
       },
     },
     metrics: {

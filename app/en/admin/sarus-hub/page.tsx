@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { SarusHubItem, SarusHubItemType } from "@/lib/types/sarus-hub";
+import { UserRole } from "@/lib/types/admin";
 
 const typeLabels: Record<SarusHubItemType, string> = {
   "case-study": "Case Study",
@@ -19,6 +20,8 @@ const statusLabels: Record<"draft" | "published", string> = {
 
 export default function AdminSarusHubPageEN() {
   const router = useRouter();
+  const [authorized, setAuthorized] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const [items, setItems] = useState<SarusHubItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [typeFilter, setTypeFilter] = useState<"all" | SarusHubItemType>("all");
@@ -26,8 +29,33 @@ export default function AdminSarusHubPageEN() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    fetchItems();
-  }, []);
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/admin/auth/me");
+        if (!response.ok) {
+          router.push("/en/admin/login");
+          return;
+        }
+
+        const data = await response.json();
+        const role: UserRole = data.user?.role;
+
+        // Sarus-hub veya admin erişebilir
+        if (role !== "admin" && role !== "sarus-hub") {
+          router.push("/en/admin");
+          return;
+        }
+
+        setAuthorized(true);
+        fetchItems();
+      } catch {
+        router.push("/en/admin/login");
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+    checkAuth();
+  }, [router]);
 
   const fetchItems = async () => {
     try {
@@ -72,6 +100,18 @@ export default function AdminSarusHubPageEN() {
       (item.hospital ?? "").toLowerCase().includes(q)
     );
   });
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-neutral-body">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!authorized) {
+    return null;
+  }
 
   if (loading) {
     return (

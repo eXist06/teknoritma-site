@@ -94,18 +94,18 @@ export default function AdminSarusHubEditPage() {
   const handleImageUpload = async (file: File) => {
     setImageUploading(true);
     try {
-      const uploadFormData = new FormData();
-      uploadFormData.append("file", file);
+      const formData = new FormData();
+      formData.append("file", file);
 
       const response = await fetch("/api/sarus-hub/upload-image", {
         method: "POST",
-        body: uploadFormData,
+        body: formData,
       });
 
       const data = await response.json();
 
       if (response.ok && data.url) {
-        setFormData((prev) => ({ ...prev, image: data.url }));
+        setFormData({ ...formData, image: data.url });
       } else {
         alert(data.error || "Resim yüklenemedi");
       }
@@ -120,19 +120,18 @@ export default function AdminSarusHubEditPage() {
   const handleVideoUpload = async (file: File) => {
     setVideoUploading(true);
     try {
-      const uploadFormData = new FormData();
-      uploadFormData.append("file", file);
+      const formData = new FormData();
+      formData.append("file", file);
 
       const response = await fetch("/api/sarus-hub/upload-video", {
         method: "POST",
-        body: uploadFormData,
+        body: formData,
       });
 
       const data = await response.json();
 
       if (response.ok && data.url) {
-        setFormData((prev) => ({ ...prev, video: data.url }));
-        alert("Video başarıyla yüklendi!");
+        setFormData({ ...formData, video: data.url });
       } else {
         alert(data.error || "Video yüklenemedi");
       }
@@ -144,17 +143,9 @@ export default function AdminSarusHubEditPage() {
     }
   };
 
-  // Helper function to check if content is actually empty (not just empty HTML tags)
-  const isContentEmpty = (html: string | undefined): boolean => {
-    if (!html) return true;
-    // Remove all HTML tags and check if there's actual text content
-    const textContent = html.replace(/<[^>]*>/g, "").trim();
-    return textContent.length === 0;
-  };
-
   const handleSave = async (status: SarusHubItemStatus) => {
-    if (!formData.title || !formData.slug) {
-      alert("Lütfen başlık ve slug alanlarını doldurun");
+    if (!formData.title || !formData.slug || !formData.summary || !formData.content) {
+      alert("Lütfen tüm zorunlu alanları doldurun");
       return;
     }
 
@@ -281,7 +272,7 @@ export default function AdminSarusHubEditPage() {
 
             <div>
               <label className="block text-sm font-medium text-neutral-heading mb-2">
-                Özet
+                Özet *
               </label>
               <textarea
                 value={formData.summary || ""}
@@ -294,7 +285,7 @@ export default function AdminSarusHubEditPage() {
 
           {/* Content */}
           <div className="space-y-4 rounded-lg border border-neutral-border p-6">
-            <h2 className="text-lg font-semibold text-neutral-heading">İçerik</h2>
+            <h2 className="text-lg font-semibold text-neutral-heading">İçerik *</h2>
             <RichTextEditor
               content={formData.content || ""}
               onChange={(content) => setFormData({ ...formData, content })}
@@ -462,41 +453,23 @@ export default function AdminSarusHubEditPage() {
                 Video
               </label>
               {formData.video && (
-                <div className="mb-2">
-                  <video
-                    src={formData.video}
-                    controls
-                    className="w-full rounded-lg mb-2"
-                    onError={() => {
-                      alert("Video önizlemesi yüklenemedi. Video formatını kontrol edin (MP4 önerilir).");
-                    }}
-                  />
-                  <p className="text-xs text-neutral-body">
-                    Video URL: {formData.video}
-                  </p>
-                </div>
+                <video
+                  src={formData.video}
+                  controls
+                  className="w-full rounded-lg mb-2"
+                />
               )}
               <input
                 type="file"
-                accept="video/mp4,video/webm,video/quicktime"
+                accept="video/*"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) {
-                    // Check file type
-                    if (!file.type.startsWith("video/")) {
-                      alert("Lütfen geçerli bir video dosyası seçin (MP4, WebM veya QuickTime)");
-                      return;
-                    }
-                    handleVideoUpload(file);
-                  }
+                  if (file) handleVideoUpload(file);
                 }}
                 disabled={videoUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
               />
               {videoUploading && <p className="text-sm text-neutral-body mt-2">Yükleniyor...</p>}
-              <p className="text-xs text-neutral-body mt-1">
-                Not: MP4 formatı tüm tarayıcılarda en iyi uyumluluğu sağlar. .mov dosyaları bazı tarayıcılarda çalışmayabilir.
-              </p>
             </div>
           </div>
 
@@ -524,5 +497,4 @@ export default function AdminSarusHubEditPage() {
     </div>
   );
 }
-
 

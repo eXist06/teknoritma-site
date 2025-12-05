@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import Orb from "./Orb";
 import Threads from "./Threads";
 import TypewriterText from "./TypewriterText";
+import VantaGlobe from "./VantaGlobe";
 
 export default function Hero() {
   const { language, t } = useI18n();
@@ -17,7 +18,7 @@ export default function Hero() {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [typewriterKey, setTypewriterKey] = useState(0); // Key to reset typewriters on slide change
-  const totalSlides = 2;
+  const totalSlides = 3;
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % totalSlides);
@@ -72,6 +73,8 @@ export default function Hero() {
       id="hero"
       className={`relative min-h-screen flex items-start overflow-hidden ${
         currentSlide === 0 
+          ? "bg-gradient-to-br from-background via-background-alt to-background"
+          : currentSlide === 2
           ? "bg-gradient-to-br from-background via-background-alt to-background"
           : "bg-white"
       }`}
@@ -131,6 +134,35 @@ export default function Hero() {
                 amplitude={1.2} 
                 distance={0.75} 
                 enableMouseInteraction={true}
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      )}
+
+      {/* Background for slide 3 - Vanta.js Globe Effect */}
+      {currentSlide === 2 && (
+        <div className="absolute inset-0 overflow-hidden z-0">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key="bg-slide-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8 }}
+              className="absolute inset-0 z-0"
+            >
+              <VantaGlobe
+                color={0x1d14aa}
+                color2={0xe31eb4}
+                backgroundColor={0xf5f5f5}
+                mouseControls={true}
+                touchControls={true}
+                gyroControls={false}
+                minHeight={200}
+                minWidth={200}
+                scale={1}
+                scaleMobile={1}
               />
             </motion.div>
           </AnimatePresence>
@@ -417,6 +449,120 @@ export default function Hero() {
                       <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
                     </motion.button>
                   </a>
+                  <a href={`${basePath}#contact`}>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-8 py-4 border-2 border-neutral-border text-neutral-heading rounded-full font-semibold hover:border-primary hover:text-primary transition-all duration-300 hover:bg-primary/5"
+                    >
+                      {language === "en" ? "Contact Us" : "İletişim"}
+                    </motion.button>
+                  </a>
+                </motion.div>
+              </motion.div>
+            )}
+
+            {/* Slide 3: Beyond Boundaries */}
+            {currentSlide === 2 && (
+              <motion.div
+                key="slide-3"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-4 md:mt-6 z-30"
+              >
+                {/* Title */}
+                <motion.h1
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.8 }}
+                  className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-4 md:mb-6"
+                >
+                  <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black">
+                    Sarus
+                  </span>
+                  {language === "tr" && (
+                    <span className="text-4xl md:text-5xl lg:text-6xl text-neutral-heading">
+                      {t("hero.slide3.title")}
+                    </span>
+                  )}
+                </motion.h1>
+
+                {/* Subtitle - Only for English, styled as slogan */}
+                {language === "en" && (
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.6 }}
+                    className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 md:mb-8"
+                  >
+                    {t("hero.slide3.subtitle")}
+                  </motion.h2>
+                )}
+
+                {/* Bullet Points */}
+                <motion.ul
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.6 }}
+                  className="flex flex-col gap-3 md:gap-4 list-none"
+                >
+                  <motion.li
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5, duration: 0.5 }}
+                    className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
+                  >
+                    <span className="text-primary text-xl mt-1">●</span>
+                    <span className="font-medium">{t("hero.slide3.bullets.multilang")}</span>
+                  </motion.li>
+                  <motion.li
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6, duration: 0.5 }}
+                    className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
+                  >
+                    <span className="text-primary text-xl mt-1">●</span>
+                    <span className="font-medium">{t("hero.slide3.bullets.integration")}</span>
+                  </motion.li>
+                  <motion.li
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.7, duration: 0.5 }}
+                    className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
+                  >
+                    <span className="text-primary text-xl mt-1">●</span>
+                    <span className="font-medium">{t("hero.slide3.bullets.project")}</span>
+                  </motion.li>
+                  <motion.li
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8, duration: 0.5 }}
+                    className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
+                  >
+                    <span className="text-primary text-xl mt-1">●</span>
+                    <span className="font-medium">{t("hero.slide3.bullets.compliance")}</span>
+                  </motion.li>
+                </motion.ul>
+
+                {/* CTAs */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.6 }}
+                  className="flex flex-wrap items-center gap-4 pt-2 mt-4 md:mt-5"
+                >
+                  <Link href={`${basePath}/urunler/sarus`}>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="group px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all duration-300 shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40"
+                    >
+                      {t("hero.primaryCta")}
+                      <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                    </motion.button>
+                  </Link>
                   <a href={`${basePath}#contact`}>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
