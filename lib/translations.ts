@@ -131,6 +131,158 @@ export const translations: Record<string, any> = {
         description: "Modern hastane yönetimi için kapsamlı çözümümüz hakkında daha fazla bilgi almak veya demo talep etmek için bizimle iletişime geçin.",
       },
     },
+    pacs: {
+      backToProducts: "Ürünlere Dön",
+      mainProduct: "Enterprise Imaging",
+      tagline: "Hızlı, güvenilir ve kusursuz kullanım deneyimi.",
+      description: "Sarus PACS, tüm görüntüleme süreçlerinizi tek bir çatı altında birleştiren kurumsal bir görüntüleme çözümüdür. Klinik ekiplerin daha hızlı ve doğru karar almasını sağlarken, kurumların operasyonel maliyetlerini azaltmasına yardımcı olur. Tüm kurum genelinde tıbbi multimedya içeriklerini güvenle yakalamayı, depolamayı, görüntülemeyi, paylaşmayı ve iş birliği yapmayı mümkün kılar.",
+      descriptionExtended: "Yüksek çözünürlüklü görüntü desteği ve hızlı aktarım altyapısı sayesinde BT, MRG, PET ve röntgen görüntülerinin keskin kaliteyle görüntülenmesini ve etkin raporlanmasını sağlar. Sarus PACS, daha akıcı, daha verimli ve güvenilir bir görüntüleme deneyimi sunmak için tasarlanmıştır.",
+      expandText: "Genişlet",
+      collapseText: "Daralt",
+      requestDemo: "Demo Talep Et",
+      contact: "İletişime Geç",
+      features: {
+        title: "Sarus Pacs Çözüm Merkezi",
+        pacsSolutions: {
+          title: "Görüntü Saklama ve İletişim Sistemi",
+          description: "DICOM ve non-DICOM görüntüler, videolar ve belgeler için vendor-neutral arşivleme. Gelecekteki migrasyonları ve vendor lock-in'i önler.",
+        },
+        ris: {
+          title: "Radyoloji Bilgi Sistemi",
+          description: "Radyoloji departmanı için kapsamlı iş akışı yönetimi, sipariş yönetiminden rapor dağıtımına kadar tüm süreçleri kapsar.",
+        },
+        worklist: {
+          title: "Modality Worklist Yönetimi",
+          description: "Merkezi worklist yönetimi ile tüm modalitelerden gelen çalışmaları tek bir noktadan yönetin ve dağıtın.",
+        },
+        workstation: {
+          title: "Diagnostik İş İstasyonu",
+          description: "3D görüntüleme, gelişmiş ölçüm araçları ve entegre raporlama ile radyologlar için optimize edilmiş diagnostik uygulama.",
+        },
+        webViewer: {
+          title: "Web Görüntüleyici",
+          description: "HTML5 tabanlı, zero-footprint web görüntüleyici. Kurulum gerektirmez, herhangi bir cihazdan erişim sağlar.",
+        },
+        workflow: {
+          title: "Klinik İş Akışı Optimizasyonu",
+          description: "Radyoloji süreçlerini optimize eden, önceliklendirme ve SLA bazlı iş akışı yönetimi.",
+        },
+        archiving: {
+          title: "Ölçeklenebilir Arşivleme",
+          description: "Çoklu depolama katmanları ve otomatik veri migrasyonu ile yüksek kapasiteli görüntü saklama altyapısı.",
+        },
+        telemedicine: {
+          title: "Teleradyoloji ve Teletıp",
+          description: "Kurumlar arası görüntü paylaşımı ve uzaktan diagnostik okuma için tam entegre teletıp altyapısı.",
+        },
+        dicomRouter: {
+          title: "DICOM Yönlendirme",
+          description: "Birden fazla sağlık kuruluşunda hızlı ve güvenli görüntü paylaşımı için merkezi DICOM yönlendirme sistemi.",
+        },
+      },
+      products: {
+        title: "Sarus Pacs Ekosistemi",
+        subtitle: "Önemli Bileşenler",
+        webViewer: "Sarus Web Görüntüleyici",
+        audioManager: "Sarus Audio Manager",
+        imageServer: "Sarus Image Server",
+        dicomRouter: "Sarus DICOM Router",
+        hl7Router: "Sarus HL7 Listener & Router",
+        telemedicine: "Sarus Teletıp",
+        modalityWorkslist: "Sarus Modality Workslist",
+        fileRepo: "Sarus File Repo Server",
+        ris: "Sarus RIS",
+        workstation: "Sarus Workstation",
+      },
+      capabilities: {
+        title: "Teknik Özellikler",
+        subtitle: "Enterprise imaging için güvenilir ve ölçeklenebilir altyapı",
+        telemedicine: "Kurumlar Arası Görüntü Paylaşımı",
+        html5: "Platform Bağımsız Görüntüleme",
+        teleradiology: "Uzaktan Diagnostik Okuma",
+        dicomRobot: "Otomatik DICOM İçe Aktarım",
+        dicomHl7: "Standart Protokol Desteği",
+        fastAccess: "Yüksek Performanslı Erişim",
+        workstation: "Gelişmiş Diagnostik Araçlar",
+        dictation: "Entegre Raporlama Sistemi",
+      },
+      testimonials: {
+        title: "Referanslar",
+        subtitle: "Dünya'nın en büyük sağlık tesislerinin tercihi",
+        ankara1: {
+          name: "Doçent Doktor - Ayşe Banu Yağmurlu",
+          hospital: "Ankara Şehir Hastanesi",
+          quote: "Ankara Şehir Hastanesi bünyesinde kullandığımız PACS, görüntü saklama kapasitesi açısından oldukça ileri düzey bir sistem olup yüksek görüntü rezolüsyonu ve görüntü aktarım hızına sahiptir. BT, MRG ve PET imajları ile röntgen tetkiklerinin yüksek kalitede görüntülenmesine ve raporlanmasına olanak tanır.",
+        },
+        ankara2: {
+          name: "Uzman Doktor - Pınar İlhan Demir",
+          hospital: "Ankara Şehir Hastanesi",
+          quote: "Ankara Şehir Hastanesi olarak SARUS PACS sistemi biz Radyologlara hızlı ve doğru tanıya ulaşma imkanını kolaylaştırmıştır. Görüntülerde hiçbir veri kaybı olmadan sistemden çağırdığımız tüm görüntüleri SARUS PACS sistemi ile kaliteli ve hızlı bir biçimde inceleyebilmekteyiz.",
+        },
+      },
+      stats: {
+        title: "Ankara Şehir Hastanesi",
+        subtitle: "Sarus Pacs dünyadaki en büyük dijital radyoloji referanslarından biri olan Ankara Şehir Hastanesi'nde 2018 yılından bu yana başarılı şekilde çalışmaktadır.",
+        description: "Sarus Pacs dünyadaki en büyük dijital radyoloji referanslarından biri olan Ankara Şehir Hastanesi'nde 2018 yılından bu yana başarılı şekilde çalışmaktadır.",
+        modalities: "110+",
+        modalitiesLabel: "Modalite",
+        radiologists: "90+",
+        radiologistsLabel: "Radyolog",
+        workstations: "100+",
+        workstationsLabel: "İş İstasyonu",
+        dailyProcedures: "10.000+",
+        dailyProceduresLabel: "Günlük Radyolojik Prosedür",
+        archive: "Dünyanın En Hızlı Büyüyen Arşivlerinden Biri",
+      },
+      enterprise: {
+        title: "Sarus Pacs Çözüm Merkezi",
+        subtitle: "Sarus Pacs Çözüm Merkezi",
+        singleAccess: {
+          title: "Tek Noktadan Erişim",
+          description: "Tüm görüntüler, videolar ve verilere tek bir noktadan erişim, uygulamalar arası geçiş ihtiyacını azaltır.",
+        },
+        crossDepartment: {
+          title: "Çok Departmanlı İşbirliği",
+          description: "Paylaşılan platform, özellikle kanser bakımında multidisipliner işbirliğini ve entegre tanı iş akışlarını mümkün kılar.",
+        },
+        scalability: {
+          title: "Ölçeklenebilir ve Modüler",
+          description: "İhtiyaçlarınıza göre modül ekleyip çıkarabilir, departmandan departmana ve kurumdan kuruma büyüyebilirsiniz.",
+        },
+        highAvailability: {
+          title: "Yüksek Erişilebilirlik",
+          description: "Hasta görüntüleri ve bilgileri, nerede ve ne zaman oluşturulduklarından bağımsız olarak tek noktadan erişilebilir.",
+        },
+      },
+      keyFeatures: {
+        title: "Vurucu Özellikler",
+        subtitle: "Sarus PACS'in güçlü yetenekleri",
+        workstation: {
+          title: "Sarus Workstation",
+          description: "3D görüntüleme, gelişmiş ölçüm araçları ve entegre raporlama ile güçlü DICOM görüntüleyici. Radyologlar için özel tasarlanmış verimli iş akışı.",
+        },
+        webViewer: {
+          title: "Sarus Web Viewer",
+          description: "HTML5 tabanlı, kurulum gerektirmeyen web görüntüleyici. Herhangi bir cihazdan, herhangi bir yerden erişim.",
+        },
+        imageServer: {
+          title: "Sarus Image Server",
+          description: "Sanal bölümler, çoklu dosya sistemleri ve gelişmiş WorkQueue ile ölçeklenebilir görüntü sunucu altyapısı.",
+        },
+        dicomRouter: {
+          title: "Sarus DICOM Router",
+          description: "Birden fazla sağlık kuruluşunda hızlı ve güvenli görüntü paylaşımı. Ölçeklenebilir mimari ile merkezi görüntü paylaşımı.",
+        },
+        audioManager: {
+          title: "Sarus Audio Manager",
+          description: "Kurumsal düzeyde dijital dikte çözümü. RIS/PACS entegrasyonu ile raporlama süreçlerini hızlandırır.",
+        },
+      },
+      cta: {
+        title: "Sarus PACS ile Radyoloji İş Akışınızı Dönüştürün",
+        description: "Modern radyoloji departmanları için kapsamlı PACS çözümümüz hakkında daha fazla bilgi almak veya demo talep etmek için bizimle iletişime geçin.",
+      },
+    },
     contact: {
       title: "Projenizi birlikte planlayalım",
       description: "Mevcut HIS/PACS/LIS altyapınızı, hedeflerinizi ve zaman planınızı paylaşın; sizin için örnek bir faz planı ve yol haritası oluşturalım.",
@@ -284,6 +436,157 @@ export const translations: Record<string, any> = {
       cta: {
         title: "Start Your Digital Transformation with SarusHIS",
         description: "Contact us to learn more about our comprehensive solution for modern hospital management or to request a demo.",
+      },
+    },
+    pacs: {
+      backToProducts: "Back to Products",
+      mainProduct: "Imaging Solution",
+      tagline: "Fast, reliable, and seamless user experience.",
+      description: "Sarus PACS is an enterprise imaging solution that consolidates all your imaging processes under one roof. It enables clinical teams to make faster and more accurate decisions while helping organizations reduce operational costs. It enables secure capture, storage, viewing, sharing, and collaboration of medical multimedia content across the entire organization.",
+      descriptionExtended: "With high-resolution image support and fast transfer infrastructure, it enables sharp quality viewing and effective reporting of CT, MRI, PET, and X-ray images. Sarus PACS is designed to deliver a smoother, more efficient, and reliable imaging experience.",
+      expandText: "Expand",
+      collapseText: "Collapse",
+      requestDemo: "Request Demo",
+      contact: "Contact Us",
+      features: {
+        title: "Sarus Pacs Solution Center",
+        pacsSolutions: {
+          title: "Image Storage and Communication System",
+          description: "Vendor-neutral archiving for DICOM and non-DICOM images, videos, and documents. Prevents future migrations and vendor lock-in.",
+        },
+        ris: {
+          title: "Radiology Information System",
+          description: "Comprehensive workflow management for radiology departments, covering all processes from order management to report distribution.",
+        },
+        worklist: {
+          title: "Modality Worklist Management",
+          description: "Central worklist management to manage and distribute studies from all modalities from a single point.",
+        },
+        workstation: {
+          title: "Diagnostic Workstation",
+          description: "Diagnostic application optimized for radiologists with 3D imaging, advanced measurement tools, and integrated reporting.",
+        },
+        webViewer: {
+          title: "Web Viewer",
+          description: "HTML5-based, zero-footprint web viewer. Requires no installation, provides access from any device.",
+        },
+        workflow: {
+          title: "Clinical Workflow Optimization",
+          description: "Workflow management that optimizes radiology processes with prioritization and SLA-based management.",
+        },
+        archiving: {
+          title: "Scalable Archiving",
+          description: "High-capacity image storage infrastructure with multiple storage tiers and automatic data migration.",
+        },
+        telemedicine: {
+          title: "Teleradiology and Telemedicine",
+          description: "Fully integrated telemedicine infrastructure for cross-institutional image sharing and remote diagnostic reading.",
+        },
+        dicomRouter: {
+          title: "DICOM Routing",
+          description: "Central DICOM routing system for fast and secure image sharing across multiple healthcare facilities.",
+        },
+      },
+      products: {
+        title: "Sarus Pacs Ecosystem",
+        subtitle: "Key Components",
+        webViewer: "Sarus Web Viewer",
+        audioManager: "Sarus Audio Manager",
+        imageServer: "Sarus Image Server",
+        dicomRouter: "Sarus DICOM Router",
+        hl7Router: "Sarus HL7 Listener & Router",
+        telemedicine: "Sarus Telemedicine",
+        modalityWorkslist: "Sarus Modality Workslist",
+        fileRepo: "Sarus File Repo Server",
+        ris: "Sarus RIS",
+        workstation: "Sarus Workstation",
+      },
+      capabilities: {
+        title: "Capabilities",
+        subtitle: "Powerful features of Sarus PACS",
+        telemedicine: "Cross-Enterprise Image Sharing",
+        html5: "Platform-Independent Viewing",
+        teleradiology: "Remote Diagnostic Reading",
+        dicomRobot: "Automated DICOM Import",
+        dicomHl7: "Standard Protocol Support",
+        fastAccess: "High-Performance Access",
+        workstation: "Advanced Diagnostic Tools",
+        dictation: "Integrated Reporting System",
+      },
+      testimonials: {
+        title: "References",
+        subtitle: "Preferred by the world's largest healthcare facilities",
+        ankara1: {
+          name: "Assoc. Prof. Dr. - Ayşe Banu Yağmurlu",
+          hospital: "Ankara City Hospital",
+          quote: "The PACS we use at Ankara City Hospital is a highly advanced system in terms of image storage capacity, with high image resolution and fast image transfer speeds. It enables high-quality viewing and reporting of CT, MRI, and PET images as well as X-ray examinations.",
+        },
+        ankara2: {
+          name: "Specialist Dr. - Pınar İlhan Demir",
+          hospital: "Ankara City Hospital",
+          quote: "As Ankara City Hospital, the SARUS PACS system has facilitated our ability as radiologists to reach fast and accurate diagnoses. We can review all images retrieved from the system with the SARUS PACS system in a quality and fast manner without any data loss in the images.",
+        },
+      },
+      stats: {
+        title: "Ankara City Hospital",
+        subtitle: "Sarus Pacs has been successfully operating at Ankara City Hospital, one of the world's largest digital radiology references, since 2018.",
+        description: "Sarus Pacs has been successfully operating at Ankara City Hospital, one of the world's largest digital radiology references, since 2018.",
+        modalities: "110+",
+        modalitiesLabel: "Modalities",
+        radiologists: "90+",
+        radiologistsLabel: "Radiologists",
+        workstations: "100+",
+        workstationsLabel: "Workstations",
+        dailyProcedures: "10,000+",
+        dailyProceduresLabel: "Daily Radiological Procedures",
+        archive: "One of the World's Fastest Growing Archives",
+      },
+      enterprise: {
+        title: "Sarus Pacs Solution Center",
+        singleAccess: {
+          title: "Single Point of Access",
+          description: "Access to all images, videos, and data from a single point reduces the need to switch between applications.",
+        },
+        crossDepartment: {
+          title: "Cross-Departmental Collaboration",
+          description: "Shared platform enables multi-disciplinary collaboration and integrated diagnostic workflows, especially important in cancer care.",
+        },
+        scalability: {
+          title: "Scalable and Modular",
+          description: "Add or remove modules as your needs evolve, grow from department to department and from enterprise to enterprise.",
+        },
+        highAvailability: {
+          title: "High Availability",
+          description: "Patient images and information accessible from a single point, regardless of where and when they were created along the patient pathway.",
+        },
+      },
+      keyFeatures: {
+        title: "Key Features",
+        subtitle: "Powerful capabilities of Sarus PACS",
+        workstation: {
+          title: "Sarus Workstation",
+          description: "Powerful DICOM viewer with 3D imaging, advanced measurement tools, and integrated reporting. Efficient workflow designed specifically for radiologists.",
+        },
+        webViewer: {
+          title: "Sarus Web Viewer",
+          description: "HTML5-based, zero-footprint web viewer requiring no installation. Access from any device, anywhere.",
+        },
+        imageServer: {
+          title: "Sarus Image Server",
+          description: "Scalable image server infrastructure with virtual partitions, multiple file systems, and advanced WorkQueue.",
+        },
+        dicomRouter: {
+          title: "Sarus DICOM Router",
+          description: "Fast and secure image sharing across multiple healthcare facilities. Centralized image sharing with scalable architecture.",
+        },
+        audioManager: {
+          title: "Sarus Audio Manager",
+          description: "Enterprise-level digital dictation solution. Accelerates reporting processes with RIS/PACS integration.",
+        },
+      },
+      cta: {
+        title: "Transform Your Radiology Workflow with Sarus PACS",
+        description: "Contact us to learn more about our comprehensive PACS solution for modern radiology departments or to request a demo.",
       },
     },
     contact: {

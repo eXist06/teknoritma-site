@@ -199,6 +199,9 @@ export default function AboutPageEN() {
                 <p className="text-sm text-neutral-body leading-relaxed">
                   Certified SP (Service Provider) - Highest level electronic health record maturity level.
                 </p>
+                <p className="text-sm font-semibold text-blue-900 mt-3">
+                  Istanbul Bahcelievler Public Hospital
+                </p>
               </div>
             </div>
 
@@ -287,3 +290,5 @@ export default function AboutPageEN() {
     </div>
   );
 }
+
+

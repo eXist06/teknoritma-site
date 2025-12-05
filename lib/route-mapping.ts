@@ -116,3 +116,5 @@ export function getRouteInLanguage(path: string, targetLang: "tr" | "en"): strin
     return normalizedPath;
   }
 }
+
+

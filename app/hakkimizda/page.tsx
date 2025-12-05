@@ -198,6 +198,9 @@ export default function AboutPage() {
                 <p className="text-sm text-neutral-body leading-relaxed">
                   Certified SP (Service Provider) - En yüksek seviye elektronik sağlık kaydı olgunluk seviyesi.
                 </p>
+                <p className="text-sm font-semibold text-blue-900 mt-3">
+                  Istanbul Bahcelievler Devlet Hastanesi
+                </p>
               </div>
             </div>
 
@@ -286,3 +289,5 @@ export default function AboutPage() {
     </div>
   );
 }
+
+

@@ -1,8 +1,9 @@
-import SarusHISPage from "@/components/SarusHISPage";
+import SarusPacsPageComponent from "@/components/SarusPacsPage";
 
 export default function SarusPacsPage() {
-  return <SarusHISPage />;
+  return <SarusPacsPageComponent />;
 }
+
 
 
 
