@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 
@@ -9,107 +9,117 @@ export default function SarusPacsPage() {
   const { language, t } = useI18n();
   const basePath = language === "en" ? "/en" : "";
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
+  const [activeNavItem, setActiveNavItem] = useState("design-goals");
 
-  const features = [
+  const tabs = [
     {
-      title: t("pacs.features.pacsSolutions.title"),
-      description: t("pacs.features.pacsSolutions.description"),
+      id: "fastViewing",
+      title: t("pacs.why.fastViewing.title"),
+      icon: "⚡",
+      iconBgClass: "bg-sky-50",
+      iconColorClass: "text-sky-600",
+      subtitle: t("pacs.why.fastViewing.description"),
+      detail: t("pacs.why.fastViewing.detail"),
     },
     {
-      title: t("pacs.features.ris.title"),
-      description: t("pacs.features.ris.description"),
+      id: "reliableWorkflows",
+      title: t("pacs.why.reliableWorkflows.title"),
+      icon: "🛡️",
+      iconBgClass: "bg-emerald-50",
+      iconColorClass: "text-emerald-600",
+      subtitle: t("pacs.why.reliableWorkflows.description"),
+      detail: t("pacs.why.reliableWorkflows.detail"),
     },
     {
-      title: t("pacs.features.worklist.title"),
-      description: t("pacs.features.worklist.description"),
+      id: "seamlessUX",
+      title: t("pacs.why.seamlessUX.title"),
+      icon: "✨",
+      iconBgClass: "bg-indigo-50",
+      iconColorClass: "text-indigo-600",
+      subtitle: t("pacs.why.seamlessUX.description"),
+      detail: t("pacs.why.seamlessUX.detail"),
     },
     {
-      title: t("pacs.features.workstation.title"),
-      description: t("pacs.features.workstation.description"),
+      id: "integration",
+      title: t("pacs.why.integration.title"),
+      icon: "🔗",
+      iconBgClass: "bg-amber-50",
+      iconColorClass: "text-amber-600",
+      subtitle: t("pacs.why.integration.description"),
+      detail: t("pacs.why.integration.detail"),
     },
     {
-      title: t("pacs.features.webViewer.title"),
-      description: t("pacs.features.webViewer.description"),
-    },
-    {
-      title: t("pacs.features.workflow.title"),
-      description: t("pacs.features.workflow.description"),
-    },
-    {
-      title: t("pacs.features.archiving.title"),
-      description: t("pacs.features.archiving.description"),
-    },
-    {
-      title: t("pacs.features.telemedicine.title"),
-      description: t("pacs.features.telemedicine.description"),
-    },
-    {
-      title: t("pacs.features.dicomRouter.title"),
-      description: t("pacs.features.dicomRouter.description"),
+      id: "investment",
+      title: t("pacs.why.investment.title"),
+      icon: "💎",
+      iconBgClass: "bg-cyan-50",
+      iconColorClass: "text-cyan-600",
+      subtitle: t("pacs.why.investment.description"),
+      detail: t("pacs.why.investment.detail"),
     },
   ];
 
-  const products = [
-    t("pacs.products.webViewer"),
-    t("pacs.products.audioManager"),
-    t("pacs.products.imageServer"),
-    t("pacs.products.dicomRouter"),
-    t("pacs.products.hl7Router"),
-    t("pacs.products.telemedicine"),
-    t("pacs.products.modalityWorkslist"),
-    t("pacs.products.fileRepo"),
-    t("pacs.products.ris"),
-    t("pacs.products.workstation"),
-  ];
+  // Auto-rotate cards every 8 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveTab((prev) => (prev + 1) % tabs.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [tabs.length]);
 
-  const capabilities = [
-    t("pacs.capabilities.telemedicine"),
-    t("pacs.capabilities.html5"),
-    t("pacs.capabilities.teleradiology"),
-    t("pacs.capabilities.dicomRobot"),
-    t("pacs.capabilities.dicomHl7"),
-    t("pacs.capabilities.fastAccess"),
-    t("pacs.capabilities.workstation"),
-    t("pacs.capabilities.dictation"),
-  ];
+  // Track active navigation item based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["design-goals", "ecosystem", "enterprise", "achievements"];
+      const scrollPosition = window.scrollY + 200;
 
-  const testimonials = [
-    {
-      name: t("pacs.testimonials.ankara1.name"),
-      hospital: t("pacs.testimonials.ankara1.hospital"),
-      quote: t("pacs.testimonials.ankara1.quote"),
-    },
-    {
-      name: t("pacs.testimonials.ankara2.name"),
-      hospital: t("pacs.testimonials.ankara2.hospital"),
-      quote: t("pacs.testimonials.ankara2.quote"),
-    },
-  ];
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const element = document.getElementById(sections[i]);
+        if (element && element.offsetTop <= scrollPosition) {
+          setActiveNavItem(sections[i]);
+          break;
+        }
+      }
+    };
+
+    // Also check hash on mount
+    if (window.location.hash) {
+      const hash = window.location.hash.substring(1);
+      if (["design-goals", "ecosystem", "enterprise", "achievements"].includes(hash)) {
+        setActiveNavItem(hash);
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Initial check
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-gradient-to-br from-background via-background-alt to-background">
+      <section className="relative pt-20 pb-20 md:pt-24 md:pb-32 overflow-hidden bg-gradient-to-br from-background via-background-alt to-background">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
               <Link
-                href={`${basePath}#products`}
+                href={basePath || "/"}
                 className="inline-flex items-center gap-2 text-sm text-neutral-body hover:text-primary transition-colors mb-8"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
-                {t("pacs.backToProducts")}
+                {t("pacs.backToHome")}
               </Link>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
@@ -121,27 +131,31 @@ export default function SarusPacsPage() {
                 {t("pacs.tagline")}
               </p>
 
+              <p className="text-lg md:text-xl text-neutral-body leading-relaxed mb-4">
+                {t("pacs.description")}
+              </p>
+
               <div className="mb-8">
-                <p className="text-lg md:text-xl text-neutral-body leading-relaxed font-serif">
-                  {t("pacs.description")}
-                </p>
-                {isDescriptionExpanded && (
-                  <motion.p
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="text-lg md:text-xl text-neutral-body leading-relaxed font-serif mt-4"
-                  >
-                    {t("pacs.descriptionExtended")}
-                  </motion.p>
-                )}
+                <AnimatePresence>
+                  {isDescriptionExpanded && (
+                    <motion.p
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-lg md:text-xl text-neutral-body leading-relaxed mb-3"
+                    >
+                      {t("pacs.descriptionSecond")}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
                 <button
                   onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                  className="mt-3 text-primary hover:text-primary-dark font-semibold text-sm md:text-base transition-colors flex items-center gap-2"
+                  className="text-primary hover:text-primary-dark font-semibold text-sm md:text-base transition-colors flex items-center gap-2"
                 >
                   {isDescriptionExpanded ? t("pacs.collapseText") : t("pacs.expandText")}
                   <svg
-                    className={`w-4 h-4 transition-transform ${isDescriptionExpanded ? "rotate-180" : ""}`}
+                    className={`w-4 h-4 transition-transform duration-300 ${isDescriptionExpanded ? "rotate-180" : ""}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -151,6 +165,7 @@ export default function SarusPacsPage() {
                 </button>
               </div>
 
+              {/* Demo Request Button */}
               <div className="flex flex-wrap gap-4">
                 <Link href={`${basePath}/demo-talep`}>
                   <motion.button
@@ -161,15 +176,15 @@ export default function SarusPacsPage() {
                     {t("pacs.requestDemo")}
                   </motion.button>
                 </Link>
-                <Link href={`${basePath}#contact`}>
+                <a href="#navigation">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="px-8 py-4 border-2 border-neutral-border text-neutral-heading rounded-full font-semibold hover:border-primary hover:text-primary transition-all duration-300 hover:bg-primary/5"
                   >
-                    {t("pacs.contact")}
+                    {t("pacs.explore")}
                   </motion.button>
-                </Link>
+                </a>
               </div>
             </motion.div>
 
@@ -177,7 +192,7 @@ export default function SarusPacsPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="hidden md:block"
+              className="hidden md:block mt-12 md:mt-20"
             >
               <div className="relative w-full aspect-video bg-white/80 backdrop-blur-md rounded-2xl border border-neutral-border/50 shadow-xl overflow-hidden">
                 <img
@@ -191,47 +206,462 @@ export default function SarusPacsPage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 md:py-32 bg-background">
-        <div className="max-w-7xl mx-auto px-5 md:px-10">
+      {/* Navigation Buttons Section - Tab Style */}
+      <section id="navigation" className="w-full bg-white relative">
+        {/* Top teal-blue line */}
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary"></div>
+        
+        <div className="max-w-7xl mx-auto px-4 md:px-10 py-8 md:py-12">
+          <nav className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
+            {[
+              {
+                id: "design-goals",
+                href: "#design-goals",
+                label: t("pacs.why.title"),
+                icon: "🎯",
+              },
+              {
+                id: "ecosystem",
+                href: "#ecosystem",
+                label: language === "en" ? "Architecture" : "Mimari",
+                icon: "🏗️",
+              },
+              {
+                id: "enterprise",
+                href: "#enterprise",
+                label: language === "en" ? "Enterprise" : "Enterprise",
+                icon: "⚡",
+              },
+              {
+                id: "achievements",
+                href: "#achievements",
+                label: language === "en" ? "Success Story" : "Başarı Hikayesi",
+                icon: "🏆",
+              },
+            ].map((item) => {
+              const isActive = activeNavItem === item.id;
+              return (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  onClick={() => setActiveNavItem(item.id)}
+                  className="group flex flex-col items-center gap-2 px-4 py-3 transition-all duration-300 relative"
+                >
+                  {/* Icon */}
+                  <div className="text-2xl md:text-3xl mb-1 transition-transform duration-300" style={{ color: isActive ? '#0066FF' : '#4A5568' }}>
+                    {item.icon}
+                  </div>
+                  {/* Label */}
+                  <span 
+                    className={`text-sm md:text-base whitespace-nowrap transition-colors duration-300 ${
+                      isActive 
+                        ? 'font-bold text-primary' 
+                        : 'font-normal text-neutral-heading'
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                  {/* Active indicator underline */}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[80%] h-0.5 bg-primary"></span>
+                  )}
+                </a>
+              );
+            })}
+          </nav>
+        </div>
+        
+        {/* Bottom light grey separator line */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-neutral-border"></div>
+      </section>
+
+      {/* Why Sarus PACS */}
+      <section id="design-goals" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-12 text-center"
+        >
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
+            <span className="text-primary">Sarus</span>{" "}
+            <span className="text-neutral-heading">{t("pacs.why.title")}</span>
+          </h2>
+          <div className="w-20 h-0.5 bg-primary mx-auto"></div>
+        </motion.div>
+
+        {/* Enterprise Grid Layout */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tabs.map((tab, idx) => (
+            <motion.div
+              key={tab.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className={`group relative bg-white border-2 rounded-lg p-6 md:p-8 transition-all duration-300 ${
+                activeTab === idx
+                  ? "border-primary shadow-lg shadow-primary/10"
+                  : "border-neutral-border hover:border-primary/50 hover:shadow-md"
+              }`}
+            >
+              {/* Active Indicator */}
+              {activeTab === idx && (
+                <div className="absolute top-0 left-0 right-0 h-1 bg-primary"></div>
+              )}
+
+              {/* Icon */}
+              <div className={`mb-4 h-14 w-14 rounded-lg flex items-center justify-center ${tab.iconBgClass} transition-transform duration-300 ${
+                activeTab === idx ? "scale-110" : "group-hover:scale-105"
+              }`}>
+                <div className={`${tab.iconColorClass} text-2xl`}>
+                  {tab.icon}
+                </div>
+              </div>
+
+              {/* Content */}
+              <h3 className="text-xl md:text-2xl font-bold text-neutral-heading mb-3 leading-tight">
+                {tab.title}
+              </h3>
+              <p className="text-sm md:text-base text-neutral-body leading-relaxed mb-4">
+                {tab.subtitle}
+              </p>
+              {tab.detail && (
+                <div className="pt-4 border-t border-neutral-border/50">
+                  <p className="text-xs md:text-sm text-neutral-body/70 font-medium leading-relaxed">
+                    {tab.detail}
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Ecosystem */}
+      <section id="ecosystem" className="mx-auto max-w-6xl px-4 md:px-10 py-16 md:py-24 bg-background">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-4">
+            <span className="text-primary">Sarus</span>{" "}
+            <span className="text-neutral-heading">{t("pacs.products.title")}</span>
+          </h2>
+          <p className="text-lg text-neutral-body max-w-3xl mx-auto">
+            {t("pacs.ecosystem.subtitle")}
+          </p>
+        </motion.div>
+
+        <div className="space-y-12">
+          {/* Layer 1 - Viewing and Reporting Layer */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-primary/50 rounded-full"></div>
+            <div className="pl-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-3 h-3 rounded-full bg-primary shadow-lg shadow-primary/50"></div>
+                <h3 className="text-xl md:text-2xl font-semibold text-neutral-heading">
+                  {t("pacs.ecosystem.layer1.title")}
+                </h3>
+              </div>
+              <div className="grid gap-4 md:grid-cols-3">
+                {[
+                  {
+                    title: t("pacs.ecosystem.layer1.webViewer.title"),
+                    text: t("pacs.ecosystem.layer1.webViewer.description"),
+                  },
+                  {
+                    title: t("pacs.ecosystem.layer1.workstation.title"),
+                    text: t("pacs.ecosystem.layer1.workstation.description"),
+                  },
+                  {
+                    title: t("pacs.ecosystem.layer1.telemedicine.title"),
+                    text: t("pacs.ecosystem.layer1.telemedicine.description"),
+                  },
+                  {
+                    title: t("pacs.ecosystem.layer1.audioManager.title"),
+                    text: t("pacs.ecosystem.layer1.audioManager.description"),
+                  },
+                  {
+                    title: t("pacs.ecosystem.layer1.ris.title"),
+                    text: t("pacs.ecosystem.layer1.ris.description"),
+                  },
+                ].map((item, idx) => (
+                  <Card key={idx} title={item.title} text={item.text} layer={1} />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Layer 2 - Capture, Routing and Integration Layer */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="relative"
+          >
+            <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-accent to-accent/50 rounded-full"></div>
+            <div className="pl-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-3 h-3 rounded-full bg-accent shadow-lg shadow-accent/50"></div>
+                <h3 className="text-xl md:text-2xl font-semibold text-neutral-heading">
+                  {t("pacs.ecosystem.layer2.title")}
+                </h3>
+              </div>
+              <div className="grid gap-4 md:grid-cols-3">
+                {[
+                  {
+                    title: t("pacs.ecosystem.layer2.worklist.title"),
+                    text: t("pacs.ecosystem.layer2.worklist.description"),
+                  },
+                  {
+                    title: t("pacs.ecosystem.layer2.dicomRouter.title"),
+                    text: t("pacs.ecosystem.layer2.dicomRouter.description"),
+                  },
+                  {
+                    title: t("pacs.ecosystem.layer2.hl7Router.title"),
+                    text: t("pacs.ecosystem.layer2.hl7Router.description"),
+                  },
+                ].map((item, idx) => (
+                  <Card key={idx} title={item.title} text={item.text} layer={2} />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Layer 3 - Storage, Archive and File Management Layer */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="relative"
+          >
+            <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-primary/70 to-primary/30 rounded-full"></div>
+            <div className="pl-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-3 h-3 rounded-full bg-primary/70 shadow-lg shadow-primary/30"></div>
+                <h3 className="text-xl md:text-2xl font-semibold text-neutral-heading">
+                  {t("pacs.ecosystem.layer3.title")}
+                </h3>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                {[
+                  {
+                    title: t("pacs.ecosystem.layer3.imageServer.title"),
+                    text: t("pacs.ecosystem.layer3.imageServer.description"),
+                  },
+                  {
+                    title: t("pacs.ecosystem.layer3.fileRepo.title"),
+                    text: t("pacs.ecosystem.layer3.fileRepo.description"),
+                  },
+                ].map((item, idx) => (
+                  <Card key={idx} title={item.title} text={item.text} layer={3} />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Enterprise Features & Integration */}
+      <section id="enterprise" className="relative border-t border-neutral-border bg-gradient-to-b from-white via-background-alt/30 to-white overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="relative mx-auto max-w-7xl px-4 md:px-10 py-20 md:py-28">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-6">
               <span className="text-primary">Sarus</span>{" "}
-              <span className="text-neutral-heading">
-                {language === "en" ? "Pacs Solution Center" : "Pacs Çözüm Merkezi"}
-              </span>
+              <span className="text-neutral-heading">{t("pacs.enterpriseFeatures.title")}</span>
             </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
+            <p className="text-lg md:text-xl text-neutral-body max-w-3xl mx-auto leading-relaxed">
+              {t("pacs.integration.description")}
+            </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.05 }}
-                className="bg-white rounded-xl border border-neutral-border p-6 hover:shadow-lg transition-all duration-300"
-              >
-                <h3 className="text-lg font-bold text-neutral-heading mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-sm text-neutral-body leading-relaxed">
-                  {feature.description}
-                </p>
-              </motion.div>
-            ))}
+          <div className="space-y-4 md:space-y-6">
+            {[
+              {
+                icon: "🔗",
+                type: "light",
+                title: t("pacs.enterpriseFeatures.dicom.title"),
+                description: t("pacs.enterpriseFeatures.dicom.description"),
+              },
+              {
+                icon: "⚡",
+                type: "dark",
+                title: t("pacs.enterpriseFeatures.availability.title"),
+                description: t("pacs.enterpriseFeatures.availability.description"),
+              },
+              {
+                icon: "🚀",
+                type: "light",
+                title: t("pacs.enterpriseFeatures.performance.title"),
+                description: t("pacs.enterpriseFeatures.performance.description"),
+              },
+              {
+                icon: "🛡️",
+                type: "dark",
+                title: t("pacs.enterpriseFeatures.security.title"),
+                description: t("pacs.enterpriseFeatures.security.description"),
+              },
+              {
+                icon: "🌐",
+                type: "light",
+                title: t("pacs.enterpriseFeatures.vendorNeutral.title"),
+                description: t("pacs.enterpriseFeatures.vendorNeutral.description"),
+              },
+              {
+                icon: "📡",
+                type: "dark",
+                title: t("pacs.enterpriseFeatures.teleradiology.title"),
+                description: t("pacs.enterpriseFeatures.teleradiology.description"),
+              },
+              {
+                icon: "🔄",
+                type: "light",
+                title: t("pacs.integration.autoSync"),
+                description: t("pacs.integration.benefit1"),
+              },
+              {
+                icon: "🔌",
+                type: "dark",
+                title: t("pacs.integration.clinicalIntegration"),
+                description: t("pacs.integration.benefit2"),
+              },
+              {
+                icon: "⚙️",
+                type: "light",
+                title: t("pacs.integration.standardWorkflow"),
+                description: t("pacs.integration.benefit3"),
+              },
+            ].map((item, idx) => {
+              const isEven = idx % 2 === 0;
+              const isLight = item.type === "light";
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: isEven ? -30 : 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.05, duration: 0.4 }}
+                  className={`group relative rounded-lg border-l-2 ${
+                    isLight 
+                      ? 'bg-neutral-50/50 border-neutral-300 hover:bg-neutral-100/50' 
+                      : 'bg-neutral-100/50 border-neutral-400 hover:bg-neutral-200/50'
+                  } overflow-hidden transition-all duration-300`}
+                >
+                  <div className={`flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 p-4 md:p-6 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                    {/* Icon Section */}
+                    <div className={`flex-shrink-0 ${isEven ? 'md:order-1' : 'md:order-2'}`}>
+                      <div className={`relative h-12 w-12 md:h-14 md:w-14 rounded-lg ${
+                        isLight 
+                          ? 'bg-neutral-200 border-neutral-300' 
+                          : 'bg-neutral-300 border-neutral-400'
+                      } border flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}>
+                        <span className="text-xl md:text-2xl">{item.icon}</span>
+                      </div>
+                    </div>
+
+                    {/* Content Section */}
+                    <div className={`flex-1 ${isEven ? 'md:order-2' : 'md:order-1'}`}>
+                      <h3 className={`text-lg md:text-xl font-semibold ${
+                        isLight ? 'text-neutral-700' : 'text-neutral-800'
+                      } mb-2 group-hover:text-neutral-900 transition-colors duration-300`}>
+                        {item.title}
+                      </h3>
+                      <p className={`text-sm md:text-base ${
+                        isLight ? 'text-neutral-600' : 'text-neutral-700'
+                      } leading-relaxed`}>
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Connecting line */}
+                  {idx < 8 && (
+                    <div className={`absolute ${isEven ? 'left-8 md:left-10' : 'right-8 md:right-10'} bottom-0 w-0.5 h-4 md:h-6 ${
+                      isLight ? 'bg-neutral-300' : 'bg-neutral-400'
+                    } opacity-40`}></div>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
 
+      {/* Use Cases */}
+      <section className="mx-auto max-w-6xl px-4 md:px-10 py-16 md:py-24 bg-background-alt">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-6">
+            {t("pacs.useCases.title")}
+          </h2>
+        </motion.div>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              title: t("pacs.useCases.singleCenter.title"),
+              description: t("pacs.useCases.singleCenter.description"),
+            },
+            {
+              title: t("pacs.useCases.cityHospitals.title"),
+              description: t("pacs.useCases.cityHospitals.description"),
+            },
+            {
+              title: t("pacs.useCases.imagingCenters.title"),
+              description: t("pacs.useCases.imagingCenters.description"),
+            },
+            {
+              title: t("pacs.useCases.teleradiology.title"),
+              description: t("pacs.useCases.teleradiology.description"),
+            },
+          ].map((item, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="bg-white rounded-2xl border border-neutral-border p-6 shadow-sm"
+            >
+              <h4 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2">
+                {item.title}
+              </h4>
+              <p className="text-sm text-neutral-body leading-relaxed">
+                {item.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* Statistics Section */}
-      <section className="py-20 md:py-32 bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5">
+      <section id="achievements" className="py-20 md:py-32 bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5">
         <div className="max-w-7xl mx-auto px-5 md:px-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -239,7 +669,7 @@ export default function SarusPacsPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-4">
               {t("pacs.stats.title")}
             </h2>
             <p className="text-lg text-neutral-body max-w-4xl mx-auto leading-relaxed">
@@ -271,170 +701,31 @@ export default function SarusPacsPage() {
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Enterprise Imaging Section */}
-      <section className="py-20 md:py-32 bg-background">
-        <div className="max-w-7xl mx-auto px-5 md:px-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            transition={{ delay: 0.4 }}
+            className="mt-8 text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-4">
-              <span className="text-primary">Sarus</span>{" "}
-              <span className="text-neutral-heading">
-                {language === "en" ? "Pacs Solution Center" : "Pacs Çözüm Merkezi"}
-              </span>
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                icon: "🔗",
-                title: t("pacs.enterprise.singleAccess.title"),
-                description: t("pacs.enterprise.singleAccess.description"),
-              },
-              {
-                icon: "🤝",
-                title: t("pacs.enterprise.crossDepartment.title"),
-                description: t("pacs.enterprise.crossDepartment.description"),
-              },
-              {
-                icon: "📈",
-                title: t("pacs.enterprise.scalability.title"),
-                description: t("pacs.enterprise.scalability.description"),
-              },
-              {
-                icon: "⚡",
-                title: t("pacs.enterprise.highAvailability.title"),
-                description: t("pacs.enterprise.highAvailability.description"),
-              },
-            ].map((item, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: idx % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.15 }}
-                whileHover={{ y: -8 }}
-                className="bg-gradient-to-br from-white to-background-alt rounded-3xl border border-neutral-border p-8 shadow-lg hover:shadow-2xl transition-all duration-300"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <span className="text-3xl">{item.icon}</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-neutral-heading mb-3">
-                      {item.title}
-                    </h3>
-                    <p className="text-neutral-body leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Products Section */}
-      <section className="py-20 md:py-32 bg-background">
-        <div className="max-w-7xl mx-auto px-5 md:px-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-4">
-              <span className="text-primary">Sarus</span>{" "}
-              <span className="text-neutral-heading">
-                {language === "en" ? "Pacs Ecosystem" : "Pacs Ekosistemi"}
-              </span>
-            </h2>
-            <p className="text-xl text-neutral-body max-w-3xl mx-auto">
-              {t("pacs.products.subtitle")}
+            <p className="text-lg text-primary font-semibold">
+              {t("pacs.stats.archive")}
             </p>
           </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
-            {products.map((product, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.05 }}
-                whileHover={{ y: -4 }}
-                className="bg-white rounded-2xl border border-neutral-border p-6 shadow-md hover:shadow-xl transition-all duration-300 text-center"
-              >
-                <p className="text-base font-semibold text-neutral-heading">
-                  {product}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Capabilities Section */}
-      <section className="py-20 md:py-32 bg-background-alt">
-        <div className="max-w-7xl mx-auto px-5 md:px-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-4">
-              {t("pacs.capabilities.title")}
-            </h2>
-            <p className="text-xl text-neutral-body max-w-3xl mx-auto">
-              {t("pacs.capabilities.subtitle")}
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {capabilities.map((capability, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-gradient-to-br from-primary/5 via-white to-accent/5 rounded-2xl border border-primary/20 p-6 shadow-md hover:shadow-xl transition-all duration-300"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <p className="text-base font-medium text-neutral-heading leading-relaxed">
-                    {capability}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
       <section className="py-20 md:py-32 bg-background-alt">
-        <div className="max-w-7xl mx-auto px-5 md:px-10">
+        <div className="max-w-7xl mx-auto px-4 md:px-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-4">
               {t("pacs.testimonials.title")}
             </h2>
             <p className="text-xl text-neutral-body max-w-3xl mx-auto">
@@ -443,7 +734,18 @@ export default function SarusPacsPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {testimonials.map((testimonial, idx) => (
+            {[
+              {
+                name: t("pacs.testimonials.ankara1.name"),
+                hospital: t("pacs.testimonials.ankara1.hospital"),
+                quote: t("pacs.testimonials.ankara1.quote"),
+              },
+              {
+                name: t("pacs.testimonials.ankara2.name"),
+                hospital: t("pacs.testimonials.ankara2.hospital"),
+                quote: t("pacs.testimonials.ankara2.quote"),
+              },
+            ].map((testimonial, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
@@ -459,7 +761,7 @@ export default function SarusPacsPage() {
                     </span>
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-neutral-heading mb-1">
+                    <h4 className="text-lg md:text-xl font-bold text-neutral-heading mb-1">
                       {testimonial.name}
                     </h4>
                     <p className="text-sm text-primary font-semibold">
@@ -476,40 +778,45 @@ export default function SarusPacsPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 md:py-32 bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5">
-        <div className="max-w-4xl mx-auto px-5 md:px-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
+      {/* CTA */}
+      <section
+        id="demo"
+        className="bg-primary text-white py-14 md:py-20 mt-8"
+      >
+        <div className="mx-auto max-w-5xl px-4 md:px-10 text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
           >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-6">
-              {t("pacs.cta.title")}
-            </h2>
-            <p className="text-xl text-neutral-body mb-8 leading-relaxed">
-              {t("pacs.cta.description")}
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href={`${basePath}/demo-talep`}>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all duration-300 shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40"
-                >
-                  {t("pacs.requestDemo")}
-                </motion.button>
-              </Link>
-              <Link href={`${basePath}#contact`}>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 border-2 border-neutral-border text-neutral-heading rounded-full font-semibold hover:border-primary hover:text-primary transition-all duration-300 hover:bg-primary/5"
-                >
-                  {t("pacs.contact")}
-                </motion.button>
-              </Link>
-            </div>
+            {t("pacs.cta.title")}
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="mt-3 text-blue-100 max-w-2xl mx-auto text-lg"
+          >
+            {t("pacs.cta.description")}
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="mt-6 flex justify-center"
+          >
+            <Link href={`${basePath}/demo-talep`}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-primary hover:bg-blue-50 transition-colors shadow-lg"
+              >
+                {t("pacs.requestDemo")}
+              </motion.button>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -517,3 +824,109 @@ export default function SarusPacsPage() {
   );
 }
 
+type ValueCardProps = {
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+  detail?: string;
+  iconBgClass?: string;
+  iconColorClass?: string;
+};
+
+function ValueCard({
+  icon,
+  title,
+  subtitle,
+  detail,
+  iconBgClass = "bg-sky-50",
+  iconColorClass = "text-sky-600",
+}: ValueCardProps) {
+  return (
+    <motion.div
+      whileHover={{ y: -2 }}
+      className="rounded-xl border-2 border-neutral-border/60 bg-white p-5 md:p-6 hover:border-primary/40 hover:shadow-md transition-all duration-200"
+    >
+      <div className="flex items-start gap-4">
+        <div className={`h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0 ${iconBgClass} shadow-sm`}>
+          <div className={`${iconColorClass} text-xl`}>{icon}</div>
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2 leading-tight">
+            {title}
+          </h3>
+          <p className="text-sm md:text-base text-neutral-body leading-relaxed mb-3">
+            {subtitle}
+          </p>
+          {detail && (
+            <p className="text-xs md:text-sm text-neutral-body/75 font-medium leading-relaxed">
+              {detail}
+            </p>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+type CardProps = {
+  title: string;
+  text: string;
+  layer?: number;
+};
+
+function Card({ title, text, layer = 0 }: CardProps) {
+  const layerStyles = {
+    1: {
+      border: "border-l-4 border-l-primary",
+      bg: "bg-gradient-to-br from-primary/5 to-white",
+      hover: "hover:shadow-primary/20",
+    },
+    2: {
+      border: "border-l-4 border-l-accent",
+      bg: "bg-gradient-to-br from-accent/5 to-white",
+      hover: "hover:shadow-accent/20",
+    },
+    3: {
+      border: "border-l-4 border-l-primary/70",
+      bg: "bg-gradient-to-br from-primary/10 to-white",
+      hover: "hover:shadow-primary/20",
+    },
+  };
+
+  const style = layerStyles[layer as keyof typeof layerStyles] || {
+    border: "border border-neutral-border",
+    bg: "bg-white",
+    hover: "",
+  };
+
+  return (
+    <motion.div
+      whileHover={{ y: -4, scale: 1.02 }}
+      className={`rounded-2xl ${style.bg} shadow-sm ${style.border} border-neutral-border p-4 md:p-6 hover:shadow-lg transition-all ${style.hover}`}
+    >
+      <h4 className="text-base md:text-lg font-semibold text-neutral-heading mb-2">
+        {title}
+      </h4>
+      <p className="text-sm text-neutral-body leading-relaxed">{text}</p>
+    </motion.div>
+  );
+}
+
+type FeatureProps = {
+  title: string;
+  children: React.ReactNode;
+};
+
+function FeatureItem({ title, children }: FeatureProps) {
+  return (
+    <motion.div
+      whileHover={{ y: -4 }}
+      className="rounded-2xl bg-background-alt border border-neutral-border p-4 md:p-6"
+    >
+      <h4 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2">
+        {title}
+      </h4>
+      <p className="text-sm text-neutral-body leading-relaxed">{children}</p>
+    </motion.div>
+  );
+}

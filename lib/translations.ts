@@ -132,15 +132,169 @@ export const translations: Record<string, any> = {
       },
     },
     pacs: {
-      backToProducts: "Ürünlere Dön",
+      backToHome: "Ana Sayfaya Dön",
       mainProduct: "Enterprise Imaging",
       tagline: "Hızlı, güvenilir ve kusursuz kullanım deneyimi.",
-      description: "Sarus PACS, tüm görüntüleme süreçlerinizi tek bir çatı altında birleştiren kurumsal bir görüntüleme çözümüdür. Klinik ekiplerin daha hızlı ve doğru karar almasını sağlarken, kurumların operasyonel maliyetlerini azaltmasına yardımcı olur. Tüm kurum genelinde tıbbi multimedya içeriklerini güvenle yakalamayı, depolamayı, görüntülemeyi, paylaşmayı ve iş birliği yapmayı mümkün kılar.",
-      descriptionExtended: "Yüksek çözünürlüklü görüntü desteği ve hızlı aktarım altyapısı sayesinde BT, MRG, PET ve röntgen görüntülerinin keskin kaliteyle görüntülenmesini ve etkin raporlanmasını sağlar. Sarus PACS, daha akıcı, daha verimli ve güvenilir bir görüntüleme deneyimi sunmak için tasarlanmıştır.",
+      description: "Sarus PACS, kurum genelinde tüm görüntüleme süreçlerinizi tek bir çatı altında birleştiren kurumsal (enterprise) görüntüleme çözümüdür. BT, MRG, PET, röntgen ve diğer tüm modalitelerden gelen görüntüleri güvenli, hızlı ve ölçeklenebilir bir mimari üzerinde yönetmenizi sağlar.",
+      descriptionSecond: "Klinik ekiplerin daha hızlı ve doğru karar vermesine yardımcı olurken, kurumların operasyonel maliyetlerini azaltmasına, iş akışlarını standartlaştırmasına ve uzun vadeli arşiv stratejisi oluşturmasına olanak tanır.",
       expandText: "Genişlet",
       collapseText: "Daralt",
       requestDemo: "Demo Talep Et",
-      contact: "İletişime Geç",
+      explore: "İncele",
+      viewFeatures: "Özelliklere Göz At",
+      hero: {
+        badge: "ÜRÜNLER · SARUS PACS",
+      },
+      valueProps: {
+        enterpriseScale: {
+          title: "Kurumsal Ölçek",
+          description: "Çok merkezli hastaneler, sağlık grupları ve teleradyoloji yapıları için tasarlanmış ölçeklenebilir mimari.",
+        },
+        performance: {
+          title: "Performans",
+          description: "Yüksek çözünürlüklü görüntüleri saniyeler içinde açan optimize görüntüleme altyapısı ve akıllı önbellekleme.",
+        },
+        security: {
+          title: "Güvenlik & Uyumluluk",
+          description: "DICOM, HL7, IHE profilleri ve regülasyonlara uyumlu, denetlenebilir ve güvenli veri yönetimi.",
+        },
+      },
+      why: {
+        title: "Tasarım Hedefleri",
+        fastViewing: {
+          title: "Hızlı Görüntüleme",
+          description: "Yüksek çözünürlüklü görüntüleri saniyeler içinde açan optimize görüntüleme altyapısı.",
+          detail: "Tipik açılış süresi: < 2 sn • 300+ eşzamanlı kullanıcı desteği.",
+        },
+        reliableWorkflows: {
+          title: "Güvenilir İş Akışları",
+          description: "Stabil performans, yüksek erişilebilirlik ve kurumsal yedeklilik mimarisi.",
+          detail: "Aktif/aktif cluster, otomatik failover, 7/24 izleme.",
+        },
+        seamlessUX: {
+          title: "Kusursuz Kullanıcı Deneyimi",
+          description: "Radyolog, teknisyen, klinisyen ve idari kullanıcılar için sade, öğrenmesi kolay arayüzler.",
+          detail: "Rol bazlı ekranlar, düşük öğrenme eğrisi, minimal tıklama ile iş tamamlama.",
+        },
+        integration: {
+          title: "Kapsamlı Entegrasyon",
+          description: "HIS, RIS, LIS ve üçüncü parti sistemlerle tam uyumlu entegrasyon altyapısı.",
+          detail: "DICOM, HL7, FHIR ve REST API desteği.",
+        },
+        investment: {
+          title: "Esnek Şartlar",
+          description: "Esnek lisanslama, ölçeklenebilir mimari ve açık standartlara dayalı teknoloji.",
+          detail: "On-prem, hybrid ve cloud kurulum senaryoları; vendor-neutral mimari.",
+        },
+      },
+      ecosystem: {
+        subtitle: "Modüler, ölçeklenebilir ve kurumunuzun iş akışlarına uyum sağlayan PACS bileşenleri.",
+        layer1: {
+          title: "1. Görüntüleme ve Raporlama Katmanı",
+          webViewer: {
+            title: "Sarus Web Görüntüleyici",
+            description: "Tarayıcı tabanlı, hızlı ve güvenli tanı amaçlı görüntüleyici. Kurum içi ve uzaktan erişim için optimize edilmiştir.",
+          },
+          workstation: {
+            title: "Sarus Workstation",
+            description: "Radyologlar için çok monitör destekli, yüksek performanslı tanı ve raporlama istasyonu.",
+          },
+          telemedicine: {
+            title: "Sarus Teletıp",
+            description: "Merkezler arası teleradyoloji, konsültasyon ve ikinci görüş senaryolarını destekleyen çözüm.",
+          },
+          audioManager: {
+            title: "Sarus Audio Manager",
+            description: "Sesli raporlama ve dikte süreçlerini RIS/PACS iş akışına entegre eder.",
+          },
+          ris: {
+            title: "Sarus RIS",
+            description: "Randevu, iş listesi, raporlama ve onay süreçlerini tek platformda konsolide eden radyoloji bilgi sistemi.",
+          },
+        },
+        layer2: {
+          title: "2. Yakalama, Yönlendirme ve Entegrasyon Katmanı",
+          worklist: {
+            title: "Sarus Modality Worklist",
+            description: "Modalitelere DICOM Worklist sağlayarak hasta ve tetkik bilgilerini otomatik, hatasız aktarır.",
+          },
+          dicomRouter: {
+            title: "Sarus DICOM Router",
+            description: "Akıllı, kural tabanlı DICOM yönlendirme, load balancing ve failover senaryolarını yönetir.",
+          },
+          hl7Router: {
+            title: "Sarus HL7 Listener & Router",
+            description: "HIS, RIS, LIS gibi sistemlerle çift yönlü HL7 entegrasyonu için güvenilir bir entegrasyon katmanı sağlar.",
+          },
+        },
+        layer3: {
+          title: "3. Depolama, Arşiv ve Dosya Yönetimi Katmanı",
+          imageServer: {
+            title: "Sarus Image Server",
+            description: "Yüksek performanslı DICOM depolama ve arşiv sunucusu; artan görüntü hacmini güvenle yönetir.",
+          },
+          fileRepo: {
+            title: "Sarus File Repo Server",
+            description: "Rapor, doküman, video ve diğer tıbbi multimedya içeriği için merkezi dosya yönetim çözümü.",
+          },
+        },
+      },
+      enterpriseFeatures: {
+        title: "Enterprise Nelere Sahip?",
+        dicom: {
+          title: "DICOM & HL7 Uyumlu",
+          description: "IHE profilleri, DICOM ve HL7 standartlarıyla uyumlu entegrasyon altyapısı.",
+        },
+        availability: {
+          title: "Yüksek Erişilebilirlik",
+          description: "Yedekli mimari, cluster yapıları ve felaket kurtarma senaryolarına uygun tasarım.",
+        },
+        performance: {
+          title: "Performans & Ölçeklenebilirlik",
+          description: "Artan görüntü hacmiyle beraber yatay ve dikey ölçeklenebilen sistem mimarisi.",
+        },
+        security: {
+          title: "Güvenlik & Uyumluluk",
+          description: "Rol tabanlı erişim kontrolü, detaylı loglama ve KVKK/GDPR uyumlu veri yönetimi.",
+        },
+        vendorNeutral: {
+          title: "Vendor-Neutral Yaklaşım",
+          description: "Farklı modalite ve sistem üreticileriyle uyumlu çalışabilen, satıcı bağımsız tasarım.",
+        },
+        teleradiology: {
+          title: "Teleradyoloji Desteği",
+          description: "Çok merkezli raporlama, ikinci görüş ve uzaktan erişim senaryoları için optimize iş akışları.",
+        },
+      },
+      useCases: {
+        title: "Kullanım Senaryoları",
+        singleCenter: {
+          title: "Tek merkezli hastaneler",
+          description: "Hızlı kurulum, optimize iş akışları, merkezi görüntü yönetimi.",
+        },
+        cityHospitals: {
+          title: "Şehir hastaneleri ve sağlık grupları",
+          description: "Çok merkezli mimari, uzaktan raporlama ve konsolidasyon.",
+        },
+        imagingCenters: {
+          title: "Görüntüleme Merkezleri ve Büyük Çaplı Klinikleri",
+          description: "Yüksek hacimli görüntü işleme, merkezi arşivleme ve verimli iş akışı yönetimi.",
+        },
+        teleradiology: {
+          title: "Teleradyoloji hizmet sağlayıcıları",
+          description: "Çoklu kurum ve merkezler arasında güvenli görüntü ve rapor paylaşımı.",
+        },
+      },
+      integration: {
+        title: "Entegrasyon ve Uyumluluk",
+        description: "Sarus PACS, mevcut HIS, RIS, LIS ve diğer sağlık bilgi sistemleriyle entegre çalışacak şekilde tasarlanmıştır. HL7, DICOM, FHIR ve REST tabanlı entegrasyonlarla:",
+        benefit1: "Hasta ve tetkik bilgileri otomatik senkronize edilir.",
+        benefit2: "Rapor ve görüntüler ilgili klinik sistemlere geri beslenir.",
+        benefit3: "Uçtan uca izlenebilir, denetlenebilir ve standardize edilmiş bir görüntüleme süreci sağlanır.",
+        autoSync: "Otomatik Veri Senkronizasyonu",
+        clinicalIntegration: "Klinik Sistem Entegrasyonu",
+        standardWorkflow: "Standart İş Akışı",
+      },
       features: {
         title: "Sarus Pacs Çözüm Merkezi",
         pacsSolutions: {
@@ -181,7 +335,7 @@ export const translations: Record<string, any> = {
         },
       },
       products: {
-        title: "Sarus Pacs Ekosistemi",
+        title: "Pacs Ekosistemi",
         subtitle: "Önemli Bileşenler",
         webViewer: "Sarus Web Görüntüleyici",
         audioManager: "Sarus Audio Manager",
@@ -439,15 +593,169 @@ export const translations: Record<string, any> = {
       },
     },
     pacs: {
-      backToProducts: "Back to Products",
+      backToHome: "Back to Home",
       mainProduct: "Imaging Solution",
       tagline: "Fast, reliable, and seamless user experience.",
-      description: "Sarus PACS is an enterprise imaging solution that consolidates all your imaging processes under one roof. It enables clinical teams to make faster and more accurate decisions while helping organizations reduce operational costs. It enables secure capture, storage, viewing, sharing, and collaboration of medical multimedia content across the entire organization.",
-      descriptionExtended: "With high-resolution image support and fast transfer infrastructure, it enables sharp quality viewing and effective reporting of CT, MRI, PET, and X-ray images. Sarus PACS is designed to deliver a smoother, more efficient, and reliable imaging experience.",
+      description: "Sarus PACS is an enterprise imaging solution that consolidates all your imaging processes across the organization under one roof. It enables you to manage images from CT, MRI, PET, X-ray, and all other modalities on a secure, fast, and scalable architecture.",
+      descriptionSecond: "While helping clinical teams make faster and more accurate decisions, it enables organizations to reduce operational costs, standardize workflows, and create long-term archive strategies.",
       expandText: "Expand",
       collapseText: "Collapse",
       requestDemo: "Request Demo",
-      contact: "Contact Us",
+      explore: "Explore",
+      viewFeatures: "View Features",
+      hero: {
+        badge: "PRODUCTS · SARUS PACS",
+      },
+      valueProps: {
+        enterpriseScale: {
+          title: "Enterprise Scale",
+          description: "Scalable architecture designed for multi-center hospitals, health groups, and teleradiology structures.",
+        },
+        performance: {
+          title: "Performance",
+          description: "Optimized imaging infrastructure and smart caching that opens high-resolution images in seconds.",
+        },
+        security: {
+          title: "Security & Compliance",
+          description: "DICOM, HL7, IHE profile compliant, auditable and secure data management.",
+        },
+      },
+      why: {
+        title: "Design Goals",
+        fastViewing: {
+          title: "Fast Viewing",
+          description: "Optimized imaging infrastructure that opens high-resolution images in seconds.",
+          detail: "Typical opening time: < 2 sec • Support for 300+ concurrent users.",
+        },
+        reliableWorkflows: {
+          title: "Reliable Workflows",
+          description: "Stable performance, high availability, and enterprise redundancy architecture.",
+          detail: "Active/active cluster, automatic failover, 24/7 monitoring.",
+        },
+        seamlessUX: {
+          title: "Seamless User Experience",
+          description: "Simple, easy-to-learn interfaces for radiologists, technicians, clinicians, and administrative users.",
+          detail: "Role-based screens, low learning curve, task completion with minimal clicks.",
+        },
+        integration: {
+          title: "Comprehensive Integration",
+          description: "Fully compatible integration infrastructure with HIS, RIS, LIS, and third-party systems.",
+          detail: "DICOM, HL7, FHIR, and REST API support.",
+        },
+        investment: {
+          title: "Flexible Terms",
+          description: "Flexible licensing, scalable architecture, and open standards-based technology.",
+          detail: "On-prem, hybrid, and cloud deployment scenarios; vendor-neutral architecture.",
+        },
+      },
+      ecosystem: {
+        subtitle: "Modular, scalable PACS components that adapt to your organization's workflows.",
+        layer1: {
+          title: "1. Viewing and Reporting Layer",
+          webViewer: {
+            title: "Sarus Web Viewer",
+            description: "Browser-based, fast and secure diagnostic viewer. Optimized for in-house and remote access.",
+          },
+          workstation: {
+            title: "Sarus Workstation",
+            description: "Multi-monitor supported, high-performance diagnostic and reporting station for radiologists.",
+          },
+          telemedicine: {
+            title: "Sarus Telemedicine",
+            description: "Solution supporting inter-center teleradiology, consultation, and second opinion scenarios.",
+          },
+          audioManager: {
+            title: "Sarus Audio Manager",
+            description: "Integrates voice reporting and dictation processes into RIS/PACS workflow.",
+          },
+          ris: {
+            title: "Sarus RIS",
+            description: "Radiology information system that consolidates appointment, worklist, reporting, and approval processes on a single platform.",
+          },
+        },
+        layer2: {
+          title: "2. Capture, Routing and Integration Layer",
+          worklist: {
+            title: "Sarus Modality Worklist",
+            description: "Provides DICOM Worklist to modalities, automatically and error-free transferring patient and examination information.",
+          },
+          dicomRouter: {
+            title: "Sarus DICOM Router",
+            description: "Manages intelligent, rule-based DICOM routing, load balancing, and failover scenarios.",
+          },
+          hl7Router: {
+            title: "Sarus HL7 Listener & Router",
+            description: "Provides a reliable integration layer for bidirectional HL7 integration with systems such as HIS, RIS, LIS.",
+          },
+        },
+        layer3: {
+          title: "3. Storage, Archive and File Management Layer",
+          imageServer: {
+            title: "Sarus Image Server",
+            description: "High-performance DICOM storage and archive server; securely manages increasing image volume.",
+          },
+          fileRepo: {
+            title: "Sarus File Repo Server",
+            description: "Central file management solution for reports, documents, videos, and other medical multimedia content.",
+          },
+        },
+      },
+      enterpriseFeatures: {
+        title: "What Does Enterprise Offer?",
+        dicom: {
+          title: "DICOM & HL7 Compatible",
+          description: "Integration infrastructure compatible with IHE profiles, DICOM and HL7 standards.",
+        },
+        availability: {
+          title: "High Availability",
+          description: "Design suitable for redundant architecture, cluster structures, and disaster recovery scenarios.",
+        },
+        performance: {
+          title: "Performance & Scalability",
+          description: "System architecture that scales horizontally and vertically along with increasing image volume.",
+        },
+        security: {
+          title: "Security & Compliance",
+          description: "Role-based access control, detailed logging, and GDPR/KVKK compliant data management.",
+        },
+        vendorNeutral: {
+          title: "Vendor-Neutral Approach",
+          description: "Vendor-independent design that works compatibly with different modality and system manufacturers.",
+        },
+        teleradiology: {
+          title: "Teleradiology Support",
+          description: "Optimized workflows for multi-center reporting, second opinion, and remote access scenarios.",
+        },
+      },
+      useCases: {
+        title: "Use Cases",
+        singleCenter: {
+          title: "Single-center hospitals",
+          description: "Quick setup, optimized workflows, centralized image management.",
+        },
+        cityHospitals: {
+          title: "City hospitals and health groups",
+          description: "Multi-center architecture, remote reporting, and consolidation.",
+        },
+        imagingCenters: {
+          title: "Imaging Centers and Large-Scale Clinics",
+          description: "High-volume image processing, centralized archiving, and efficient workflow management.",
+        },
+        teleradiology: {
+          title: "Teleradiology service providers",
+          description: "Secure image and report sharing between multiple institutions and centers.",
+        },
+      },
+      integration: {
+        title: "Integration and Compatibility",
+        description: "Sarus PACS is designed to work integrated with existing HIS, RIS, LIS, and other health information systems. With HL7, DICOM, FHIR, and REST-based integrations:",
+        benefit1: "Patient and examination information is automatically synchronized.",
+        benefit2: "Reports and images are fed back to relevant clinical systems.",
+        benefit3: "An end-to-end traceable, auditable, and standardized imaging process is provided.",
+        autoSync: "Automatic Data Synchronization",
+        clinicalIntegration: "Clinical System Integration",
+        standardWorkflow: "Standard Workflow",
+      },
       features: {
         title: "Sarus Pacs Solution Center",
         pacsSolutions: {
@@ -488,7 +796,7 @@ export const translations: Record<string, any> = {
         },
       },
       products: {
-        title: "Sarus Pacs Ecosystem",
+        title: "Pacs Ecosystem",
         subtitle: "Key Components",
         webViewer: "Sarus Web Viewer",
         audioManager: "Sarus Audio Manager",
