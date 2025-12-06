@@ -210,15 +210,11 @@ export default function SarusCloudPage() {
               className="hidden md:block mt-12 md:mt-20"
             >
               <div className="relative w-full aspect-video bg-white/80 backdrop-blur-md rounded-2xl border border-neutral-border/50 shadow-xl overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
-                  <div className="text-center p-8">
-                    <div className="text-6xl mb-4">☁️</div>
-                    <p className="text-xl font-semibold text-neutral-heading">
-                      Sarus {t("cloud.productName")}
-                    </p>
-                    <p className="text-sm text-neutral-body mt-2">Azure Ready • Multi-Tenant</p>
-                  </div>
-                </div>
+                <img
+                  src="/bulut-cropped.png"
+                  alt={language === "en" ? "Sarus Cloud" : "Sarus Bulut"}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </motion.div>
           </div>

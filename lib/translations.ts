@@ -287,7 +287,7 @@ export const translations: Record<string, any> = {
       },
       integration: {
         title: "Entegrasyon ve Uyumluluk",
-        description: "Sarus PACS, mevcut HIS, RIS, LIS ve diğer sağlık bilgi sistemleriyle entegre çalışacak şekilde tasarlanmıştır. HL7, DICOM, FHIR ve REST tabanlı entegrasyonlarla:",
+        description: "Sarus PACS, mevcut HIS, RIS, LIS ve diğer sağlık bilgi sistemleriyle entegre çalışacak şekilde tasarlanmıştır.",
         benefit1: "Hasta ve tetkik bilgileri otomatik senkronize edilir.",
         benefit2: "Rapor ve görüntüler ilgili klinik sistemlere geri beslenir.",
         benefit3: "Uçtan uca izlenebilir, denetlenebilir ve standardize edilmiş bir görüntüleme süreci sağlanır.",
@@ -870,7 +870,7 @@ export const translations: Record<string, any> = {
       },
       integration: {
         title: "Integration and Compatibility",
-        description: "Sarus PACS is designed to work integrated with existing HIS, RIS, LIS, and other health information systems. With HL7, DICOM, FHIR, and REST-based integrations:",
+        description: "Sarus PACS is designed to work integrated with existing HIS, RIS, LIS, and other health information systems.",
         benefit1: "Patient and examination information is automatically synchronized.",
         benefit2: "Reports and images are fed back to relevant clinical systems.",
         benefit3: "An end-to-end traceable, auditable, and standardized imaging process is provided.",

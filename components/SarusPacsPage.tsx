@@ -689,7 +689,7 @@ export default function SarusPacsPage() {
             className="w-full h-full object-cover"
           />
           {/* Overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/70 via-primary/60 to-primary/70"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/40 via-neutral-800/35 to-neutral-900/40"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
