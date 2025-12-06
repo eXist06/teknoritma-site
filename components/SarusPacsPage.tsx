@@ -176,7 +176,23 @@ export default function SarusPacsPage() {
                     {t("pacs.requestDemo")}
                   </motion.button>
                 </Link>
-                <a href="#navigation">
+                <a 
+                  href="#navigation"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.getElementById('navigation');
+                    if (element) {
+                      // Calculate position to center the navigation section in viewport
+                      const elementRect = element.getBoundingClientRect();
+                      const absoluteElementTop = elementRect.top + window.pageYOffset;
+                      const middle = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
+                      window.scrollTo({
+                        top: middle,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                >
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -224,7 +240,7 @@ export default function SarusPacsPage() {
                 id: "ecosystem",
                 href: "#ecosystem",
                 label: language === "en" ? "Architecture" : "Mimari",
-                icon: "🏗️",
+                icon: "⚙️", // Gear icon for infrastructure/architecture
               },
               {
                 id: "enterprise",
@@ -285,6 +301,7 @@ export default function SarusPacsPage() {
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
             <span className="text-primary">Sarus</span>{" "}
+            <span className="text-neutral-heading">PACS</span>{" "}
             <span className="text-neutral-heading">{t("pacs.why.title")}</span>
           </h2>
           <div className="w-20 h-0.5 bg-primary mx-auto"></div>
@@ -348,6 +365,7 @@ export default function SarusPacsPage() {
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-4">
             <span className="text-primary">Sarus</span>{" "}
+            <span className="text-neutral-heading">PACS</span>{" "}
             <span className="text-neutral-heading">{t("pacs.products.title")}</span>
           </h2>
           <p className="text-lg text-neutral-body max-w-3xl mx-auto">
@@ -489,6 +507,7 @@ export default function SarusPacsPage() {
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-6">
               <span className="text-primary">Sarus</span>{" "}
+              <span className="text-neutral-heading">PACS</span>{" "}
               <span className="text-neutral-heading">{t("pacs.enterpriseFeatures.title")}</span>
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
@@ -661,18 +680,29 @@ export default function SarusPacsPage() {
       </section>
 
       {/* Statistics Section */}
-      <section id="achievements" className="py-20 md:py-32 bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5">
-        <div className="max-w-7xl mx-auto px-5 md:px-10">
+      <section id="achievements" className="relative py-20 md:py-32 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/bilkent.jpg"
+            alt="Bilkent Şehir Hastanesi"
+            className="w-full h-full object-cover"
+          />
+          {/* Overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/70 via-primary/60 to-primary/70"></div>
+        </div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
               {t("pacs.stats.title")}
             </h2>
-            <p className="text-lg text-neutral-body max-w-4xl mx-auto leading-relaxed">
+            <p className="text-lg text-white/90 max-w-4xl mx-auto leading-relaxed">
               {t("pacs.stats.description")}
             </p>
           </motion.div>
@@ -690,7 +720,7 @@ export default function SarusPacsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="bg-white rounded-xl border border-neutral-border p-6 shadow-md hover:shadow-lg transition-all duration-300 text-center"
+                className="bg-white/95 backdrop-blur-sm rounded-xl border border-neutral-border p-6 shadow-md hover:shadow-lg transition-all duration-300 text-center"
               >
                 <div className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent mb-2">
                   {stat.value}
@@ -709,7 +739,7 @@ export default function SarusPacsPage() {
             transition={{ delay: 0.4 }}
             className="mt-8 text-center"
           >
-            <p className="text-lg text-primary font-semibold">
+            <p className="text-lg text-white font-semibold">
               {t("pacs.stats.archive")}
             </p>
           </motion.div>

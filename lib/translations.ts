@@ -296,7 +296,7 @@ export const translations: Record<string, any> = {
         standardWorkflow: "Standart İş Akışı",
       },
       features: {
-        title: "Sarus Pacs Çözüm Merkezi",
+        title: "Sarus PACS Çözüm Merkezi",
         pacsSolutions: {
           title: "Görüntü Saklama ve İletişim Sistemi",
           description: "DICOM ve non-DICOM görüntüler, videolar ve belgeler için vendor-neutral arşivleme. Gelecekteki migrasyonları ve vendor lock-in'i önler.",
@@ -335,7 +335,7 @@ export const translations: Record<string, any> = {
         },
       },
       products: {
-        title: "Pacs Ekosistemi",
+        title: "Ekosistemi",
         subtitle: "Önemli Bileşenler",
         webViewer: "Sarus Web Görüntüleyici",
         audioManager: "Sarus Audio Manager",
@@ -376,8 +376,8 @@ export const translations: Record<string, any> = {
       },
       stats: {
         title: "Ankara Şehir Hastanesi",
-        subtitle: "Sarus Pacs dünyadaki en büyük dijital radyoloji referanslarından biri olan Ankara Şehir Hastanesi'nde 2018 yılından bu yana başarılı şekilde çalışmaktadır.",
-        description: "Sarus Pacs dünyadaki en büyük dijital radyoloji referanslarından biri olan Ankara Şehir Hastanesi'nde 2018 yılından bu yana başarılı şekilde çalışmaktadır.",
+        subtitle: "Sarus PACS dünyadaki en büyük dijital radyoloji referanslarından biri olan Ankara Şehir Hastanesi'nde 2018 yılından bu yana başarılı şekilde çalışmaktadır.",
+        description: "Sarus PACS dünyadaki en büyük dijital radyoloji referanslarından biri olan Ankara Şehir Hastanesi'nde 2018 yılından bu yana başarılı şekilde çalışmaktadır.",
         modalities: "110+",
         modalitiesLabel: "Modalite",
         radiologists: "90+",
@@ -389,8 +389,8 @@ export const translations: Record<string, any> = {
         archive: "Dünyanın En Hızlı Büyüyen Arşivlerinden Biri",
       },
       enterprise: {
-        title: "Sarus Pacs Çözüm Merkezi",
-        subtitle: "Sarus Pacs Çözüm Merkezi",
+        title: "Sarus PACS Çözüm Merkezi",
+        subtitle: "Sarus PACS Çözüm Merkezi",
         singleAccess: {
           title: "Tek Noktadan Erişim",
           description: "Tüm görüntüler, videolar ve verilere tek bir noktadan erişim, uygulamalar arası geçiş ihtiyacını azaltır.",
@@ -757,7 +757,7 @@ export const translations: Record<string, any> = {
         standardWorkflow: "Standard Workflow",
       },
       features: {
-        title: "Sarus Pacs Solution Center",
+        title: "Sarus PACS Solution Center",
         pacsSolutions: {
           title: "Image Storage and Communication System",
           description: "Vendor-neutral archiving for DICOM and non-DICOM images, videos, and documents. Prevents future migrations and vendor lock-in.",
@@ -796,7 +796,7 @@ export const translations: Record<string, any> = {
         },
       },
       products: {
-        title: "Pacs Ecosystem",
+        title: "Ecosystem",
         subtitle: "Key Components",
         webViewer: "Sarus Web Viewer",
         audioManager: "Sarus Audio Manager",
@@ -837,8 +837,8 @@ export const translations: Record<string, any> = {
       },
       stats: {
         title: "Ankara City Hospital",
-        subtitle: "Sarus Pacs has been successfully operating at Ankara City Hospital, one of the world's largest digital radiology references, since 2018.",
-        description: "Sarus Pacs has been successfully operating at Ankara City Hospital, one of the world's largest digital radiology references, since 2018.",
+        subtitle: "Sarus PACS has been successfully operating at Ankara City Hospital, one of the world's largest digital radiology references, since 2018.",
+        description: "Sarus PACS has been successfully operating at Ankara City Hospital, one of the world's largest digital radiology references, since 2018.",
         modalities: "110+",
         modalitiesLabel: "Modalities",
         radiologists: "90+",
@@ -850,7 +850,7 @@ export const translations: Record<string, any> = {
         archive: "One of the World's Fastest Growing Archives",
       },
       enterprise: {
-        title: "Sarus Pacs Solution Center",
+        title: "Sarus PACS Solution Center",
         singleAccess: {
           title: "Single Point of Access",
           description: "Access to all images, videos, and data from a single point reduces the need to switch between applications.",
