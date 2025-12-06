@@ -1,7 +1,7 @@
-import SarusHISPage from "@/components/SarusHISPage";
+import SarusCloudPage from "@/components/SarusCloudPage";
 
-export default function SarusCloudPage() {
-  return <SarusHISPage />;
+export default function SarusCloudPageRoute() {
+  return <SarusCloudPage />;
 }
 
 

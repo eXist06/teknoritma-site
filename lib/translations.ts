@@ -457,6 +457,128 @@ export const translations: Record<string, any> = {
       title: "Zaman içinde Sarus",
       subtitle: "Sarus; Türkiye'nin ilk web tabanlı hastane bilgi sistemi olarak",
     },
+    cloud: {
+      backToHome: "Ana Sayfaya Dön",
+      productName: "Bulut",
+      tagline: "Azure Ready, Multi-tenant Bulut SBS Çözümü",
+      description: "Sarus Bulut, ayaktan hasta bakımı için tasarlanmış, Azure Ready ve multi-tenant mimariye sahip modern bir SBS (Sağlık Bilgi Sistemi) çözümüdür. Private cloud ve her türlü cloud ortamında çalışabilen esnek yapısı ile küçük kliniklerden büyük sağlık gruplarına kadar ölçeklenebilir.",
+      descriptionSecond: "Qatar MOPH projesi kapsamında yüzden fazla klinik için başarıyla çalışan Sarus Bulut, modern sağlık kurumlarının dijital dönüşüm ihtiyaçlarını karşılamak için tasarlanmıştır.",
+      expandText: "Genişlet",
+      collapseText: "Daralt",
+      requestDemo: "Demo Talep Et",
+      explore: "İncele",
+      why: {
+        title: "Klinik Özellikler",
+        clinicalEfficiency: {
+          title: "Klinik Verimlilik",
+          description: "Kapsamlı klinik dokümantasyon, hasta kayıt yönetimi ve klinik iş akışları ile sağlık profesyonellerinin verimliliğini artırır.",
+          detail: "SBS yazılımı, e-Reçete, Klinik Veri Kayıtları, Otomatik Bakım Boşluk Uyarıları.",
+        },
+        practiceManagement: {
+          title: "Pratik Yönetimi",
+          description: "Randevu yönetimi, hasta takibi ve operasyonel süreçleri kolaylaştıran entegre pratik yönetim çözümü.",
+          detail: "AI destekli randevu planlama, hasta akış yönetimi, operasyonel raporlama.",
+        },
+        patientEngagement: {
+          title: "Hasta Katılımı",
+          description: "Mobil öncelikli hasta katılım platformu ile hasta deneyimini iyileştirin ve hasta memnuniyetini artırın.",
+          detail: "Hasta portalı, mobil uygulama, randevu yönetimi, sonuç görüntüleme.",
+        },
+        revenueCycle: {
+          title: "Gelir Döngüsü Yönetimi",
+          description: "Faturalama, kodlama ve ödeme süreçlerini optimize ederek gelir döngüsünü maksimize edin.",
+          detail: "Otomatik faturalama, kodlama hizmetleri, ödeme takibi, red oranı azaltma.",
+        },
+        cloudInfrastructure: {
+          title: "Bulut Altyapısı",
+          description: "Azure Ready, multi-tenant mimari ile ölçeklenebilir ve güvenli bulut altyapısı.",
+          detail: "Private cloud, public cloud, hybrid deployment, otomatik ölçeklendirme.",
+        },
+      },
+      features: {
+        title: "Platform Özellikleri",
+        subtitle: "Kapsamlı SBS çözümü ile klinik operasyonlarınızı optimize edin",
+        ehr: {
+          title: "SBS Yazılımı",
+          description: "Ayaktan hasta bakımı için uyarlanabilir SBS platformu. Klinik dokümantasyon ve iş akışı ihtiyaçlarınızı destekler.",
+        },
+        eprescribe: {
+          title: "e-Reçete",
+          description: "Kontrollü maddeler dahil, uygun maliyetli ve sertifikalı elektronik reçete çözümü.",
+        },
+        scheduling: {
+          title: "Akıllı Randevu Yönetimi",
+          description: "Yapay zeka destekli hasta randevu planlama ile randevu süreçlerinizi otomatikleştirin ve optimize edin.",
+        },
+        clinicalDocs: {
+          title: "Klinik Dokümantasyon",
+          description: "Kapsamlı klinik notlar, muayene kayıtları ve hasta geçmişi yönetimi.",
+        },
+        patientPortal: {
+          title: "Hasta Portalı",
+          description: "Hastaların randevu alması, sonuçları görüntülemesi ve sağlık bilgilerine erişmesi için mobil öncelikli platform.",
+        },
+        billing: {
+          title: "Faturalama ve Ödeme",
+          description: "Otomatik faturalama, ödeme takibi ve gelir döngüsü yönetimi ile finansal süreçleri optimize edin.",
+        },
+        reporting: {
+          title: "Raporlama ve Analitik",
+          description: "Klinik performans, operasyonel metrikler ve finansal raporlar için güçlü analitik araçlar.",
+        },
+        integration: {
+          title: "Entegrasyon",
+          description: "Laboratuvar, radyoloji ve diğer sağlık sistemleri ile sorunsuz entegrasyon.",
+        },
+      },
+      architecture: {
+        title: "Mimari ve Altyapı",
+        subtitle: "Modern bulut mimarisi ile güvenilir ve ölçeklenebilir altyapı",
+        azureReady: {
+          title: "Azure Ready",
+          description: "Microsoft Azure bulut platformu ile tam uyumlu, Azure servislerinden tam faydalanın.",
+        },
+        multiTenant: {
+          title: "Multi-Tenant Mimari",
+          description: "Birden fazla kurumun aynı altyapıyı güvenli bir şekilde paylaşmasını sağlayan multi-tenant mimari.",
+        },
+        scalable: {
+          title: "Ölçeklenebilir",
+          description: "Küçük kliniklerden büyük sağlık gruplarına kadar ölçeklenebilen esnek yapı.",
+        },
+        flexible: {
+          title: "Esnek Deployment",
+          description: "Private cloud, public cloud veya hybrid deployment seçenekleri ile ihtiyacınıza uygun kurulum.",
+        },
+        secure: {
+          title: "Güvenlik ve Uyumluluk",
+          description: "HIPAA, GDPR ve diğer sağlık verisi düzenlemelerine uyumlu güvenlik altyapısı.",
+        },
+        highAvailability: {
+          title: "Yüksek Erişilebilirlik",
+          description: "7/24 kesintisiz hizmet için yüksek erişilebilirlik ve felaket kurtarma çözümleri.",
+        },
+      },
+      successStory: {
+        title: "Başarı Hikayesi",
+        subtitle: "Qatar MOPH - Yüzden Fazla Klinik",
+        description: "Sarus Bulut, Qatar Sağlık Bakanlığı (MOPH) projesi kapsamında yüzden fazla klinik için çalışmak üzere tasarlanmıştır. Multi-tenant mimarisi sayesinde tüm klinikler aynı altyapıyı güvenli bir şekilde paylaşırken, her klinik kendi verilerine özel erişim sağlamaktadır.",
+        stats: {
+          clinics: "100+",
+          clinicsLabel: "Klinik Kapasitesi",
+          patients: "500K+",
+          patientsLabel: "Hasta Kapasitesi",
+          users: "5,000+",
+          usersLabel: "Kullanıcı Kapasitesi",
+          uptime: "99.9%",
+          uptimeLabel: "Hedef Uptime",
+        },
+      },
+      cta: {
+        title: "Sarus Bulut ile Klinik Operasyonlarınızı Dönüştürün",
+        description: "Modern ayaktan hasta bakımı için kapsamlı SBS çözümümüz hakkında daha fazla bilgi almak veya demo talep etmek için bizimle iletişime geçin.",
+      },
+    },
   },
   en: {
     nav: {
@@ -916,6 +1038,128 @@ export const translations: Record<string, any> = {
     timeline: {
       title: "Sarus over time",
       subtitle: "Sarus; as Turkey's first web-based hospital information system",
+    },
+    cloud: {
+      backToHome: "Back to Home",
+      productName: "Cloud",
+      tagline: "Azure Ready, Multi-tenant Cloud EMR Solution",
+      description: "Sarus Cloud is a modern EMR (Electronic Medical Record) solution designed for ambulatory care, featuring Azure Ready and multi-tenant architecture. With its flexible structure that can work in private cloud and any cloud environment, it scales from small clinics to large health groups.",
+      descriptionSecond: "Sarus Cloud, successfully operating for over one hundred clinics as part of the Qatar MOPH project, is designed to meet the digital transformation needs of modern healthcare institutions.",
+      expandText: "Expand",
+      collapseText: "Collapse",
+      requestDemo: "Request Demo",
+      explore: "Explore",
+      why: {
+        title: "Clinical Features",
+        clinicalEfficiency: {
+          title: "Clinical Efficiency",
+          description: "Increases healthcare professionals' efficiency with comprehensive clinical documentation, patient record management, and clinical workflows.",
+          detail: "EHR software, e-Prescribing, Clinical Data Registries, Automated Care Gap Alerts.",
+        },
+        practiceManagement: {
+          title: "Practice Management",
+          description: "Integrated practice management solution that simplifies appointment management, patient tracking, and operational processes.",
+          detail: "AI-powered appointment scheduling, patient flow management, operational reporting.",
+        },
+        patientEngagement: {
+          title: "Patient Engagement",
+          description: "Improve patient experience and increase patient satisfaction with a mobile-first patient engagement platform.",
+          detail: "Patient portal, mobile application, appointment management, results viewing.",
+        },
+        revenueCycle: {
+          title: "Revenue Cycle Management",
+          description: "Maximize revenue cycle by optimizing billing, coding, and payment processes.",
+          detail: "Automated billing, coding services, payment tracking, denial rate reduction.",
+        },
+        cloudInfrastructure: {
+          title: "Cloud Infrastructure",
+          description: "Scalable and secure cloud infrastructure with Azure Ready, multi-tenant architecture.",
+          detail: "Private cloud, public cloud, hybrid deployment, automatic scaling.",
+        },
+      },
+      features: {
+        title: "Platform Features",
+        subtitle: "Optimize your clinical operations with comprehensive EMR solution",
+        ehr: {
+          title: "EHR Software",
+          description: "Adaptable EMR platform for ambulatory care. Supports your clinical documentation and workflow needs.",
+        },
+        eprescribe: {
+          title: "e-Prescribe",
+          description: "Affordable and certified electronic prescribing solution including controlled substances.",
+        },
+        scheduling: {
+          title: "Smart Scheduling",
+          description: "Automate and optimize your appointment processes with AI-powered patient appointment scheduling.",
+        },
+        clinicalDocs: {
+          title: "Clinical Documentation",
+          description: "Comprehensive clinical notes, examination records, and patient history management.",
+        },
+        patientPortal: {
+          title: "Patient Portal",
+          description: "Mobile-first platform for patients to book appointments, view results, and access health information.",
+        },
+        billing: {
+          title: "Billing and Payment",
+          description: "Optimize financial processes with automated billing, payment tracking, and revenue cycle management.",
+        },
+        reporting: {
+          title: "Reporting and Analytics",
+          description: "Powerful analytics tools for clinical performance, operational metrics, and financial reports.",
+        },
+        integration: {
+          title: "Integration",
+          description: "Seamless integration with laboratory, radiology, and other healthcare systems.",
+        },
+      },
+      architecture: {
+        title: "Architecture and Infrastructure",
+        subtitle: "Reliable and scalable infrastructure with modern cloud architecture",
+        azureReady: {
+          title: "Azure Ready",
+          description: "Fully compatible with Microsoft Azure cloud platform, fully leverage Azure services.",
+        },
+        multiTenant: {
+          title: "Multi-Tenant Architecture",
+          description: "Multi-tenant architecture that enables multiple institutions to securely share the same infrastructure.",
+        },
+        scalable: {
+          title: "Scalable",
+          description: "Flexible structure that scales from small clinics to large health groups.",
+        },
+        flexible: {
+          title: "Flexible Deployment",
+          description: "Installation options tailored to your needs with private cloud, public cloud, or hybrid deployment.",
+        },
+        secure: {
+          title: "Security and Compliance",
+          description: "Security infrastructure compliant with HIPAA, GDPR, and other health data regulations.",
+        },
+        highAvailability: {
+          title: "High Availability",
+          description: "High availability and disaster recovery solutions for 24/7 uninterrupted service.",
+        },
+      },
+      successStory: {
+        title: "Success Story",
+        subtitle: "Qatar MOPH - Over One Hundred Clinics",
+        description: "Sarus Cloud is designed to operate for over one hundred clinics as part of the Qatar Ministry of Public Health (MOPH) project. Thanks to its multi-tenant architecture, all clinics will securely share the same infrastructure while each clinic has exclusive access to its own data.",
+        stats: {
+          clinics: "100+",
+          clinicsLabel: "Clinic Capacity",
+          patients: "500K+",
+          patientsLabel: "Patient Capacity",
+          users: "5,000+",
+          usersLabel: "User Capacity",
+          uptime: "99.9%",
+          uptimeLabel: "Target Uptime",
+        },
+      },
+      cta: {
+        title: "Transform Your Clinical Operations with Sarus Cloud",
+        description: "Contact us to learn more about our comprehensive EMR solution for modern ambulatory care or to request a demo.",
+      },
     },
   },
 };
