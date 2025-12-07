@@ -461,7 +461,7 @@ export const translations: Record<string, any> = {
       backToHome: "Ana Sayfaya Dön",
       productName: "Bulut",
       tagline: "Azure Ready, Multi-tenant Bulut SBS Çözümü",
-      description: "Sarus Bulut, ayaktan hasta bakımı için tasarlanmış, Azure Ready ve multi-tenant mimariye sahip modern bir SBS (Sağlık Bilgi Sistemi) çözümüdür. Private cloud ve her türlü cloud ortamında çalışabilen esnek yapısı ile küçük kliniklerden büyük sağlık gruplarına kadar ölçeklenebilir.",
+      description: "Sarus Bulut, ayaktan hasta bakımı için tasarlanmış, Azure Ready ve multi-tenant mimariye sahip modern bir SBS (Sağlık Bilgi Sistemi) çözümüdür. Kurumsal bulut (private cloud) özelliği ile kurumlara ait datacenter'lardan çalışabilen, ayrıca her türlü cloud ortamında çalışabilen esnek yapısı ile küçük kliniklerden büyük sağlık gruplarına kadar ölçeklenebilir.",
       descriptionSecond: "Qatar MOPH projesi kapsamında yüzden fazla klinik için başarıyla çalışan Sarus Bulut, modern sağlık kurumlarının dijital dönüşüm ihtiyaçlarını karşılamak için tasarlanmıştır.",
       expandText: "Genişlet",
       collapseText: "Daralt",
@@ -491,8 +491,8 @@ export const translations: Record<string, any> = {
         },
         cloudInfrastructure: {
           title: "Bulut Altyapısı",
-          description: "Azure Ready, multi-tenant mimari ile ölçeklenebilir ve güvenli bulut altyapısı.",
-          detail: "Private cloud, public cloud, hybrid deployment, otomatik ölçeklendirme.",
+          description: "Azure Ready, multi-tenant mimari ile ölçeklenebilir ve güvenli bulut altyapısı. Kurumsal bulut (private cloud) desteği ile kurumlara ait datacenter'lardan çalışabilme.",
+          detail: "Kurumsal bulut (private cloud), public cloud, hybrid deployment, otomatik ölçeklendirme.",
         },
       },
       features: {
@@ -552,7 +552,7 @@ export const translations: Record<string, any> = {
         },
         flexible: {
           title: "Esnek Deployment",
-          description: "Private cloud, public cloud veya hybrid deployment seçenekleri ile ihtiyacınıza uygun kurulum.",
+          description: "Kurumsal bulut (private cloud) özelliği ile kurumlara ait datacenter'lardan çalışabilme, public cloud veya hybrid deployment seçenekleri ile ihtiyacınıza uygun kurulum.",
         },
         secure: {
           title: "Güvenlik ve Uyumluluk",
@@ -596,6 +596,187 @@ export const translations: Record<string, any> = {
       cta: {
         title: "Sarus Bulut ile Klinik Operasyonlarınızı Dönüştürün",
         description: "Modern ayaktan hasta bakımı için kapsamlı SBS çözümümüz hakkında daha fazla bilgi almak veya demo talep etmek için bizimle iletişime geçin.",
+      },
+    },
+    lbs: {
+      backToHome: "Ana Sayfaya Dön",
+      productName: "LBYS",
+      tagline: "Gelişmiş, sağlam, hızlı sonuç",
+      description: "Sarus LBYS, hastaneler, entegre sağlık ağları ve her büyüklükteki laboratuvarlar için iş akışı verimliliğini artıran kapsamlı bir laboratuvar bilgi yönetim sistemidir. Yüksek hacimli çok merkezli organizasyonlar için özellikle faydalı olan ölçeklenebilir mimarisi ile laboratuvar operasyonlarınızı optimize edin.",
+      descriptionSecond: "Sarus LBYS, numune girişinden sonuç raporlamaya, cihaz entegrasyonundan kalite kontrolüne kadar tüm laboratuvar süreçlerini tek bir platformda yönetmenizi sağlar.",
+      expandText: "Genişlet",
+      collapseText: "Daralt",
+      requestDemo: "Demo Talep Et",
+      explore: "İncele",
+      why: {
+        title: "Temel Özellikler",
+        workflowEfficiency: {
+          title: "İş Akışı Verimliliği",
+          description: "Kullanım yönetimi, gelişmiş pre-analitik numune işleme ve tıbbi gereklilik kontrolü ile laboratuvar hizmetlerinin verimliliğini ve kalitesini artırır.",
+          detail: "Otomatik numune işleme, akıllı iş akışı yönetimi, gerçek zamanlı durum takibi.",
+        },
+        orderManagement: {
+          title: "Numune Yönetimi",
+          description: "Merkezi numune girişi, numune takibi ve numune yönetimi ile laboratuvar operasyonlarınızı kolaylaştırın.",
+          detail: "Web tabanlı numune girişi, otomatik numune yönlendirme, numune durumu takibi.",
+        },
+        resultReporting: {
+          title: "Sonuç Raporlama",
+          description: "Hızlı ve güvenilir sonuç raporlama ile klinik karar verme süreçlerini destekleyin.",
+          detail: "Otomatik sonuç yayınlama, kritik değer yönetimi, sonuç onay süreçleri.",
+        },
+        instrumentIntegration: {
+          title: "Cihaz Entegrasyonu",
+          description: "Laboratuvar cihazları ile sorunsuz entegrasyon, otomatik veri aktarımı ve hata azaltma.",
+          detail: "HL7, ASTM, LIS2-A2 protokolleri, otomatik cihaz yönetimi, veri doğrulama.",
+        },
+        qualityControl: {
+          title: "Kalite Kontrolü",
+          description: "Kapsamlı kalite kontrol yönetimi ile laboratuvar testlerinin doğruluğunu ve güvenilirliğini sağlayın.",
+          detail: "Otomatik QC kuralları, Westgard kuralları, kalite kontrol raporlama.",
+        },
+      },
+      features: {
+        title: "Platform Özellikleri",
+        subtitle: "Kapsamlı LBYS çözümü ile laboratuvar operasyonlarınızı optimize edin",
+        orderEntry: {
+          title: "Numune Girişi",
+          description: "Merkezi numune girişi ve yönetimi. Web tabanlı erişim ile uzak lokasyonlardan numune girişi imkanı.",
+        },
+        resultManagement: {
+          title: "Sonuç Yönetimi",
+          description: "Otomatik sonuç işleme, doğrulama ve yayınlama. Kritik değer yönetimi ve otomatik bildirimler.",
+        },
+        instrumentInterface: {
+          title: "Cihaz Arayüzü",
+          description: "Tüm laboratuvar cihazları ile standart protokoller üzerinden entegrasyon. Otomatik veri aktarımı ve hata yönetimi.",
+        },
+        qualityControl: {
+          title: "Kalite Kontrol",
+          description: "Gelişmiş kalite kontrol yönetimi, otomatik QC kuralları ve kalite kontrol raporlama.",
+        },
+        workflowManagement: {
+          title: "İş Akışı Yönetimi",
+          description: "Numune takibi, iş akışı otomasyonu ve laboratuvar süreçlerinin merkezi yönetimi.",
+        },
+        billing: {
+          title: "Faturalama",
+          description: "Gerçek zamanlı faturalama, otomatik kodlama ve gelir döngüsü yönetimi.",
+        },
+        reporting: {
+          title: "Raporlama ve Analitik",
+          description: "Kapsamlı raporlama araçları, özel raporlar ve laboratuvar performans analitiği.",
+        },
+        integration: {
+          title: "Entegrasyon",
+          description: "HIS, EMR, referans laboratuvarları ve diğer sistemlerle sorunsuz entegrasyon.",
+        },
+        webAccess: {
+          title: "Web Erişimi",
+          description: "Web tabanlı erişim ile uzak lokasyonlardan numune girişi, numune toplama ve etiket yazdırma.",
+        },
+      },
+      architecture: {
+        title: "Mimari ve Altyapı",
+        subtitle: "Güvenilir ve ölçeklenebilir laboratuvar bilgi sistemi altyapısı",
+        scalable: {
+          title: "Ölçeklenebilir",
+          description: "Küçük laboratuvarlardan büyük entegre sağlık ağlarına kadar ölçeklenebilen esnek yapı.",
+        },
+        integration: {
+          title: "Gelişmiş Entegrasyon",
+          description: "HIS, EMR, referans laboratuvarları ve diğer LIS sistemleri ile kapsamlı entegrasyon desteği.",
+        },
+        security: {
+          title: "Güvenlik ve Denetim",
+          description: "Tam denetim izi ve işlem geçmişi ile güvenli laboratuvar veri yönetimi.",
+        },
+        realTime: {
+          title: "Gerçek Zamanlı İşleme",
+          description: "Gerçek zamanlı numune işleme, sonuç yayınlama ve faturalama ile hızlı laboratuvar operasyonları.",
+        },
+        customizable: {
+          title: "Özelleştirilebilir",
+          description: "Müşteri ihtiyaçlarına göre özelleştirilebilir yapı, özel iş akışları ve raporlar.",
+        },
+        multiSite: {
+          title: "Çok Merkezli Desteği",
+          description: "Birden fazla lokasyonda faaliyet gösteren laboratuvarlar için merkezi yönetim ve standartlaştırılmış süreçler.",
+        },
+      },
+      useCases: {
+        title: "Kullanım Senaryoları",
+        hospitals: {
+          title: "Hastaneler",
+          description: "Büyük hastaneler ve entegre sağlık ağları için merkezi laboratuvar yönetimi ve yüksek hacimli test işleme.",
+        },
+        referenceLabs: {
+          title: "Referans Laboratuvarları",
+          description: "Yüksek hacimli referans laboratuvarları için ölçeklenebilir ve güvenilir LBYS çözümü.",
+        },
+        clinicLabs: {
+          title: "Klinik Laboratuvarları",
+          description: "Klinik laboratuvarları için hızlı sonuç döngüsü ve entegre hasta bakımı desteği.",
+        },
+      },
+      workflow: {
+        title: "Sarus LBS Enterprise İş Akışı",
+        subtitle: "Kapsamlı laboratuvar süreçlerini tek bir platformda yönetin",
+        steps: {
+          checkInSorting: {
+            title: "Numune Kabulü ve Sınıflandırma",
+            description: "SARUS LIS, otomasyon ön-analitik aktiviteleri için tam destek sağlar.",
+          },
+          worklistRouting: {
+            title: "İş Listesi ve Yönlendirme",
+            description: "Açık otomasyon spesifik yönetimi.",
+          },
+          analyserInterfaces: {
+            title: "Analizör Arayüzleri",
+            description: "Tüm laboratuvar cihazları ile entegrasyon ve otomatik veri aktarımı.",
+          },
+          calibrationMaintenance: {
+            title: "Kalibrasyon ve Bakım",
+            description: "SARUS LIS, kalibrasyon incelemesi ve bakım planlamasını destekler.",
+          },
+          rerunReflex: {
+            title: "Otomatik Tekrar ve Refleks Test",
+            description: "Belirlenmiş kriter ve mantık kullanarak otomatik tekrar ve refleks testi.",
+          },
+          qualityControl: {
+            title: "Kalite Kontrolü",
+            description: "Levey-Jennings, hareketli ortalama; gerçek zamanlı alarm.",
+          },
+          results: {
+            title: "Sonuçlar",
+            description: "Test sonuçlarının toplanması ve işlenmesi.",
+          },
+          autoverification: {
+            title: "Otomatik Doğrulama",
+            description: "Belirlenmiş kriter ve mantık kullanarak test sonuçlarının LIS/HIS'e otomatik yayınlanması.",
+          },
+          checkOutStorage: {
+            title: "Çıkış, Depolama ve Numune Geri Çağırma",
+            description: "Post-analitik fonksiyonlar SARUS LIS'i tam özellikli bir klinik middleware çözümü yapar.",
+          },
+        },
+      },
+      successStory: {
+        title: "Başarı Hikayesi",
+        subtitle: "Ankara (Bilkent) Şehir Hastanesi",
+        description: "Sarus LBYS, dünyanın en büyük sağlık kampüslerinden biri olan Ankara (Bilkent) Şehir Hastanesi'nde günlük yüzbinlerce test işleme kapasitesi ile çalışmaktadır.",
+        stats: {
+          tests: "285,000",
+          testsLabel: "Günlük Test Yükü",
+          instruments: "163",
+          instrumentsLabel: "Entegre Analyzer (Online)",
+          users: "70",
+          usersLabel: "LIS Doktor Kullanıcı",
+        },
+      },
+      cta: {
+        title: "Sarus LBYS ile Laboratuvar Operasyonlarınızı Dönüştürün",
+        description: "Kapsamlı laboratuvar bilgi yönetim sistemi çözümümüz hakkında daha fazla bilgi almak veya demo talep etmek için bizimle iletişime geçin.",
       },
     },
   },
@@ -1062,7 +1243,7 @@ export const translations: Record<string, any> = {
       backToHome: "Back to Home",
       productName: "Cloud",
       tagline: "Azure Ready, Multi-tenant Cloud EMR Solution",
-      description: "Sarus Cloud is a modern EMR (Electronic Medical Record) solution designed for ambulatory care, featuring Azure Ready and multi-tenant architecture. With its flexible structure that can work in private cloud and any cloud environment, it scales from small clinics to large health groups.",
+      description: "Sarus Cloud is a modern EMR (Electronic Medical Record) solution designed for ambulatory care, featuring Azure Ready and multi-tenant architecture. With its flexible structure that can work in private cloud (enterprise cloud) environments, including organization-owned datacenters, as well as any cloud environment, it scales from small clinics to large health groups.",
       descriptionSecond: "Sarus Cloud, successfully operating for over one hundred clinics as part of the Qatar MOPH project, is designed to meet the digital transformation needs of modern healthcare institutions.",
       expandText: "Expand",
       collapseText: "Collapse",
@@ -1153,7 +1334,7 @@ export const translations: Record<string, any> = {
         },
         flexible: {
           title: "Flexible Deployment",
-          description: "Installation options tailored to your needs with private cloud, public cloud, or hybrid deployment.",
+          description: "Installation options tailored to your needs with private cloud (enterprise cloud) support for organization-owned datacenters, public cloud, or hybrid deployment.",
         },
         secure: {
           title: "Security and Compliance",
@@ -1197,6 +1378,187 @@ export const translations: Record<string, any> = {
       cta: {
         title: "Transform Your Clinical Operations with Sarus Cloud",
         description: "Contact us to learn more about our comprehensive EMR solution for modern ambulatory care or to request a demo.",
+      },
+    },
+    lims: {
+      backToHome: "Back to Home",
+      productName: "LIMS",
+      tagline: "Advanced, robust, fast results",
+      description: "Sarus LIMS is a comprehensive laboratory information management system that improves workflow efficiencies for hospitals, Integrated Delivery Networks (IDNs), and laboratories of every size. With its scalable architecture, particularly beneficial for high-volume multisite organizations, optimize your laboratory operations.",
+      descriptionSecond: "Sarus LIMS enables you to manage all laboratory processes from order entry to result reporting, instrument integration to quality control, all on a single platform.",
+      expandText: "Expand",
+      collapseText: "Collapse",
+      requestDemo: "Request Demo",
+      explore: "Explore",
+      why: {
+        title: "Core Features",
+        workflowEfficiency: {
+          title: "Workflow Efficiency",
+          description: "Improves the efficiency and quality of laboratory services using utilization management, enhanced pre-analytic specimen processing, and medical necessity checking.",
+          detail: "Automated order processing, smart workflow management, real-time status tracking.",
+        },
+        orderManagement: {
+          title: "Order Management",
+          description: "Simplify your laboratory operations with centralized order entry, order tracking, and order management.",
+          detail: "Web-based order entry, automatic order routing, order status tracking.",
+        },
+        resultReporting: {
+          title: "Result Reporting",
+          description: "Support clinical decision-making processes with fast and reliable result reporting.",
+          detail: "Automatic result publishing, critical value management, result approval processes.",
+        },
+        instrumentIntegration: {
+          title: "Instrument Integration",
+          description: "Seamless integration with laboratory instruments, automatic data transfer, and error reduction.",
+          detail: "HL7, ASTM, LIS2-A2 protocols, automatic instrument management, data validation.",
+        },
+        qualityControl: {
+          title: "Quality Control",
+          description: "Ensure accuracy and reliability of laboratory tests with comprehensive quality control management.",
+          detail: "Automatic QC rules, Westgard rules, quality control reporting.",
+        },
+      },
+      features: {
+        title: "Platform Features",
+        subtitle: "Optimize your laboratory operations with comprehensive LIMS solution",
+        orderEntry: {
+          title: "Order Entry",
+          description: "Centralized order entry and management. Web-based access for placing orders from remote locations.",
+        },
+        resultManagement: {
+          title: "Result Management",
+          description: "Automatic result processing, validation, and publishing. Critical value management and automatic notifications.",
+        },
+        instrumentInterface: {
+          title: "Instrument Interface",
+          description: "Integration with all laboratory instruments through standard protocols. Automatic data transfer and error management.",
+        },
+        qualityControl: {
+          title: "Quality Control",
+          description: "Advanced quality control management, automatic QC rules, and quality control reporting.",
+        },
+        workflowManagement: {
+          title: "Workflow Management",
+          description: "Specimen tracking, workflow automation, and centralized management of laboratory processes.",
+        },
+        billing: {
+          title: "Billing",
+          description: "Real-time billing, automatic coding, and revenue cycle management.",
+        },
+        reporting: {
+          title: "Reporting and Analytics",
+          description: "Comprehensive reporting tools, custom reports, and laboratory performance analytics.",
+        },
+        integration: {
+          title: "Integration",
+          description: "Seamless integration with HIS, EMR, reference laboratories, and other systems.",
+        },
+        webAccess: {
+          title: "Web Access",
+          description: "Web-based access for placing orders, collecting specimens, and printing labels from remote locations.",
+        },
+      },
+      architecture: {
+        title: "Architecture and Infrastructure",
+        subtitle: "Reliable and scalable laboratory information system infrastructure",
+        scalable: {
+          title: "Scalable",
+          description: "Flexible structure that scales from small laboratories to large integrated health networks.",
+        },
+        integration: {
+          title: "Advanced Integration",
+          description: "Comprehensive integration support with HIS, EMR, reference laboratories, and other LIS systems.",
+        },
+        security: {
+          title: "Security and Audit",
+          description: "Secure laboratory data management with complete audit trails and processing history.",
+        },
+        realTime: {
+          title: "Real-time Processing",
+          description: "Fast laboratory operations with real-time order processing, result publishing, and billing.",
+        },
+        customizable: {
+          title: "Customizable",
+          description: "Customizable structure according to customer needs, custom workflows, and reports.",
+        },
+        multiSite: {
+          title: "Multi-site Support",
+          description: "Centralized management and standardized processes for laboratories operating in multiple locations.",
+        },
+      },
+      useCases: {
+        title: "Use Cases",
+        hospitals: {
+          title: "Hospitals",
+          description: "Centralized laboratory management and high-volume test processing for large hospitals and integrated health networks.",
+        },
+        referenceLabs: {
+          title: "Reference Laboratories",
+          description: "Scalable and reliable LIMS solution for high-volume reference laboratories.",
+        },
+        clinicLabs: {
+          title: "Clinical Laboratories",
+          description: "Fast result turnaround and integrated patient care support for clinical laboratories.",
+        },
+      },
+      workflow: {
+        title: "Sarus LIMS Enterprise Workflow",
+        subtitle: "Manage comprehensive laboratory processes on a single platform",
+        steps: {
+          checkInSorting: {
+            title: "Check-In & Sorting",
+            description: "SARUS LIS provides complete support for automation pre-analytical activities.",
+          },
+          worklistRouting: {
+            title: "Worklist & Routing",
+            description: "Open automation specific management.",
+          },
+          analyserInterfaces: {
+            title: "Analyser Interfaces",
+            description: "Integration with all laboratory instruments and automatic data transfer.",
+          },
+          calibrationMaintenance: {
+            title: "Calibration & Maintenance",
+            description: "SARUS LIS supports calibration review and maintenance scheduling.",
+          },
+          rerunReflex: {
+            title: "Rerun & Reflex",
+            description: "Automated rerun and reflex testing using established criterion and logic.",
+          },
+          qualityControl: {
+            title: "Quality Control",
+            description: "Levey-Jennings, moving average; real-time alarm.",
+          },
+          results: {
+            title: "Results",
+            description: "Collection and processing of test results.",
+          },
+          autoverification: {
+            title: "Autoverification",
+            description: "Automated release of test results to LIS/HIS using established criterion and logic.",
+          },
+          checkOutStorage: {
+            title: "Check-Out, Storage & Sample Retrieval",
+            description: "Post-analytical functionalities make SARUS LIS a fully featured clinical middleware solution.",
+          },
+        },
+      },
+      successStory: {
+        title: "Success Story",
+        subtitle: "Ankara (Bilkent) City Hospital",
+        description: "Sarus LIMS operates at Ankara (Bilkent) City Hospital, one of the world's largest health campuses, with a daily capacity of processing hundreds of thousands of tests.",
+        stats: {
+          tests: "285,000",
+          testsLabel: "Daily Test Workload",
+          instruments: "163",
+          instrumentsLabel: "Integrated Analyzers (Online)",
+          users: "70",
+          usersLabel: "LIS Doctor Users",
+        },
+      },
+      cta: {
+        title: "Transform Your Laboratory Operations with Sarus LIMS",
+        description: "Contact us to learn more about our comprehensive laboratory information management system solution or to request a demo.",
       },
     },
   },
