@@ -4,11 +4,6 @@ import { SarusHubItem, SarusHubItemType } from "@/lib/types/sarus-hub";
 import SarusHubContent from "@/components/SarusHubContent";
 import SocialShareButtons from "@/components/SocialShareButtons";
 import ViewCounter from "@/components/ViewCounter";
-import { initializeDatabase } from "@/lib/db/schema";
-import { getItemBySlug } from "@/lib/db/sarus-hub";
-
-// Initialize database
-initializeDatabase();
 
 const typeLabels: Record<SarusHubItemType, string> = {
   "case-study": "Vaka Çalışması",
@@ -34,7 +29,10 @@ function formatDate(dateStr: string) {
 }
 
 export async function generateStaticParams() {
+  // Dynamic import to avoid bundling better-sqlite3 in client
   const { getAllItems } = await import("@/lib/db/sarus-hub");
+  const { initializeDatabase } = await import("@/lib/db/schema");
+  initializeDatabase();
   const items = getAllItems({}, false); // Only published items
   return items.map((item) => ({
     slug: item.slug,
@@ -46,6 +44,11 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  // Dynamic import to avoid bundling better-sqlite3 in client
+  const { getItemBySlug } = await import("@/lib/db/sarus-hub");
+  const { initializeDatabase } = await import("@/lib/db/schema");
+  initializeDatabase();
+  
   const { slug } = await params;
   const item = getItemBySlug(slug);
   
@@ -57,7 +60,7 @@ export async function generateMetadata({
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://teknoritma.com.tr";
   const url = `${siteUrl}/sarus-hub/${item.slug}`;
-  const image = item.image ? `${siteUrl}${item.image}` : undefined;
+  const image = item.primaryImage || item.image ? `${siteUrl}${item.primaryImage || item.image}` : undefined;
 
   return {
     title: item.title,
@@ -81,6 +84,11 @@ export async function generateMetadata({
 }
 
 export default async function SarusHubDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  // Dynamic import to avoid bundling better-sqlite3 in client
+  const { getItemBySlug } = await import("@/lib/db/sarus-hub");
+  const { initializeDatabase } = await import("@/lib/db/schema");
+  initializeDatabase();
+  
   const { slug } = await params;
   const item = getItemBySlug(slug);
   
