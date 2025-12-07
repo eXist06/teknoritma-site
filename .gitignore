@@ -25,6 +25,11 @@
 lib/data/admin-data.json
 lib/data/first-login-passwords.json
 
+# database files
+lib/db/*.db
+lib/db/*.db-shm
+lib/db/*.db-wal
+
 # debug
 npm-debug.log*
 yarn-debug.log*

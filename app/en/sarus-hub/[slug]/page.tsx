@@ -3,10 +3,12 @@ import Link from "next/link";
 import { SarusHubItem, SarusHubItemType } from "@/lib/types/sarus-hub";
 import SarusHubContent from "@/components/SarusHubContent";
 import SocialShareButtons from "@/components/SocialShareButtons";
-import fs from "fs";
-import path from "path";
+import ViewCounter from "@/components/ViewCounter";
+import { initializeDatabase } from "@/lib/db/schema";
+import { getItemBySlug } from "@/lib/db/sarus-hub";
 
-const DATA_PATH = path.join(process.cwd(), "lib/data/sarus-hub.json");
+// Initialize database
+initializeDatabase();
 
 const typeLabels: Record<SarusHubItemType, string> = {
   "case-study": "Case Study",
@@ -22,15 +24,6 @@ const typeColors: Record<SarusHubItemType, string> = {
   event: "bg-amber-500/10 text-amber-400 ring-amber-500/30",
 };
 
-function readData(): { items: SarusHubItem[] } {
-  try {
-    const data = fs.readFileSync(DATA_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { items: [] };
-  }
-}
-
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
   return d.toLocaleDateString("en-US", {
@@ -41,12 +34,11 @@ function formatDate(dateStr: string) {
 }
 
 export async function generateStaticParams() {
-  const data = readData();
-  return data.items
-    .filter((item) => item.status === "published")
-    .map((item) => ({
-      slug: item.slug,
-    }));
+  const { getAllItems } = await import("@/lib/db/sarus-hub");
+  const items = getAllItems({}, false); // Only published items
+  return items.map((item) => ({
+    slug: item.slug,
+  }));
 }
 
 export async function generateMetadata({
@@ -55,10 +47,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const data = readData();
-  const item = data.items.find((i) => i.slug === slug && i.status === "published");
-
-  if (!item) {
+  const item = getItemBySlug(slug);
+  
+  if (!item || item.status !== "published") {
     return {
       title: "Content Not Found",
     };
@@ -91,10 +82,9 @@ export async function generateMetadata({
 
 export default async function SarusHubDetailPageEN({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const data = readData();
-  const item = data.items.find((i) => i.slug === slug && i.status === "published");
-
-  if (!item) {
+  const item = getItemBySlug(slug);
+  
+  if (!item || item.status !== "published") {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
@@ -126,7 +116,7 @@ export default async function SarusHubDetailPageEN({ params }: { params: Promise
             >
               {typeLabels[item.type]}
             </span>
-            <span className="text-neutral-body">{formatDate(item.publishedAt)}</span>
+            <span className="text-neutral-body">{item.publishedAt ? formatDate(item.publishedAt) : ""}</span>
             {item.readingMinutes && (
               <span className="text-neutral-body">• {item.readingMinutes} min read</span>
             )}
@@ -175,11 +165,14 @@ export default async function SarusHubDetailPageEN({ params }: { params: Promise
           )}
 
           {/* Social share */}
-          <SocialShareButtons
-            url={`/en/sarus-hub/${item.slug}`}
-            title={item.title}
-            summary={item.summary}
-          />
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <SocialShareButtons
+              url={`/en/sarus-hub/${item.slug}`}
+              title={item.title}
+              summary={item.summary}
+            />
+            <ViewCounter slug={item.slug} initialCount={item.viewCount || 0} />
+          </div>
         </header>
 
         {/* Content */}
@@ -187,6 +180,9 @@ export default async function SarusHubDetailPageEN({ params }: { params: Promise
           <SarusHubContent
             content={item.content}
             image={item.image}
+            primaryImage={item.primaryImage}
+            images={item.images}
+            imageDisplayStyle={item.imageDisplayStyle}
             video={item.video}
           />
         </article>

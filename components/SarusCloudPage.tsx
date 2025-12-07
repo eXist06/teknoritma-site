@@ -372,7 +372,7 @@ export default function SarusCloudPage() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
               title: t("cloud.features.ehr.title"),
@@ -413,6 +413,11 @@ export default function SarusCloudPage() {
               title: t("cloud.features.integration.title"),
               description: t("cloud.features.integration.description"),
               icon: "🔗",
+            },
+            {
+              title: t("cloud.features.standards.title"),
+              description: t("cloud.features.standards.description"),
+              icon: "✅",
             },
           ].map((item, idx) => (
             <motion.div
@@ -511,6 +516,53 @@ export default function SarusCloudPage() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Use Cases Section */}
+      <section className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background-alt">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-6">
+            {t("cloud.useCases.title")}
+          </h2>
+        </motion.div>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              title: t("cloud.useCases.countryWide.title"),
+              description: t("cloud.useCases.countryWide.description"),
+            },
+            {
+              title: t("cloud.useCases.clinicChains.title"),
+              description: t("cloud.useCases.clinicChains.description"),
+            },
+            {
+              title: t("cloud.useCases.largeClinics.title"),
+              description: t("cloud.useCases.largeClinics.description"),
+            },
+          ].map((item, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="bg-white rounded-2xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+            >
+              <h4 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2">
+                {item.title}
+              </h4>
+              <p className="text-sm text-neutral-body leading-relaxed">
+                {item.description}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </section>
 

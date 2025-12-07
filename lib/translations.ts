@@ -530,6 +530,10 @@ export const translations: Record<string, any> = {
           title: "Entegrasyon",
           description: "Laboratuvar, radyoloji ve diğer sağlık sistemleri ile sorunsuz entegrasyon.",
         },
+        standards: {
+          title: "Sağlık Standartları Desteği",
+          description: "FHIR, SNOMED CT, HL7, CPT, ICD gibi genel sağlık standartlarını destekler.",
+        },
       },
       architecture: {
         title: "Mimari ve Altyapı",
@@ -557,6 +561,21 @@ export const translations: Record<string, any> = {
         highAvailability: {
           title: "Yüksek Erişilebilirlik",
           description: "7/24 kesintisiz hizmet için yüksek erişilebilirlik ve felaket kurtarma çözümleri.",
+        },
+      },
+      useCases: {
+        title: "Kullanım Senaryoları",
+        countryWide: {
+          title: "Ülke Genelindeki Projeler",
+          description: "Büyük ölçekli ulusal sağlık projeleri için ideal. Multi-tenant mimarisi ile binlerce klinik ve sağlık kuruluşunu tek bir platformda birleştirir.",
+        },
+        clinicChains: {
+          title: "Klinik Zincirler",
+          description: "Birden fazla lokasyonda faaliyet gösteren klinik zincirleri için merkezi yönetim ve standartlaştırılmış süreçler sağlar.",
+        },
+        largeClinics: {
+          title: "Büyük Klinikler",
+          description: "Yüksek hasta hacmine sahip büyük klinikler için ölçeklenebilir ve güvenilir SBS çözümü.",
         },
       },
       successStory: {
@@ -1112,6 +1131,10 @@ export const translations: Record<string, any> = {
           title: "Integration",
           description: "Seamless integration with laboratory, radiology, and other healthcare systems.",
         },
+        standards: {
+          title: "Healthcare Standards Support",
+          description: "Supports common healthcare standards such as FHIR, SNOMED CT, HL7, CPT, and ICD.",
+        },
       },
       architecture: {
         title: "Architecture and Infrastructure",
@@ -1139,6 +1162,21 @@ export const translations: Record<string, any> = {
         highAvailability: {
           title: "High Availability",
           description: "High availability and disaster recovery solutions for 24/7 uninterrupted service.",
+        },
+      },
+      useCases: {
+        title: "Use Cases",
+        countryWide: {
+          title: "Country-Wide Projects",
+          description: "Ideal for large-scale national health projects. Unites thousands of clinics and healthcare institutions on a single platform with multi-tenant architecture.",
+        },
+        clinicChains: {
+          title: "Clinic Chains",
+          description: "Provides centralized management and standardized processes for clinic chains operating in multiple locations.",
+        },
+        largeClinics: {
+          title: "Large Clinics",
+          description: "Scalable and reliable EMR solution for large clinics with high patient volume.",
         },
       },
       successStory: {

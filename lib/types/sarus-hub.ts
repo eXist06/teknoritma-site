@@ -3,6 +3,7 @@ export type SarusHubItemType = 'case-study' | 'news' | 'insight' | 'event';
 export type SarusHubItemStatus = 'draft' | 'published';
 
 export type SarusHubItemLanguage = 'tr' | 'en' | 'mixed';
+export type ImageDisplayStyle = 'cover' | 'gallery' | 'carousel' | 'grid';
 
 export interface SarusHubItem {
   id: string;
@@ -20,11 +21,15 @@ export interface SarusHubItem {
   readingMinutes?: number;
   status: SarusHubItemStatus;
   author?: string;
-  image?: string; // Image URL
+  image?: string; // Primary/Featured Image URL (deprecated, use primaryImage)
+  primaryImage?: string; // Primary/Featured Image URL for card preview
+  images?: string[]; // Multiple images array
+  imageDisplayStyle?: ImageDisplayStyle; // How to display multiple images
   video?: string; // Video URL
   language: SarusHubItemLanguage;
   createdAt: string; // ISO string
   updatedAt: string; // ISO string
+  viewCount?: number; // View statistics
 }
 
 export interface SarusHubFilters {

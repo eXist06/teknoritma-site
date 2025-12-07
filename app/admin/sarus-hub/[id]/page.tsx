@@ -35,12 +35,16 @@ export default function AdminSarusHubEditPage() {
     status: "draft",
     author: "",
     image: "",
+    primaryImage: "",
+    images: [],
+    imageDisplayStyle: "cover",
     video: "",
     language: "tr",
   });
   const [tagInput, setTagInput] = useState("");
   const [imageUploading, setImageUploading] = useState(false);
   const [videoUploading, setVideoUploading] = useState(false);
+  const [multipleImagesUploading, setMultipleImagesUploading] = useState(false);
 
   useEffect(() => {
     if (!isNew) {
@@ -91,21 +95,35 @@ export default function AdminSarusHubEditPage() {
     });
   };
 
-  const handleImageUpload = async (file: File) => {
+  const handleImageUpload = async (file: File, setAsPrimary: boolean = false) => {
     setImageUploading(true);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
+      const uploadFormData = new FormData();
+      uploadFormData.append("file", file);
 
       const response = await fetch("/api/sarus-hub/upload-image", {
         method: "POST",
-        body: formData,
+        body: uploadFormData,
       });
 
       const data = await response.json();
 
       if (response.ok && data.url) {
-        setFormData({ ...formData, image: data.url });
+        if (setAsPrimary) {
+          setFormData((prev) => ({ 
+            ...prev, 
+            primaryImage: data.url,
+            image: data.url, // Legacy support
+          }));
+        } else {
+          setFormData((prev) => {
+            const currentImages = prev.images || [];
+            return { 
+              ...prev, 
+              images: [...currentImages, data.url],
+            };
+          });
+        }
       } else {
         alert(data.error || "Resim yüklenemedi");
       }
@@ -115,6 +133,56 @@ export default function AdminSarusHubEditPage() {
     } finally {
       setImageUploading(false);
     }
+  };
+
+  const handleMultipleImageUpload = async (files: FileList) => {
+    setMultipleImagesUploading(true);
+    try {
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const uploadFormData = new FormData();
+        uploadFormData.append("file", file);
+        const response = await fetch("/api/sarus-hub/upload-image", {
+          method: "POST",
+          body: uploadFormData,
+        });
+        const data = await response.json();
+        return response.ok && data.url ? data.url : null;
+      });
+
+      const uploadedUrls = (await Promise.all(uploadPromises)).filter(Boolean) as string[];
+      setFormData((prev) => {
+        const currentImages = prev.images || [];
+        return { 
+          ...prev, 
+          images: [...currentImages, ...uploadedUrls],
+        };
+      });
+    } catch (error) {
+      console.error("Multiple image upload error:", error);
+      alert("Resimler yüklenirken bir hata oluştu");
+    } finally {
+      setMultipleImagesUploading(false);
+    }
+  };
+
+  const handleRemoveImage = (imageUrl: string) => {
+    const currentImages = formData.images || [];
+    const isPrimary = formData.primaryImage === imageUrl;
+    
+    setFormData({
+      ...formData,
+      images: currentImages.filter(img => img !== imageUrl),
+      primaryImage: isPrimary ? undefined : formData.primaryImage,
+      image: isPrimary ? undefined : formData.image, // Legacy
+    });
+  };
+
+  const handleSetPrimaryImage = (imageUrl: string) => {
+    setFormData({
+      ...formData,
+      primaryImage: imageUrl,
+      image: imageUrl, // Legacy support
+    });
   };
 
   const handleVideoUpload = async (file: File) => {
@@ -421,26 +489,39 @@ export default function AdminSarusHubEditPage() {
           </div>
 
           {/* Media */}
-          <div className="space-y-4 rounded-lg border border-neutral-border p-6">
+          <div className="space-y-6 rounded-lg border border-neutral-border p-6">
             <h2 className="text-lg font-semibold text-neutral-heading">Medya</h2>
             
+            {/* Primary Image */}
             <div>
               <label className="block text-sm font-medium text-neutral-heading mb-2">
-                Öne Çıkan Resim
+                Ana Görsel (Kart Önizlemesi)
               </label>
-              {formData.image && (
-                <img
-                  src={formData.image}
-                  alt="Featured"
-                  className="w-full h-64 object-cover rounded-lg mb-2"
-                />
+              {formData.primaryImage && (
+                <div className="relative mb-2">
+                  <img
+                    src={formData.primaryImage}
+                    alt="Primary"
+                    className="w-full h-64 object-cover rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(formData.primaryImage!)}
+                    className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600"
+                  >
+                    Kaldır
+                  </button>
+                  <div className="absolute bottom-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-xs">
+                    ✓ Ana Görsel
+                  </div>
+                </div>
               )}
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) handleImageUpload(file);
+                  if (file) handleImageUpload(file, true);
                 }}
                 disabled={imageUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
@@ -448,16 +529,95 @@ export default function AdminSarusHubEditPage() {
               {imageUploading && <p className="text-sm text-neutral-body mt-2">Yükleniyor...</p>}
             </div>
 
+            {/* Multiple Images */}
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Ek Görseller
+              </label>
+              {(formData.images && formData.images.length > 0) && (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3">
+                  {formData.images.map((img, idx) => (
+                    <div key={idx} className="relative group">
+                      <img
+                        src={img}
+                        alt={`Image ${idx + 1}`}
+                        className="w-full h-32 object-cover rounded-lg"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors rounded-lg flex items-center justify-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleSetPrimaryImage(img)}
+                          className="opacity-0 group-hover:opacity-100 bg-primary text-white px-2 py-1 rounded text-xs hover:bg-primary-dark"
+                          title="Ana görsel yap"
+                        >
+                          ⭐ Ana
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(img)}
+                          className="opacity-0 group-hover:opacity-100 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600"
+                          title="Kaldır"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => {
+                  const files = e.target.files;
+                  if (files && files.length > 0) handleMultipleImageUpload(files);
+                }}
+                disabled={multipleImagesUploading}
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg"
+              />
+              {multipleImagesUploading && <p className="text-sm text-neutral-body mt-2">Yükleniyor...</p>}
+            </div>
+
+            {/* Image Display Style */}
+            {(formData.images && formData.images.length > 0) && (
+              <div>
+                <label className="block text-sm font-medium text-neutral-heading mb-2">
+                  Görsel Gösterim Tarzı
+                </label>
+                <select
+                  value={formData.imageDisplayStyle || "cover"}
+                  onChange={(e) => setFormData({ ...formData, imageDisplayStyle: e.target.value as any })}
+                  className="w-full px-4 py-2 border border-neutral-border rounded-lg"
+                >
+                  <option value="cover">Kapak (Tek görsel, tam ekran)</option>
+                  <option value="gallery">Galeri (Küçük önizlemeler)</option>
+                  <option value="carousel">Karusel (Kaydırılabilir)</option>
+                  <option value="grid">Izgara (Grid düzeni)</option>
+                </select>
+              </div>
+            )}
+
+            {/* Video */}
             <div>
               <label className="block text-sm font-medium text-neutral-heading mb-2">
                 Video
               </label>
               {formData.video && (
-                <video
-                  src={formData.video}
-                  controls
-                  className="w-full rounded-lg mb-2"
-                />
+                <div className="relative mb-2">
+                  <video
+                    src={formData.video}
+                    controls
+                    className="w-full rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, video: "" })}
+                    className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600"
+                  >
+                    Kaldır
+                  </button>
+                </div>
               )}
               <input
                 type="file"

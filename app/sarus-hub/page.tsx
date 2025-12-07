@@ -116,14 +116,30 @@ export default function SarusHubPage() {
               href={`/sarus-hub/${featured.slug}`}
               className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white hover:shadow-xl transition-all"
             >
-              {featured.image && (
+              {(featured.primaryImage || featured.image || featured.video) && (
                 <div className="relative h-64 md:h-80 overflow-hidden">
-                  <img
-                    src={featured.image}
-                    alt={featured.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                  {featured.video ? (
+                    <video
+                      src={featured.video}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      muted
+                      loop
+                      playsInline
+                      autoPlay
+                    />
+                  ) : (
+                    <img
+                      src={featured.primaryImage || featured.image}
+                      alt={featured.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                  {featured.video && (
+                    <div className="absolute top-4 right-4 bg-black/50 text-white px-2 py-1 rounded text-xs">
+                      🎥 Video
+                    </div>
+                  )}
                 </div>
               )}
               <div className="p-6 md:p-8">
@@ -227,13 +243,24 @@ export default function SarusHubPage() {
                 key={item.id}
                 className="group flex flex-col rounded-2xl border border-neutral-border bg-white overflow-hidden hover:border-primary hover:shadow-xl transition-all"
               >
-                {item.image && (
+                {(item.primaryImage || item.image || item.video) && (
                   <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+                    {item.video ? (
+                      <video
+                        src={item.video}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        muted
+                        loop
+                        playsInline
+                        autoPlay
+                      />
+                    ) : (
+                      <img
+                        src={item.primaryImage || item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    )}
                     <div className="absolute top-3 left-3">
                       <span
                         className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] ring-1 backdrop-blur-sm ${typeColors[item.type]}`}
@@ -241,22 +268,27 @@ export default function SarusHubPage() {
                         {typeLabels[item.type]}
                       </span>
                     </div>
+                    {item.video && (
+                      <div className="absolute top-3 right-3 bg-black/50 text-white px-2 py-0.5 rounded text-[10px]">
+                        🎥
+                      </div>
+                    )}
                   </div>
                 )}
                 <div className="flex flex-col flex-1 p-5">
-                  {!item.image && (
+                  {!(item.primaryImage || item.image || item.video) && (
                     <div className="mb-3 flex items-center justify-between text-[11px] text-neutral-body">
                       <span
                         className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 ring-1 ${typeColors[item.type]}`}
                       >
                         {typeLabels[item.type]}
                       </span>
-                      <span>{formatDate(item.publishedAt)}</span>
+                      <span>{item.publishedAt ? formatDate(item.publishedAt) : ""}</span>
                     </div>
                   )}
-                  {item.image && (
+                  {(item.primaryImage || item.image || item.video) && (
                     <div className="mb-2 text-[11px] text-neutral-body">
-                      {formatDate(item.publishedAt)}
+                      {item.publishedAt ? formatDate(item.publishedAt) : ""}
                     </div>
                   )}
                   <h4 className="mb-2 line-clamp-2 text-base font-bold text-neutral-heading group-hover:text-primary transition-colors">

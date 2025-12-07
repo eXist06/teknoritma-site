@@ -151,6 +151,7 @@ export default function AdminSarusHubPage() {
                 <th className="px-4 py-3">Ülke</th>
                 <th className="px-4 py-3">Durum</th>
                 <th className="px-4 py-3">Yayın Tarihi</th>
+                <th className="px-4 py-3">Görüntülenme</th>
                 <th className="px-4 py-3 text-right">İşlemler</th>
               </tr>
             </thead>
@@ -208,8 +209,28 @@ export default function AdminSarusHubPage() {
                       ? new Date(item.publishedAt).toLocaleDateString("tr-TR")
                       : "—"}
                   </td>
+                  <td className="px-4 py-3 align-top text-xs text-neutral-heading">
+                    {item.viewCount !== undefined ? (
+                      <span className="inline-flex items-center gap-1">
+                        👁️ {item.viewCount.toLocaleString("tr-TR")}
+                      </span>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
                   <td className="px-4 py-3 align-top text-right text-xs">
                     <div className="flex justify-end gap-2">
+                      {item.status === "published" && (
+                        <a
+                          href={`/sarus-hub/${item.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-full bg-green-500/10 text-green-600 px-3 py-1 hover:bg-green-500/20"
+                          title="Önizle"
+                        >
+                          👁️
+                        </a>
+                      )}
                       <button
                         type="button"
                         onClick={() => router.push(`/admin/sarus-hub/${item.id}`)}
@@ -230,7 +251,7 @@ export default function AdminSarusHubPage() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-6 text-center text-sm text-neutral-body">
+                  <td colSpan={8} className="px-4 py-6 text-center text-sm text-neutral-body">
                     Filtrelere uygun içerik bulunamadı.
                   </td>
                 </tr>
