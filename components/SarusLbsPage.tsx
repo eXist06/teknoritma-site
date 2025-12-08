@@ -1,10 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 import LisWorkflowDiagram from "@/components/LisWorkflowDiagram";
+import { 
+  Zap, Settings, Layers, RefreshCw, Trophy,
+  ClipboardList, BarChart3, Microscope, CheckCircle2,
+  FileEdit, CreditCard, TrendingUp, Link2, Globe, Lock
+} from "lucide-react";
 
 export default function SarusLbsPage() {
   const { language, t } = useI18n();
@@ -18,7 +23,7 @@ export default function SarusLbsPage() {
     {
       id: "workflowEfficiency",
       title: t(`${translationKey}.why.workflowEfficiency.title`),
-      icon: "⚡",
+      icon: Zap,
       iconBgClass: "bg-blue-50",
       iconColorClass: "text-blue-600",
       subtitle: t(`${translationKey}.why.workflowEfficiency.description`),
@@ -27,7 +32,7 @@ export default function SarusLbsPage() {
     {
       id: "orderManagement",
       title: t(`${translationKey}.why.orderManagement.title`),
-      icon: "📋",
+      icon: ClipboardList,
       iconBgClass: "bg-green-50",
       iconColorClass: "text-green-600",
       subtitle: t(`${translationKey}.why.orderManagement.description`),
@@ -36,7 +41,7 @@ export default function SarusLbsPage() {
     {
       id: "resultReporting",
       title: t(`${translationKey}.why.resultReporting.title`),
-      icon: "📊",
+      icon: BarChart3,
       iconBgClass: "bg-purple-50",
       iconColorClass: "text-purple-600",
       subtitle: t(`${translationKey}.why.resultReporting.description`),
@@ -45,7 +50,7 @@ export default function SarusLbsPage() {
     {
       id: "instrumentIntegration",
       title: t(`${translationKey}.why.instrumentIntegration.title`),
-      icon: "🔬",
+      icon: Microscope,
       iconBgClass: "bg-amber-50",
       iconColorClass: "text-amber-600",
       subtitle: t(`${translationKey}.why.instrumentIntegration.description`),
@@ -54,7 +59,7 @@ export default function SarusLbsPage() {
     {
       id: "qualityControl",
       title: t(`${translationKey}.why.qualityControl.title`),
-      icon: "✅",
+      icon: CheckCircle2,
       iconBgClass: "bg-cyan-50",
       iconColorClass: "text-cyan-600",
       subtitle: t(`${translationKey}.why.qualityControl.description`),
@@ -223,79 +228,96 @@ export default function SarusLbsPage() {
         </div>
       </section>
 
-      {/* Navigation Buttons Section - Tab Style */}
-      <section id="navigation" className="w-full bg-white relative">
-        {/* Top teal-blue line */}
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary"></div>
-        
-        <div className="max-w-7xl mx-auto px-4 md:px-10 py-8 md:py-12">
-          <nav className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
+      {/* Navigation Buttons Section - Enterprise Tab Style */}
+      <section id="navigation" className="w-full bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 md:px-10">
+          <nav className="flex flex-wrap items-center justify-center">
             {[
               {
                 id: "core-features",
                 href: "#core-features",
                 label: t(`${translationKey}.why.title`),
-                icon: "⚡",
+                icon: Zap,
               },
               {
                 id: "platform-features",
                 href: "#platform-features",
                 label: language === "en" ? "Platform Features" : "Platform Özellikleri",
-                icon: "⚙️",
+                icon: Settings,
               },
               {
                 id: "architecture",
                 href: "#architecture",
                 label: language === "en" ? "Architecture" : "Mimari",
-                icon: "🏗️",
+                icon: Layers,
               },
             {
               id: "workflow",
               href: "#workflow",
               label: language === "en" ? "Workflow" : "İş Akışı",
-              icon: "🔄",
+              icon: RefreshCw,
             },
             {
               id: "success-story",
               href: "#success-story",
               label: language === "en" ? "Success Story" : "Başarı Hikayesi",
-              icon: "🏆",
+              icon: Trophy,
             },
             ].map((item) => {
               const isActive = activeNavItem === item.id;
+              const IconComponent = item.icon;
               return (
                 <a
                   key={item.id}
                   href={item.href}
-                  onClick={() => setActiveNavItem(item.id)}
-                  className="group flex flex-col items-center gap-2 px-4 py-3 transition-all duration-300 relative"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveNavItem(item.id);
+                    const element = document.querySelector(item.href);
+                    if (element) {
+                      const elementRect = element.getBoundingClientRect();
+                      const absoluteElementTop = elementRect.top + window.pageYOffset;
+                      const offset = 100; // Navigation height offset
+                      window.scrollTo({
+                        top: absoluteElementTop - offset,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className={`group relative flex flex-col items-center justify-center gap-2 px-8 py-5
+                    transition-all duration-200 ease-out cursor-pointer
+                    border-b-2 -mb-px select-none
+                    ${isActive 
+                      ? 'border-primary text-primary bg-primary/5' 
+                      : 'border-transparent text-gray-600 hover:text-primary hover:border-primary/30 hover:bg-primary/3'
+                    }`}
                 >
                   {/* Icon */}
-                  <div className="text-2xl md:text-3xl mb-1 transition-transform duration-300" style={{ color: isActive ? '#0066FF' : '#4A5568' }}>
-                    {item.icon}
+                  <div className={`transition-all duration-200 pointer-events-none
+                    ${isActive 
+                      ? 'opacity-100 text-primary scale-110' 
+                      : 'opacity-60 text-gray-600 group-hover:opacity-100 group-hover:text-primary group-hover:scale-110'
+                    }`}
+                  >
+                    <IconComponent className="w-7 h-7 md:w-8 md:h-8" strokeWidth={2} />
                   </div>
+                  
                   {/* Label */}
                   <span 
-                    className={`text-sm md:text-base whitespace-nowrap transition-colors duration-300 ${
-                      isActive 
-                        ? 'font-bold text-primary' 
-                        : 'font-normal text-neutral-heading'
-                    }`}
+                    className={`text-xs md:text-sm font-medium whitespace-nowrap tracking-wide pointer-events-none
+                      transition-all duration-200
+                      ${isActive 
+                        ? 'text-primary font-semibold' 
+                        : 'text-gray-600 group-hover:text-primary group-hover:font-semibold'
+                      }`}
                   >
                     {item.label}
                   </span>
-                  {/* Active indicator underline */}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[80%] h-0.5 bg-primary"></span>
-                  )}
                 </a>
               );
             })}
           </nav>
         </div>
-        
-        {/* Bottom light grey separator line */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-neutral-border"></div>
       </section>
 
       {/* Core Features Section */}
@@ -314,61 +336,55 @@ export default function SarusLbsPage() {
           <div className="w-20 h-0.5 bg-primary mx-auto"></div>
         </motion.div>
 
-        {/* Enterprise Grid Layout */}
+        {/* Enterprise Grid Layout - Dedalus Style */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tabs.map((tab, idx) => (
+          {tabs.map((tab, idx) => {
+            const TabIcon = tab.icon;
+            return (
             <motion.div
               key={tab.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              whileHover={{ scale: 1.02, y: -4 }}
-              className={`group relative bg-gradient-to-br from-white via-white to-gray-50/80 backdrop-blur-sm border border-gray-200/60 rounded-2xl p-6 md:p-8 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/10 ${
+              whileHover={{ y: -2 }}
+              className={`group relative bg-white border border-gray-200 rounded-lg p-6 md:p-8 transition-all duration-300 hover:border-primary/50 hover:shadow-lg ${
                 activeTab === idx
-                  ? "border-primary/60 shadow-xl shadow-primary/20 ring-2 ring-primary/20"
-                  : "hover:border-primary/40"
+                  ? "border-primary shadow-md"
+                  : "shadow-sm"
               }`}
             >
-              {/* Active Indicator - Gradient */}
+              {/* Active Indicator */}
               {activeTab === idx && (
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/90 to-primary rounded-t-2xl"></div>
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary rounded-t-lg"></div>
               )}
 
-              {/* Decorative gradient overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:via-primary/2 group-hover:to-primary/5 rounded-2xl transition-all duration-300 pointer-events-none"></div>
-
-              {/* Icon Container with Enhanced Gradient */}
-              <div className="relative mb-5">
-                <div className={`h-16 w-16 md:h-18 md:w-18 rounded-xl flex items-center justify-center bg-gradient-to-br ${tab.iconBgClass} shadow-lg group-hover:shadow-xl transition-all duration-300 ${
-                  activeTab === idx ? "scale-110 ring-2 ring-primary/30" : "group-hover:scale-105"
-                }`}>
-                  <div className={`${tab.iconColorClass} text-2xl md:text-3xl transition-transform duration-300 ${
-                    activeTab === idx ? "scale-110" : ""
-                  }`}>
-                    {tab.icon}
-                  </div>
+              {/* Icon Container - Minimal Style */}
+              <div className="mb-4">
+                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${tab.iconBgClass} transition-transform duration-300 group-hover:scale-105`}>
+                  <TabIcon className={`${tab.iconColorClass} w-6 h-6`} strokeWidth={1.5} />
                 </div>
               </div>
 
               {/* Content */}
-              <div className="relative z-10">
-                <h3 className="text-xl md:text-2xl font-bold text-neutral-heading mb-3 leading-tight group-hover:text-primary transition-colors duration-300">
+              <div>
+                <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 leading-tight group-hover:text-primary transition-colors duration-300">
                   {tab.title}
                 </h3>
-                <p className="text-sm md:text-base text-neutral-body leading-relaxed mb-4">
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-3">
                   {tab.subtitle}
                 </p>
                 {tab.detail && (
-                  <div className="pt-4 border-t border-gradient-to-r from-transparent via-gray-200/50 to-transparent">
-                    <p className="text-xs md:text-sm text-neutral-body/80 font-medium leading-relaxed">
+                  <div className="pt-3 border-t border-gray-100">
+                    <p className="text-xs md:text-sm text-gray-500 leading-relaxed">
                       {tab.detail}
                     </p>
                   </div>
                 )}
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -395,66 +411,81 @@ export default function SarusLbsPage() {
             {
               title: t(`${translationKey}.features.orderEntry.title`),
               description: t(`${translationKey}.features.orderEntry.description`),
-              icon: "📝",
+              icon: FileEdit,
+              iconColor: "text-blue-600",
             },
             {
               title: t(`${translationKey}.features.resultManagement.title`),
               description: t(`${translationKey}.features.resultManagement.description`),
-              icon: "📊",
+              icon: BarChart3,
+              iconColor: "text-purple-600",
             },
             {
               title: t(`${translationKey}.features.instrumentInterface.title`),
               description: t(`${translationKey}.features.instrumentInterface.description`),
-              icon: "🔬",
+              icon: Microscope,
+              iconColor: "text-teal-600",
             },
             {
               title: t(`${translationKey}.features.qualityControl.title`),
               description: t(`${translationKey}.features.qualityControl.description`),
-              icon: "✅",
+              icon: CheckCircle2,
+              iconColor: "text-green-600",
             },
             {
               title: t(`${translationKey}.features.workflowManagement.title`),
               description: t(`${translationKey}.features.workflowManagement.description`),
-              icon: "🔄",
+              icon: RefreshCw,
+              iconColor: "text-indigo-600",
             },
             {
               title: t(`${translationKey}.features.billing.title`),
               description: t(`${translationKey}.features.billing.description`),
-              icon: "💳",
+              icon: CreditCard,
+              iconColor: "text-amber-600",
             },
             {
               title: t(`${translationKey}.features.reporting.title`),
               description: t(`${translationKey}.features.reporting.description`),
-              icon: "📈",
+              icon: TrendingUp,
+              iconColor: "text-rose-600",
             },
             {
               title: t(`${translationKey}.features.integration.title`),
               description: t(`${translationKey}.features.integration.description`),
-              icon: "🔗",
+              icon: Link2,
+              iconColor: "text-cyan-600",
             },
             {
               title: t(`${translationKey}.features.webAccess.title`),
               description: t(`${translationKey}.features.webAccess.description`),
-              icon: "🌐",
+              icon: Globe,
+              iconColor: "text-violet-600",
             },
-          ].map((item, idx) => (
+          ].map((item, idx) => {
+            const IconComponent = item.icon;
+            return (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.05 }}
-              className="bg-white rounded-xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-all duration-300"
+              whileHover={{ y: -2 }}
+              className="group bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all duration-300"
             >
-              <div className="text-3xl mb-3">{item.icon}</div>
-              <h4 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2">
+              <div className={`mb-4 ${item.iconColor || 'text-gray-600'} group-hover:scale-110 transition-all duration-300`}>
+                <IconComponent className="w-6 h-6" strokeWidth={1.5} />
+              </div>
+              <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 leading-tight group-hover:text-primary transition-colors duration-300">
                 {item.title}
               </h4>
-              <p className="text-sm text-neutral-body leading-relaxed">
+              <p className="text-sm md:text-base text-gray-600 leading-relaxed">
                 {item.description}
               </p>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -488,51 +519,63 @@ export default function SarusLbsPage() {
               {
                 title: t(`${translationKey}.architecture.scalable.title`),
                 description: t(`${translationKey}.architecture.scalable.description`),
-                icon: "📈",
+                icon: TrendingUp,
+                iconColor: "text-blue-600",
               },
               {
                 title: t(`${translationKey}.architecture.integration.title`),
                 description: t(`${translationKey}.architecture.integration.description`),
-                icon: "🔗",
+                icon: Link2,
+                iconColor: "text-purple-600",
               },
               {
                 title: t(`${translationKey}.architecture.security.title`),
                 description: t(`${translationKey}.architecture.security.description`),
-                icon: "🔒",
+                icon: Lock,
+                iconColor: "text-red-600",
               },
               {
                 title: t(`${translationKey}.architecture.realTime.title`),
                 description: t(`${translationKey}.architecture.realTime.description`),
-                icon: "⚡",
+                icon: Zap,
+                iconColor: "text-amber-600",
               },
               {
                 title: t(`${translationKey}.architecture.customizable.title`),
                 description: t(`${translationKey}.architecture.customizable.description`),
-                icon: "⚙️",
+                icon: Settings,
+                iconColor: "text-indigo-600",
               },
               {
                 title: t(`${translationKey}.architecture.multiSite.title`),
                 description: t(`${translationKey}.architecture.multiSite.description`),
-                icon: "🏢",
+                icon: Layers,
+                iconColor: "text-teal-600",
               },
-            ].map((item, idx) => (
+            ].map((item, idx) => {
+              const IconComponent = item.icon;
+              return (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="bg-white rounded-xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-all duration-300"
+                whileHover={{ y: -2 }}
+                className="group bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all duration-300"
               >
-                <div className="text-3xl mb-3">{item.icon}</div>
-                <h4 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2">
+                <div className={`mb-4 ${item.iconColor || 'text-gray-600'} group-hover:scale-110 transition-all duration-300`}>
+                  <IconComponent className="w-6 h-6" strokeWidth={1.5} />
+                </div>
+                <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 leading-tight group-hover:text-primary transition-colors duration-300">
                   {item.title}
                 </h4>
-                <p className="text-sm text-neutral-body leading-relaxed">
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
                   {item.description}
                 </p>
               </motion.div>
-            ))}
+            );
+            })}
           </div>
         </div>
       </section>
@@ -571,12 +614,13 @@ export default function SarusLbsPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white rounded-2xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+              whileHover={{ y: -2 }}
+              className="group bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all duration-300"
             >
-              <h4 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2">
+              <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 leading-tight group-hover:text-primary transition-colors duration-300">
                 {item.title}
               </h4>
-              <p className="text-sm text-neutral-body leading-relaxed">
+              <p className="text-sm md:text-base text-gray-600 leading-relaxed">
                 {item.description}
               </p>
             </motion.div>
@@ -619,7 +663,7 @@ export default function SarusLbsPage() {
         <div className="absolute inset-0 z-0">
           <img
             src="/bilkent.jpg"
-            alt={language === "en" ? "Ankara (Bilkent) City Hospital" : "Ankara (Bilkent) Şehir Hastanesi"}
+            alt={language === "en" ? "Ankara City Hospital" : "Ankara Şehir Hastanesi"}
             className="w-full h-full object-cover"
           />
           {/* Overlay for better text readability */}
@@ -636,7 +680,7 @@ export default function SarusLbsPage() {
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
               {t(`${translationKey}.successStory.title`)}
             </h2>
-            <p className="text-lg text-white/95 max-w-4xl mx-auto leading-relaxed mb-4 drop-shadow-md">
+            <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-white max-w-4xl mx-auto leading-relaxed mb-4 drop-shadow-lg">
               {t(`${translationKey}.successStory.subtitle`)}
             </p>
             <p className="text-base text-white/90 max-w-4xl mx-auto leading-relaxed drop-shadow-md">

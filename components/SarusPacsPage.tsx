@@ -1,9 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
+import { 
+  Zap, Shield, Sparkles, Link2, Gem, Target, Settings, Trophy,
+  Server, Database, Lock, Globe, RefreshCw, Layers, Rocket, Radio, Plug
+} from "lucide-react";
 
 export default function SarusPacsPage() {
   const { language, t } = useI18n();
@@ -11,12 +15,35 @@ export default function SarusPacsPage() {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [activeNavItem, setActiveNavItem] = useState("design-goals");
+  const [isMobile, setIsMobile] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  // Detect mobile and reduced motion preference
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    const checkReducedMotion = () => {
+      setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    };
+    
+    checkMobile();
+    checkReducedMotion();
+    window.addEventListener('resize', checkMobile);
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    mediaQuery.addEventListener('change', checkReducedMotion);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      mediaQuery.removeEventListener('change', checkReducedMotion);
+    };
+  }, []);
 
   const tabs = [
     {
       id: "fastViewing",
       title: t("pacs.why.fastViewing.title"),
-      icon: "⚡",
+      icon: Zap,
       iconBgClass: "bg-sky-50",
       iconColorClass: "text-sky-600",
       subtitle: t("pacs.why.fastViewing.description"),
@@ -25,7 +52,7 @@ export default function SarusPacsPage() {
     {
       id: "reliableWorkflows",
       title: t("pacs.why.reliableWorkflows.title"),
-      icon: "🛡️",
+      icon: Shield,
       iconBgClass: "bg-emerald-50",
       iconColorClass: "text-emerald-600",
       subtitle: t("pacs.why.reliableWorkflows.description"),
@@ -34,7 +61,7 @@ export default function SarusPacsPage() {
     {
       id: "seamlessUX",
       title: t("pacs.why.seamlessUX.title"),
-      icon: "✨",
+      icon: Sparkles,
       iconBgClass: "bg-indigo-50",
       iconColorClass: "text-indigo-600",
       subtitle: t("pacs.why.seamlessUX.description"),
@@ -43,7 +70,7 @@ export default function SarusPacsPage() {
     {
       id: "integration",
       title: t("pacs.why.integration.title"),
-      icon: "🔗",
+      icon: Link2,
       iconBgClass: "bg-amber-50",
       iconColorClass: "text-amber-600",
       subtitle: t("pacs.why.integration.description"),
@@ -52,7 +79,7 @@ export default function SarusPacsPage() {
     {
       id: "investment",
       title: t("pacs.why.investment.title"),
-      icon: "💎",
+      icon: Gem,
       iconBgClass: "bg-cyan-50",
       iconColorClass: "text-cyan-600",
       subtitle: t("pacs.why.investment.description"),
@@ -169,8 +196,8 @@ export default function SarusPacsPage() {
               <div className="flex flex-wrap gap-4">
                 <Link href={`${basePath}/demo-talep`}>
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={isMobile || prefersReducedMotion ? {} : { scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
                     className="px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all duration-300 shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40"
                   >
                     {t("pacs.requestDemo")}
@@ -194,8 +221,8 @@ export default function SarusPacsPage() {
                   }}
                 >
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={isMobile || prefersReducedMotion ? {} : { scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
                     className="px-8 py-4 border-2 border-neutral-border text-neutral-heading rounded-full font-semibold hover:border-primary hover:text-primary transition-all duration-300 hover:bg-primary/5"
                   >
                     {t("pacs.explore")}
@@ -222,58 +249,81 @@ export default function SarusPacsPage() {
         </div>
       </section>
 
-      {/* Navigation Buttons Section - Tab Style */}
-      <section id="navigation" className="w-full bg-white relative">
-        {/* Top teal-blue line */}
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary"></div>
-        
-        <div className="max-w-7xl mx-auto px-4 md:px-10 py-8 md:py-12">
-          <nav className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
+      {/* Navigation Buttons Section - Enterprise Tab Style */}
+      <section id="navigation" className="w-full bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 md:px-10">
+          <nav className="flex flex-wrap items-center justify-center">
             {[
               {
                 id: "design-goals",
                 href: "#design-goals",
                 label: t("pacs.why.title"),
-                icon: "🎯",
+                icon: Target,
               },
               {
                 id: "ecosystem",
                 href: "#ecosystem",
                 label: language === "en" ? "Architecture" : "Mimari",
-                icon: "⚙️", // Gear icon for infrastructure/architecture
+                icon: Layers,
               },
               {
                 id: "enterprise",
                 href: "#enterprise",
                 label: language === "en" ? "Enterprise" : "Enterprise",
-                icon: "⚡",
+                icon: Zap,
               },
               {
                 id: "achievements",
                 href: "#achievements",
                 label: language === "en" ? "Success Story" : "Başarı Hikayesi",
-                icon: "🏆",
+                icon: Trophy,
               },
             ].map((item) => {
               const isActive = activeNavItem === item.id;
+              const IconComponent = item.icon;
               return (
                 <a
                   key={item.id}
                   href={item.href}
-                  onClick={() => setActiveNavItem(item.id)}
-                  className="group flex flex-col items-center gap-2 px-4 py-3 transition-all duration-300 relative"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveNavItem(item.id);
+                    const element = document.querySelector(item.href);
+                    if (element) {
+                      const elementRect = element.getBoundingClientRect();
+                      const absoluteElementTop = elementRect.top + window.pageYOffset;
+                      const offset = 100;
+                      window.scrollTo({
+                        top: absoluteElementTop - offset,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className={`group relative flex flex-col items-center justify-center gap-2 px-8 py-5
+                    transition-all duration-200 ease-out cursor-pointer
+                    border-b-2 -mb-px select-none
+                    ${isActive 
+                      ? 'border-primary text-primary bg-primary/5' 
+                      : 'border-transparent text-gray-600 hover:text-primary hover:border-primary/30 hover:bg-primary/3'
+                    }`}
                 >
                   {/* Icon */}
-                  <div className="text-2xl md:text-3xl mb-1 transition-transform duration-300" style={{ color: isActive ? '#0066FF' : '#4A5568' }}>
-                    {item.icon}
+                  <div className={`transition-all duration-200 pointer-events-none
+                    ${isActive 
+                      ? 'opacity-100 text-primary scale-110' 
+                      : 'opacity-60 text-gray-600 group-hover:opacity-100 group-hover:text-primary group-hover:scale-110'
+                    }`}
+                  >
+                    <IconComponent className="w-7 h-7 md:w-8 md:h-8" strokeWidth={2} />
                   </div>
                   {/* Label */}
                   <span 
-                    className={`text-sm md:text-base whitespace-nowrap transition-colors duration-300 ${
-                      isActive 
-                        ? 'font-bold text-primary' 
-                        : 'font-normal text-neutral-heading'
-                    }`}
+                    className={`text-xs md:text-sm font-medium whitespace-nowrap tracking-wide pointer-events-none
+                      transition-all duration-200
+                      ${isActive 
+                        ? 'text-primary font-semibold' 
+                        : 'text-gray-600 group-hover:text-primary group-hover:font-semibold'
+                      }`}
                   >
                     {item.label}
                   </span>
@@ -286,9 +336,6 @@ export default function SarusPacsPage() {
             })}
           </nav>
         </div>
-        
-        {/* Bottom light grey separator line */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-neutral-border"></div>
       </section>
 
       {/* Why Sarus PACS */}
@@ -309,13 +356,19 @@ export default function SarusPacsPage() {
 
         {/* Enterprise Grid Layout */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tabs.map((tab, idx) => (
+          {tabs.map((tab, idx) => {
+            const TabIcon = tab.icon;
+            return (
             <motion.div
               key={tab.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
+              initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: isMobile ? 10 : 20 }}
+              whileInView={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ 
+                delay: isMobile || prefersReducedMotion ? 0 : idx * 0.05,
+                duration: isMobile ? 0.3 : 0.4,
+                ease: "easeOut"
+              }}
               className={`group relative bg-white border-2 rounded-lg p-6 md:p-8 transition-all duration-300 ${
                 activeTab === idx
                   ? "border-primary shadow-lg shadow-primary/10"
@@ -328,12 +381,10 @@ export default function SarusPacsPage() {
               )}
 
               {/* Icon */}
-              <div className={`mb-4 h-14 w-14 rounded-lg flex items-center justify-center ${tab.iconBgClass} transition-transform duration-300 ${
-                activeTab === idx ? "scale-110" : "group-hover:scale-105"
+              <div className={`mb-4 h-14 w-14 rounded-lg flex items-center justify-center ${tab.iconBgClass} transition-transform ${isMobile ? 'duration-200' : 'duration-300'} ${
+                activeTab === idx ? "scale-110" : !isMobile && "group-hover:scale-105"
               }`}>
-                <div className={`${tab.iconColorClass} text-2xl`}>
-                  {tab.icon}
-                </div>
+                <TabIcon className={`${tab.iconColorClass} w-6 h-6`} strokeWidth={1.5} />
               </div>
 
               {/* Content */}
@@ -351,7 +402,8 @@ export default function SarusPacsPage() {
                 </div>
               )}
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -519,55 +571,64 @@ export default function SarusPacsPage() {
           <div className="space-y-4 md:space-y-6">
             {[
               {
-                icon: "🔗",
+                icon: Link2,
+                iconColor: "text-blue-600",
                 type: "light",
                 title: t("pacs.enterpriseFeatures.dicom.title"),
                 description: t("pacs.enterpriseFeatures.dicom.description"),
               },
               {
-                icon: "⚡",
+                icon: Zap,
+                iconColor: "text-amber-600",
                 type: "dark",
                 title: t("pacs.enterpriseFeatures.availability.title"),
                 description: t("pacs.enterpriseFeatures.availability.description"),
               },
               {
-                icon: "🚀",
+                icon: Rocket,
+                iconColor: "text-purple-600",
                 type: "light",
                 title: t("pacs.enterpriseFeatures.performance.title"),
                 description: t("pacs.enterpriseFeatures.performance.description"),
               },
               {
-                icon: "🛡️",
+                icon: Shield,
+                iconColor: "text-red-600",
                 type: "dark",
                 title: t("pacs.enterpriseFeatures.security.title"),
                 description: t("pacs.enterpriseFeatures.security.description"),
               },
               {
-                icon: "🌐",
+                icon: Globe,
+                iconColor: "text-teal-600",
                 type: "light",
                 title: t("pacs.enterpriseFeatures.vendorNeutral.title"),
                 description: t("pacs.enterpriseFeatures.vendorNeutral.description"),
               },
               {
-                icon: "📡",
+                icon: Radio,
+                iconColor: "text-indigo-600",
                 type: "dark",
                 title: t("pacs.enterpriseFeatures.teleradiology.title"),
                 description: t("pacs.enterpriseFeatures.teleradiology.description"),
               },
               {
-                icon: "🔄",
+                icon: RefreshCw,
+                iconColor: "text-cyan-600",
                 type: "light",
                 title: t("pacs.integration.autoSync"),
                 description: t("pacs.integration.benefit1"),
               },
               {
-                icon: "🔌",
+                icon: Plug,
+                iconColor: "text-green-600",
                 type: "dark",
                 title: t("pacs.integration.clinicalIntegration"),
                 description: t("pacs.integration.benefit2"),
               },
               {
-                icon: "⚙️",
+                icon: Settings,
+                iconColor: "text-gray-600",
                 type: "light",
                 title: t("pacs.integration.standardWorkflow"),
                 description: t("pacs.integration.benefit3"),
@@ -575,18 +636,23 @@ export default function SarusPacsPage() {
             ].map((item, idx) => {
               const isEven = idx % 2 === 0;
               const isLight = item.type === "light";
+              const IconComponent = item.icon;
               return (
                 <motion.div
                   key={idx}
-                  initial={{ opacity: 0, x: isEven ? -30 : 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.05, duration: 0.4 }}
+                  initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, x: isMobile ? 0 : (isEven ? -20 : 20) }}
+                  whileInView={prefersReducedMotion ? {} : { opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ 
+                    delay: isMobile || prefersReducedMotion ? 0 : idx * 0.02,
+                    duration: isMobile ? 0.25 : 0.3,
+                    ease: "easeOut"
+                  }}
                   className={`group relative rounded-lg border-l-2 ${
                     isLight 
-                      ? 'bg-neutral-50/50 border-neutral-300 hover:bg-neutral-100/50' 
-                      : 'bg-neutral-100/50 border-neutral-400 hover:bg-neutral-200/50'
-                  } overflow-hidden transition-all duration-300`}
+                      ? 'bg-neutral-50/50 border-neutral-300' + (!isMobile ? ' hover:bg-neutral-100/50' : '')
+                      : 'bg-neutral-100/50 border-neutral-400' + (!isMobile ? ' hover:bg-neutral-200/50' : '')
+                  } overflow-hidden transition-all ${isMobile ? 'duration-200' : 'duration-300'}`}
                 >
                   <div className={`flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 p-4 md:p-6 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                     {/* Icon Section */}
@@ -595,8 +661,8 @@ export default function SarusPacsPage() {
                         isLight 
                           ? 'bg-neutral-200 border-neutral-300' 
                           : 'bg-neutral-300 border-neutral-400'
-                      } border flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}>
-                        <span className="text-xl md:text-2xl">{item.icon}</span>
+                      } border flex items-center justify-center ${!isMobile ? 'group-hover:scale-105' : ''} transition-transform ${isMobile ? 'duration-200' : 'duration-300'}`}>
+                        <IconComponent className={`${item.iconColor || 'text-gray-600'} w-6 h-6`} strokeWidth={1.5} />
                       </div>
                     </div>
 
@@ -840,8 +906,8 @@ export default function SarusPacsPage() {
           >
             <Link href={`${basePath}/demo-talep`}>
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={isMobile || prefersReducedMotion ? {} : { scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
                 className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-primary hover:bg-blue-50 transition-colors shadow-lg"
               >
                 {t("pacs.requestDemo")}
@@ -871,9 +937,10 @@ function ValueCard({
   iconBgClass = "bg-sky-50",
   iconColorClass = "text-sky-600",
 }: ValueCardProps) {
+  const [isMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   return (
     <motion.div
-      whileHover={{ y: -2 }}
+      whileHover={isMobile ? {} : { y: -2 }}
       className="rounded-xl border-2 border-neutral-border/60 bg-white p-5 md:p-6 hover:border-primary/40 hover:shadow-md transition-all duration-200"
     >
       <div className="flex items-start gap-4">

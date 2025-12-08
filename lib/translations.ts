@@ -763,13 +763,13 @@ export const translations: Record<string, any> = {
       },
       successStory: {
         title: "Başarı Hikayesi",
-        subtitle: "Ankara (Bilkent) Şehir Hastanesi",
-        description: "Sarus LBYS, dünyanın en büyük sağlık kampüslerinden biri olan Ankara (Bilkent) Şehir Hastanesi'nde günlük yüzbinlerce test işleme kapasitesi ile çalışmaktadır.",
+        subtitle: "Ankara Şehir Hastanesi",
+        description: "Sarus LBYS, dünyanın en büyük sağlık kampüslerinden biri olan Ankara Şehir Hastanesi'nde günlük yüzbinlerce test işleme kapasitesi ile çalışmaktadır.",
         stats: {
           tests: "285,000",
           testsLabel: "Günlük Test Yükü",
           instruments: "163",
-          instrumentsLabel: "Entegre Analyzer (Online)",
+          instrumentsLabel: "Online Analizör",
           users: "70",
           usersLabel: "LIS Doktor Kullanıcı",
         },
@@ -793,7 +793,7 @@ export const translations: Record<string, any> = {
         emr: "Sarus EMR",
         cloud: "Sarus Cloud",
         pacs: "Sarus PACS",
-        lis: "Sarus LIS",
+        lis: "Sarus LIMS",
         icp: "Sarus ICP",
       },
     },
@@ -1507,46 +1507,46 @@ export const translations: Record<string, any> = {
         steps: {
           checkInSorting: {
             title: "Check-In & Sorting",
-            description: "SARUS LIS provides complete support for automation pre-analytical activities.",
+            description: "Sarus LIMS provides complete support for pre-analytical automation activities, including sample reception, sorting, and initial processing.",
           },
           worklistRouting: {
             title: "Worklist & Routing",
-            description: "Open automation specific management.",
+            description: "Comprehensive worklist management and intelligent routing of samples to appropriate analyzers and workstations.",
           },
           analyserInterfaces: {
             title: "Analyser Interfaces",
-            description: "Integration with all laboratory instruments and automatic data transfer.",
+            description: "Seamless integration with all laboratory instruments and automatic data transfer using standard protocols.",
           },
           calibrationMaintenance: {
             title: "Calibration & Maintenance",
-            description: "SARUS LIS supports calibration review and maintenance scheduling.",
+            description: "Sarus LIMS supports calibration review processes and automated maintenance scheduling for laboratory instruments.",
           },
           rerunReflex: {
             title: "Rerun & Reflex",
-            description: "Automated rerun and reflex testing using established criterion and logic.",
+            description: "Automated rerun and reflex testing capabilities using established criteria and configurable logic rules.",
           },
           qualityControl: {
             title: "Quality Control",
-            description: "Levey-Jennings, moving average; real-time alarm.",
+            description: "Advanced quality control management including Levey-Jennings charts, moving average analysis, and real-time alarms.",
           },
           results: {
             title: "Results",
-            description: "Collection and processing of test results.",
+            description: "Efficient collection, validation, and processing of test results from all analytical instruments.",
           },
           autoverification: {
             title: "Autoverification",
-            description: "Automated release of test results to LIS/HIS using established criterion and logic.",
+            description: "Automated release of test results to LIS/HIS systems using configurable verification criteria and business logic.",
           },
           checkOutStorage: {
             title: "Check-Out, Storage & Sample Retrieval",
-            description: "Post-analytical functionalities make SARUS LIS a fully featured clinical middleware solution.",
+            description: "Comprehensive post-analytical functionalities including sample storage management, retrieval systems, and result distribution, making Sarus LIMS a fully featured clinical middleware solution.",
           },
         },
       },
       successStory: {
         title: "Success Story",
-        subtitle: "Ankara (Bilkent) City Hospital",
-        description: "Sarus LIMS operates at Ankara (Bilkent) City Hospital, one of the world's largest health campuses, with a daily capacity of processing hundreds of thousands of tests.",
+        subtitle: "Ankara City Hospital",
+        description: "Sarus LIMS operates at Ankara City Hospital, one of the world's largest health campuses, with a daily capacity of processing hundreds of thousands of tests.",
         stats: {
           tests: "285,000",
           testsLabel: "Daily Test Workload",
