@@ -8,7 +8,8 @@
     "build:prod": "npm install --legacy-peer-deps && next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate:sarus-hub": "tsx scripts/migrate-sarus-hub-to-sqlite.ts"
+    "migrate:sarus-hub": "tsx scripts/migrate-sarus-hub-to-sqlite.ts",
+    "deploy": "tsx scripts/deploy.ts"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.6",
@@ -31,6 +32,7 @@
     "ogl": "^1.0.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "ssh2": "^1.17.0",
     "three": "^0.169.0",
     "vanta": "^0.5.24"
   },
