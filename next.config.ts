@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
   },
   // Ensure better-sqlite3 is only used server-side
   serverExternalPackages: ["better-sqlite3"],
+  // Exclude scripts directory from TypeScript checking
+  typescript: {
+    tsconfigPath: './tsconfig.json',
+  },
 };
 
 export default nextConfig;
