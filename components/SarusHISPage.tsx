@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
 import {
   Zap, Settings, Layers, RefreshCw, Trophy,
@@ -541,7 +542,20 @@ export default function SarusHISPage() {
               className="hidden md:block mt-12 md:mt-20"
             >
               <div className="relative w-full aspect-video bg-white/80 backdrop-blur-md rounded-2xl border border-neutral-border/50 shadow-xl overflow-hidden">
-                {/* Placeholder for image */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/his2.png"
+                  alt={language === "en" ? "Sarus EMR" : "Sarus HBS"}
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                  decoding="async"
+                  onError={(e) => {
+                    console.error("Hero image failed to load:", e);
+                  }}
+                  onLoad={() => {
+                    console.log("Hero image loaded successfully");
+                  }}
+                />
               </div>
             </motion.div>
           </div>
@@ -736,6 +750,91 @@ export default function SarusHISPage() {
         </div>
       </section>
 
+      {/* Enterprise Solutions */}
+      <section id="enterprise-solutions" className="py-20 md:py-32 bg-gradient-to-b from-background via-blue-50/20 to-background relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-5 md:px-10 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-4">
+              <span className="text-primary">Enterprise</span>{" "}
+              <span className="text-neutral-heading">{language === "en" ? "Solutions" : "Çözümler"}</span>
+            </h2>
+            <p className="text-xl text-neutral-body max-w-3xl mx-auto">
+              {language === "en" ? "Comprehensive enterprise solutions for modern healthcare facilities" : "Modern sağlık kuruluşları için kapsamlı kurumsal çözümler"}
+            </p>
+          </motion.div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <IntegratedSystemCard
+              icon={LayoutGrid}
+              title={language === "en" ? "Integrated Solutions" : "Entegre Çözümler"}
+              features={[
+                language === "en" ? "Software development and process design (Sterilization, Laundry, Chemotherapy, TPN, Catering, Cleaning Waste Management, etc.)" : "Yazılım geliştirme ve süreç tasarımı (Sterilizasyon, Çamaşır, Kemoterapi, TPN, Catering, Temizlik, Atık Yönetimi, vb.)",
+                language === "en" ? "Central management of Information Digital Signage screens and information flow to HIMS" : "Bilgi Dijital Tabela ekranlarının merkezi yönetimi ve HIMS'e bilgi akışı"
+              ]}
+              gradient="bg-gradient-to-r from-blue-600 to-cyan-600"
+              delay={0.1}
+            />
+
+            <IntegratedSystemCard
+              icon={Link2}
+              title={language === "en" ? "Integration" : "Entegrasyon"}
+              features={[
+                language === "en" ? "Integration infrastructure design compliant to Service Oriented Architecture (SOA)" : "Hizmet Odaklı Mimari (SOA) uyumlu entegrasyon altyapı tasarımı",
+                language === "en" ? "Management of all integrations by Gateway, ESB and RFID systems" : "Tüm entegrasyonların Gateway, ESB ve RFID sistemleri ile yönetimi"
+              ]}
+              gradient="bg-gradient-to-r from-sky-600 to-blue-600"
+              delay={0.2}
+            />
+
+            <IntegratedSystemCard
+              icon={Globe}
+              title={language === "en" ? "Mobile Solutions" : "Mobil Çözümler"}
+              features={[
+                language === "en" ? "Mobile solutions in blood-taking points and Chemotherapy" : "Kan alma noktaları ve Kemoterapi'de mobil çözümler",
+                language === "en" ? "Tablet usage in emergency service, intensive care and inpatient services" : "Acil servis, yoğun bakım ve yatan hasta hizmetlerinde tablet kullanımı",
+                language === "en" ? "Mobile application for pneumatic system" : "Pnömatik sistem için mobil uygulama",
+                language === "en" ? "Mobile patient assistant and Location/Way finding application" : "Mobil hasta asistanı ve Konum/Yol bulma uygulaması"
+              ]}
+              gradient="bg-gradient-to-r from-cyan-600 to-blue-600"
+              delay={0.3}
+            />
+
+            <IntegratedSystemCard
+              icon={Pill}
+              title={language === "en" ? "Patient-Drug Usage Safety" : "Hasta-İlaç Kullanım Güvenliği"}
+              features={[
+                language === "en" ? "Wristband for inpatient and chemotherapy patients" : "Yatan hasta ve kemoterapi hastaları için bileklik",
+                language === "en" ? "Ensuring patient-drug usage safety by reading of drug QR code, administering personnel ID card" : "İlaç QR kodu ve uygulayıcı personel kimlik kartı okunarak hasta-ilaç kullanım güvenliğinin sağlanması"
+              ]}
+              gradient="bg-gradient-to-r from-blue-700 to-indigo-600"
+              delay={0.4}
+            />
+
+            <IntegratedSystemCard
+              icon={Activity}
+              title={language === "en" ? "Operating Room Management" : "Ameliyathane Yönetimi"}
+              features={[
+                language === "en" ? "Patient and operation validation check in operating rooms by reading of patient wristband with use of sterile PCs" : "Steril PC'ler kullanılarak hasta bilekliği okunarak ameliyathanelerde hasta ve operasyon doğrulama kontrolü",
+                language === "en" ? "Operation management by reading QR code of consumables in operating rooms" : "Ameliyathanelerde tüketim malzemelerinin QR kodunun okunması ile operasyon yönetimi"
+              ]}
+              gradient="bg-gradient-to-r from-indigo-600 to-blue-600"
+              delay={0.5}
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Modules Section - Mega Menu */}
       <section id="modules" className="py-20 md:py-32 bg-gradient-to-b from-background via-background-alt/30 to-background relative overflow-hidden">
         {/* Decorative background elements */}
@@ -794,7 +893,38 @@ export default function SarusHISPage() {
                     return (
                       <motion.button
                         key={domain.id}
-                        onClick={() => setActiveDomainId(domain.id)}
+                        onClick={() => {
+                          setActiveDomainId(domain.id);
+                          // Mobilde modüllerin gösterildiği ilk yere scroll et
+                          if (isMobile) {
+                            setTimeout(() => {
+                              // Önce domain içeriğinin başladığı yere bak
+                              const domainContent = document.getElementById(`domain-content-${domain.id}`);
+                              if (domainContent) {
+                                const elementRect = domainContent.getBoundingClientRect();
+                                const absoluteElementTop = elementRect.top + window.pageYOffset;
+                                // Navigation bar yüksekliği + biraz padding
+                                const offset = 120;
+                                window.scrollTo({
+                                  top: absoluteElementTop - offset,
+                                  behavior: 'smooth'
+                                });
+                              } else {
+                                // Fallback: modüller bölümüne scroll et
+                                const modulesSection = document.getElementById('modules');
+                                if (modulesSection) {
+                                  const elementRect = modulesSection.getBoundingClientRect();
+                                  const absoluteElementTop = elementRect.top + window.pageYOffset;
+                                  const offset = 120;
+                                  window.scrollTo({
+                                    top: absoluteElementTop - offset,
+                                    behavior: 'smooth'
+                                  });
+                                }
+                              }
+                            }, 150); // State güncellenmesi ve render için gecikme
+                          }
+                        }}
                         whileHover={{ y: -4, scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         className={`rounded-xl px-6 py-5 text-left transition-all duration-300 border-2 relative overflow-hidden group cursor-pointer ${
@@ -826,7 +956,7 @@ export default function SarusHISPage() {
               </div>
 
               {/* Seçili domain'in içeriği */}
-              <div className="space-y-8 mt-4">
+              <div id={`domain-content-${activeDomainId}`} className="space-y-8 mt-4">
                 {(() => {
                   const activeDomain = enrichedHierarchy.find((d: any) => d.id === activeDomainId);
                   if (!activeDomain) return null;
@@ -1016,91 +1146,6 @@ export default function SarusHISPage() {
               </div>
             </div>
           </motion.div>
-        </div>
-      </section>
-
-      {/* Enterprise Solutions */}
-      <section id="enterprise-solutions" className="py-20 md:py-32 bg-gradient-to-b from-background via-blue-50/20 to-background relative overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-5 md:px-10 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-4">
-              <span className="text-primary">Enterprise</span>{" "}
-              <span className="text-neutral-heading">{language === "en" ? "Solutions" : "Çözümler"}</span>
-            </h2>
-            <p className="text-xl text-neutral-body max-w-3xl mx-auto">
-              {language === "en" ? "Comprehensive enterprise solutions for modern healthcare facilities" : "Modern sağlık kuruluşları için kapsamlı kurumsal çözümler"}
-            </p>
-          </motion.div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <IntegratedSystemCard
-              icon={LayoutGrid}
-              title={language === "en" ? "Integrated Solutions" : "Entegre Çözümler"}
-              features={[
-                language === "en" ? "Software development and process design (Sterilization, Laundry, Chemotherapy, TPN, Catering, Cleaning Waste Management, etc.)" : "Yazılım geliştirme ve süreç tasarımı (Sterilizasyon, Çamaşır, Kemoterapi, TPN, Catering, Temizlik, Atık Yönetimi, vb.)",
-                language === "en" ? "Central management of Information Digital Signage screens and information flow to HIMS" : "Bilgi Dijital Tabela ekranlarının merkezi yönetimi ve HIMS'e bilgi akışı"
-              ]}
-              gradient="bg-gradient-to-r from-blue-600 to-cyan-600"
-              delay={0.1}
-            />
-
-            <IntegratedSystemCard
-              icon={Link2}
-              title={language === "en" ? "Integration" : "Entegrasyon"}
-              features={[
-                language === "en" ? "Integration infrastructure design compliant to Service Oriented Architecture (SOA)" : "Hizmet Odaklı Mimari (SOA) uyumlu entegrasyon altyapı tasarımı",
-                language === "en" ? "Management of all integrations by Gateway, ESB and RFID systems" : "Tüm entegrasyonların Gateway, ESB ve RFID sistemleri ile yönetimi"
-              ]}
-              gradient="bg-gradient-to-r from-sky-600 to-blue-600"
-              delay={0.2}
-            />
-
-            <IntegratedSystemCard
-              icon={Globe}
-              title={language === "en" ? "Mobile Solutions" : "Mobil Çözümler"}
-              features={[
-                language === "en" ? "Mobile solutions in blood-taking points and Chemotherapy" : "Kan alma noktaları ve Kemoterapi'de mobil çözümler",
-                language === "en" ? "Tablet usage in emergency service, intensive care and inpatient services" : "Acil servis, yoğun bakım ve yatan hasta hizmetlerinde tablet kullanımı",
-                language === "en" ? "Mobile application for pneumatic system" : "Pnömatik sistem için mobil uygulama",
-                language === "en" ? "Mobile patient assistant and Location/Way finding application" : "Mobil hasta asistanı ve Konum/Yol bulma uygulaması"
-              ]}
-              gradient="bg-gradient-to-r from-cyan-600 to-blue-600"
-              delay={0.3}
-            />
-
-            <IntegratedSystemCard
-              icon={Pill}
-              title={language === "en" ? "Patient-Drug Usage Safety" : "Hasta-İlaç Kullanım Güvenliği"}
-              features={[
-                language === "en" ? "Wristband for inpatient and chemotherapy patients" : "Yatan hasta ve kemoterapi hastaları için bileklik",
-                language === "en" ? "Ensuring patient-drug usage safety by reading of drug QR code, administering personnel ID card" : "İlaç QR kodu ve uygulayıcı personel kimlik kartı okunarak hasta-ilaç kullanım güvenliğinin sağlanması"
-              ]}
-              gradient="bg-gradient-to-r from-blue-700 to-indigo-600"
-              delay={0.4}
-            />
-
-            <IntegratedSystemCard
-              icon={Activity}
-              title={language === "en" ? "Operating Room Management" : "Ameliyathane Yönetimi"}
-              features={[
-                language === "en" ? "Patient and operation validation check in operating rooms by reading of patient wristband with use of sterile PCs" : "Steril PC'ler kullanılarak hasta bilekliği okunarak ameliyathanelerde hasta ve operasyon doğrulama kontrolü",
-                language === "en" ? "Operation management by reading QR code of consumables in operating rooms" : "Ameliyathanelerde tüketim malzemelerinin QR kodunun okunması ile operasyon yönetimi"
-              ]}
-              gradient="bg-gradient-to-r from-indigo-600 to-blue-600"
-              delay={0.5}
-            />
-          </div>
         </div>
       </section>
 
