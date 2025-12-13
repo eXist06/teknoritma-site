@@ -27,6 +27,7 @@ export interface SarusHubItem {
   imageDisplayStyle?: ImageDisplayStyle; // How to display multiple images
   video?: string; // Video URL
   language: SarusHubItemLanguage;
+  translationId?: string; // ID of the original item if this is a translation
   createdAt: string; // ISO string
   updatedAt: string; // ISO string
   viewCount?: number; // View statistics

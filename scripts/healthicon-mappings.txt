@@ -1,0 +1,216 @@
+// Auto-generated healthicon mappings
+
+const moduleHealthIconMap: Record<string, { icon: string; category: string; variant?: 'outline' | 'filled' }> = {
+  "blood-center": { icon: "blood_transfusion", category: "symbols" }, // Blood Center Module (score: 340)
+  "prescription": { icon: "prescription_document", category: "objects" }, // Prescription Management (score: 300)
+  "pharmacy": { icon: "pharmacy", category: "specialties" }, // Pharmacy Module (score: 300)
+  "examination": { icon: "i_exam_qualification", category: "symbols" }, // Examination and Consultation (score: 290)
+  "icu": { icon: "intensive_care_unit", category: "specialties" }, // Intensive Care Module (score: 250)
+  "emergency": { icon: "emergency_operations_center", category: "places" }, // Emergency Management Module (score: 250)
+  "radiology-integration": { icon: "radiology", category: "specialties" }, // Radiology Integration (score: 250)
+  "ris": { icon: "radiology", category: "specialties" }, // Radiology Information System (RIS) (score: 250)
+  "laboratory": { icon: "biochemistry_laboratory", category: "specialties" }, // Laboratory Module (score: 230)
+  "telemedicine": { icon: "telemedicine", category: "symbols" }, // Telemedicine Module (score: 220)
+  "nursing": { icon: "lactation", category: "people" }, // Nursing Management Module (score: 210)
+  "oncology": { icon: "oncology", category: "specialties" }, // Oncology Module (score: 200)
+  "gynecology": { icon: "gynecology", category: "specialties" }, // Gynecology Module (score: 200)
+  "human-resources": { icon: "human_resoruces", category: "specialties" }, // Human Resources Module (score: 200)
+  "lab-integration": { icon: "lab_search", category: "symbols" }, // Laboratory Integration (score: 190)
+  "central-local-appointment": { icon: "i_schedule_school_date_time", category: "symbols" }, // Central and Local Appointment System (score: 180)
+  "doctor-notes": { icon: "clinical_fe", category: "symbols" }, // Doctor Notes (score: 180)
+  "oral-dental": { icon: "dental_hygiene", category: "devices" }, // Oral and Dental Health Module (score: 180)
+  "ivf": { icon: "clinical_a", category: "devices" }, // In Vitro Fertilization Module (score: 180)
+  "social-services": { icon: "social_work", category: "specialties" }, // Social Services Module (score: 180)
+  "genetics-lab": { icon: "clinical_a", category: "devices" }, // Genetics Module (score: 180)
+  "medication": { icon: "pills_4", category: "medications" }, // Medication Management (score: 170)
+  "cleaning-laundry": { icon: "cleaning", category: "objects" }, // Cleaning and Laundry Module (score: 170)
+  "diet": { icon: "unhealthy_food", category: "nutrition" }, // Diet Module (score: 160)
+  "reception": { icon: "i_exam_qualification", category: "symbols" }, // Reception Module (score: 150)
+  "inpatient": { icon: "inpatient", category: "devices" }, // Inpatient Module (score: 150)
+  "patient-chart": { icon: "hospital_symbol", category: "symbols" }, // Patient Chart (score: 150)
+  "pacs": { icon: "i_exam_qualification", category: "symbols" }, // PACS (score: 150)
+  "nuclear-medicine": { icon: "i_exam_qualification", category: "symbols" }, // Nuclear Medicine Module (score: 150)
+  "bed-management": { icon: "i_exam_qualification", category: "symbols" }, // Bed Management (score: 150)
+  "resource-planning": { icon: "i_exam_qualification", category: "symbols" }, // Resource Planning (score: 150)
+  "records-archives": { icon: "medical_records", category: "specialties" }, // Records and Archives Module (score: 150)
+  "policlinic": { icon: "ambulatory_clinic", category: "places" }, // Policlinic Module (score: 140)
+  "patient-monitoring": { icon: "patient_band_alt", category: "devices" }, // Patient Monitoring (score: 130)
+  "operating-rooms": { icon: "information_campaign", category: "shapes" }, // Operating Rooms Module (score: 130)
+  "medical-board": { icon: "medical_advice", category: "symbols" }, // Medical Board Module (score: 130)
+  "pathology": { icon: "syphilis-alt", category: "conditions" }, // Pathology Module (score: 130)
+  "radiotherapy-chemo-diag": { icon: "clinical_a", category: "devices" }, // Radiotherapy and Chemotherapy Module (score: 130)
+  "appointment": { icon: "i_schedule_school_date_time", category: "symbols" }, // Appointment System (score: 130)
+  "stock-tracking": { icon: "rdt_result_out_stock", category: "objects" }, // Stock Tracking System (score: 130)
+  "orthopedics": { icon: "information_campaign", category: "shapes" }, // Orthopedics Module (score: 100)
+  "hemodialysis": { icon: "hospital_symbol", category: "symbols" }, // Hemodialysis Module (score: 100)
+  "physiotherapy": { icon: "i_exam_qualification", category: "symbols" }, // Physiotherapy Module (score: 100)
+  "mortuary": { icon: "i_exam_qualification", category: "symbols" }, // Mortuary Management System (score: 100)
+  "revolving-funds": { icon: "i_exam_qualification", category: "symbols" }, // Revolving Funds, Invoicing and Financial Transactions Module (score: 100)
+  "cash-desk": { icon: "i_exam_qualification", category: "symbols" }, // Cash Desk Module (score: 100)
+  "room-tracking": { icon: "i_exam_qualification", category: "symbols" }, // Room & Bed Tracking (score: 100)
+  "procurement-fixed-assets": { icon: "i_exam_qualification", category: "symbols" }, // Procurement and Fixed Asset Management Module (score: 100)
+  "equipment-tracking": { icon: "A", category: "typography" }, // Equipment Tracking Module (score: 100)
+  "sterilization-logistics": { icon: "information_campaign", category: "shapes" }, // Sterilization Module (score: 100)
+  "statistics-reporting": { icon: "i_exam_qualification", category: "symbols" }, // Statistics and Reporting Module (score: 100)
+  "system-management": { icon: "i_exam_qualification", category: "symbols" }, // System Management Module (score: 100)
+};
+
+
+// Review results:
+
+blood-center: Blood Center Module
+  -> blood_transfusion (symbols): Blood transfusion [score: 340]
+
+prescription: Prescription Management
+  -> prescription_document (objects): Prescription [score: 300]
+
+pharmacy: Pharmacy Module
+  -> pharmacy (specialties): Pharmacy [score: 300]
+
+examination: Examination and Consultation
+  -> i_exam_qualification (symbols): Exam [score: 290]
+
+icu: Intensive Care Module
+  -> intensive_care_unit (specialties): Intensive Care Unit [score: 250]
+
+emergency: Emergency Management Module
+  -> emergency_operations_center (places): Emergency Operations Center [score: 250]
+
+radiology-integration: Radiology Integration
+  -> radiology (specialties): Radiology [score: 250]
+
+ris: Radiology Information System (RIS)
+  -> radiology (specialties): Radiology [score: 250]
+
+laboratory: Laboratory Module
+  -> biochemistry_laboratory (specialties): Biochemistry Lab [score: 230]
+
+telemedicine: Telemedicine Module
+  -> telemedicine (symbols): Telemedicine [score: 220]
+
+nursing: Nursing Management Module
+  -> lactation (people): Nursing Mother [score: 210]
+
+oncology: Oncology Module
+  -> oncology (specialties): Oncology [score: 200]
+
+gynecology: Gynecology Module
+  -> gynecology (specialties): Gynecology [score: 200]
+
+human-resources: Human Resources Module
+  -> human_resoruces (specialties): Human Resources [score: 200]
+
+lab-integration: Laboratory Integration
+  -> lab_search (symbols): Lab Search [score: 190]
+
+central-local-appointment: Central and Local Appointment System
+  -> i_schedule_school_date_time (symbols): Calendar Schedule [score: 180]
+
+doctor-notes: Doctor Notes
+  -> clinical_fe (symbols): Clinical Record [score: 180]
+
+oral-dental: Oral and Dental Health Module
+  -> dental_hygiene (devices): Dental Hygiene [score: 180]
+
+ivf: In Vitro Fertilization Module
+  -> clinical_a (devices): Test Tube [score: 180]
+
+social-services: Social Services Module
+  -> social_work (specialties): Social Work [score: 180]
+
+genetics-lab: Genetics Module
+  -> clinical_a (devices): Test Tube [score: 180]
+
+medication: Medication Management
+  -> pills_4 (medications): Pill 4 [score: 170]
+
+cleaning-laundry: Cleaning and Laundry Module
+  -> cleaning (objects): Cleaning [score: 170]
+
+diet: Diet Module
+  -> unhealthy_food (nutrition): Unhealthy Food [score: 160]
+
+reception: Reception Module
+  -> i_exam_qualification (symbols): Exam [score: 150]
+
+inpatient: Inpatient Module
+  -> inpatient (devices): Hospital Bed ALT [score: 150]
+
+patient-chart: Patient Chart
+  -> hospital_symbol (symbols): Hospital Symbol [score: 150]
+
+pacs: PACS
+  -> i_exam_qualification (symbols): Exam [score: 150]
+
+nuclear-medicine: Nuclear Medicine Module
+  -> i_exam_qualification (symbols): Exam [score: 150]
+
+bed-management: Bed Management
+  -> i_exam_qualification (symbols): Exam [score: 150]
+
+resource-planning: Resource Planning
+  -> i_exam_qualification (symbols): Exam [score: 150]
+
+records-archives: Records and Archives Module
+  -> medical_records (specialties): Medical Records [score: 150]
+
+policlinic: Policlinic Module
+  -> ambulatory_clinic (places): Clinic [score: 140]
+
+patient-monitoring: Patient Monitoring
+  -> patient_band_alt (devices): Patient Band ALT [score: 130]
+
+operating-rooms: Operating Rooms Module
+  -> information_campaign (shapes): Information Campaign [score: 130]
+
+medical-board: Medical Board Module
+  -> medical_advice (symbols): Medical Advice Hotline [score: 130]
+
+pathology: Pathology Module
+  -> syphilis-alt (conditions): Syphilis [score: 130]
+
+radiotherapy-chemo-diag: Radiotherapy and Chemotherapy Module
+  -> clinical_a (devices): Test Tube [score: 130]
+
+appointment: Appointment System
+  -> i_schedule_school_date_time (symbols): Calendar Schedule [score: 130]
+
+stock-tracking: Stock Tracking System
+  -> rdt_result_out_stock (objects): Stock Out RDT [score: 130]
+
+orthopedics: Orthopedics Module
+  -> information_campaign (shapes): Information Campaign [score: 100]
+
+hemodialysis: Hemodialysis Module
+  -> hospital_symbol (symbols): Hospital Symbol [score: 100]
+
+physiotherapy: Physiotherapy Module
+  -> i_exam_qualification (symbols): Exam [score: 100]
+
+mortuary: Mortuary Management System
+  -> i_exam_qualification (symbols): Exam [score: 100]
+
+revolving-funds: Revolving Funds, Invoicing and Financial Transactions Module
+  -> i_exam_qualification (symbols): Exam [score: 100]
+
+cash-desk: Cash Desk Module
+  -> i_exam_qualification (symbols): Exam [score: 100]
+
+room-tracking: Room & Bed Tracking
+  -> i_exam_qualification (symbols): Exam [score: 100]
+
+procurement-fixed-assets: Procurement and Fixed Asset Management Module
+  -> i_exam_qualification (symbols): Exam [score: 100]
+
+equipment-tracking: Equipment Tracking Module
+  -> A (typography): A [score: 100]
+
+sterilization-logistics: Sterilization Module
+  -> information_campaign (shapes): Information Campaign [score: 100]
+
+statistics-reporting: Statistics and Reporting Module
+  -> i_exam_qualification (symbols): Exam [score: 100]
+
+system-management: System Management Module
+  -> i_exam_qualification (symbols): Exam [score: 100]
+

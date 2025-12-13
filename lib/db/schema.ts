@@ -46,9 +46,11 @@ export function initializeDatabase() {
       image_display_style TEXT DEFAULT 'cover' CHECK(image_display_style IN ('cover', 'gallery', 'carousel', 'grid')),
       video TEXT,
       language TEXT NOT NULL DEFAULT 'tr' CHECK(language IN ('tr', 'en', 'mixed')),
+      translation_id TEXT, -- ID of the original item if this is a translation
       view_count INTEGER DEFAULT 0,
       created_at TEXT NOT NULL,
-      updated_at TEXT NOT NULL
+      updated_at TEXT NOT NULL,
+      FOREIGN KEY (translation_id) REFERENCES sarus_hub_items(id) ON DELETE CASCADE
     )
   `);
 
@@ -59,7 +61,12 @@ export function initializeDatabase() {
     CREATE INDEX IF NOT EXISTS idx_type ON sarus_hub_items(type);
     CREATE INDEX IF NOT EXISTS idx_published_at ON sarus_hub_items(published_at);
     CREATE INDEX IF NOT EXISTS idx_language ON sarus_hub_items(language);
+    CREATE INDEX IF NOT EXISTS idx_translation_id ON sarus_hub_items(translation_id);
   `);
 
   db.close();
 }
+
+
+
+

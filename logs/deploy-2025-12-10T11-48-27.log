@@ -1,0 +1,137 @@
+[2025-12-10T11:48:27.954Z] [STEP] 🚀 Starting deployment process...
+[2025-12-10T11:48:27.954Z] [INFO] 📍 Target: sirius@cloud.cemorion.com:333
+[2025-12-10T11:48:27.954Z] [INFO] 📂 Deploy path: /opt/teknoritma-site
+[2025-12-10T11:48:27.954Z] [INFO] 🔌 PM2 Port: 4000
+[2025-12-10T11:48:27.954Z] [INFO] 📝 Log file: /Users/cemsalas/Projects/teknoritma-site/logs/deploy-2025-12-10T11-48-27.log
+[2025-12-10T11:48:27.954Z] [STEP] 🔍 Checking local git status...
+[2025-12-10T11:48:27.972Z] [WARN] ⚠️  Warning: You have uncommitted changes locally:
+[2025-12-10T11:48:27.972Z] [WARN]  M app/admin/change-password/page.tsx
+ M app/api/admin/auth/check-first-login/route.ts
+ M app/api/admin/auth/check-setup/route.ts
+ M app/api/admin/auth/first-login/send-password/route.ts
+ M app/api/admin/auth/logout/route.ts
+ M app/api/admin/auth/me/route.ts
+ M app/api/admin/auth/setup/route.ts
+ M app/api/admin/email-queue/route.ts
+ M app/api/admin/mailing-list/route.ts
+ M app/api/admin/settings/route.ts
+ M app/api/careers/content/route.ts
+ M app/api/careers/jobs/route.ts
+ M app/api/careers/talent-network/send-verification/route.ts
+ M app/api/careers/upload-image/route.ts
+ M app/api/contact/send-verification/route.ts
+ M app/api/cron/process-email-queue/route.ts
+ M app/api/demo-request/send-verification/route.ts
+ M app/api/sarus-hub/view/route.ts
+ M app/en/about/page.tsx
+ M app/en/admin/careers/page.tsx
+ M app/en/admin/change-password/page.tsx
+ M app/en/admin/login/page.tsx
+ M app/en/careers/page.tsx
+ M app/en/careers/stories/5-reasons/page.tsx
+ M app/en/careers/stories/career-journey/page.tsx
+ M app/en/careers/stories/page.tsx
+ M app/en/careers/stories/software-engineer-day/page.tsx
+ M app/en/legal/cookie-policy/page.tsx
+ M app/en/legal/privacy/page.tsx
+ M app/en/legal/terms/page.tsx
+ M app/en/page.tsx
+ M app/en/products/sarus-emr/page.tsx
+ M app/en/products/sarus-icp/page.tsx
+ M app/en/products/sarus-lis/page.tsx
+ M app/en/urunler/sarus/page.tsx
+ M app/hakkimizda/page.tsx
+ M app/kariyer/hikayeler/5-neden/page.tsx
+ M app/kariyer/hikayeler/kariyer-yolculugu/page.tsx
+ M app/kariyer/hikayeler/page.tsx
+ M app/kariyer/hikayeler/yazilim-muhendisi-gunu/page.tsx
+ M app/kariyer/page.tsx
+ M app/urunler/sarus-icp/page.tsx
+ M app/urunler/sarus-lbs/page.tsx
+ M app/yasal/cerez-politikasi/page.tsx
+ M app/yasal/kullanim-sartlari/page.tsx
+ M app/yasal/kvkk/page.tsx
+ M components/DemoRequestForm.tsx
+ M components/JobDetailPage.tsx
+ M components/LanguageAwareHtml.tsx
+ M components/LisWorkflowDiagram.tsx
+ M components/Orb.tsx
+ M components/VantaGlobe.tsx
+ M components/ViewCounter.tsx
+ M components/_backup/StatsBox.tsx
+ M lib/data/email-verifications.json
+ M lib/data/mailing-list.json
+ M lib/data/sarus-hub.json
+ M lib/db/sarus-hub.ts
+ M lib/db/schema.ts
+ M lib/route-mapping.ts
+ M lib/translations.ts
+ M package-lock.json
+ M postcss.config.mjs
+ M scripts/deploy.ts
+ M scripts/migrate-add-image-fields.ts
+ M scripts/migrate-sarus-hub-to-sqlite.ts
+?? assets/Screenshot_2025-12-07_at_16.38.29-b36351dd-1ae6-43e3-ad64-95b2ab997edb.png
+?? assets/Screenshot_2025-12-07_at_16.38.53-01ff3e04-74a1-4a93-a267-be95340740d9.png
+?? assets/Screenshot_2025-12-07_at_16.38.53-0a39509d-bca8-4ac5-a384-78367b06d9ae.png
+?? assets/Screenshot_2025-12-07_at_16.38.53-7f2ab209-3471-4c35-a6a3-7d685367ef81.png
+?? assets/Screenshot_2025-12-07_at_16.38.53-e9cfa9c6-7503-450b-a1f6-9a210e40642f.png
+?? assets/Screenshot_2025-12-07_at_17.07.01-424c1dbf-315e-451f-9db2-b80c89d1efe9.png
+?? assets/Screenshot_2025-12-07_at_17.16.22-43b9a4f5-a2e7-45a2-885c-7d883d0a8989.png
+?? assets/Screenshot_2025-12-07_at_17.26.02-410089e2-b30e-47c7-842b-4f489165d386.png
+?? assets/Screenshot_2025-12-07_at_17.34.08-02149023-3eb1-442e-9162-901a5c1dbf91.png
+?? assets/Screenshot_2025-12-07_at_18.49.52-cf2d1164-fb35-40d1-88a1-cf6e5cabd5d0.png
+?? components/HisEcosystemDiagram.tsx
+?? logs/
+?? public/SarusHIS.pdf
+?? public/SarusLIS.pdf
+?? public/icons/
+?? scripts/better-icon-matching.ts
+?? scripts/better-icon-results.txt
+?? scripts/download-healthicons.ts
+?? scripts/find-healthicons.ts
+?? scripts/healthicon-mappings.txt
+
+[2025-12-10T11:48:27.972Z] [WARN] ⚠️  These changes will NOT be deployed. Only pushed commits will be deployed.
+[2025-12-10T11:48:28.240Z] [WARN] ⚠️  Could not check unpushed commits: Command failed: git fetch origin
+Permission denied, please try again.
+Permission denied, please try again.
+sirius@cloud.cemorion.com: Permission denied (publickey,password).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+[2025-12-10T11:48:28.240Z] [SUCCESS] ✅ Local git status OK
+[2025-12-10T11:48:28.240Z] [SUCCESS] ✅ Password found in environment
+[2025-12-10T11:48:28.241Z] [STEP] 🔌 Connecting to server...
+[2025-12-10T11:48:28.518Z] [SUCCESS] ✅ Connected successfully!
+[2025-12-10T11:48:28.519Z] [STEP] 📥 Step 1: Updating code from Git...
+[2025-12-10T11:48:29.783Z] [SUCCESS] ✅ Git update completed
+[2025-12-10T11:48:29.783Z] [STEP] 📦 Step 2: Checking and installing dependencies...
+[2025-12-10T11:48:31.056Z] [SUCCESS] ✅ Dependencies checked and installed
+[2025-12-10T11:48:31.056Z] [STEP] 🔍 Step 2.5: Pre-build validation...
+[2025-12-10T11:48:31.156Z] [INFO] Pre-build check results:
+[2025-12-10T11:48:31.156Z] [INFO] Checking critical files...
+✓ package.json exists
+✓ next.config.ts exists
+✓ next.config.js exists
+✓ app directory exists
+✓ components directory exists
+
+[2025-12-10T11:48:31.156Z] [STEP] 🏗️  Step 3: Building application...
+[2025-12-10T11:48:35.743Z] [ERROR] ❌ Deployment error: Build failed: Failed to compile.
+
+./components/SarusHISPage.tsx
+Module not found: Can't resolve '@/data/moduleHierarchy'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./components/SarusHISPage.tsx
+Module not found: Can't resolve './IntegratedSystemCard'
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+> Build failed because of webpack errors
+

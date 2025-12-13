@@ -69,9 +69,10 @@ export default function Hero() {
   };
 
   return (
+    <>
     <section
       id="hero"
-      className={`relative min-h-screen flex items-start overflow-hidden ${
+      className={`relative min-h-[85vh] flex items-start overflow-visible ${
         currentSlide === 0 
           ? "bg-gradient-to-br from-background via-background-alt to-background"
           : currentSlide === 2
@@ -84,7 +85,7 @@ export default function Hero() {
     >
       {/* Video Background - Only for slide 1 */}
       {currentSlide === 0 && (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-visible pointer-events-none">
           <AnimatePresence mode="wait">
             <motion.div
               key="video-slide-1"
@@ -92,9 +93,9 @@ export default function Hero() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8 }}
-              className="absolute inset-0"
+              className="absolute inset-0 -bottom-1"
             >
-              <div className="absolute left-0 top-0 right-0 bottom-[30%] md:bottom-[25%]">
+              <div className="absolute left-0 top-0 right-0 bottom-0">
                 <video
                   autoPlay
                   loop
@@ -110,7 +111,7 @@ export default function Hero() {
               </div>
               
               {/* Ankara Şehir Hastanesi Label - Bottom Right */}
-              <div className="absolute bottom-[30%] md:bottom-[25%] right-4 md:right-6 lg:right-8 z-10">
+              <div className="absolute bottom-4 md:bottom-6 right-4 md:right-6 lg:right-8 z-10">
                 <div className="bg-black/40 backdrop-blur-sm px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-white/20">
                   <p className="text-white/70 text-xs md:text-sm font-medium whitespace-nowrap">
                     {language === "en" ? "Ankara City Hospital" : "Ankara Şehir Hastanesi"}
@@ -121,8 +122,8 @@ export default function Hero() {
           </AnimatePresence>
           
           {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background/60" />
+          <div className="absolute inset-0 -bottom-1 bg-gradient-to-r from-background via-background/85 to-transparent" />
+          <div className="absolute inset-0 -bottom-1 bg-gradient-to-b from-background/60 via-transparent to-background/60" />
         </div>
       )}
 
@@ -186,25 +187,10 @@ export default function Hero() {
         
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-        
-        {/* Bottom wave */}
-        <svg
-          className="absolute bottom-0 w-full h-40"
-          viewBox="0 0 1440 160"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0 160L60 140C120 120 240 80 360 70C480 60 600 80 720 85C840 90 960 80 1080 75C1200 70 1320 70 1380 70L1440 70V160H1380C1320 160 1200 160 1080 160C960 160 840 160 720 160C600 160 480 160 360 160C240 160 120 160 60 160H0Z"
-            fill="currentColor"
-            className="text-background-alt"
-          />
-        </svg>
       </div>
 
-      {/* Navigation Controls - Bottom left corner like IQVIA */}
-      <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 z-40 flex items-center gap-3 md:gap-4">
+      {/* Navigation Controls - Bottom center */}
+      <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 md:gap-4">
         {/* Previous Button */}
         <button
           onClick={prevSlide}
@@ -244,9 +230,9 @@ export default function Hero() {
         </button>
       </div>
 
-      <div className="relative z-20 px-5 md:px-10 pt-12 md:pt-16 pb-10 md:pb-16 w-full h-full">
+      <div className="relative z-20 px-5 md:px-10 pt-8 md:pt-12 pb-6 md:pb-8 w-full h-full">
         {/* Carousel Container - Full width and height */}
-        <div className="relative w-full h-full min-h-[calc(100vh-8rem)]">
+        <div className="relative w-full h-full min-h-[calc(85vh-8rem)]">
           <AnimatePresence mode="wait">
             {/* Slide 1: Sarus */}
             {currentSlide === 0 && (
@@ -256,7 +242,7 @@ export default function Hero() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-4 md:mt-6"
+                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-8 md:mt-10"
               >
             {/* Title */}
             <motion.h1
@@ -396,7 +382,7 @@ export default function Hero() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-4 md:mt-6 z-30"
+                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-10 md:mt-12 z-30"
               >
                 {/* Title */}
                 <motion.h1
@@ -479,7 +465,7 @@ export default function Hero() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-4 md:mt-6 z-30"
+                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-10 md:mt-12 z-30"
               >
                 {/* Title */}
                 <motion.h1
@@ -586,61 +572,57 @@ export default function Hero() {
             )}
           </AnimatePresence>
         </div>
-
-        {/* Metrics - Show only on first slide */}
-        {currentSlide === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="relative z-20 w-full pt-8 border-t border-neutral-border mt-20 md:mt-24"
-          >
-          <div className="max-w-7xl mx-auto px-5 md:px-10 ml-8 md:ml-16">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 lg:gap-16">
-              {metrics.map((metric, idx) => {
-                let labelKey = "users";
-                if (metric.value.includes("80")) labelKey = "patients";
-                if (metric.value.includes("40")) labelKey = "applications";
-                if (metric.value.includes("HIMSS")) labelKey = "himss";
-                
-                return (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.9 + idx * 0.1 }}
-                    className="group text-center min-w-0"
-                  >
-                    <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent mb-2 md:mb-3 break-words overflow-visible">
-                      {metric.value.includes("+") || 
-                       metric.value.includes("%") || 
-                       metric.value.includes("/") || 
-                       metric.value.includes("HIMSS") ||
-                       metric.value.includes(",") ? (
-                        <span className="inline-flex items-baseline whitespace-nowrap">{metric.value}</span>
-                      ) : (
-                        <AnimatedCounter target={parseInt(metric.value.replace(/,/g, "")) || 0} />
-                      )}
-                    </div>
-                    <div className="text-xs md:text-sm lg:text-base font-medium tracking-wide text-neutral-body leading-relaxed break-words px-1">
-                      {labelKey === "himss" ? (
-                        <div className="space-y-0 font-medium tracking-wide">
-                          <div>EMRAM/O-EMRAM</div>
-                          <div>{language === "en" ? "Stage 7" : "Seviye 7"}</div>
-                        </div>
-                      ) : (
-                        <span className="block">{t(`metrics.${labelKey}`)}</span>
-                      )}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-          </motion.div>
-        )}
       </div>
     </section>
+
+    {/* Metrics - Blue background section after hero */}
+    <section className="relative w-full bg-gradient-to-br from-primary via-primary to-primary-dark py-8 md:py-12">
+      <div className="max-w-7xl mx-auto px-5 md:px-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 lg:gap-16">
+          {metrics.map((metric, idx) => {
+            let labelKey = "users";
+            if (metric.value.includes("80")) labelKey = "patients";
+            if (metric.value.includes("40")) labelKey = "applications";
+            if (metric.value.includes("HIMSS")) labelKey = "himss";
+            
+            return (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.9 + idx * 0.1 }}
+                className="group text-center min-w-0"
+              >
+                <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white mb-2 md:mb-3 break-words overflow-visible">
+                  {metric.value.includes("+") || 
+                   metric.value.includes("%") || 
+                   metric.value.includes("/") || 
+                   metric.value.includes("HIMSS") ||
+                   metric.value.includes(",") ? (
+                    <span className="inline-flex items-baseline whitespace-nowrap text-white">{metric.value}</span>
+                  ) : (
+                    <span className="text-white">
+                      <AnimatedCounter target={parseInt(metric.value.replace(/,/g, "")) || 0} />
+                    </span>
+                  )}
+                </div>
+                <div className="text-xs md:text-sm lg:text-base font-medium tracking-wide text-white/90 leading-relaxed break-words px-1">
+                  {labelKey === "himss" ? (
+                    <div className="space-y-0 font-medium tracking-wide">
+                      <div>EMRAM/O-EMRAM</div>
+                      <div>{language === "en" ? "Stage 7" : "Seviye 7"}</div>
+                    </div>
+                  ) : (
+                    <span className="block">{t(`metrics.${labelKey}`)}</span>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+    </>
   );
 }
 

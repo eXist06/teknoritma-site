@@ -3,7 +3,7 @@ export const routeMapping: Record<string, string> = {
   // Turkish to English
   "/hakkimizda": "/en/about",
   "/kariyer": "/en/careers",
-  "/urunler/sarus": "/en/products/sarus",
+  "/urunler/sarus": "/en/products/sarus-emr",
   "/urunler/sarus-bulut": "/en/products/sarus-cloud",
   "/urunler/sarus-icp": "/en/products/sarus-icp",
   "/urunler/sarus-lbs": "/en/products/sarus-lis",
@@ -18,7 +18,8 @@ export const routeMapping: Record<string, string> = {
   // English to Turkish
   "/en/about": "/hakkimizda",
   "/en/careers": "/kariyer",
-  "/en/products/sarus": "/urunler/sarus",
+  "/en/products/sarus-emr": "/urunler/sarus",
+  "/en/products/sarus-emr/sarus": "/urunler/sarus",
   "/en/products/sarus-cloud": "/urunler/sarus-bulut",
   "/en/products/sarus-icp": "/urunler/sarus-icp",
   "/en/products/sarus-lis": "/urunler/sarus-lbs",
@@ -98,6 +99,16 @@ export function getRouteInLanguage(path: string, targetLang: "tr" | "en"): strin
     }
   }
   
+  // Handle /products/sarus-emr/sarus -> /urunler/sarus
+  if (pathParts[0] === "products" && pathParts[1] === "sarus-emr" && pathParts[2] === "sarus") {
+    return targetLang === "en" ? "/en/products/sarus-emr/sarus" : "/urunler/sarus";
+  }
+  
+  // Handle /products/sarus-emr -> /urunler/sarus
+  if (pathParts[0] === "products" && pathParts[1] === "sarus-emr" && pathParts.length === 2) {
+    return targetLang === "en" ? "/en/products/sarus-emr" : "/urunler/sarus";
+  }
+  
   // Check direct mapping
   if (targetLang === "en") {
     // Turkish to English
@@ -116,5 +127,9 @@ export function getRouteInLanguage(path: string, targetLang: "tr" | "en"): strin
     return normalizedPath;
   }
 }
+
+
+
+
 
 

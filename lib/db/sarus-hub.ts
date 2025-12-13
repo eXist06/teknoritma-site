@@ -89,6 +89,7 @@ export function getAllItems(filters?: SarusHubFilters, includeDrafts: boolean = 
       imageDisplayStyle: (row.image_display_style || 'cover') as SarusHubItem['imageDisplayStyle'],
       video: row.video || undefined,
       language: row.language as SarusHubItem['language'],
+      translationId: row.translation_id || undefined,
       viewCount: row.view_count || 0,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
@@ -130,10 +131,11 @@ export function getItemById(id: string): SarusHubItem | null {
     images: allImages.length > 0 ? allImages : undefined,
     imageDisplayStyle: (row.image_display_style || 'cover') as SarusHubItem['imageDisplayStyle'],
     video: row.video || undefined,
-    language: row.language as SarusHubItem['language'],
-    viewCount: row.view_count || 0,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+      language: row.language as SarusHubItem['language'],
+      translationId: row.translation_id || undefined,
+      viewCount: row.view_count || 0,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
   };
 }
 
@@ -171,10 +173,11 @@ export function getItemBySlug(slug: string): SarusHubItem | null {
     images: allImages.length > 0 ? allImages : undefined,
     imageDisplayStyle: (row.image_display_style || 'cover') as SarusHubItem['imageDisplayStyle'],
     video: row.video || undefined,
-    language: row.language as SarusHubItem['language'],
-    viewCount: row.view_count || 0,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+      language: row.language as SarusHubItem['language'],
+      translationId: row.translation_id || undefined,
+      viewCount: row.view_count || 0,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
   };
 }
 
@@ -194,8 +197,8 @@ export function createItem(item: Omit<SarusHubItem, 'id' | 'createdAt' | 'update
       id, type, title, slug, summary, content, hospital, country, segment,
       tags, published_at, featured, reading_minutes, status, author, 
       image, primary_image, images, image_display_style, video,
-      language, view_count, created_at, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      language, translation_id, view_count, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
     id,
     item.type,
@@ -218,6 +221,7 @@ export function createItem(item: Omit<SarusHubItem, 'id' | 'createdAt' | 'update
     item.imageDisplayStyle || 'cover',
     item.video || null,
     item.language,
+    item.translationId || null,
     item.viewCount || 0,
     now,
     now
@@ -263,7 +267,7 @@ export function updateItem(id: string, updates: Partial<SarusHubItem>): SarusHub
       published_at = ?, featured = ?, reading_minutes = ?,
       status = ?, author = ?, image = ?, primary_image = ?, 
       images = ?, image_display_style = ?, video = ?,
-      language = ?, updated_at = ?
+      language = ?, translation_id = ?, updated_at = ?
     WHERE id = ?
   `).run(
     updated.type,
@@ -286,6 +290,7 @@ export function updateItem(id: string, updates: Partial<SarusHubItem>): SarusHub
     updated.imageDisplayStyle || 'cover',
     updated.video || null,
     updated.language,
+    updated.translationId || null,
     updated.updatedAt,
     id
   );
@@ -318,3 +323,7 @@ export function incrementViewCount(slug: string): number {
   db.close();
   return row.view_count;
 }
+
+
+
+

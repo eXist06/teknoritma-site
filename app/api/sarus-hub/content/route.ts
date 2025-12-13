@@ -3,6 +3,7 @@ import { SarusHubItem, SarusHubFilters } from "@/lib/types/sarus-hub";
 import { verifySarusHubRole } from "@/lib/utils/role-verification";
 import { initializeDatabase } from "@/lib/db/schema";
 import { getAllItems, getItemById, createItem, updateItem, deleteItem } from "@/lib/db/sarus-hub";
+import { generateTranslationSlug, generatePlaceholderTranslation } from "@/lib/utils/translation";
 
 // Initialize database on first import
 if (typeof window === "undefined") {
@@ -32,7 +33,40 @@ export async function GET(request: NextRequest) {
     const isAuthorized = authCheck.isAuthorized;
 
     // Get items from database
-    const items = getAllItems(filters, isAuthorized);
+    let items = getAllItems(filters, isAuthorized);
+    
+    // If requesting all languages and not authorized (public), also include English translations of published Turkish items
+    // This ensures English page shows translations even if they're not explicitly filtered
+    if (!isAuthorized && filters.language === "all") {
+      // Get all published Turkish items
+      const allPublished = getAllItems({ language: "all" }, false);
+      const turkishItems = allPublished.filter(item => item.language === "tr" && item.status === "published");
+      
+      // Find English translations of these Turkish items
+      // We need to check all items (including drafts) to find translations
+      const allItemsForTranslation = getAllItems({}, true); // Include drafts to find translations
+      const englishTranslations = turkishItems
+        .map(turkishItem => {
+          // Find English translation (prefer published, but include draft if exists)
+          const translation = allItemsForTranslation.find(
+            item => item.translationId === turkishItem.id && item.language === "en"
+          );
+          return translation;
+        })
+        .filter((translation): translation is SarusHubItem => translation !== undefined);
+      
+      // For public users, only show published translations
+      // But if a translation exists (even as draft), we should show it to indicate translation is in progress
+      // For now, let's only show published translations to avoid showing placeholder content
+      const publishedTranslations = englishTranslations.filter(t => t.status === "published");
+      
+      // Add published translations to items if not already included
+      publishedTranslations.forEach(translation => {
+        if (!items.find(item => item.id === translation.id)) {
+          items.push(translation);
+        }
+      });
+    }
 
     return NextResponse.json({ items });
   } catch (error) {
@@ -96,6 +130,7 @@ export async function POST(request: NextRequest) {
     }
 
     const publishedAt = status === "published" ? new Date().toISOString() : undefined;
+    const itemLanguage = language || "tr";
     
     const newItem = createItem({
       type,
@@ -114,9 +149,57 @@ export async function POST(request: NextRequest) {
       author: author || authCheck.user?.username || "Unknown",
       image: image || undefined,
       video: video || undefined,
-      language: language || "tr",
+      language: itemLanguage,
       viewCount: 0,
     });
+
+    // If Turkish item is created, automatically create English draft translation
+    if (itemLanguage === "tr") {
+      try {
+        const allItems = getAllItems({}, true);
+        const existingSlugs = allItems.map(item => item.slug);
+        const englishSlug = generateTranslationSlug(slug, "en");
+        
+        // Check if English translation already exists
+        const existingEnglish = allItems.find(
+          item => item.translationId === newItem.id || 
+          (item.slug === englishSlug && item.language === "en")
+        );
+        
+        if (!existingEnglish) {
+          // Generate placeholder translation
+          const placeholder = generatePlaceholderTranslation(title, summary || "", content || "");
+          
+          // Create English draft
+          createItem({
+            type,
+            title: placeholder.title,
+            slug: englishSlug,
+            summary: placeholder.summary,
+            content: placeholder.content,
+            hospital: hospital || undefined,
+            country: country || undefined,
+            segment: segment || undefined,
+            tags: tags || [],
+            publishedAt: undefined, // Draft, not published
+            featured: false, // Don't feature translations by default
+            readingMinutes: readingMinutes || undefined,
+            status: "draft", // Always create as draft
+            author: author || authCheck.user?.username || "Unknown",
+            image: image || undefined,
+            video: video || undefined,
+            language: "en",
+            translationId: newItem.id, // Link to Turkish original
+            viewCount: 0,
+          });
+          
+          console.log(`Created English draft translation for item ${newItem.id}`);
+        }
+      } catch (error) {
+        // Log error but don't fail the main request
+        console.error("Error creating English translation:", error);
+      }
+    }
 
     return NextResponse.json({ item: newItem }, { status: 201 });
   } catch (error) {

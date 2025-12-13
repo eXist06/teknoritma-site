@@ -1,0 +1,192 @@
+[2025-12-10T12:24:59.348Z] [STEP] 🚀 🚀 Starting production sync process...
+[2025-12-10T12:24:59.348Z] [INFO] 📝 📍 Target: sirius@cloud.cemorion.com:333
+[2025-12-10T12:24:59.348Z] [INFO] 📝 📂 Deploy path: /opt/teknoritma-site
+[2025-12-10T12:24:59.348Z] [SUCCESS] ✅ ✅ Password found in environment
+[2025-12-10T12:24:59.348Z] [STEP] 🚀 🔌 Connecting to server...
+[2025-12-10T12:24:59.624Z] [SUCCESS] ✅ ✅ Connected successfully!
+[2025-12-10T12:24:59.625Z] [STEP] 🚀 ⏸️  Step 1: Stopping PM2 application (teknoritma-site only)...
+[2025-12-10T12:24:59.625Z] [WARN] ⚠️ ⚠️  ONLY stopping teknoritma-site - other PM2 apps will NOT be affected
+[2025-12-10T12:25:00.253Z] [SUCCESS] ✅ ✅ PM2 stopped (teknoritma-site only)
+[2025-12-10T12:25:00.253Z] [STEP] 🚀 💾 Step 2: Backing up current production (moving existing folder)...
+[2025-12-10T12:25:00.254Z] [INFO] 📝 📦 Moving /opt/teknoritma-site to /opt/teknoritma-site-backup-1765369499347
+[2025-12-10T12:25:00.314Z] [SUCCESS] ✅ ✅ Current production backed up at: /opt/teknoritma-site-backup-1765369499347
+[2025-12-10T12:25:00.315Z] [STEP] 🚀 📁 Step 3: Creating new deployment directory...
+[2025-12-10T12:25:00.412Z] [SUCCESS] ✅ ✅ New directory created: /opt/teknoritma-site
+[2025-12-10T12:25:00.413Z] [STEP] 🚀 📤 Step 4: Syncing files from local to production via rsync...
+[2025-12-10T12:25:00.413Z] [WARN] ⚠️ ⚠️  This may take a while depending on file size (including 2000+ icon files)...
+[2025-12-10T12:25:00.429Z] [INFO] 📝 sshpass not found, using SFTP via SSH2 connection...
+[2025-12-10T12:25:00.430Z] [WARN] ⚠️ ⚠️  This will be slower but more reliable...
+[2025-12-10T12:25:00.539Z] [INFO] 📝 Starting SFTP upload (this may take several minutes)...
+[2025-12-10T12:25:00.691Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:25:00.691Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:25:00.691Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:25:00.692Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:25:00.692Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.441Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.443Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.444Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.551Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.552Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.552Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.553Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.553Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.553Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.553Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.553Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.553Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.553Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.570Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.571Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.571Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.571Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.571Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.571Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.571Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.571Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.571Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.571Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.572Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.573Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.573Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.573Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.578Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.579Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.579Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.579Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.579Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.580Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.581Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.582Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.582Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+
+[2025-12-10T12:26:26.582Z] [INFO] 📝 Remote: tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+

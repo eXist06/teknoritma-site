@@ -59,3 +59,7 @@ export default function ViewCounter({ slug, initialCount }: ViewCounterProps) {
     </div>
   );
 }
+
+
+
+

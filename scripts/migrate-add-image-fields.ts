@@ -29,3 +29,7 @@ try {
 
 db.close();
 console.log("Migration completed!");
+
+
+
+

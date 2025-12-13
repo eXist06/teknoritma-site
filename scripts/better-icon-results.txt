@@ -1,0 +1,220 @@
+// Auto-generated healthicon mappings with semantic matching
+
+const moduleHealthIconMap: Record<string, { icon: string; category: string; variant?: 'outline' | 'filled' }> = {
+  "central-local-appointment": { icon: "i_schedule_school_date_time", category: "symbols" }, // Central and Local Appointment System (Calendar Schedule)
+  "reception": { icon: "hospital", category: "places" }, // Reception Module (Hospital)
+  "policlinic": { icon: "ambulatory_clinic", category: "places" }, // Policlinic Module (Clinic)
+  "inpatient": { icon: "hospitalized", category: "devices" }, // Inpatient Module (Hospital Bed)
+  "emergency": { icon: "accident_and_emergency", category: "specialties" }, // Emergency Management Module (Accident and Emergency)
+  "icu": { icon: "critical_care", category: "specialties" }, // Intensive Care Module (Critical Care)
+  "nursing": { icon: "nurse", category: "people" }, // Nursing Management Module (Person Nurse)
+  "telemedicine": { icon: "telemedicine", category: "symbols" }, // Telemedicine Module (Telemedicine)
+  "patient-monitoring": { icon: "pulse_oximeter_alt", category: "devices" }, // Patient Monitoring (Pulse Oximeter)
+  "patient-chart": { icon: "clinical_fe", category: "symbols" }, // Patient Chart (Clinical Record)
+  "doctor-notes": { icon: "clinical_f", category: "symbols" }, // Doctor Notes (Clinical Document)
+  "examination": { icon: "i_exam_qualification", category: "symbols" }, // Examination and Consultation (Exam)
+  "medication": { icon: "medicines", category: "medications" }, // Medication Management (Medicines)
+  "prescription": { icon: "prescription_document", category: "objects" }, // Prescription Management (Prescription)
+  "lab-integration": { icon: "hematology_laboratory", category: "specialties" }, // Laboratory Integration (Hematology Lab)
+  "radiology-integration": { icon: "radiology", category: "specialties" }, // Radiology Integration (Radiology)
+  "operating-rooms": { icon: "general_surgery", category: "specialties" }, // Operating Rooms Module (Surgical Department)
+  "oncology": { icon: "oncology", category: "specialties" }, // Oncology Module (Oncology)
+  "orthopedics": { icon: "orthopaedics", category: "specialties" }, // Orthopedics Module (Orthopaedics)
+  "gynecology": { icon: "gynecology", category: "specialties" }, // Gynecology Module (Gynecology)
+  "oral-dental": { icon: "dental_hygiene", category: "devices" }, // Oral and Dental Health Module (Dental Hygiene)
+  "hemodialysis": { icon: "nephrology", category: "specialties" }, // Hemodialysis Module (Nephrology)
+  "ivf": { icon: "obstetricsmonia", category: "specialties" }, // In Vitro Fertilization Module (Obstetricsmonia)
+  "physiotherapy": { icon: "physical_therapy", category: "specialties" }, // Physiotherapy Module (Physical Therapy)
+  "diet": { icon: "nutrition", category: "nutrition" }, // Diet Module (Nutrition)
+  "social-services": { icon: "social_work", category: "specialties" }, // Social Services Module (Social Work)
+  "medical-board": { icon: "i_documents_accepted", category: "symbols" }, // Medical Board Module (Approved Document)
+  "mortuary": { icon: "death_alt2", category: "symbols" }, // Mortuary Management System (Death Alt 2)
+  "laboratory": { icon: "biochemistry_laboratory", category: "specialties" }, // Laboratory Module (Biochemistry Lab)
+  "blood-center": { icon: "blood_transfusion", category: "symbols" }, // Blood Center Module (Blood transfusion)
+  "genetics-lab": { icon: "intestine", category: "body" }, // Genetics Module (Intestine)
+  "pathology": { icon: "speech_language_therapy", category: "specialties" }, // Pathology Module (Speech Language Therapy)
+  "ris": { icon: "radiology", category: "specialties" }, // Radiology Information System (RIS) (Radiology)
+  "pacs": { icon: "xray", category: "devices" }, // PACS (X-ray)
+  "nuclear-medicine": { icon: "radiology", category: "specialties" }, // Nuclear Medicine Module (Radiology)
+  "radiotherapy-chemo-diag": { icon: "oncology", category: "specialties" }, // Radiotherapy and Chemotherapy Module (Oncology)
+  "pharmacy": { icon: "pharmacy", category: "specialties" }, // Pharmacy Module (Pharmacy)
+  "transfusion": { icon: "blood_transfusion", category: "symbols" }, // Transfusion (Blood transfusion)
+  "revolving-funds": { icon: "money_bag", category: "objects" }, // Revolving Funds, Invoicing and Financial Transactions Module (Money Bag)
+  "cash-desk": { icon: "money_bag", category: "objects" }, // Cash Desk Module (Money Bag)
+  "appointment": { icon: "calendar", category: "objects" }, // Appointment System (Calendar)
+  "bed-management": { icon: "hospitalized", category: "devices" }, // Bed Management (Hospital Bed)
+  "room-tracking": { icon: "observation", category: "devices" }, // Room & Bed Tracking (Hospital Bed Timer)
+  "resource-planning": { icon: "i_schedule_school_date_time", category: "symbols" }, // Resource Planning (Calendar Schedule)
+  "stock-tracking": { icon: "rdt_result_out_stock", category: "objects" }, // Stock Tracking System (Stock Out RDT)
+  "procurement-fixed-assets": { icon: "money_bag", category: "objects" }, // Procurement and Fixed Asset Management Module (Money Bag)
+  "equipment-tracking": { icon: "cpap_machine", category: "devices" }, // Equipment Tracking Module (CPAP machine)
+  "cleaning-laundry": { icon: "cleaning", category: "objects" }, // Cleaning and Laundry Module (Cleaning)
+  "sterilization-logistics": { icon: "surgical_sterilization", category: "devices" }, // Sterilization Module (Surgical Tools)
+  "human-resources": { icon: "human_resoruces", category: "specialties" }, // Human Resources Module (Human Resources)
+  "records-archives": { icon: "medical_records", category: "specialties" }, // Records and Archives Module (Medical Records)
+  "statistics-reporting": { icon: "chart_bar", category: "graphs" }, // Statistics and Reporting Module (Bar Chart)
+  "system-management": { icon: "resilient_and_migration_sensitive_health_system", category: "symbols" }, // System Management Module (Resilient and Migration Sensitive Health System)
+};
+
+
+// Detailed matching results:
+
+central-local-appointment: Central and Local Appointment System
+  -> i_schedule_school_date_time (symbols): Calendar Schedule [score: 460]
+
+reception: Reception Module
+  -> hospital (places): Hospital [score: 360]
+
+policlinic: Policlinic Module
+  -> ambulatory_clinic (places): Clinic [score: 480]
+
+inpatient: Inpatient Module
+  -> hospitalized (devices): Hospital Bed [score: 700]
+
+emergency: Emergency Management Module
+  -> accident_and_emergency (specialties): Accident and Emergency [score: 640]
+
+icu: Intensive Care Module
+  -> critical_care (specialties): Critical Care [score: 760]
+
+nursing: Nursing Management Module
+  -> nurse (people): Person Nurse [score: 360]
+
+telemedicine: Telemedicine Module
+  -> telemedicine (symbols): Telemedicine [score: 300]
+
+patient-monitoring: Patient Monitoring
+  -> pulse_oximeter_alt (devices): Pulse Oximeter [score: 580]
+
+patient-chart: Patient Chart
+  -> clinical_fe (symbols): Clinical Record [score: 520]
+
+doctor-notes: Doctor Notes
+  -> clinical_f (symbols): Clinical Document [score: 640]
+
+examination: Examination and Consultation
+  -> i_exam_qualification (symbols): Exam [score: 300]
+
+medication: Medication Management
+  -> medicines (medications): Medicines [score: 580]
+
+prescription: Prescription Management
+  -> prescription_document (objects): Prescription [score: 240]
+
+lab-integration: Laboratory Integration
+  -> hematology_laboratory (specialties): Hematology Lab [score: 480]
+
+radiology-integration: Radiology Integration
+  -> radiology (specialties): Radiology [score: 360]
+
+operating-rooms: Operating Rooms Module
+  -> general_surgery (specialties): Surgical Department [score: 420]
+
+oncology: Oncology Module
+  -> oncology (specialties): Oncology [score: 300]
+
+orthopedics: Orthopedics Module
+  -> orthopaedics (specialties): Orthopaedics [score: 360]
+
+gynecology: Gynecology Module
+  -> gynecology (specialties): Gynecology [score: 300]
+
+oral-dental: Oral and Dental Health Module
+  -> dental_hygiene (devices): Dental Hygiene [score: 360]
+
+hemodialysis: Hemodialysis Module
+  -> nephrology (specialties): Nephrology [score: 300]
+
+ivf: In Vitro Fertilization Module
+  -> obstetricsmonia (specialties): Obstetricsmonia [score: 300]
+
+physiotherapy: Physiotherapy Module
+  -> physical_therapy (specialties): Physical Therapy [score: 460]
+
+diet: Diet Module
+  -> nutrition (nutrition): Nutrition [score: 420]
+
+social-services: Social Services Module
+  -> social_work (specialties): Social Work [score: 640]
+
+medical-board: Medical Board Module
+  -> i_documents_accepted (symbols): Approved Document [score: 400]
+
+mortuary: Mortuary Management System
+  -> death_alt2 (symbols): Death Alt 2 [score: 300]
+
+laboratory: Laboratory Module
+  -> biochemistry_laboratory (specialties): Biochemistry Lab [score: 700]
+
+blood-center: Blood Center Module
+  -> blood_transfusion (symbols): Blood transfusion [score: 580]
+
+genetics-lab: Genetics Module
+  -> intestine (body): Intestine [score: 300]
+
+pathology: Pathology Module
+  -> speech_language_therapy (specialties): Speech Language Therapy [score: 80]
+
+ris: Radiology Information System (RIS)
+  -> radiology (specialties): Radiology [score: 300]
+
+pacs: PACS
+  -> xray (devices): X-ray [score: 200]
+
+nuclear-medicine: Nuclear Medicine Module
+  -> radiology (specialties): Radiology [score: 300]
+
+radiotherapy-chemo-diag: Radiotherapy and Chemotherapy Module
+  -> oncology (specialties): Oncology [score: 360]
+
+pharmacy: Pharmacy Module
+  -> pharmacy (specialties): Pharmacy [score: 480]
+
+transfusion: Transfusion
+  -> blood_transfusion (symbols): Blood transfusion [score: 580]
+
+revolving-funds: Revolving Funds, Invoicing and Financial Transactions Module
+  -> money_bag (objects): Money Bag [score: 300]
+
+cash-desk: Cash Desk Module
+  -> money_bag (objects): Money Bag [score: 360]
+
+appointment: Appointment System
+  -> calendar (objects): Calendar [score: 360]
+
+bed-management: Bed Management
+  -> hospitalized (devices): Hospital Bed [score: 460]
+
+room-tracking: Room & Bed Tracking
+  -> observation (devices): Hospital Bed Timer [score: 180]
+
+resource-planning: Resource Planning
+  -> i_schedule_school_date_time (symbols): Calendar Schedule [score: 300]
+
+stock-tracking: Stock Tracking System
+  -> rdt_result_out_stock (objects): Stock Out RDT [score: 300]
+
+procurement-fixed-assets: Procurement and Fixed Asset Management Module
+  -> money_bag (objects): Money Bag [score: 20]
+
+equipment-tracking: Equipment Tracking Module
+  -> cpap_machine (devices): CPAP machine [score: 340]
+
+cleaning-laundry: Cleaning and Laundry Module
+  -> cleaning (objects): Cleaning [score: 300]
+
+sterilization-logistics: Sterilization Module
+  -> surgical_sterilization (devices): Surgical Tools [score: 540]
+
+human-resources: Human Resources Module
+  -> human_resoruces (specialties): Human Resources [score: 460]
+
+records-archives: Records and Archives Module
+  -> medical_records (specialties): Medical Records [score: 520]
+
+statistics-reporting: Statistics and Reporting Module
+  -> chart_bar (graphs): Bar Chart [score: 360]
+
+system-management: System Management Module
+  -> resilient_and_migration_sensitive_health_system (symbols): Resilient and Migration Sensitive Health System [score: 520]
+

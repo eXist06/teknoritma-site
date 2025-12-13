@@ -3,9 +3,29 @@
 import { motion } from "framer-motion";
 import { timelineItems } from "@/content/timeline";
 import { useI18n } from "@/lib/i18n";
+import { useState, useEffect } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 
 export default function TimelineSection() {
-  const { t } = useI18n();
+  const { language, t } = useI18n();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 20 });
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const timer = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.on("select", () => {
+      setActiveIndex(emblaApi.selectedScrollSnap());
+    });
+  }, [emblaApi]);
+
   return (
     <section id="projects" className="py-20 md:py-32 bg-background-alt">
       <div className="max-w-7xl mx-auto px-5 md:px-10">
@@ -20,43 +40,95 @@ export default function TimelineSection() {
           </h2>
           <p className="text-lg text-neutral-body max-w-2xl mx-auto">
             {t("timeline.subtitle")}
-            başladığı yolculuğunu, şehir hastaneleri ve yüksek yatak kapasiteli
-            referans projelerle sürdürüyor.
+            {language === "en" 
+              ? " continues its journey with city hospitals and high-capacity reference projects."
+              : " başladığı yolculuğunu, şehir hastaneleri ve yüksek yatak kapasiteli referans projelerle sürdürüyor."
+            }
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {timelineItems.map((item, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              whileHover={{ y: -12, scale: 1.02 }}
-              className="relative bg-white rounded-3xl border border-neutral-border p-8 shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group"
+        {/* Timeline Carousel */}
+        <div className="relative">
+          {/* Navigation Arrows */}
+          <div className="absolute right-0 top-0 flex items-center gap-3 z-10">
+            <button
+              onClick={() => emblaApi?.scrollPrev()}
+              className="p-2 rounded-lg bg-white border border-neutral-border shadow-sm hover:bg-neutral-light transition-colors"
+              aria-label="Previous"
             >
-              {/* Hover gradient effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              
-              <div className="relative z-10">
-                <div className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent mb-4">
-                  {item.year}
-                </div>
-                <h3 className="text-xl font-bold text-neutral-heading mb-3">
-                  {item.title}
-                </h3>
-                <p className="text-base text-neutral-body leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
-              
-              {/* Timeline connector line (visual element) */}
-              {idx < timelineItems.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-primary/50 to-transparent" />
-              )}
-            </motion.div>
-          ))}
+              <svg className="w-5 h-5 text-neutral-heading" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => emblaApi?.scrollNext()}
+              className="p-2 rounded-lg bg-white border border-neutral-border shadow-sm hover:bg-neutral-light transition-colors"
+              aria-label="Next"
+            >
+              <svg className="w-5 h-5 text-neutral-heading" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex gap-6">
+              {timelineItems.map((item, idx) => {
+                const itemTitle = language === "en" ? item.titleEn : item.title;
+                const itemDescription = language === "en" ? item.descriptionEn : item.description;
+                
+                return (
+                  <div
+                    key={idx}
+                    className="flex-[0_0_100%] md:flex-[0_0_45%] lg:flex-[0_0_30%]"
+                  >
+                    <motion.div
+                      whileHover={{ y: -12, scale: 1.02 }}
+                      transition={{ duration: 0.3 }}
+                      className="relative h-full bg-white rounded-2xl border border-neutral-border/60 p-8 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                    >
+                      {/* Subtle accent line at top */}
+                      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                      
+                      {/* Hover gradient effect */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      <div className="relative z-10">
+                        <div className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent mb-4">
+                          {item.year}
+                        </div>
+                        <h3 className="text-xl font-bold text-neutral-heading mb-3 group-hover:text-primary transition-colors">
+                          {itemTitle}
+                        </h3>
+                        <p className="text-sm md:text-base text-neutral-body leading-relaxed">
+                          {itemDescription}
+                        </p>
+                      </div>
+                      
+                      {/* Decorative corner */}
+                      <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary/5 rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </motion.div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Dots */}
+          <div className="flex justify-center gap-2 mt-6">
+            {timelineItems.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => emblaApi?.scrollTo(idx)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  idx === activeIndex
+                    ? "w-8 bg-primary"
+                    : "bg-neutral-border hover:bg-neutral-muted"
+                }`}
+                aria-label={`Slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

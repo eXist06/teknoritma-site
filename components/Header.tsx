@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Logo from "./Logo";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useI18n } from "@/lib/i18n";
+import { Stethoscope, Cloud, Scan, FlaskConical, Link2 } from "lucide-react";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -42,19 +43,19 @@ export default function Header() {
   const getProductsSubmenu = () => {
     if (language === "en") {
       return [
-        { label: t("nav.productsSubmenu.emr"), href: "/en/products/sarus-emr" },
-        { label: t("nav.productsSubmenu.cloud"), href: "/en/products/sarus-cloud" },
-        { label: t("nav.productsSubmenu.pacs"), href: "/en/products/sarus-pacs" },
-        { label: t("nav.productsSubmenu.lis"), href: "/en/products/sarus-lis" },
-        { label: t("nav.productsSubmenu.icp"), href: "/en/products/sarus-icp" },
+        { label: t("nav.productsSubmenu.emr"), href: "/en/products/sarus-emr", icon: Stethoscope },
+        { label: t("nav.productsSubmenu.cloud"), href: "/en/products/sarus-cloud", icon: Cloud },
+        { label: t("nav.productsSubmenu.pacs"), href: "/en/products/sarus-pacs", icon: Scan },
+        { label: t("nav.productsSubmenu.lis"), href: "/en/products/sarus-lis", icon: FlaskConical },
+        { label: t("nav.productsSubmenu.icp"), href: "/en/products/sarus-icp", icon: Link2 },
       ];
     } else {
       return [
-        { label: t("nav.productsSubmenu.hbs"), href: "/urunler/sarus" },
-        { label: t("nav.productsSubmenu.cloud"), href: "/urunler/sarus-bulut" },
-        { label: t("nav.productsSubmenu.pacs"), href: "/urunler/sarus-pacs" },
-        { label: t("nav.productsSubmenu.lbs"), href: "/urunler/sarus-lbs" },
-        { label: t("nav.productsSubmenu.icp"), href: "/urunler/sarus-icp" },
+        { label: t("nav.productsSubmenu.hbs"), href: "/urunler/sarus", icon: Stethoscope },
+        { label: t("nav.productsSubmenu.cloud"), href: "/urunler/sarus-bulut", icon: Cloud },
+        { label: t("nav.productsSubmenu.pacs"), href: "/urunler/sarus-pacs", icon: Scan },
+        { label: t("nav.productsSubmenu.lbs"), href: "/urunler/sarus-lbs", icon: FlaskConical },
+        { label: t("nav.productsSubmenu.icp"), href: "/urunler/sarus-icp", icon: Link2 },
       ];
     }
   };
@@ -109,15 +110,19 @@ export default function Header() {
                         transition={{ duration: 0.2 }}
                         className="absolute top-full left-0 mt-2 w-56 bg-gradient-to-br from-blue-50 to-blue-100/80 rounded-xl shadow-2xl border border-blue-200/50 py-3 z-50 backdrop-blur-sm"
                       >
-                        {getProductsSubmenu().map((subItem, subIndex) => (
-                          <a
-                            key={`sub-${subIndex}`}
-                            href={subItem.href}
-                            className="block px-5 py-2.5 text-sm font-medium text-neutral-heading hover:text-primary hover:bg-white/60 transition-all duration-200 first:rounded-t-lg last:rounded-b-lg"
-                          >
-                            {subItem.label}
-                          </a>
-                        ))}
+                        {getProductsSubmenu().map((subItem, subIndex) => {
+                          const IconComponent = subItem.icon;
+                          return (
+                            <a
+                              key={`sub-${subIndex}`}
+                              href={subItem.href}
+                              className="flex items-center gap-3 px-5 py-2.5 text-sm font-medium text-neutral-heading hover:text-primary hover:bg-white/60 transition-all duration-200 first:rounded-t-lg last:rounded-b-lg group"
+                            >
+                              <IconComponent className="w-4 h-4 text-primary/60 group-hover:text-primary transition-colors flex-shrink-0" strokeWidth={2} />
+                              <span>{subItem.label}</span>
+                            </a>
+                          );
+                        })}
                       </motion.div>
                     )}
                     {item.label === t("nav.about") && isAboutDropdownOpen && (
@@ -234,16 +239,22 @@ export default function Header() {
                           {item.label}
                         </div>
                         <div className="pl-6 space-y-1">
-                          {(item.label === t("nav.products") ? getProductsSubmenu() : getAboutSubmenu()).map((subItem, subIndex) => (
-                            <a
-                              key={`sub-mobile-${subIndex}`}
-                              href={subItem.href}
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className="block px-4 py-2 text-sm text-neutral-body hover:text-neutral-heading hover:bg-primary-light rounded-lg transition-all duration-300"
-                            >
-                              {subItem.label}
-                            </a>
-                          ))}
+                          {(item.label === t("nav.products") ? getProductsSubmenu() : getAboutSubmenu()).map((subItem, subIndex) => {
+                            const IconComponent = (subItem as any).icon;
+                            return (
+                              <a
+                                key={`sub-mobile-${subIndex}`}
+                                href={subItem.href}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="flex items-center gap-3 px-4 py-2 text-sm text-neutral-body hover:text-neutral-heading hover:bg-primary-light rounded-lg transition-all duration-300 group"
+                              >
+                                {IconComponent && (
+                                  <IconComponent className="w-4 h-4 text-primary/60 group-hover:text-primary transition-colors flex-shrink-0" strokeWidth={2} />
+                                )}
+                                <span>{subItem.label}</span>
+                              </a>
+                            );
+                          })}
                         </div>
                       </div>
                     ) : (

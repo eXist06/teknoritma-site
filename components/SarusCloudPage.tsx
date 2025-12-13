@@ -1,14 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
-import { 
-  Stethoscope, Calendar, Users, DollarSign, Cloud, Settings, Layers, Trophy,
-  ClipboardList, FileEdit, CreditCard, BarChart3, Link2, CheckCircle2,
-  Building, TrendingUp, RefreshCw, Lock, Zap, Pill
-} from "lucide-react";
+import { Stethoscope, Calendar, Users, DollarSign, Cloud as CloudIcon, FileText, Pill, Clock, Clipboard, Smartphone, CreditCard, BarChart3, Link2, CheckCircle2, Zap, Building2, Shield, TrendingUp, RefreshCw, Lock, Settings, Wrench } from "lucide-react";
 
 export default function SarusCloudPage() {
   const { language, t } = useI18n();
@@ -57,7 +53,7 @@ export default function SarusCloudPage() {
     {
       id: "cloudInfrastructure",
       title: t("cloud.why.cloudInfrastructure.title"),
-      icon: Cloud,
+      icon: CloudIcon,
       iconBgClass: "bg-cyan-50",
       iconColorClass: "text-cyan-600",
       subtitle: t("cloud.why.cloudInfrastructure.description"),
@@ -226,10 +222,13 @@ export default function SarusCloudPage() {
         </div>
       </section>
 
-      {/* Navigation Buttons Section - Enterprise Tab Style */}
-      <section id="navigation" className="w-full bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 md:px-10">
-          <nav className="flex flex-wrap items-center justify-center">
+      {/* Navigation Buttons Section - Tab Style */}
+      <section id="navigation" className="w-full bg-white relative">
+        {/* Top teal-blue line */}
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary"></div>
+        
+        <div className="max-w-7xl mx-auto px-4 md:px-10 py-8 md:py-12">
+          <nav className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
             {[
               {
                 id: "clinical-features",
@@ -247,60 +246,35 @@ export default function SarusCloudPage() {
                 id: "architecture",
                 href: "#architecture",
                 label: language === "en" ? "Architecture" : "Mimari",
-                icon: Layers,
+                icon: Wrench,
               },
               {
                 id: "success-story",
                 href: "#success-story",
                 label: language === "en" ? "Success Story" : "Başarı Hikayesi",
-                icon: Trophy,
+                icon: CheckCircle2,
               },
             ].map((item) => {
-              const isActive = activeNavItem === item.id;
               const IconComponent = item.icon;
+              const isActive = activeNavItem === item.id;
               return (
                 <a
                   key={item.id}
                   href={item.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setActiveNavItem(item.id);
-                    const element = document.querySelector(item.href);
-                    if (element) {
-                      const elementRect = element.getBoundingClientRect();
-                      const absoluteElementTop = elementRect.top + window.pageYOffset;
-                      const offset = 100;
-                      window.scrollTo({
-                        top: absoluteElementTop - offset,
-                        behavior: 'smooth'
-                      });
-                    }
-                  }}
-                  className={`group relative flex flex-col items-center justify-center gap-2 px-8 py-5
-                    transition-all duration-200 ease-out cursor-pointer
-                    border-b-2 -mb-px select-none
-                    ${isActive 
-                      ? 'border-primary text-primary bg-primary/5' 
-                      : 'border-transparent text-gray-600 hover:text-primary hover:border-primary/30 hover:bg-primary/3'
-                    }`}
+                  onClick={() => setActiveNavItem(item.id)}
+                  className="group flex flex-col items-center gap-2 px-4 py-3 transition-all duration-300 relative"
                 >
                   {/* Icon */}
-                  <div className={`transition-all duration-200 pointer-events-none
-                    ${isActive 
-                      ? 'opacity-100 text-primary scale-110' 
-                      : 'opacity-60 text-gray-600 group-hover:opacity-100 group-hover:text-primary group-hover:scale-110'
-                    }`}
-                  >
-                    <IconComponent className="w-7 h-7 md:w-8 md:h-8" strokeWidth={2} />
+                  <div className="mb-1 transition-transform duration-300" style={{ color: isActive ? '#0066FF' : '#4A5568' }}>
+                    <IconComponent className="w-6 h-6 md:w-7 md:h-7" strokeWidth={2.5} />
                   </div>
                   {/* Label */}
                   <span 
-                    className={`text-xs md:text-sm font-medium whitespace-nowrap tracking-wide pointer-events-none
-                      transition-all duration-200
-                      ${isActive 
-                        ? 'text-primary font-semibold' 
-                        : 'text-gray-600 group-hover:text-primary group-hover:font-semibold'
-                      }`}
+                    className={`text-sm md:text-base whitespace-nowrap transition-colors duration-300 ${
+                      isActive 
+                        ? 'font-bold text-primary' 
+                        : 'font-normal text-neutral-heading'
+                    }`}
                   >
                     {item.label}
                   </span>
@@ -313,6 +287,9 @@ export default function SarusCloudPage() {
             })}
           </nav>
         </div>
+        
+        {/* Bottom light grey separator line */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-neutral-border"></div>
       </section>
 
       {/* Clinical Features Section */}
@@ -333,9 +310,7 @@ export default function SarusCloudPage() {
 
         {/* Enterprise Grid Layout */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tabs.map((tab, idx) => {
-            const TabIcon = tab.icon;
-            return (
+          {tabs.map((tab, idx) => (
             <motion.div
               key={tab.id}
               initial={{ opacity: 0, y: 20 }}
@@ -357,7 +332,10 @@ export default function SarusCloudPage() {
               <div className={`mb-4 h-14 w-14 rounded-lg flex items-center justify-center ${tab.iconBgClass} transition-transform duration-300 ${
                 activeTab === idx ? "scale-110" : "group-hover:scale-105"
               }`}>
-                <TabIcon className={`${tab.iconColorClass} w-6 h-6`} strokeWidth={1.5} />
+                {(() => {
+                  const IconComponent = tab.icon;
+                  return <IconComponent className={`w-7 h-7 ${tab.iconColorClass}`} strokeWidth={2.5} />;
+                })()}
               </div>
 
               {/* Content */}
@@ -375,8 +353,7 @@ export default function SarusCloudPage() {
                 </div>
               )}
             </motion.div>
-            );
-          })}
+          ))}
         </div>
       </section>
 
@@ -403,56 +380,47 @@ export default function SarusCloudPage() {
             {
               title: t("cloud.features.ehr.title"),
               description: t("cloud.features.ehr.description"),
-              icon: ClipboardList,
-              iconColor: "text-blue-600",
+              icon: FileText,
             },
             {
               title: t("cloud.features.eprescribe.title"),
               description: t("cloud.features.eprescribe.description"),
               icon: Pill,
-              iconColor: "text-green-600",
             },
             {
               title: t("cloud.features.scheduling.title"),
               description: t("cloud.features.scheduling.description"),
               icon: Calendar,
-              iconColor: "text-purple-600",
             },
             {
               title: t("cloud.features.clinicalDocs.title"),
               description: t("cloud.features.clinicalDocs.description"),
-              icon: FileEdit,
-              iconColor: "text-teal-600",
+              icon: Clipboard,
             },
             {
               title: t("cloud.features.patientPortal.title"),
               description: t("cloud.features.patientPortal.description"),
-              icon: Users,
-              iconColor: "text-indigo-600",
+              icon: Smartphone,
             },
             {
               title: t("cloud.features.billing.title"),
               description: t("cloud.features.billing.description"),
               icon: CreditCard,
-              iconColor: "text-amber-600",
             },
             {
               title: t("cloud.features.reporting.title"),
               description: t("cloud.features.reporting.description"),
               icon: BarChart3,
-              iconColor: "text-rose-600",
             },
             {
               title: t("cloud.features.integration.title"),
               description: t("cloud.features.integration.description"),
               icon: Link2,
-              iconColor: "text-cyan-600",
             },
             {
               title: t("cloud.features.standards.title"),
               description: t("cloud.features.standards.description"),
               icon: CheckCircle2,
-              iconColor: "text-green-600",
             },
           ].map((item, idx) => {
             const IconComponent = item.icon;
@@ -463,10 +431,10 @@ export default function SarusCloudPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.05 }}
-              className="bg-white rounded-xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-all duration-300 group"
+              className="bg-white rounded-xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-all duration-300"
             >
-              <div className={`mb-3 ${item.iconColor || 'text-gray-600'} group-hover:scale-110 transition-all duration-300`}>
-                <IconComponent className="w-6 h-6" strokeWidth={1.5} />
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+                <IconComponent className="w-6 h-6 text-primary" strokeWidth={2.5} />
               </div>
               <h4 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2">
                 {item.title}
@@ -475,7 +443,7 @@ export default function SarusCloudPage() {
                 {item.description}
               </p>
             </motion.div>
-            );
+          );
           })}
         </div>
       </section>
@@ -510,38 +478,32 @@ export default function SarusCloudPage() {
               {
                 title: t("cloud.architecture.azureReady.title"),
                 description: t("cloud.architecture.azureReady.description"),
-                icon: Cloud,
-                iconColor: "text-blue-600",
+                icon: CloudIcon,
               },
               {
                 title: t("cloud.architecture.multiTenant.title"),
                 description: t("cloud.architecture.multiTenant.description"),
-                icon: Building,
-                iconColor: "text-purple-600",
+                icon: Building2,
               },
               {
                 title: t("cloud.architecture.scalable.title"),
                 description: t("cloud.architecture.scalable.description"),
                 icon: TrendingUp,
-                iconColor: "text-blue-600",
               },
               {
                 title: t("cloud.architecture.flexible.title"),
                 description: t("cloud.architecture.flexible.description"),
                 icon: RefreshCw,
-                iconColor: "text-indigo-600",
               },
               {
                 title: t("cloud.architecture.secure.title"),
                 description: t("cloud.architecture.secure.description"),
                 icon: Lock,
-                iconColor: "text-red-600",
               },
               {
                 title: t("cloud.architecture.highAvailability.title"),
                 description: t("cloud.architecture.highAvailability.description"),
                 icon: Zap,
-                iconColor: "text-amber-600",
               },
             ].map((item, idx) => {
               const IconComponent = item.icon;
@@ -552,10 +514,10 @@ export default function SarusCloudPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="bg-white rounded-xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-all duration-300 group"
+                className="bg-white rounded-xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-all duration-300"
               >
-                <div className={`mb-3 ${item.iconColor || 'text-gray-600'} group-hover:scale-110 transition-all duration-300`}>
-                  <IconComponent className="w-6 h-6" strokeWidth={1.5} />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+                  <IconComponent className="w-6 h-6 text-primary" strokeWidth={2.5} />
                 </div>
                 <h4 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2">
                   {item.title}
@@ -564,7 +526,7 @@ export default function SarusCloudPage() {
                   {item.description}
                 </p>
               </motion.div>
-            );
+              );
             })}
           </div>
         </div>

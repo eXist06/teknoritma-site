@@ -33,7 +33,7 @@ export default function SarusHubPageEN() {
   const [filters, setFilters] = useState({
     type: "all" as "all" | SarusHubItemType,
     search: "",
-    language: "all" as "tr" | "en" | "all",
+    language: "all" as "tr" | "en" | "all", // Show all, but filter to en/mixed on frontend
   });
 
   useEffect(() => {
@@ -49,7 +49,14 @@ export default function SarusHubPageEN() {
 
       const response = await fetch(`/api/sarus-hub/content?${params.toString()}`);
       const data = await response.json();
-      setItems(data.items || []);
+      
+      // Filter to show only English and mixed language items on English page
+      // API already includes English translations of Turkish items
+      const filteredItems = (data.items || []).filter(
+        (item: SarusHubItem) => item.language === "en" || item.language === "mixed"
+      );
+      
+      setItems(filteredItems);
     } catch (error) {
       console.error("Error fetching items:", error);
     } finally {

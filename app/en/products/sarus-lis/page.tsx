@@ -1,7 +1,7 @@
-import SarusHISPage from "@/components/SarusHISPage";
+import SarusLbsPage from "@/components/SarusLbsPage";
 
-export default function SarusLisPage() {
-  return <SarusHISPage />;
+export default function SarusLisPageRoute() {
+  return <SarusLbsPage />;
 }
 
 
