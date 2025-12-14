@@ -123,7 +123,7 @@ export default function ContactSection() {
     }
   };
   return (
-    <section id="contact" className="py-20 md:py-32 bg-background scroll-mt-20">
+    <section id="contact" className="py-20 md:py-28 bg-background scroll-mt-20">
       <div className="max-w-7xl mx-auto px-5 md:px-10">
         <div className="grid md:grid-cols-2 gap-12">
           <motion.div

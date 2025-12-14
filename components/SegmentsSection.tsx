@@ -27,7 +27,7 @@ export default function SegmentsSection() {
   }, [emblaApi]);
 
   return (
-    <section id="segments" className="py-20 md:py-32 bg-background-alt">
+    <section id="segments" className="py-16 md:py-24 bg-background-alt">
       <div className="max-w-7xl mx-auto px-5 md:px-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

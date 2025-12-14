@@ -181,10 +181,23 @@ export function getItemBySlug(slug: string): SarusHubItem | null {
   };
 }
 
+export function slugExists(slug: string): boolean {
+  const db = getDatabase();
+  const row = db.prepare("SELECT 1 FROM sarus_hub_items WHERE slug = ?").get(slug);
+  db.close();
+  return !!row;
+}
+
 export function createItem(item: Omit<SarusHubItem, 'id' | 'createdAt' | 'updatedAt' | 'publishedAt'> & { id?: string; publishedAt?: string }): SarusHubItem {
   const db = getDatabase();
   const now = new Date().toISOString();
   const id = item.id || Date.now().toString();
+
+  // Check if slug already exists globally (not just for this translation)
+  if (slugExists(item.slug)) {
+    db.close();
+    throw new Error(`Slug "${item.slug}" already exists. Please use a unique slug.`);
+  }
 
   // Determine primary image and images array
   const primaryImage = item.primaryImage || item.image || null;
@@ -192,14 +205,15 @@ export function createItem(item: Omit<SarusHubItem, 'id' | 'createdAt' | 'update
   // Remove primary image from images array if it's there
   const filteredImages = imagesArray.filter(img => img !== primaryImage);
   
-  db.prepare(`
-    INSERT INTO sarus_hub_items (
-      id, type, title, slug, summary, content, hospital, country, segment,
-      tags, published_at, featured, reading_minutes, status, author, 
-      image, primary_image, images, image_display_style, video,
-      language, translation_id, view_count, created_at, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `).run(
+  try {
+    db.prepare(`
+      INSERT INTO sarus_hub_items (
+        id, type, title, slug, summary, content, hospital, country, segment,
+        tags, published_at, featured, reading_minutes, status, author, 
+        image, primary_image, images, image_display_style, video,
+        language, translation_id, view_count, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
     id,
     item.type,
     item.title,
@@ -223,12 +237,20 @@ export function createItem(item: Omit<SarusHubItem, 'id' | 'createdAt' | 'update
     item.language,
     item.translationId || null,
     item.viewCount || 0,
-    now,
-    now
-  );
+      now,
+      now
+    );
 
-  db.close();
-  return getItemById(id)!;
+    db.close();
+    return getItemById(id)!;
+  } catch (error: any) {
+    db.close();
+    // If it's a UNIQUE constraint violation, provide a clearer error message
+    if (error.code === 'SQLITE_CONSTRAINT_UNIQUE' && error.message.includes('slug')) {
+      throw new Error(`Slug "${item.slug}" already exists. Please use a unique slug.`);
+    }
+    throw error;
+  }
 }
 
 export function updateItem(id: string, updates: Partial<SarusHubItem>): SarusHubItem {

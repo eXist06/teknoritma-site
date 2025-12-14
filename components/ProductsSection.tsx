@@ -40,7 +40,7 @@ export default function ProductsSection() {
   const productFeatures = language === "en" ? (sarusHIS?.featuresEn || sarusHIS?.features) : sarusHIS?.features;
 
   return (
-    <section id="products" className="py-20 md:py-32 bg-background">
+    <section id="products" className="py-20 md:py-28 bg-background">
       <div className="max-w-7xl mx-auto px-5 md:px-10">
         {/* SarusHIS Featured Card */}
         {sarusHIS && (
