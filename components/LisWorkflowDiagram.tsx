@@ -510,8 +510,8 @@ export default function LisWorkflowDiagram({ translationKey }: LisWorkflowDiagra
         type: "custom",
         position: { x: centerX - horizontalBranch, y: startY + (verticalStep * 3) }, // Rerun (left branch)
         data: {
-          label: t(`${translationKey}.workflow.steps.rerunReflex.title`),
-          description: t(`${translationKey}.workflow.steps.rerunReflex.description`),
+          label: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.rerunReflex.title`),
+          description: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.rerunReflex.description`),
           icon: "🔄",
         },
       },
