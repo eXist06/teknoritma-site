@@ -110,10 +110,10 @@ export default function Hero() {
                 </video>
               </div>
               
-              {/* Ankara Şehir Hastanesi Label - Bottom Right */}
-              <div className="absolute bottom-4 md:bottom-6 right-4 md:right-6 lg:right-8 z-10">
+              {/* Ankara Şehir Hastanesi Label - Top Right on Mobile, Bottom Right on Desktop */}
+              <div className="absolute top-4 right-4 md:top-auto md:bottom-6 lg:bottom-8 md:right-6 lg:right-8 z-10">
                 <div className="bg-black/40 backdrop-blur-sm px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-white/20">
-                  <p className="text-white/70 text-xs md:text-sm font-medium whitespace-nowrap">
+                  <p className="text-white/90 text-xs md:text-sm font-bold whitespace-nowrap">
                     {language === "en" ? "Ankara City Hospital" : "Ankara Şehir Hastanesi"}
                   </p>
                 </div>
