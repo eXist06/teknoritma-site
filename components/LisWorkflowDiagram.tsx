@@ -20,6 +20,8 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useI18n } from "@/lib/i18n";
+import { usePathname } from "next/navigation";
+import { translations } from "@/lib/translations";
 
 interface LisWorkflowDiagramProps {
   translationKey: string;
@@ -149,7 +151,23 @@ function RegularEdge({
 }
 
 export default function LisWorkflowDiagram({ translationKey }: LisWorkflowDiagramProps) {
-  const { t } = useI18n();
+  const pathname = usePathname();
+  const { language, t } = useI18n();
+  
+  // Ensure we use the correct translation key based on current pathname
+  // This ensures the diagram uses the correct language even if useI18n hasn't updated yet
+  const currentLanguage = pathname.startsWith("/en") ? "en" : "tr";
+  const effectiveTranslationKey = currentLanguage === "en" ? "lims" : "lbs";
+  
+  // Create a custom t function that uses the correct language
+  const tWithLanguage = useCallback((key: string): string => {
+    const keys = key.split(".");
+    let value: any = translations[currentLanguage];
+    for (const k of keys) {
+      value = value?.[k];
+    }
+    return value || key;
+  }, [currentLanguage]);
 
   // Custom Node Component - Enterprise design with modern styling
   const CustomNode = ({ data, id }: { data: any; id: string }) => {
@@ -462,8 +480,8 @@ export default function LisWorkflowDiagram({ translationKey }: LisWorkflowDiagra
         type: "custom",
         position: { x: centerX, y: startY }, // Start: Check-in (top-center)
         data: {
-          label: t(`${translationKey}.workflow.steps.checkInSorting.title`),
-          description: t(`${translationKey}.workflow.steps.checkInSorting.description`),
+          label: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.checkInSorting.title`),
+          description: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.checkInSorting.description`),
           icon: "🧪",
         },
       },
@@ -472,8 +490,8 @@ export default function LisWorkflowDiagram({ translationKey }: LisWorkflowDiagra
         type: "custom",
         position: { x: centerX, y: startY + verticalStep }, // Worklist (center, below check-in)
         data: {
-          label: t(`${translationKey}.workflow.steps.worklistRouting.title`),
-          description: t(`${translationKey}.workflow.steps.worklistRouting.description`),
+          label: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.worklistRouting.title`),
+          description: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.worklistRouting.description`),
           icon: "📋",
         },
       },
@@ -482,8 +500,8 @@ export default function LisWorkflowDiagram({ translationKey }: LisWorkflowDiagra
         type: "custom",
         position: { x: centerX, y: startY + (verticalStep * 2) }, // Analyser (center, below worklist)
         data: {
-          label: t(`${translationKey}.workflow.steps.analyserInterfaces.title`),
-          description: t(`${translationKey}.workflow.steps.analyserInterfaces.description`),
+          label: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.analyserInterfaces.title`),
+          description: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.analyserInterfaces.description`),
           icon: "🔬",
         },
       },
@@ -502,8 +520,8 @@ export default function LisWorkflowDiagram({ translationKey }: LisWorkflowDiagra
         type: "custom",
         position: { x: centerX + horizontalBranch, y: startY + (verticalStep * 3) }, // Calibration (right branch)
         data: {
-          label: t(`${translationKey}.workflow.steps.calibrationMaintenance.title`),
-          description: t(`${translationKey}.workflow.steps.calibrationMaintenance.description`),
+          label: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.calibrationMaintenance.title`),
+          description: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.calibrationMaintenance.description`),
           icon: "🔧",
         },
       },
@@ -512,8 +530,8 @@ export default function LisWorkflowDiagram({ translationKey }: LisWorkflowDiagra
         type: "custom",
         position: { x: centerX - horizontalBranch, y: startY + (verticalStep * 4) }, // QC (left, below rerun)
         data: {
-          label: t(`${translationKey}.workflow.steps.qualityControl.title`),
-          description: t(`${translationKey}.workflow.steps.qualityControl.description`),
+          label: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.qualityControl.title`),
+          description: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.qualityControl.description`),
           icon: "📊",
         },
       },
@@ -522,8 +540,8 @@ export default function LisWorkflowDiagram({ translationKey }: LisWorkflowDiagra
         type: "custom",
         position: { x: centerX + horizontalBranch, y: startY + (verticalStep * 4) }, // Results (right, below analyser)
         data: {
-          label: t(`${translationKey}.workflow.steps.results.title`),
-          description: t(`${translationKey}.workflow.steps.results.description`),
+          label: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.results.title`),
+          description: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.results.description`),
           icon: "📄",
         },
       },
@@ -532,8 +550,8 @@ export default function LisWorkflowDiagram({ translationKey }: LisWorkflowDiagra
         type: "custom",
         position: { x: centerX + horizontalBranch, y: startY + (verticalStep * 5) }, // Autoverification (right, below results)
         data: {
-          label: t(`${translationKey}.workflow.steps.autoverification.title`),
-          description: t(`${translationKey}.workflow.steps.autoverification.description`),
+          label: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.autoverification.title`),
+          description: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.autoverification.description`),
           icon: "✅",
         },
       },
@@ -542,13 +560,13 @@ export default function LisWorkflowDiagram({ translationKey }: LisWorkflowDiagra
         type: "custom",
         position: { x: centerX + horizontalBranch, y: startY + (verticalStep * 6) }, // Check-out (right, bottom)
         data: {
-          label: t(`${translationKey}.workflow.steps.checkOutStorage.title`),
-          description: t(`${translationKey}.workflow.steps.checkOutStorage.description`),
+          label: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.checkOutStorage.title`),
+          description: tWithLanguage(`${effectiveTranslationKey}.workflow.steps.checkOutStorage.description`),
           icon: "📦",
         },
       },
     ];
-  }, [t, translationKey]);
+  }, [tWithLanguage, effectiveTranslationKey]);
 
   // Define edges (connections) - matching the circular workflow flow
   // Flow: 1→2→3→(4→6, 5→7)→7→8→9 (pre-analytical flow pattern)
