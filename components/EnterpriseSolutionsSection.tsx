@@ -27,19 +27,19 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       icon: Stethoscope,
       titleTr: "Klinik Uygulamalar",
       titleEn: "Clinical Applications",
-      descriptionTr: "Klinik süreçlerin dijitalleştirilmesi ve optimizasyonu için kapsamlı uygulama çözümleri. Hasta bakım kalitesini artıran, klinik karar destek sistemleri ile entegre çalışan modüller.",
-      descriptionEn: "Comprehensive application solutions for digitization and optimization of clinical processes. Modules that improve patient care quality and work integrated with clinical decision support systems.",
+      descriptionTr: "Ayaktan/yatan hasta süreçleri, klinik branş modülleri ve temel klinik iş akışları",
+      descriptionEn: "Outpatient/inpatient processes, clinical specialty modules and core clinical workflows",
       bulletsTr: [
-        "Elektronik hasta kaydı (EHR) ve klinik dokümantasyon",
-        "Reçete yönetimi ve ilaç takip sistemleri",
-        "Klinik karar destek mekanizmaları",
-        "Hasta güvenliği ve kalite yönetimi",
+        "Randevu ve kabul süreçleri: Acil, Ayaktan (Outpatient), Yatan (Inpatient), Danışma/Information Desk",
+        "Poliklinik, Yatan Hasta, Yoğun Bakım, Acil, Hemşirelik, Tele-tıp modülleri",
+        "Branş modülleri: Onkoloji, Ortopedi, Kadın Doğum, Ağız & Diş, Psikoloji, Diyet, FTR, IVF, Hemodiyaliz vb.",
+        "Laboratuvar, Kan Merkezi, Genetik, Patoloji, Radyoloji (RIS/PACS) entegrasyonlu klinik akışlar",
       ],
       bulletsEn: [
-        "Electronic health record (EHR) and clinical documentation",
-        "Prescription management and medication tracking systems",
-        "Clinical decision support mechanisms",
-        "Patient safety and quality management",
+        "Appointment and admission processes: Emergency, Outpatient, Inpatient, Consultation/Information Desk",
+        "Outpatient Clinic, Inpatient, Intensive Care, Emergency, Nursing, Telemedicine modules",
+        "Specialty modules: Oncology, Orthopedics, Obstetrics & Gynecology, Oral & Dental, Psychology, Dietetics, Physical Therapy, IVF, Hemodialysis, etc.",
+        "Clinical workflows integrated with Laboratory, Blood Bank, Genetics, Pathology, Radiology (RIS/PACS)",
       ],
     },
     {
@@ -47,19 +47,23 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       icon: Building2,
       titleTr: "Yönetsel Uygulamalar",
       titleEn: "Administrative Applications",
-      descriptionTr: "Hastane yönetim süreçlerinin dijitalleştirilmesi ve otomasyonu için yönetsel uygulama çözümleri. Operasyonel verimliliği artıran, kaynak yönetimini optimize eden sistemler.",
-      descriptionEn: "Administrative application solutions for digitization and automation of hospital management processes. Systems that increase operational efficiency and optimize resource management.",
+      descriptionTr: "Satınalma, stok/lojistik, hizmet yönetimi, doküman ve süreç yönetimi",
+      descriptionEn: "Procurement, inventory/logistics, service management, document and process management",
       bulletsTr: [
-        "Randevu ve hasta akış yönetimi",
-        "Personel ve vardiya planlama sistemleri",
-        "Doküman yönetimi ve arşivleme",
-        "Raporlama ve analitik araçlar",
+        "Satınalma yönetimi: satınalma, ihale, tedarikçiler",
+        "Stok/varlık yönetimi: demirbaş (asset), envanter, lojistik, kaynak planlama",
+        "Hizmet yönetimi: ameliyathane, temizlik, yemek, yazılım platformu, atık yönetimi",
+        "Doküman yönetimi ve İş Süreç Yönetimi (BPM)",
+        "İK yönetimi: personel, bordro, eğitim, planlama, KPI",
+        "Kalite yönetimi ve Cihaz yönetimi (maliyet, bakım, onarım, kalibrasyon, takip)",
       ],
       bulletsEn: [
-        "Appointment and patient flow management",
-        "Staff and shift planning systems",
-        "Document management and archiving",
-        "Reporting and analytics tools",
+        "Procurement management: purchasing, tendering, suppliers",
+        "Inventory/asset management: fixed assets, inventory, logistics, resource planning",
+        "Service management: operating room, cleaning, catering, software platform, waste management",
+        "Document management and Business Process Management (BPM)",
+        "HR management: personnel, payroll, training, planning, KPIs",
+        "Quality management and Device management (cost, maintenance, repair, calibration, tracking)",
       ],
     },
     {
@@ -67,19 +71,19 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       icon: DollarSign,
       titleTr: "Finansal Uygulamalar",
       titleEn: "Financial Applications",
-      descriptionTr: "Hastane finansal süreçlerinin yönetimi ve optimizasyonu için finansal uygulama çözümleri. Gelir döngüsü yönetimi, maliyet kontrolü ve finansal raporlama sistemleri.",
-      descriptionEn: "Financial application solutions for management and optimization of hospital financial processes. Revenue cycle management, cost control, and financial reporting systems.",
+      descriptionTr: "Faturalama, sigorta, maliyet, vezne ve döner sermaye süreçleri",
+      descriptionEn: "Billing, insurance, cost, cash desk and revolving fund processes",
       bulletsTr: [
-        "Gelir döngüsü yönetimi (Revenue Cycle Management)",
-        "Faturalama ve tahsilat sistemleri",
-        "Maliyet analizi ve bütçe yönetimi",
-        "Finansal raporlama ve dashboard'lar",
+        "Finans yönetimi: faturalama, sigorta, maliyet ve kaynak planlama",
+        "Döner sermaye, faturalama ve finansal işlemler modülü",
+        "Vezne (Cash Desk) modülü",
+        "İstatistik ve raporlama ile finansal görünürlük",
       ],
       bulletsEn: [
-        "Revenue cycle management (RCM)",
-        "Billing and collection systems",
-        "Cost analysis and budget management",
-        "Financial reporting and dashboards",
+        "Financial management: billing, insurance, cost and resource planning",
+        "Revolving fund, billing and financial transactions module",
+        "Cash Desk module",
+        "Financial visibility with statistics and reporting",
       ],
     },
     {
@@ -87,19 +91,17 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       icon: Brain,
       titleTr: "Klinik Karar Destek Sistemleri",
       titleEn: "Clinical Decision Support Systems",
-      descriptionTr: "Klinisyenlere doğru karar vermelerinde yardımcı olan, kanıta dayalı tıp prensiplerine uygun karar destek sistemleri. Hasta güvenliğini artıran, klinik sonuçları iyileştiren çözümler.",
-      descriptionEn: "Decision support systems that help clinicians make the right decisions, in accordance with evidence-based medicine principles. Solutions that increase patient safety and improve clinical outcomes.",
+      descriptionTr: "Karar destek, kalite ve performans izleme katmanı",
+      descriptionEn: "Decision support, quality and performance monitoring layer",
       bulletsTr: [
-        "Klinik kılavuz ve protokol yönetimi",
-        "İlaç etkileşim ve kontrendikasyon kontrolü",
-        "Otomatik uyarı ve hatırlatma sistemleri",
-        "Klinik performans metrikleri ve analitik",
+        "Karar Destek Sistemi (DSS) bileşenleri",
+        "Klinik süreçlerde hata azaltma ve verimlilik izleme yaklaşımı",
+        "KPI'lar ile planlama ve performans takibi",
       ],
       bulletsEn: [
-        "Clinical guideline and protocol management",
-        "Drug interaction and contraindication control",
-        "Automatic alert and reminder systems",
-        "Clinical performance metrics and analytics",
+        "Decision Support System (DSS) components",
+        "Error reduction and efficiency monitoring approach in clinical processes",
+        "Planning and performance tracking with KPIs",
       ],
     },
     {
@@ -107,17 +109,15 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       icon: LayoutGrid,
       titleTr: "Entegre Çözümler",
       titleEn: "Integrated Solutions",
-      descriptionTr: "Yazılım geliştirme ve süreç tasarımı (Sterilizasyon, Çamaşır, Kemoterapi, TPN, Catering, Temizlik, Atık Yönetimi, vb.)",
-      descriptionEn: "Software development and process design (Sterilization, Laundry, Chemotherapy, TPN, Catering, Cleaning Waste Management, etc.)",
+      descriptionTr: "Hastane operasyonlarını destekleyen uçtan uca özel süreç ve ekran yönetimi",
+      descriptionEn: "End-to-end custom process and screen management supporting hospital operations",
       bulletsTr: [
-        "Bilgi Dijital Tabela ekranlarının merkezi yönetimi ve HIMS'e bilgi akışı",
-        "Süreç optimizasyonu ve otomasyon çözümleri",
-        "Entegre sistem mimarisi ile veri akışı yönetimi",
+        "Sterilizasyon, çamaşırhane, kemoterapi, TPN, yemek, temizlik, atık yönetimi gibi süreçler için yazılım geliştirme ve süreç tasarımı",
+        "Bilgilendirme (Digital Signage) ekranlarının merkezi yönetimi ve HBS'ye bilgi akışı",
       ],
       bulletsEn: [
-        "Central management of Information Digital Signage screens and information flow to HIMS",
-        "Process optimization and automation solutions",
-        "Integrated system architecture with data flow management",
+        "Software development and process design for processes such as sterilization, laundry, chemotherapy, TPN, catering, cleaning, waste management",
+        "Central management of Information (Digital Signage) screens and information flow to HIS",
       ],
     },
     {
@@ -125,17 +125,17 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       icon: Link2,
       titleTr: "Entegrasyon",
       titleEn: "Integration",
-      descriptionTr: "Hizmet Odaklı Mimari (SOA) uyumlu entegrasyon altyapı tasarımı",
-      descriptionEn: "Integration infrastructure design compliant to Service Oriented Architecture (SOA)",
+      descriptionTr: "SOA uyumlu entegrasyon altyapısı ve standartlara uygun veri akışı",
+      descriptionEn: "SOA-compliant integration infrastructure and standards-compliant data flow",
       bulletsTr: [
-        "Tüm entegrasyonların Gateway, ESB ve RFID sistemleri ile yönetimi",
-        "RESTful API ve web servis entegrasyonları",
-        "Gerçek zamanlı veri senkronizasyonu ve güvenli veri aktarımı",
+        "SOA uyumlu entegrasyon altyapısı tasarımı",
+        "Gateway / ESB / RFID ile tüm entegrasyonların yönetimi",
+        "HL7 ve DICOM gibi standartlarla RIS/PACS/LIS ve 3. parti sistem entegrasyonları",
       ],
       bulletsEn: [
-        "Management of all integrations by Gateway, ESB and RFID systems",
-        "RESTful API and web service integrations",
-        "Real-time data synchronization and secure data transfer",
+        "SOA-compliant integration infrastructure design",
+        "Management of all integrations with Gateway / ESB / RFID",
+        "RIS/PACS/LIS and third-party system integrations with standards such as HL7 and DICOM",
       ],
     },
     {
@@ -143,19 +143,19 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       icon: Globe,
       titleTr: "Mobil Çözümler",
       titleEn: "Mobile Solutions",
-      descriptionTr: "Kan alma noktaları ve Kemoterapi'de mobil çözümler",
-      descriptionEn: "Mobile solutions in blood-taking points and Chemotherapy",
+      descriptionTr: "Saha operasyonlarında hız, doğruluk ve klinik verimlilik için mobil kullanım",
+      descriptionEn: "Mobile usage for speed, accuracy and clinical efficiency in field operations",
       bulletsTr: [
-        "Acil servis, yoğun bakım ve yatan hasta hizmetlerinde tablet kullanımı",
+        "Kan alma noktaları ve kemoterapide mobil çözümler",
+        "Acil, yoğun bakım ve servislerde tablet kullanımı",
         "Pnömatik sistem için mobil uygulama",
-        "Mobil hasta asistanı ve Konum/Yol bulma uygulaması",
-        "Mobil cihazlarda gerçek zamanlı hasta bilgisi erişimi",
+        "Mobil hasta asistanı ve konum/yön bulma (wayfinding) uygulaması",
       ],
       bulletsEn: [
-        "Tablet usage in emergency service, intensive care and inpatient services",
+        "Mobile solutions at blood collection points and chemotherapy",
+        "Tablet usage in emergency, intensive care and wards",
         "Mobile application for pneumatic system",
-        "Mobile patient assistant and Location/Way finding application",
-        "Real-time patient information access on mobile devices",
+        "Mobile patient assistant and location/wayfinding application",
       ],
     },
     {
@@ -163,17 +163,15 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       icon: Pill,
       titleTr: "Hasta-İlaç Kullanım Güvenliği",
       titleEn: "Patient-Drug Usage Safety",
-      descriptionTr: "Yatan hasta ve kemoterapi hastaları için bileklik",
-      descriptionEn: "Wristband for inpatient and chemotherapy patients",
+      descriptionTr: "Bileklik, QR ve personel doğrulama ile ilaç uygulama güvenliği",
+      descriptionEn: "Medication administration safety with wristband, QR and staff verification",
       bulletsTr: [
-        "İlaç QR kodu ve uygulayıcı personel kimlik kartı okunarak hasta-ilaç kullanım güvenliğinin sağlanması",
-        "Otomatik ilaç dozaj kontrolü ve uyarı sistemi",
-        "İlaç etkileşim kontrolü ve yan etki takibi",
+        "Yatan hasta ve kemoterapi hastaları için bileklik kullanımı",
+        "İlaç QR kodu + uygulayan personel kimlik kartı ile hasta-ilaç güvenliği",
       ],
       bulletsEn: [
-        "Ensuring patient-drug usage safety by reading of drug QR code, administering personnel ID card",
-        "Automatic drug dosage control and alert system",
-        "Drug interaction control and side effect tracking",
+        "Wristband usage for inpatient and chemotherapy patients",
+        "Patient-drug safety with medication QR code + administering staff ID card",
       ],
     },
     {
@@ -181,23 +179,52 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       icon: Activity,
       titleTr: "Ameliyathane Yönetimi",
       titleEn: "Operating Room Management",
-      descriptionTr: "Steril PC'ler kullanılarak hasta bilekliği okunarak ameliyathanelerde hasta ve operasyon doğrulama kontrolü",
-      descriptionEn: "Patient and operation validation check in operating rooms by reading of patient wristband with use of sterile PCs",
+      descriptionTr: "Ameliyat doğrulama, sarf yönetimi ve steril kullanım senaryoları",
+      descriptionEn: "Surgery verification, consumables management and sterile usage scenarios",
       bulletsTr: [
-        "Ameliyathanelerde tüketim malzemelerinin QR kodunun okunması ile operasyon yönetimi",
-        "Ameliyat öncesi ve sonrası hasta takibi",
-        "Ameliyathane kaynak yönetimi ve planlama",
+        "Ameliyathanede hasta ve operasyon doğrulama: bileklik okuma + steril PC kullanımı",
+        "Sarf yönetimi: ameliyathanede sarf malzemelerinin QR kod ile yönetimi",
+        "Ameliyathane süreçleri: ameliyathane, sterilizasyon, post-op akışları",
       ],
       bulletsEn: [
-        "Operation management by reading QR code of consumables in operating rooms",
-        "Pre and post-operative patient tracking",
-        "Operating room resource management and planning",
+        "Patient and operation verification in operating room: wristband reading + sterile PC usage",
+        "Consumables management: QR code management of consumables in operating room",
+        "Operating room processes: operating room, sterilization, post-op workflows",
       ],
     },
   ];
 
   const toggleExpanded = (id: string) => {
-    setExpandedId(expandedId === id ? null : id);
+    const newExpandedId = expandedId === id ? null : id;
+    setExpandedId(newExpandedId);
+    
+    // Scroll to expanded panel after state update
+    if (newExpandedId) {
+      // Wait for animation to complete, then scroll
+      setTimeout(() => {
+        const element = document.getElementById(`detail-panel-${newExpandedId}`);
+        if (element) {
+          // Get element position
+          const elementRect = element.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const elementTop = elementRect.top + scrollTop;
+          
+          // Calculate center position: viewport center minus half of element height
+          const viewportCenter = window.innerHeight / 2;
+          const elementHeight = elementRect.height;
+          const targetScroll = elementTop - viewportCenter + (elementHeight / 2);
+          
+          // Add some padding from top (for header/navbar)
+          const headerOffset = 100;
+          const finalScroll = Math.max(0, targetScroll - headerOffset);
+          
+          window.scrollTo({
+            top: finalScroll,
+            behavior: 'smooth'
+          });
+        }
+      }, 350); // Wait for animation to complete (300ms animation + 50ms buffer)
+    }
   };
 
   return (
@@ -221,7 +248,7 @@ export const EnterpriseSolutionsSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.05 }}
-              className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/30 group"
+              className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
             >
               {/* Header - Always Visible */}
               <button
@@ -263,13 +290,14 @@ export const EnterpriseSolutionsSection: React.FC = () => {
             <AnimatePresence>
               {isExpanded && (
                 <motion.div
+                  id={`detail-panel-${solution.id}`}
                   initial={{ height: 0, opacity: 0, marginTop: 0 }}
                   animate={{ height: "auto", opacity: 1, marginTop: 20 }}
                   exit={{ height: 0, opacity: 0, marginTop: 0 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="col-span-1 md:col-span-2 lg:col-span-3 overflow-hidden"
+                  className="col-span-1 md:col-span-2 lg:col-span-3 overflow-hidden scroll-mt-24"
                 >
-                  <div className="bg-gradient-to-br from-blue-50 via-slate-50 to-white rounded-xl border-2 border-primary/20 shadow-xl p-8 md:p-10 lg:p-12 relative overflow-hidden">
+                  <div className="bg-gradient-to-br from-blue-50/90 via-slate-50/90 to-white rounded-xl border-2 border-primary/30 shadow-2xl p-8 md:p-10 lg:p-12 relative overflow-hidden">
                     {/* Subtle pattern overlay */}
                     <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
                       backgroundImage: `radial-gradient(circle at 2px 2px, #1e40af 1px, transparent 0)`,
@@ -282,10 +310,10 @@ export const EnterpriseSolutionsSection: React.FC = () => {
                           <IconComponent className="w-10 h-10 text-white" strokeWidth={2.5} />
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+                          <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-5 leading-tight tracking-tight">
                             {title}
                           </h3>
-                          <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl font-medium">
+                          <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl font-semibold">
                             {description}
                           </p>
                         </div>
@@ -294,16 +322,16 @@ export const EnterpriseSolutionsSection: React.FC = () => {
                       {/* Features Section */}
                       {bullets && bullets.length > 0 && (
                         <div className="mt-10 pt-10 border-t-2 border-primary/20">
-                          <h4 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">
+                          <h4 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-10 tracking-tight">
                             {isEn ? "Key Features" : "Temel Özellikler"}
                           </h4>
                           <ul className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                             {bullets.map((bullet, bulletIdx) => (
-                              <li key={bulletIdx} className="flex items-start gap-4 p-4 rounded-lg hover:bg-white/60 transition-colors">
-                                <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center mt-0.5">
-                                  <span className="text-primary text-sm font-bold">✓</span>
+                              <li key={bulletIdx} className="flex items-start gap-4 p-5 rounded-xl hover:bg-white/70 transition-all duration-200 border border-transparent hover:border-primary/10">
+                                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mt-0.5 shadow-sm">
+                                  <span className="text-primary text-base font-extrabold">✓</span>
                                 </div>
-                                <span className="text-base md:text-lg text-gray-800 leading-relaxed font-medium flex-1">
+                                <span className="text-base md:text-lg text-gray-800 leading-relaxed font-semibold flex-1">
                                   {bullet}
                                 </span>
                               </li>

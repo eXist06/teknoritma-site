@@ -522,9 +522,9 @@ export const translations: Record<string, any> = {
       send: "Gönder",
     },
     support: {
-      title: "Mega Hastanelerden Ülke Genelinde EMR Platformlarına",
+      title: "Mega Hastanelerden Ülke Genelinde Sağlık Bilişimi Platformlarına",
       highlights: "Teknoritma Proje Başarıları",
-      subtitle: "Mega Hastanelerden Ülke Genelinde EMR Platformlarına",
+      subtitle: "",
       intro: "Teknoritma, sağlık bilişimi alanında 20 yılı aşkın deneyimiyle, mega hastanelerden ulusal ölçekte EMR platformlarına kadar geniş bir yelpazede kritik projeleri başarıyla tamamlamıştır. Büyük ölçekli sağlık bilişimi dönüşümlerinde kanıtlanmış yetkinlik, kurumsal yönetişim yaklaşımı ve sürdürülebilir çözümler sunar.",
       why: {
         title: "Neden Teknoritma?",
@@ -580,7 +580,7 @@ export const translations: Record<string, any> = {
     },
     timeline: {
       title: "Zaman içinde Sarus",
-      subtitle: "Sarus; Türkiye'nin ilk web tabanlı hastane bilgi sistemi olarak",
+      subtitle: "Sarus; Türkiye'nin ilk web tabanlı hastane bilgi sistemi olarak başladığı yolculuğunu, şehir hastaneleri ve yüksek yatak kapasiteli referans projelerle sürdürüyor.",
     },
     cloud: {
       backToHome: "Ana Sayfaya Dön",
@@ -1429,9 +1429,9 @@ export const translations: Record<string, any> = {
       send: "Send",
     },
     support: {
-      title: "From Mega Hospitals to Nationwide EMR Platforms",
+      title: "From Mega Hospitals to Nationwide Healthcare Informatics Platforms",
       highlights: "Teknoritma Project Achievements",
-      subtitle: "From Mega Hospitals to Nationwide EMR Platforms",
+      subtitle: "",
       intro: "With over 20 years of experience in healthcare informatics, Teknoritma has successfully completed critical projects ranging from mega hospitals to nationwide EMR platforms. We deliver proven expertise, enterprise governance approach, and sustainable solutions in large-scale healthcare informatics transformations.",
       why: {
         title: "Why Teknoritma?",
@@ -1487,7 +1487,7 @@ export const translations: Record<string, any> = {
     },
     timeline: {
       title: "Sarus over time",
-      subtitle: "Sarus; as Turkey's first web-based hospital information system",
+      subtitle: "Sarus; as Turkey's first web-based hospital information system, continues its journey with city hospitals and high-capacity reference projects.",
     },
     cloud: {
       backToHome: "Back to Home",

@@ -40,10 +40,6 @@ export default function TimelineSection() {
           </h2>
           <p className="text-lg text-neutral-body max-w-2xl mx-auto">
             {t("timeline.subtitle")}
-            {language === "en" 
-              ? " continues its journey with city hospitals and high-capacity reference projects."
-              : " başladığı yolculuğunu, şehir hastaneleri ve yüksek yatak kapasiteli referans projelerle sürdürüyor."
-            }
           </p>
         </motion.div>
 

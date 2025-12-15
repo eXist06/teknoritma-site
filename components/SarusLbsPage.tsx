@@ -224,13 +224,10 @@ export default function SarusLbsPage() {
         </div>
       </section>
 
-      {/* Navigation Buttons Section - Tab Style */}
-      <section id="navigation" className="w-full bg-white relative">
-        {/* Top teal-blue line */}
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary"></div>
-        
-        <div className="max-w-7xl mx-auto px-4 md:px-10 py-8 md:py-12">
-          <nav className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
+      {/* Navigation Buttons Section */}
+      <section id="navigation" className="w-full bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 md:px-10">
+          <nav className="flex flex-wrap items-center justify-center">
             {[
               {
                 id: "core-features",
@@ -250,54 +247,70 @@ export default function SarusLbsPage() {
                 label: language === "en" ? "Architecture" : "Mimari",
                 icon: Wrench,
               },
-            {
-              id: "workflow",
-              href: "#workflow",
-              label: language === "en" ? "Workflow" : "İş Akışı",
-              icon: RefreshCw,
-            },
-            {
-              id: "success-story",
-              href: "#success-story",
-              label: language === "en" ? "Success Story" : "Başarı Hikayesi",
-              icon: Trophy,
-            },
+              {
+                id: "workflow",
+                href: "#workflow",
+                label: language === "en" ? "Workflow" : "İş Akışı",
+                icon: RefreshCw,
+              },
+              {
+                id: "success-story",
+                href: "#success-story",
+                label: language === "en" ? "Success Story" : "Başarı Hikayesi",
+                icon: Trophy,
+              },
             ].map((item) => {
-              const IconComponent = item.icon;
               const isActive = activeNavItem === item.id;
+              const IconComponent = item.icon;
               return (
                 <a
                   key={item.id}
                   href={item.href}
-                  onClick={() => setActiveNavItem(item.id)}
-                  className="group flex flex-col items-center gap-2 px-4 py-3 transition-all duration-300 relative"
-                >
-                  {/* Icon */}
-                  <div className="mb-1 transition-transform duration-300" style={{ color: isActive ? '#0066FF' : '#4A5568' }}>
-                    <IconComponent className="w-6 h-6 md:w-7 md:h-7" strokeWidth={2.5} />
-                  </div>
-                  {/* Label */}
-                  <span 
-                    className={`text-sm md:text-base whitespace-nowrap transition-colors duration-300 ${
-                      isActive 
-                        ? 'font-bold text-primary' 
-                        : 'font-normal text-neutral-heading'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveNavItem(item.id);
+                    const element = document.querySelector(item.href);
+                    if (element) {
+                      const elementRect = element.getBoundingClientRect();
+                      const absoluteElementTop = elementRect.top + window.pageYOffset;
+                      const offset = 100;
+                      window.scrollTo({
+                        top: absoluteElementTop - offset,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className={`group relative flex flex-col items-center justify-center gap-2 px-8 py-5
+                    transition-all duration-200 ease-out cursor-pointer
+                    border-b-2 -mb-px select-none
+                    ${isActive 
+                      ? 'border-primary text-primary bg-primary/5' 
+                      : 'border-transparent text-gray-600 hover:text-primary hover:border-primary/30 hover:bg-primary/3'
                     }`}
+                >
+                  <div className={`transition-all duration-200 pointer-events-none
+                    ${isActive 
+                      ? 'opacity-100 text-primary scale-110' 
+                      : 'opacity-60 text-gray-600 group-hover:opacity-100 group-hover:text-primary group-hover:scale-110'
+                    }`}
+                  >
+                    <IconComponent className="w-7 h-7 md:w-8 md:h-8" strokeWidth={2} />
+                  </div>
+                  <span 
+                    className={`text-xs md:text-sm font-medium whitespace-nowrap tracking-wide pointer-events-none
+                      transition-all duration-200
+                      ${isActive 
+                        ? 'text-primary font-semibold' 
+                        : 'text-gray-600 group-hover:text-primary'
+                      }`}
                   >
                     {item.label}
                   </span>
-                  {/* Active indicator underline */}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[80%] h-0.5 bg-primary"></span>
-                  )}
                 </a>
               );
             })}
           </nav>
         </div>
-        
-        {/* Bottom light grey separator line */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-neutral-border"></div>
       </section>
 
       {/* Core Features Section */}

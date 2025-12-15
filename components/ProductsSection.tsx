@@ -134,7 +134,7 @@ export default function ProductsSection() {
           </motion.div>
         )}
 
-        {/* Other Products - Sarus Bulut, PACS, LBS, ICP */}
+        {/* Other Products - Sarus Bulut, PACS, LBS */}
         <div className="relative">
           <h3 className="text-2xl md:text-3xl font-bold text-neutral-heading mb-8">
             {t("products.otherProducts")}
@@ -168,8 +168,7 @@ export default function ProductsSection() {
                 .filter((p) => 
                   p.id === "sarus-cloud" || 
                   p.id === "sarus-pacs" || 
-                  p.id === "sarus-lbs" || 
-                  p.id === "sarus-icp"
+                  p.id === "sarus-lbs"
                 )
                 .map((product) => {
                   const prodName = language === "en" ? (product.nameEn || product.name) : product.name;
@@ -189,9 +188,6 @@ export default function ProductsSection() {
                   } else if (product.id === "sarus-lbs") {
                     productPath = language === "en" ? "/en/products/sarus-lis" : "/urunler/sarus-lbs";
                     ProductIcon = FlaskConical;
-                  } else if (product.id === "sarus-icp") {
-                    productPath = language === "en" ? "/en/products/sarus-icp" : "/urunler/sarus-icp";
-                    ProductIcon = Link2;
                   }
                   
                   return (
@@ -255,8 +251,7 @@ export default function ProductsSection() {
               .filter((p) => 
                 p.id === "sarus-cloud" || 
                 p.id === "sarus-pacs" || 
-                p.id === "sarus-lbs" || 
-                p.id === "sarus-icp"
+                p.id === "sarus-lbs"
               )
               .map((_, idx) => (
                 <button

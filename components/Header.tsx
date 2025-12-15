@@ -47,7 +47,6 @@ export default function Header() {
         { label: t("nav.productsSubmenu.cloud"), href: "/en/products/sarus-cloud", icon: Cloud },
         { label: t("nav.productsSubmenu.pacs"), href: "/en/products/sarus-pacs", icon: Scan },
         { label: t("nav.productsSubmenu.lis"), href: "/en/products/sarus-lis", icon: FlaskConical },
-        { label: t("nav.productsSubmenu.icp"), href: "/en/products/sarus-icp", icon: Link2 },
       ];
     } else {
       return [
@@ -55,7 +54,6 @@ export default function Header() {
         { label: t("nav.productsSubmenu.cloud"), href: "/urunler/sarus-bulut", icon: Cloud },
         { label: t("nav.productsSubmenu.pacs"), href: "/urunler/sarus-pacs", icon: Scan },
         { label: t("nav.productsSubmenu.lbs"), href: "/urunler/sarus-lbs", icon: FlaskConical },
-        { label: t("nav.productsSubmenu.icp"), href: "/urunler/sarus-icp", icon: Link2 },
       ];
     }
   };

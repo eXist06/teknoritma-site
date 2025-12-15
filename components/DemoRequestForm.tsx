@@ -20,8 +20,8 @@ export default function DemoRequestForm() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const products = language === "en" 
-    ? ["Sarus HIS", "Sarus Cloud", "Sarus EMR", "Sarus ICP", "Sarus LIS", "Sarus PACS", "General Inquiry"]
-    : ["Sarus HIS", "Sarus Bulut", "Sarus EMR", "Sarus ICP", "Sarus LIS", "Sarus PACS", "Genel Bilgi"];
+    ? ["Sarus HIS", "Sarus Cloud", "Sarus EMR", "Sarus LIS", "Sarus PACS", "General Inquiry"]
+    : ["Sarus HIS", "Sarus Bulut", "Sarus EMR", "Sarus LIS", "Sarus PACS", "Genel Bilgi"];
 
   const handleSendVerificationCode = async () => {
     if (!formData.name || !formData.email || !formData.organization || !formData.phone) {

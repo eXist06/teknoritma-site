@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 import {
-  Zap, Settings, Layers, Link2, Globe
+  Zap, Settings, Layers, Link2, Globe, ChevronDown, Trophy, Shield, TrendingUp, Stethoscope
 } from "lucide-react";
 import { EnterpriseSolutionsSection } from "./EnterpriseSolutionsSection";
 
@@ -18,56 +18,74 @@ export default function SarusHISPage() {
   const [activeNavItem, setActiveNavItem] = useState("enterprise-solutions");
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [expandedFeatureId, setExpandedFeatureId] = useState<string | null>(null);
 
 
   const tabs = [
     {
-      id: "integration",
-      title: t("sarus.features.integration.title"),
-      icon: Link2,
+      id: "integrated-structure",
+      title: language === "en" ? "Integrated Structure" : "Bütünleşik Yapı",
+      icon: Layers,
       iconBgClass: "bg-blue-50",
       iconColorClass: "text-blue-600",
-      subtitle: t("sarus.features.integration.description"),
+      subtitle: language === "en" 
+        ? "Single system approach instead of fragmented solutions"
+        : "Parça parça çözümler yerine tek sistem yaklaşımı",
+      detail: language === "en"
+        ? "Sarus EMR manages clinical, administrative and financial processes not as separate applications, but within a single integrated structure. All components operate on a common core and provide a consistent, sustainable system architecture across the institution."
+        : "Sarus EMR; klinik, idari ve finansal süreçleri ayrı uygulamalar olarak değil, tek ve bütünleşik bir yapı içinde yönetir. Tüm bileşenler ortak bir çekirdek üzerinde çalışır ve kurum genelinde tutarlı, sürdürülebilir bir sistem mimarisi sağlar.",
     },
     {
-      id: "webBased",
-      title: t("sarus.features.webBased.title"),
-      icon: Globe,
+      id: "scalable-structure",
+      title: language === "en" ? "Scalable Structure" : "Ölçeklenebilir Yapı",
+      icon: TrendingUp,
       iconBgClass: "bg-green-50",
       iconColorClass: "text-green-600",
-      subtitle: t("sarus.features.webBased.description"),
+      subtitle: language === "en"
+        ? "Designed for mega hospitals and national structures"
+        : "Mega hastaneler ve ulusal yapılar için tasarlanmıştır",
+      detail: language === "en"
+        ? "Sarus EMR, designed considering high user numbers and intensive transaction volumes, delivers performance, continuity and scalability in large-scale hospitals and multi-center healthcare structures."
+        : "Yüksek kullanıcı sayıları ve yoğun işlem hacimleri göz önünde bulundurularak tasarlanan Sarus EMR, büyük ölçekli hastaneler ve çok merkezli sağlık yapılarında performans, süreklilik ve büyüyebilirlik sunar.",
     },
     {
-      id: "mobile",
-      title: t("sarus.features.mobile.title"),
+      id: "standards",
+      title: language === "en" ? "Standards" : "Standartlar",
       icon: Globe,
       iconBgClass: "bg-purple-50",
       iconColorClass: "text-purple-600",
-      subtitle: t("sarus.features.mobile.description"),
+      subtitle: language === "en"
+        ? "Compliance with international healthcare informatics standards"
+        : "Uluslararası sağlık bilişimi standartlarıyla uyum",
+      detail: language === "en"
+        ? "Thanks to its structure compatible with international standards such as HL7, FHIR and DICOM, Sarus EMR enables secure and manageable data exchange with laboratory, imaging systems, medical devices and third-party software."
+        : "HL7, FHIR ve DICOM gibi uluslararası standartlarla uyumlu yapısı sayesinde Sarus EMR; laboratuvar, görüntüleme sistemleri, tıbbi cihazlar ve üçüncü parti yazılımlarla güvenli ve yönetilebilir veri alışverişi sağlar.",
     },
     {
-      id: "dotnet",
-      title: t("sarus.features.dotnet.title"),
-      icon: Settings,
+      id: "strong-clinical-components",
+      title: language === "en" ? "Strong Clinical Components" : "Güçlü Klinik Bileşenler",
+      icon: Stethoscope,
       iconBgClass: "bg-amber-50",
       iconColorClass: "text-amber-600",
-      subtitle: t("sarus.features.dotnet.description"),
+      subtitle: language === "en"
+        ? "Design centered on clinical workflows"
+        : "Klinik iş akışlarını merkeze alan tasarım",
+      detail: language === "en"
+        ? "Sarus EMR offers comprehensive clinical components shaped according to the daily clinical needs of physicians and healthcare personnel. It provides a user experience that supports speed, accuracy and patient safety in clinical processes."
+        : "Sarus EMR, hekim ve sağlık personelinin günlük klinik ihtiyaçlarına göre şekillendirilmiş kapsamlı klinik bileşenler sunar. Klinik süreçlerde hız, doğruluk ve hasta güvenliğini destekleyen bir kullanım deneyimi sağlar.",
     },
     {
-      id: "multilayered",
-      title: t("sarus.features.multilayered.title"),
-      icon: Layers,
+      id: "security",
+      title: language === "en" ? "Security" : "Güvenlik",
+      icon: Shield,
       iconBgClass: "bg-cyan-50",
       iconColorClass: "text-cyan-600",
-      subtitle: t("sarus.features.multilayered.description"),
-    },
-    {
-      id: "platform",
-      title: t("sarus.features.platform.title"),
-      icon: Zap,
-      iconBgClass: "bg-indigo-50",
-      iconColorClass: "text-indigo-600",
-      subtitle: t("sarus.features.platform.description"),
+      subtitle: language === "en"
+        ? "Enterprise-level data security and auditability"
+        : "Kurumsal düzeyde veri güvenliği ve denetlenebilirlik",
+      detail: language === "en"
+        ? "All operations are made traceable through role-based authorization, access control and detailed logging mechanisms. This structure meets data security, regulatory compliance and corporate governance requirements."
+        : "Rol bazlı yetkilendirme, erişim kontrolü ve detaylı kayıt (log) mekanizmaları ile tüm işlemler izlenebilir hale getirilir. Bu yapı, veri güvenliği, mevzuata uyum ve kurumsal yönetişim gereksinimlerini karşılar.",
     },
   ];
 
@@ -92,18 +110,37 @@ export default function SarusHISPage() {
     };
   }, []);
 
-  // Auto-rotate cards every 8 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveTab((prev) => (prev + 1) % tabs.length);
-    }, 8000);
-    return () => clearInterval(interval);
-  }, [tabs.length]);
+  const toggleFeatureExpanded = (id: string) => {
+    const newExpandedId = expandedFeatureId === id ? null : id;
+    setExpandedFeatureId(newExpandedId);
+    
+    // Scroll to expanded panel after state update
+    if (newExpandedId) {
+      setTimeout(() => {
+        const element = document.getElementById(`feature-panel-${newExpandedId}`);
+        if (element) {
+          const elementRect = element.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const elementTop = elementRect.top + scrollTop;
+          const viewportCenter = window.innerHeight / 2;
+          const elementHeight = elementRect.height;
+          const targetScroll = elementTop - viewportCenter + (elementHeight / 2);
+          const headerOffset = 100;
+          const finalScroll = Math.max(0, targetScroll - headerOffset);
+          
+          window.scrollTo({
+            top: finalScroll,
+            behavior: 'smooth'
+          });
+        }
+      }, 350);
+    }
+  };
 
   // Track active navigation item based on scroll position
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["enterprise-solutions", "core-features", "platform-features", "architecture"];
+      const sections = ["enterprise-solutions", "core-features", "success-story"];
       const scrollPosition = window.scrollY + 200;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -117,7 +154,7 @@ export default function SarusHISPage() {
 
     if (window.location.hash) {
       const hash = window.location.hash.substring(1);
-      if (["enterprise-solutions", "core-features", "platform-features", "architecture"].includes(hash)) {
+      if (["enterprise-solutions", "core-features", "success-story"].includes(hash)) {
         setActiveNavItem(hash);
       }
     }
@@ -131,7 +168,7 @@ export default function SarusHISPage() {
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-20 md:pt-24 md:pb-32 overflow-hidden bg-gradient-to-br from-background via-background-alt to-background">
+      <section className="relative pt-24 pb-24 md:pt-32 md:pb-40 overflow-hidden bg-gradient-to-br from-background via-background-alt to-background">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
@@ -154,16 +191,16 @@ export default function SarusHISPage() {
                 {t(`${translationKey}.backToHome`)}
               </Link>
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight tracking-tight">
                 <span className="text-primary">Sarus</span>{" "}
                 <span className="text-neutral-heading">{t(`${translationKey}.productName`)}</span>
               </h1>
 
-              <p className="text-2xl md:text-3xl font-semibold text-neutral-heading mb-6">
+              <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-neutral-heading mb-8 leading-tight tracking-tight">
                 {t(`${translationKey}.tagline`)}
               </p>
 
-              <p className="text-lg md:text-xl text-neutral-body leading-relaxed mb-4">
+              <p className="text-lg md:text-xl text-neutral-body leading-relaxed mb-6 font-medium">
                 {t(`${translationKey}.description`)}
               </p>
 
@@ -270,7 +307,7 @@ export default function SarusHISPage() {
               {
                 id: "enterprise-solutions",
                 href: "#enterprise-solutions",
-                label: language === "en" ? "Enterprise Solutions" : "Kurumsal Çözümler",
+                label: language === "en" ? "Sarus EMR Solutions" : "Sarus HBS Çözümleri",
                 icon: Layers,
               },
               {
@@ -280,16 +317,10 @@ export default function SarusHISPage() {
                 icon: Zap,
               },
               {
-                id: "platform-features",
-                href: "#platform-features",
-                label: language === "en" ? "Platform Features" : "Platform Özellikleri",
-                icon: Settings,
-              },
-              {
-                id: "architecture",
-                href: "#architecture",
-                label: language === "en" ? "Architecture" : "Mimari",
-                icon: Layers,
+                id: "success-story",
+                href: "#success-story",
+                label: language === "en" ? "Success Story" : "Başarı Hikayesi",
+                icon: Trophy,
               },
             ].map((item) => {
               const isActive = activeNavItem === item.id;
@@ -346,7 +377,7 @@ export default function SarusHISPage() {
       </section>
 
       {/* Enterprise Solutions */}
-      <section id="enterprise-solutions" className="py-20 md:py-32 bg-gradient-to-b from-background via-blue-50/20 to-background relative overflow-hidden">
+      <section id="enterprise-solutions" className="py-24 md:py-36 bg-gradient-to-b from-background via-blue-50/20 to-background relative overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
@@ -360,11 +391,11 @@ export default function SarusHISPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-heading mb-4">
-              <span className="text-primary">Enterprise</span>{" "}
-              <span className="text-neutral-heading">{language === "en" ? "Solutions" : "Çözümler"}</span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
+              <span className="text-primary">Sarus</span>{" "}
+              <span className="text-neutral-heading">{language === "en" ? "EMR Solutions" : "HBS Çözümleri"}</span>
             </h2>
-            <p className="text-xl text-neutral-body max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-neutral-body max-w-3xl mx-auto font-medium leading-relaxed">
               {language === "en" ? "Comprehensive enterprise solutions for modern healthcare facilities" : "Modern sağlık kuruluşları için kapsamlı kurumsal çözümler"}
             </p>
           </motion.div>
@@ -375,163 +406,270 @@ export default function SarusHISPage() {
       </section>
 
       {/* Core Features Section */}
-      <section id="core-features" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background">
+      <section id="core-features" className="mx-auto max-w-7xl px-4 md:px-10 py-24 md:py-36 bg-background">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="mb-12 text-center"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
             <span className="text-primary">Sarus</span>{" "}
             <span className="text-neutral-heading">{t(`${translationKey}.productName`)}</span>{" "}
             <span className="text-neutral-heading">{language === "en" ? "Core Features" : "Temel Özellikler"}</span>
           </h2>
-          <div className="w-20 h-0.5 bg-primary mx-auto"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"></div>
         </motion.div>
 
-        {/* Integrated Container */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
-          <div className="flex flex-col lg:flex-row">
-            {/* Left Menu */}
-            <div className="lg:w-1/3 bg-gradient-to-br from-blue-50 to-sky-50 border-r border-gray-200">
-              <div className="p-4 space-y-2">
-                {tabs.map((tab, idx) => {
-                  const TabIcon = tab.icon;
-                  const isActive = activeTab === idx;
-                  return (
-                    <motion.button
-                      key={tab.id}
-                      onClick={() => setActiveTab(idx)}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: idx * 0.05 }}
-                      whileHover={{ x: 2 }}
-                      className={`w-full text-left px-4 py-4 rounded-lg transition-all duration-300 relative ${
-                        isActive
-                          ? "bg-blue-500 text-white shadow-md"
-                          : "bg-white text-gray-700 hover:bg-blue-100 hover:text-blue-700"
-                      }`}
-                    >
-                      {isActive && (
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-600 rounded-r-full"></div>
-                      )}
-                      <div className="flex items-center gap-3">
-                        <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
-                          isActive ? "bg-white/20" : tab.iconBgClass
-                        }`}>
-                          <TabIcon className={`w-5 h-5 ${
-                            isActive ? "text-white" : tab.iconColorClass
-                          }`} strokeWidth={2} />
-                        </div>
-                        <span className={`font-medium text-sm md:text-base ${
-                          isActive ? "text-white" : "text-gray-700"
-                        }`}>{tab.title}</span>
-                      </div>
-                    </motion.button>
-                  );
-                })}
-              </div>
-            </div>
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min">
+          {tabs.map((tab, idx) => {
+            const TabIcon = tab.icon;
+            const isExpanded = expandedFeatureId === tab.id;
 
-            {/* Right Content Area */}
-            <div className="lg:w-2/3 flex-1">
-              <AnimatePresence mode="wait">
-                {tabs.map((tab, idx) => {
-                  if (activeTab !== idx) return null;
-                  const TabIcon = tab.icon;
-                  return (
-                    <motion.div
-                      key={tab.id}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.3 }}
-                      className="p-6 md:p-8 h-full"
-                    >
-                      <h3 className="text-2xl md:text-3xl font-bold text-neutral-heading mb-4">
+            return (
+              <React.Fragment key={tab.id}>
+                {/* Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.05 }}
+                  className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
+                >
+                  {/* Header - Always Visible */}
+                  <button
+                    onClick={() => toggleFeatureExpanded(tab.id)}
+                    className="w-full flex items-start justify-between p-6 text-left hover:bg-gray-50/50 transition-all duration-200"
+                  >
+                    <div className="flex items-start gap-4 flex-1 min-w-0">
+                      {/* Icon */}
+                      <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
+                        isExpanded 
+                          ? "bg-primary text-white shadow-md" 
+                          : `bg-gradient-to-br ${tab.iconBgClass} text-primary group-hover:from-primary/15 group-hover:to-primary/10`
+                      }`}>
+                        <TabIcon className={`w-7 h-7 ${isExpanded ? "text-white" : tab.iconColorClass}`} strokeWidth={2.5} />
+                      </div>
+                      
+                      {/* Title */}
+                      <h3 className={`text-lg font-bold transition-colors leading-tight ${
+                        isExpanded 
+                          ? "text-primary" 
+                          : "text-gray-900 group-hover:text-primary"
+                      }`}>
                         {tab.title}
                       </h3>
-                      <p className="text-base md:text-lg text-neutral-body leading-relaxed mb-6">
-                        {tab.subtitle}
-                      </p>
-                      {/* Placeholder for image - will be added later */}
-                      <div className="relative w-full aspect-video bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg overflow-hidden border-2 border-gray-200 shadow-inner">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-center">
-                            <div className={`inline-flex items-center justify-center w-20 h-20 rounded-xl ${tab.iconBgClass} mb-4`}>
-                              <TabIcon className={`w-10 h-10 ${tab.iconColorClass}`} strokeWidth={1.5} />
+                    </div>
+
+                    {/* Chevron Icon */}
+                    <motion.div
+                      animate={{ rotate: isExpanded ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex-shrink-0 ml-4 mt-1"
+                    >
+                      <ChevronDown className={`w-6 h-6 transition-colors ${isExpanded ? "text-primary" : "text-gray-400"}`} strokeWidth={2.5} />
+                    </motion.div>
+                  </button>
+                </motion.div>
+
+                {/* Expandable Detail Panel - Below the clicked card, full width */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      id={`feature-panel-${tab.id}`}
+                      initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                      animate={{ height: "auto", opacity: 1, marginTop: 20 }}
+                      exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="col-span-1 md:col-span-2 lg:col-span-3 overflow-hidden scroll-mt-24"
+                    >
+                      <div className="bg-gradient-to-br from-blue-50/90 via-slate-50/90 to-white rounded-xl border-2 border-primary/30 shadow-2xl p-8 md:p-10 lg:p-12 relative overflow-hidden">
+                        {/* Subtle pattern overlay */}
+                        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
+                          backgroundImage: `radial-gradient(circle at 2px 2px, #1e40af 1px, transparent 0)`,
+                          backgroundSize: '40px 40px'
+                        }}></div>
+                        <div className="relative z-10">
+                          {/* Header Section */}
+                          <div className="flex items-start gap-6 mb-12">
+                            <div className={`flex-shrink-0 w-20 h-20 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-xl`}>
+                              <TabIcon className="w-10 h-10 text-white" strokeWidth={2.5} />
                             </div>
-                            <p className="text-gray-500 text-sm font-medium">{language === "en" ? "Image placeholder" : "Görsel yeri"}</p>
-                            <p className="text-gray-400 text-xs mt-1">{language === "en" ? "Click to enlarge" : "Büyütmek için tıklayın"}</p>
+                            <div className="flex-1">
+                              <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 leading-tight tracking-tight">
+                                {tab.title}
+                              </h3>
+                              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl font-bold mb-5">
+                                {tab.subtitle}
+                              </p>
+                              {tab.detail && (
+                                <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-4xl font-medium">
+                                  {tab.detail}
+                                </p>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
                     </motion.div>
-                  );
-                })}
-              </AnimatePresence>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Success Story Section */}
+      <section id="success-story" className="relative py-24 md:py-36 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-5 md:px-10 space-y-20">
+          {/* Ankara City Hospital */}
+          <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0">
+              <img
+                src="/bilkent.jpg"
+                alt={language === "en" ? "Ankara City Hospital" : "Ankara Şehir Hastanesi"}
+                className="w-full h-full object-cover"
+              />
+              {/* Subtle overlay for better text readability */}
+              <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/30 via-neutral-800/25 to-neutral-900/30"></div>
+            </div>
+            
+            <div className="relative z-10 px-8 md:px-12 py-20 md:py-24 min-h-[650px] md:min-h-[750px] flex flex-col justify-between">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="text-center flex justify-center mb-12"
+              >
+                {/* Text container with overlay ONLY behind text */}
+                <div className="relative inline-block">
+                  <div className="relative px-8 md:px-10 py-7 md:py-9">
+                    {/* Enterprise overlay - background style */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/75 via-blue-900/65 to-neutral-900/75 rounded-xl -z-10 backdrop-blur-sm"></div>
+                    <div className="absolute inset-0 bg-blue-500/25 rounded-xl -z-10"></div>
+                    
+                    <div className="relative z-10">
+                      <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg tracking-tight">
+                        {language === "en" ? "Ankara City Hospital" : "Ankara Şehir Hastanesi"}
+                      </h2>
+                      <p className="text-base md:text-lg text-white/95 max-w-3xl mx-auto leading-relaxed drop-shadow-md font-medium">
+                        {language === "en" 
+                          ? "Sarus EHR has been successfully serving the Ankara City Hospital project, recognized among the world's Mega Hospitals, since 2018."
+                          : "Sarus HBS, dünyada Mega Hastaneler arasında gösterilen, Ankara Şehir Hastanesi projesinde 2018 yılından bu yana başarılı şekilde hizmet vermeye devam ediyor."
+                        }
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                {[
+                  { 
+                    value: language === "en" ? "35,000+" : "35.000+", 
+                    label: language === "en" ? "Daily Outpatient Visits" : "Günlük Ayaktan Hasta" 
+                  },
+                  { 
+                    value: language === "en" ? "10,000+" : "10.000+", 
+                    label: language === "en" ? "Users" : "Kullanıcı" 
+                  },
+                  { 
+                    value: language === "en" ? "4,000+" : "4.000+", 
+                    label: language === "en" ? "Beds" : "Yatak" 
+                  },
+                  { 
+                    value: language === "en" ? "60+" : "60+", 
+                    label: language === "en" ? "End-to-End Integrated Applications" : "Uçtan Uca Entegre Uygulama" 
+                  },
+                ].map((stat, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1, duration: 0.5 }}
+                    className={`bg-white/98 backdrop-blur-md rounded-xl border border-neutral-200/50 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 text-center min-h-[140px] flex flex-col justify-center ${
+                      idx === 0 ? 'px-10 md:px-12 py-6 md:py-7' : 'p-6 md:p-7'
+                    }`}
+                  >
+                    <div className={`font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-primary via-blue-600 to-accent mb-3 whitespace-nowrap ${
+                      idx === 0 ? 'text-2xl md:text-3xl lg:text-4xl' : 'text-3xl md:text-4xl lg:text-5xl'
+                    }`}>
+                      {stat.value}
+                    </div>
+                    <p className="text-sm md:text-base font-semibold text-neutral-700 leading-tight">
+                      {stat.label}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Platform Features Section */}
-      <section id="platform-features" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background-alt">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-4">
-            <span className="text-primary">Sarus</span>{" "}
-            <span className="text-neutral-heading">{t(`${translationKey}.productName`)}</span>{" "}
-            <span className="text-neutral-heading">{t(`${translationKey}.features.title`)}</span>
-          </h2>
-          <p className="text-lg text-neutral-body max-w-3xl mx-auto">
-            {t(`${translationKey}.features.subtitle`)}
-          </p>
-        </motion.div>
-        {/* Will be populated with content */}
-      </section>
-
-      {/* Architecture Section */}
-      <section id="architecture" className="relative border-t border-neutral-border bg-gradient-to-b from-white via-background-alt/30 to-white overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="relative mx-auto max-w-7xl px-4 md:px-10 py-20 md:py-28">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-6">
-              <span className="text-primary">Sarus</span>{" "}
-              <span className="text-neutral-heading">{t(`${translationKey}.productName`)}</span>{" "}
-              <span className="text-neutral-heading">{language === "en" ? "Architecture" : "Mimari"}</span>
-            </h2>
-          </motion.div>
-          {/* Will be populated with content */}
+          {/* Istanbul Bahcelievler Hospital */}
+          <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+            {/* Background Image - Cropped from top and bottom for better framing */}
+            <div className="absolute inset-0 z-0 -my-10 md:-my-14">
+              <img
+                src="/bahceli.jpg"
+                alt={language === "en" ? "Istanbul Bahcelievler Hospital" : "İstanbul Bahçelievler Hastanesi"}
+                className="w-full h-full object-cover"
+              />
+              {/* Subtle overlay for better text readability */}
+              <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/30 via-neutral-800/25 to-neutral-900/30"></div>
+            </div>
+            
+            {/* Badge - Top left with trophy icon and two-line text - Enterprise Design */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="absolute top-8 md:top-12 left-6 md:left-10 z-20"
+            >
+              <div className="bg-gradient-to-br from-white via-white to-neutral-50/80 backdrop-blur-lg rounded-2xl px-8 md:px-10 py-6 md:py-7 shadow-2xl flex items-start gap-5 md:gap-6 border border-neutral-300/60 hover:shadow-3xl transition-shadow duration-300">
+                {/* Trophy icon with background circle */}
+                <div className="flex-shrink-0 mt-1">
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center shadow-lg">
+                    <Trophy className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 flex-1 min-w-0">
+                  <span className="text-lg md:text-xl font-bold text-neutral-900 leading-tight tracking-tight whitespace-nowrap">
+                    {language === "en" ? "Istanbul Bahcelievler Hospital" : "İstanbul Bahçelievler Hastanesi"}
+                  </span>
+                  <span className="text-sm md:text-base font-semibold text-primary leading-tight tracking-wide uppercase whitespace-nowrap">
+                    {language === "en" 
+                      ? "HIMSS EMRAM / O-EMRAM Stage 7"
+                      : "HIMSS EMRAM / O-EMRAM Seviye 7"
+                    }
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+            
+            {/* Empty space for layout consistency */}
+            <div className="relative z-10 px-8 md:px-12 pt-8 md:pt-12 pb-20 md:pb-24 min-h-[650px] md:min-h-[750px]">
+            </div>
+          </div>
         </div>
       </section>
 
       {/* CTA Section */}
       <section
         id="demo"
-        className="bg-primary text-white py-14 md:py-20 mt-8"
+        className="bg-gradient-to-br from-primary via-primary-dark to-primary text-white py-20 md:py-28 mt-12"
       >
         <div className="mx-auto max-w-5xl px-4 md:px-10 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight"
           >
             {t(`${translationKey}.cta.title`)}
           </motion.h2>
@@ -540,7 +678,7 @@ export default function SarusHISPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="mt-3 text-blue-100 max-w-2xl mx-auto text-lg"
+            className="mt-4 text-blue-100/90 max-w-2xl mx-auto text-xl md:text-2xl font-medium leading-relaxed"
           >
             {t(`${translationKey}.cta.description`)}
           </motion.p>
@@ -555,7 +693,7 @@ export default function SarusHISPage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-primary hover:bg-blue-50 transition-colors shadow-lg"
+                className="rounded-full bg-white px-8 py-3.5 text-base font-bold text-primary hover:bg-blue-50 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
               >
                 {t(`${translationKey}.requestDemo`)}
               </motion.button>

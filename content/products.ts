@@ -39,7 +39,6 @@ export const products: Product[] = [
       "Tıbbi, idari ve mali süreçlerin entegrasyonu",
       "%100 web tabanlı mimari",
       "iOS ve Android mobil uygulama desteği",
-      "Enterprise entegrasyon katmanı - Sarus ICP",
       "Çok katmanlı yapı ile verimli hastane süreçleri",
       "Dijital Sağlık Platformu ile entegrasyon",
     ],
@@ -47,7 +46,6 @@ export const products: Product[] = [
       "Integration of medical, administrative, and financial processes",
       "100% web-based architecture",
       "iOS and Android mobile application support",
-      "Enterprise integration layer - Sarus ICP",
       "Efficient hospital processes with multi-layered structure",
       "Integration with Digital Health Platform",
     ],
@@ -131,20 +129,6 @@ export const products: Product[] = [
     category: "Bulut",
     categoryEn: "Cloud",
     productCategory: "Klinik Uygulamaları",
-  },
-  {
-    id: "sarus-icp",
-    name: "Sarus ICP",
-    nameEn: "Sarus ICP",
-    tagline: "Enterprise Entegrasyon Katmanı",
-    taglineEn: "Enterprise Integration Layer",
-    description:
-      "Sarus ICP, farklı sağlık bilgi sistemlerini ve uygulamalarını entegre eden, HL7 ve FHIR standartlarına uyumlu enterprise entegrasyon katmanıdır. Sistemler arası veri akışını güvenli ve verimli bir şekilde yönetir.",
-    descriptionEn:
-      "Sarus ICP is an enterprise integration layer that integrates different health information systems and applications, compatible with HL7 and FHIR standards. It manages data flow between systems securely and efficiently.",
-    category: "Entegrasyon",
-    categoryEn: "Integration",
-    productCategory: "Karar Destek Uygulamaları",
   },
   {
     id: "sarus-lbs",

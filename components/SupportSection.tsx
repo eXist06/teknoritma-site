@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { supportIntro, supportHighlights } from "@/content/support";
+import { supportIntro, supportHighlights, supportHighlightsEn } from "@/content/support";
 import { useI18n } from "@/lib/i18n";
 import Image from "next/image";
 import { CheckCircle2, ChevronDown } from "lucide-react";
@@ -10,6 +10,11 @@ import { useState } from "react";
 export default function SupportSection() {
   const { t, language } = useI18n();
   const [isExpanded, setIsExpanded] = useState(false);
+  
+  const currentHighlights = language === "en" ? supportHighlightsEn : supportHighlights;
+  const currentParagraph1 = language === "en" ? supportIntro.paragraph1En : supportIntro.paragraph1;
+  const currentParagraph2Visible = language === "en" ? supportIntro.paragraph2VisibleEn : supportIntro.paragraph2Visible;
+  const currentParagraph2Hidden = language === "en" ? supportIntro.paragraph2HiddenEn : supportIntro.paragraph2Hidden;
   return (
     <section id="support" className="py-16 md:py-24 bg-gradient-to-b from-background to-background-alt/30">
       <div className="max-w-7xl mx-auto px-5 md:px-10">
@@ -47,9 +52,10 @@ export default function SupportSection() {
 
             {/* Content */}
             <div className="space-y-6 text-neutral-body leading-relaxed text-lg">
-              <p className="text-xl text-neutral-heading font-medium">{supportIntro.paragraph1}</p>
+              <p className="text-xl text-neutral-heading font-medium">{currentParagraph1}</p>
+              
               <div>
-                <p>{supportIntro.paragraph2Visible}</p>
+                <p>{currentParagraph2Visible}</p>
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.div
@@ -59,7 +65,7 @@ export default function SupportSection() {
                       transition={{ duration: 0.3 }}
                       className="overflow-hidden"
                     >
-                      <p className="mt-4">{supportIntro.paragraph2Hidden}</p>
+                      <p className="mt-4">{currentParagraph2Hidden}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -101,7 +107,7 @@ export default function SupportSection() {
                 })()}
               </h3>
               <ul className="space-y-4">
-                {supportHighlights.points.map((point, idx) => (
+                {currentHighlights.points.map((point, idx) => (
                   <motion.li
                     key={idx}
                     initial={{ opacity: 0, x: 10 }}
