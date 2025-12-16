@@ -6,11 +6,14 @@ import { Providers } from "@/components/Providers";
 import { LanguageAwareHtml } from "@/components/LanguageAwareHtml";
 import CookieConsent from "@/components/CookieConsent";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://emr.cemorion.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://teknoritma.com.tr";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Teknoritma - Sağlık Bilişim Çözümleri",
+  title: {
+    template: "%s | Teknoritma",
+    default: "Teknoritma - Sağlık Bilişim Çözümleri",
+  },
   description:
     "Orta ve büyük ölçekli hastaneler için uçtan uca sağlık bilişim çözümleri. Türkiye'nin ilk %100 web tabanlı hastane bilgi sistemi Sarus.",
   keywords: [
@@ -21,8 +24,14 @@ export const metadata: Metadata = {
     "sağlık bilişimi",
     "Sarus",
     "Teknoritma",
+    "hospital information system",
+    "healthcare IT",
+    "EMR",
+    "electronic medical records",
   ],
   authors: [{ name: "Teknoritma" }],
+  creator: "Teknoritma",
+  publisher: "Teknoritma",
   alternates: {
     canonical: "/",
     languages: {
@@ -34,18 +43,27 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Teknoritma - Sağlık Bilişim Çözümleri",
     description:
-      "Orta ve büyük ölçekli hastaneler için uçtan uca sağlık bilişim çözümleri.",
+      "Orta ve büyük ölçekli hastaneler için uçtan uca sağlık bilişim çözümleri. Türkiye'nin ilk %100 web tabanlı hastane bilgi sistemi Sarus.",
     type: "website",
     locale: "tr_TR",
-    alternateLocale: "en_US",
+    alternateLocale: ["en_US"],
     url: "/",
     siteName: "Teknoritma",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Teknoritma Logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Teknoritma - Sağlık Bilişim Çözümleri",
     description:
       "Orta ve büyük ölçekli hastaneler için uçtan uca sağlık bilişim çözümleri.",
+    images: ["/logo.png"],
   },
   robots: {
     index: true,
@@ -58,6 +76,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  verification: {
+    // Add verification codes if available
+  },
 };
 
 export default function RootLayout({
@@ -65,8 +86,36 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Teknoritma",
+    url: siteUrl,
+    logo: `${siteUrl}/logo.png`,
+    description:
+      "Orta ve büyük ölçekli hastaneler için uçtan uca sağlık bilişim çözümleri sunan teknoloji şirketi.",
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "TR",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "Customer Service",
+      email: "info@teknoritma.com.tr",
+    },
+    sameAs: [
+      // Add social media links if available
+    ],
+  };
+
   return (
     <html lang="tr" className="scroll-smooth" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body className="antialiased">
         <Providers>
           <LanguageAwareHtml>
