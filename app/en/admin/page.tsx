@@ -48,6 +48,7 @@ export default function AdminDashboardPageEn() {
   }
 
   const isAdmin = userRole === "admin";
+  const isIK = userRole === "ik";
   const isSarusHub = userRole === "sarus-hub";
 
   return (
@@ -62,7 +63,7 @@ export default function AdminDashboardPageEn() {
             Admin Dashboard
           </h1>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {isAdmin && (
+            {(isAdmin || isIK) && (
               <Link
                 href="/en/admin/careers"
                 className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 hover:shadow-lg transition-shadow border border-neutral-border"

@@ -2,9 +2,29 @@ import { NextRequest, NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
 import path from "path";
 import { existsSync, mkdirSync } from "fs";
+import { getCurrentUser } from "@/lib/utils/role-verification";
+
+async function verifyIKOrAdminRole(request: NextRequest): Promise<{ authorized: boolean; error?: string }> {
+  const { user, error } = await getCurrentUser(request);
+  if (error || !user) {
+    return { authorized: false, error: "Unauthorized" };
+  }
+  
+  // Admin ve IK rolleri erişebilir
+  if (user.role === "admin" || user.role === "ik") {
+    return { authorized: true };
+  }
+  
+  return { authorized: false, error: "Insufficient permissions. Requires admin or IK role." };
+}
 
 export async function POST(request: NextRequest) {
   try {
+    const authCheck = await verifyIKOrAdminRole(request);
+    if (!authCheck.authorized) {
+      return NextResponse.json({ error: authCheck.error || "Unauthorized" }, { status: 401 });
+    }
+    
     const formData = await request.formData();
     const file = formData.get("file") as File;
 

@@ -48,6 +48,7 @@ export default function AdminDashboardPage() {
   }
 
   const isAdmin = userRole === "admin";
+  const isIK = userRole === "ik";
   const isSarusHub = userRole === "sarus-hub";
 
   return (
@@ -62,16 +63,16 @@ export default function AdminDashboardPage() {
             Admin Dashboard
           </h1>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {isAdmin && (
+            {(isAdmin || isIK) && (
               <Link
                 href="/admin/careers"
                 className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 hover:shadow-lg transition-shadow border border-neutral-border"
               >
                 <h2 className="text-xl font-bold text-neutral-heading mb-2">
-                  Careers Management
+                  Kariyer Yönetimi
                 </h2>
                 <p className="text-neutral-body">
-                  Manage job postings and careers page content
+                  İş ilanlarını ve kariyer sayfası içeriğini yönetin
                 </p>
               </Link>
             )}
@@ -81,10 +82,10 @@ export default function AdminDashboardPage() {
                 className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 hover:shadow-lg transition-shadow border border-neutral-border"
               >
                 <h2 className="text-xl font-bold text-neutral-heading mb-2">
-                  System Settings
+                  Sistem Ayarları
                 </h2>
                 <p className="text-neutral-body">
-                  Configure email settings and system preferences
+                  E-posta ayarlarını ve sistem tercihlerini yapılandırın
                 </p>
               </Link>
             )}
@@ -97,7 +98,7 @@ export default function AdminDashboardPage() {
                   Sarus-HUB
                 </h2>
                 <p className="text-neutral-body">
-                  Content management: case studies, news, insights
+                  İçerik yönetimi: vaka çalışmaları, haberler, içgörüler
                 </p>
               </Link>
             )}

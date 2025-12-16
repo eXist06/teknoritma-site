@@ -22,8 +22,8 @@ export default function AdminCareersPage() {
         const data = await response.json();
         const role: UserRole = data.user?.role;
 
-        // Sadece admin erişebilir
-        if (role !== "admin") {
+        // Admin ve IK rolleri erişebilir
+        if (role !== "admin" && role !== "ik") {
           router.push("/admin");
           return;
         }
