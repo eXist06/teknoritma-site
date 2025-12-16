@@ -182,49 +182,15 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Detect preferred language
-  const preferredLang = detectPreferredLanguage(request);
-  
-  // If user prefers English but is on Turkish page, redirect to English version
-  if (preferredLang === "en" && !pathname.startsWith("/en") && pathname !== "/") {
-    const englishPath = getRouteInLanguage(pathname, "en");
-    if (englishPath !== pathname) {
-      url.pathname = englishPath;
-      const response = NextResponse.redirect(url);
-      // Set cookie if not already set
-      if (!request.cookies.get("lang_preference")) {
-        response.cookies.set("lang_preference", "en", { 
-          maxAge: 365 * 24 * 60 * 60,
-          sameSite: "lax",
-          path: "/"
-        });
-      }
-      return response;
-    }
-  }
-
-  // If user prefers Turkish but is on English page, redirect to Turkish version
-  if (preferredLang === "tr" && pathname.startsWith("/en") && pathname !== "/en") {
-    const turkishPath = getRouteInLanguage(pathname, "tr");
-    if (turkishPath !== pathname) {
-      url.pathname = turkishPath;
-      const response = NextResponse.redirect(url);
-      // Set cookie if not already set
-      if (!request.cookies.get("lang_preference")) {
-        response.cookies.set("lang_preference", "tr", { 
-          maxAge: 365 * 24 * 60 * 60,
-          sameSite: "lax",
-          path: "/"
-        });
-      }
-      return response;
-    }
-  }
-
-  // Handle root path language detection
-  if (pathname === "/" || pathname === "/en") {
+  // SEO-friendly URL handling: Never redirect direct URLs
+  // Only redirect root path (/) based on language preference
+  // This allows search engines to index both language versions properly
+  if (pathname === "/") {
+    const preferredLang = detectPreferredLanguage(request);
     const response = NextResponse.next();
-    // Set cookie if not already set
+    
+    // Set cookie based on pathname language, not preferred language
+    // This ensures direct URLs are not redirected
     if (!request.cookies.get("lang_preference")) {
       response.cookies.set("lang_preference", preferredLang, { 
         maxAge: 365 * 24 * 60 * 60,
@@ -233,35 +199,64 @@ export async function middleware(request: NextRequest) {
       });
     }
     
-    // Redirect root to appropriate language if needed
-    if (pathname === "/" && preferredLang === "en") {
+    // Only redirect root to /en if preferred language is English AND no cookie exists
+    // If cookie exists, respect it but don't redirect (user explicitly chose a language)
+    const langCookie = request.cookies.get("lang_preference")?.value;
+    if (preferredLang === "en" && !langCookie) {
       url.pathname = "/en";
       const redirectResponse = NextResponse.redirect(url);
-      if (!request.cookies.get("lang_preference")) {
-        redirectResponse.cookies.set("lang_preference", "en", { 
-          maxAge: 365 * 24 * 60 * 60,
-          sameSite: "lax",
-          path: "/"
-        });
-      }
-      return redirectResponse;
-    } else if (pathname === "/en" && preferredLang === "tr") {
-      url.pathname = "/";
-      const redirectResponse = NextResponse.redirect(url);
-      if (!request.cookies.get("lang_preference")) {
-        redirectResponse.cookies.set("lang_preference", "tr", { 
-          maxAge: 365 * 24 * 60 * 60,
-          sameSite: "lax",
-          path: "/"
-        });
-      }
+      redirectResponse.cookies.set("lang_preference", "en", { 
+        maxAge: 365 * 24 * 60 * 60,
+        sameSite: "lax",
+        path: "/"
+      });
       return redirectResponse;
     }
     
     return response;
   }
-
-  return NextResponse.next();
+  
+  if (pathname === "/en") {
+    const preferredLang = detectPreferredLanguage(request);
+    const response = NextResponse.next();
+    
+    if (!request.cookies.get("lang_preference")) {
+      response.cookies.set("lang_preference", "en", { 
+        maxAge: 365 * 24 * 60 * 60,
+        sameSite: "lax",
+        path: "/"
+      });
+    }
+    
+    // Only redirect /en to / if preferred language is Turkish AND no cookie exists
+    const langCookie = request.cookies.get("lang_preference")?.value;
+    if (preferredLang === "tr" && !langCookie) {
+      url.pathname = "/";
+      const redirectResponse = NextResponse.redirect(url);
+      redirectResponse.cookies.set("lang_preference", "tr", { 
+        maxAge: 365 * 24 * 60 * 60,
+        sameSite: "lax",
+        path: "/"
+      });
+      return redirectResponse;
+    }
+    
+    return response;
+  }
+  
+  // For all other paths (including /urunler/sarus-bulut), NEVER redirect
+  // Just set cookie based on pathname language to preserve SEO-friendly URLs
+  const response = NextResponse.next();
+  const pathLang = pathname.startsWith("/en") ? "en" : "tr";
+  
+  // Update cookie based on current pathname (user is explicitly accessing this language version)
+  response.cookies.set("lang_preference", pathLang, { 
+    maxAge: 365 * 24 * 60 * 60,
+    sameSite: "lax",
+    path: "/"
+  });
+  
+  return response;
 }
 
 export const config = {
