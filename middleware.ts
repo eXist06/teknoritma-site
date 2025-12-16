@@ -135,6 +135,14 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const url = request.nextUrl.clone();
 
+  // Bot istisnası: Botlar için redirect yapma, doğrudan erişime izin ver
+  const ua = request.headers.get("user-agent")?.toLowerCase() || "";
+  const isBot = /bot|crawl|spider|slurp|bingpreview|facebookexternalhit|twitterbot|linkedinbot|duckduckbot|yandex|baiduspider|googlebot|msnbot|ia_archiver/.test(ua);
+  
+  if (isBot) {
+    return NextResponse.next();
+  }
+
   // Skip API routes, static files, and Next.js internals
   if (
     pathname.startsWith("/api/") ||
