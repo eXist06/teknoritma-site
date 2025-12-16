@@ -49,3 +49,11 @@ next-env.d.ts
 # cursor debug logs
 .cursor/debug.log
 .cursor/*.log
+
+# --- runtime uploads / media ---
+public/uploads/
+public/uploads/**
+
+# --- large artifacts ---
+*.zip
+*.mp4
