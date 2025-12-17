@@ -369,21 +369,39 @@ export default function AdminSettingsPage() {
 
     setLoading(true);
     try {
-      const response = await fetch("/api/mailing/subscribe", {
+      const requestBody = {
+        email: newSubscriber.email,
+        name: newSubscriber.name || undefined,
+        organization: newSubscriber.organization || undefined,
+        category: newSubscriber.category,
+        source: "manual",
+        tags: [],
+      };
+      console.log("[ADD SUBSCRIBER] Sending request:", requestBody);
+
+      const response = await fetch("/api/admin/mailing-list", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: newSubscriber.email,
-          name: newSubscriber.name || undefined,
-          organization: newSubscriber.organization || undefined,
-          category: newSubscriber.category,
-          source: "manual",
-          tags: [],
-        }),
+        body: JSON.stringify(requestBody),
       });
 
-      const data = await response.json();
-      console.log("[ADD SUBSCRIBER] Response:", data);
+      console.log("[ADD SUBSCRIBER] Response status:", response.status);
+      console.log("[ADD SUBSCRIBER] Response ok:", response.ok);
+
+      let data;
+      try {
+        const text = await response.text();
+        console.log("[ADD SUBSCRIBER] Response text:", text);
+        data = text ? JSON.parse(text) : {};
+      } catch (parseError) {
+        console.error("[ADD SUBSCRIBER] JSON parse error:", parseError);
+        setMessage(`❌ Hata: Yanıt parse edilemedi`);
+        setTimeout(() => setMessage(""), 5000);
+        setLoading(false);
+        return;
+      }
+
+      console.log("[ADD SUBSCRIBER] Response data:", data);
 
       if (response.ok && data.success) {
         setMessage("✅ Abone başarıyla eklendi!");
@@ -392,8 +410,9 @@ export default function AdminSettingsPage() {
         await loadSubscribers();
         setTimeout(() => setMessage(""), 3000);
       } else {
-        console.error("[ADD SUBSCRIBER] Error:", data);
-        setMessage(`❌ Hata: ${data.error || "Abone eklenemedi"}`);
+        console.error("[ADD SUBSCRIBER] Error response:", response.status, data);
+        const errorMsg = data.error || data.message || `HTTP ${response.status}: Abone eklenemedi`;
+        setMessage(`❌ Hata: ${errorMsg}`);
         setTimeout(() => setMessage(""), 5000);
       }
     } catch (error: any) {
