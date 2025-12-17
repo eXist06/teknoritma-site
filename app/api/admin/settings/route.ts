@@ -1,28 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { SystemSettings } from "@/lib/types/admin";
 import { verifyAdminRole } from "@/lib/utils/role-verification";
 import { runMigrationIfNeeded } from "@/lib/db/migration";
+import { getSystemSettings, updateSystemSettings } from "@/lib/db/admin";
 
 // Run migration on first import
 if (typeof window === "undefined") {
   runMigrationIfNeeded();
-}
-
-const ADMIN_DATA_PATH = path.join(process.cwd(), "lib/data/admin-data.json");
-
-function readAdminData() {
-  try {
-    const data = fs.readFileSync(ADMIN_DATA_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { users: [], settings: {} };
-  }
-}
-
-function writeAdminData(data: any) {
-  fs.writeFileSync(ADMIN_DATA_PATH, JSON.stringify(data, null, 2), "utf8");
 }
 
 export async function GET(request: NextRequest) {
@@ -36,8 +20,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const data = readAdminData();
-    return NextResponse.json({ settings: data.settings || {} });
+    const settings = getSystemSettings();
+    return NextResponse.json({ settings });
   } catch (error) {
     console.error("Get settings error:", error);
     return NextResponse.json(
@@ -59,9 +43,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const settings: SystemSettings = await request.json();
-    const data = readAdminData();
-    data.settings = settings;
-    writeAdminData(data);
+    updateSystemSettings(settings);
 
     return NextResponse.json({ success: true, settings });
   } catch (error) {
@@ -72,12 +54,3 @@ export async function PUT(request: NextRequest) {
     );
   }
 }
-
-
-
-
-
-
-
-
-

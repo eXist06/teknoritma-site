@@ -1,39 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { SignJWT } from "jose";
 import { AdminUser } from "@/lib/types/admin";
-import bcrypt from "bcryptjs";
+import { getAllAdminUsers, getFirstLoginPasswordByEmail, markFirstLoginPasswordAsUsed, createAdminUser } from "@/lib/db/admin";
 
-const ADMIN_DATA_PATH = path.join(process.cwd(), "lib/data/admin-data.json");
-const FIRST_LOGIN_PASSWORDS_PATH = path.join(process.cwd(), "lib/data/first-login-passwords.json");
 const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
-
-function readAdminData() {
-  try {
-    const data = fs.readFileSync(ADMIN_DATA_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { users: [], settings: {} };
-  }
-}
-
-function writeAdminData(data: any) {
-  fs.writeFileSync(ADMIN_DATA_PATH, JSON.stringify(data, null, 2), "utf8");
-}
-
-function readFirstLoginPasswords() {
-  try {
-    const data = fs.readFileSync(FIRST_LOGIN_PASSWORDS_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { passwords: [] };
-  }
-}
-
-function writeFirstLoginPasswords(data: any) {
-  fs.writeFileSync(FIRST_LOGIN_PASSWORDS_PATH, JSON.stringify(data, null, 2), "utf8");
-}
 
 function isValidTeknoritmaEmail(email: string): boolean {
   const domain = email.split("@")[1]?.toLowerCase();
@@ -58,10 +28,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = readAdminData();
+    const allUsers = getAllAdminUsers();
 
     // Check if users already exist
-    if (data.users.length > 0) {
+    if (allUsers.length > 0) {
       return NextResponse.json(
         { error: "Admin users already exist. Please use regular login." },
         { status: 403 }
@@ -69,36 +39,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Find the password in temporary storage
-    // Get the most recent password for this email (sort by createdAt descending)
-    const passwordsData = readFirstLoginPasswords();
-    const matchingPasswords = passwordsData.passwords.filter(
-      (p: any) => p.email.toLowerCase() === email.toLowerCase()
-    );
+    const passwordEntry = getFirstLoginPasswordByEmail(email);
     
-    if (matchingPasswords.length === 0) {
+    if (!passwordEntry) {
       return NextResponse.json(
         { error: "Password not found. Please request a new password." },
         { status: 404 }
-      );
-    }
-    
-    // Sort by createdAt descending and get the most recent one
-    matchingPasswords.sort((a: any, b: any) => 
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-    const passwordEntry = matchingPasswords[0];
-
-    // Check if password is expired (1 hour)
-    const createdAt = new Date(passwordEntry.createdAt);
-    if (Date.now() - createdAt.getTime() > 60 * 60 * 1000) {
-      // Remove expired passwords for this email
-      passwordsData.passwords = passwordsData.passwords.filter(
-        (p: any) => p.email.toLowerCase() !== email.toLowerCase()
-      );
-      writeFirstLoginPasswords(passwordsData);
-      return NextResponse.json(
-        { error: "Password expired. Please request a new password." },
-        { status: 400 }
       );
     }
 
@@ -111,25 +57,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Password is correct, create admin user
-    const newAdmin: AdminUser = {
-      id: Date.now().toString(),
+    const newAdmin = createAdminUser({
       username: "admin",
       passwordHash: passwordEntry.passwordHash,
       email: email.toLowerCase(),
       role: "admin",
       isFirstLogin: true,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    });
 
-    data.users.push(newAdmin);
-    writeAdminData(data);
-
-    // Remove used password from temporary storage
-    passwordsData.passwords = passwordsData.passwords.filter(
-      (p: any) => p.email.toLowerCase() !== email.toLowerCase()
-    );
-    writeFirstLoginPasswords(passwordsData);
+    // Mark password as used
+    markFirstLoginPasswordAsUsed(passwordEntry.id);
 
     // Create JWT token
     const token = await new SignJWT({
@@ -165,4 +102,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

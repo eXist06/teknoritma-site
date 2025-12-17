@@ -2,20 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyCode } from "@/lib/services/email-verification";
 import { addToQueue, processQueueItem, getQueue } from "@/lib/services/email-queue";
 import { sendEmail } from "@/lib/services/email";
-import fs from "fs";
-import path from "path";
-import { MailingList } from "@/lib/types/mailing";
-
-const MAILING_LIST_PATH = path.join(process.cwd(), "lib/data/mailing-list.json");
-
-function readMailingList(): MailingList {
-  try {
-    const data = fs.readFileSync(MAILING_LIST_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { subscribers: [] };
-  }
-}
+import { getMailingSubscribersByCategory } from "@/lib/db/mailing";
 
 export async function POST(request: NextRequest) {
   try {
@@ -87,16 +74,8 @@ export async function POST(request: NextRequest) {
 
     // Send notifications to all general category subscribers immediately
     try {
-      const mailingList = readMailingList();
-      const generalSubscribers = mailingList.subscribers.filter(
-        (subscriber) => {
-          const hasGeneralCategory = Array.isArray(subscriber.category) 
-            ? subscriber.category.includes("general")
-            : subscriber.category === "general";
-          return hasGeneralCategory &&
-            subscriber.active &&
-            subscriber.email.toLowerCase() !== email.toLowerCase();
-        }
+      const generalSubscribers = getMailingSubscribersByCategory("general").filter(
+        (subscriber) => subscriber.email.toLowerCase() !== email.toLowerCase()
       );
 
       console.log(`[CONTACT] Found ${generalSubscribers.length} general subscribers to notify (excluding ${email})`);

@@ -1,38 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { sendEmail } from "@/lib/services/email";
-import { AdminUser } from "@/lib/types/admin";
 import bcrypt from "bcryptjs";
-
-const ADMIN_DATA_PATH = path.join(process.cwd(), "lib/data/admin-data.json");
-const FIRST_LOGIN_PASSWORDS_PATH = path.join(process.cwd(), "lib/data/first-login-passwords.json");
-
-function readAdminData() {
-  try {
-    const data = fs.readFileSync(ADMIN_DATA_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { users: [], settings: {} };
-  }
-}
-
-function writeAdminData(data: any) {
-  fs.writeFileSync(ADMIN_DATA_PATH, JSON.stringify(data, null, 2), "utf8");
-}
-
-function readFirstLoginPasswords() {
-  try {
-    const data = fs.readFileSync(FIRST_LOGIN_PASSWORDS_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { passwords: [] };
-  }
-}
-
-function writeFirstLoginPasswords(data: any) {
-  fs.writeFileSync(FIRST_LOGIN_PASSWORDS_PATH, JSON.stringify(data, null, 2), "utf8");
-}
+import { getAllAdminUsers, getSystemSettings, createFirstLoginPassword, deleteExpiredFirstLoginPasswords } from "@/lib/db/admin";
 
 function generateRandomPassword(): string {
   const length = 16;
@@ -67,10 +36,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = readAdminData();
+    const allUsers = getAllAdminUsers();
 
     // Check if users already exist
-    if (data.users.length > 0) {
+    if (allUsers.length > 0) {
       return NextResponse.json(
         { error: "Admin users already exist. Please use regular login." },
         { status: 403 }
@@ -78,7 +47,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user already exists with this email
-    const existingUser = data.users.find((u: AdminUser) => u.email.toLowerCase() === email.toLowerCase());
+    const existingUser = allUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
     if (existingUser) {
       return NextResponse.json(
         { error: "User with this email already exists" },
@@ -86,28 +55,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Clean up expired passwords
+    deleteExpiredFirstLoginPasswords();
+
     // Generate random password
     const generatedPassword = generateRandomPassword();
     const passwordHash = await bcrypt.hash(generatedPassword, 10);
 
-    // Store password temporarily (will be verified later)
-    const passwordsData = readFirstLoginPasswords();
-    passwordsData.passwords = passwordsData.passwords.filter((p: any) => {
-      // Remove passwords older than 1 hour
-      return new Date(p.createdAt).getTime() > Date.now() - 60 * 60 * 1000;
-    });
-
-    passwordsData.passwords.push({
-      email: email.toLowerCase(),
-      password: generatedPassword,
-      passwordHash,
-      createdAt: new Date().toISOString(),
-    });
-
-    writeFirstLoginPasswords(passwordsData);
+    // Store password temporarily
+    createFirstLoginPassword(email, generatedPassword, passwordHash);
 
     // Send password via email
-    const emailSettings = data.settings?.email;
+    const settings = getSystemSettings();
+    const emailSettings = settings.email;
+    
     if (emailSettings?.enabled) {
       try {
         const emailResult = await sendEmail({
@@ -121,10 +82,10 @@ export async function POST(request: NextRequest) {
               <strong>${generatedPassword}</strong>
             </div>
             <p><strong>Güvenlik Uyarısı:</strong> Bu şifreyi kimseyle paylaşmayın. Şifreyi doğruladıktan sonra yeni bir şifre belirlemeniz gerekecektir.</p>
-            <p>Şifreyi doğrulamak için: <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://emr.cemorion.com'}/admin/first-login">İlk Giriş Sayfası</a></p>
+            <p>Şifreyi doğrulamak için: <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://teknoritma.com.tr'}/admin/first-login">İlk Giriş Sayfası</a></p>
             <p>Teşekkürler,<br>Teknoritma</p>
           `,
-          text: `Teknoritma Admin Panel - İlk Giriş Şifreniz\n\nMerhaba,\n\nTeknoritma Admin Panel'e ilk giriş için şifreniz oluşturuldu:\n\n${generatedPassword}\n\nGüvenlik Uyarısı: Bu şifreyi kimseyle paylaşmayın. Şifreyi doğruladıktan sonra yeni bir şifre belirlemeniz gerekecektir.\n\nŞifreyi doğrulamak için: ${process.env.NEXT_PUBLIC_SITE_URL || 'https://emr.cemorion.com'}/admin/first-login\n\nTeşekkürler,\nTeknoritma`,
+          text: `Teknoritma Admin Panel - İlk Giriş Şifreniz\n\nMerhaba,\n\nTeknoritma Admin Panel'e ilk giriş için şifreniz oluşturuldu:\n\n${generatedPassword}\n\nGüvenlik Uyarısı: Bu şifreyi kimseyle paylaşmayın. Şifreyi doğruladıktan sonra yeni bir şifre belirlemeniz gerekecektir.\n\nŞifreyi doğrulamak için: ${process.env.NEXT_PUBLIC_SITE_URL || 'https://teknoritma.com.tr'}/admin/first-login\n\nTeşekkürler,\nTeknoritma`,
         });
 
         if (!emailResult.success) {
@@ -161,12 +122,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-
-
-
-
-
-
-
-

@@ -16,7 +16,10 @@ export default function StoriesPageEn() {
 
   const fetchContent = async () => {
     try {
-      const response = await fetch("/api/careers/content");
+      // Add cache-busting timestamp to prevent browser cache
+      const response = await fetch(`/api/careers/content?t=${Date.now()}`, {
+        cache: "no-store",
+      });
       const data = await response.json();
       setContent(data.content);
     } catch (error) {

@@ -1,11 +1,11 @@
 import { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
-import fs from "fs";
-import path from "path";
 import { AdminUser } from "@/lib/types/admin";
+import {
+  getAdminUserById,
+} from "@/lib/db/admin";
 
 const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
-const ADMIN_DATA_PATH = path.join(process.cwd(), "lib/data/admin-data.json");
 
 async function verifyToken(request: NextRequest) {
   const token = request.cookies.get("admin_token")?.value;
@@ -22,15 +22,6 @@ async function verifyToken(request: NextRequest) {
   }
 }
 
-function readAdminData() {
-  try {
-    const data = fs.readFileSync(ADMIN_DATA_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { users: [], settings: {} };
-  }
-}
-
 export async function verifyKnowledgeBaseRole(
   request: NextRequest
 ): Promise<{ isAuthorized: boolean; error?: string; user?: AdminUser }> {
@@ -39,8 +30,7 @@ export async function verifyKnowledgeBaseRole(
     return { isAuthorized: false, error: "Unauthorized" };
   }
 
-  const adminData = readAdminData();
-  const user = adminData.users.find((u: AdminUser) => u.id === payload.userId);
+  const user = getAdminUserById(payload.userId as string);
 
   if (!user) {
     return { isAuthorized: false, error: "User not found" };
@@ -62,8 +52,7 @@ export async function verifySarusHubRole(
     return { isAuthorized: false, error: "Unauthorized" };
   }
 
-  const adminData = readAdminData();
-  const user = adminData.users.find((u: AdminUser) => u.id === payload.userId);
+  const user = getAdminUserById(payload.userId as string);
 
   if (!user) {
     return { isAuthorized: false, error: "User not found" };
@@ -85,8 +74,7 @@ export async function verifyAdminRole(
     return { isAuthorized: false, error: "Unauthorized" };
   }
 
-  const adminData = readAdminData();
-  const user = adminData.users.find((u: AdminUser) => u.id === payload.userId);
+  const user = getAdminUserById(payload.userId as string);
 
   if (!user) {
     return { isAuthorized: false, error: "User not found" };
@@ -108,8 +96,7 @@ export async function verifyIKOrAdminRole(
     return { authorized: false, error: "Unauthorized" };
   }
 
-  const adminData = readAdminData();
-  const user = adminData.users.find((u: AdminUser) => u.id === payload.userId);
+  const user = getAdminUserById(payload.userId as string);
 
   if (!user) {
     return { authorized: false, error: "User not found" };
@@ -131,8 +118,7 @@ export async function getCurrentUser(
     return { error: "Unauthorized" };
   }
 
-  const adminData = readAdminData();
-  const user = adminData.users.find((u: AdminUser) => u.id === payload.userId);
+  const user = getAdminUserById(payload.userId as string);
 
   if (!user) {
     return { error: "User not found" };
@@ -140,5 +126,3 @@ export async function getCurrentUser(
 
   return { user };
 }
-
-

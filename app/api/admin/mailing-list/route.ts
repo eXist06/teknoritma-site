@@ -1,19 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-import { MailingList } from "@/lib/types/mailing";
 import { verifyAdminRole } from "@/lib/utils/role-verification";
-
-const MAILING_LIST_PATH = path.join(process.cwd(), "lib/data/mailing-list.json");
-
-function readMailingList(): MailingList {
-  try {
-    const data = fs.readFileSync(MAILING_LIST_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { subscribers: [] };
-  }
-}
+import { getAllMailingSubscribers, deleteMailingSubscriber } from "@/lib/db/mailing";
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,8 +13,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const mailingList = readMailingList();
-    return NextResponse.json({ subscribers: mailingList.subscribers });
+    const subscribers = getAllMailingSubscribers();
+    return NextResponse.json({ subscribers });
   } catch (error) {
     console.error("Error reading mailing list:", error);
     return NextResponse.json(
@@ -58,16 +45,13 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const mailingList = readMailingList();
-    mailingList.subscribers = mailingList.subscribers.filter(
-      (s) => s.id !== id
-    );
-
-    fs.writeFileSync(
-      MAILING_LIST_PATH,
-      JSON.stringify(mailingList, null, 2),
-      "utf8"
-    );
+    const deleted = deleteMailingSubscriber(id);
+    if (!deleted) {
+      return NextResponse.json(
+        { error: "Subscriber not found" },
+        { status: 404 }
+      );
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -78,12 +62,3 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
-
-
-
-
-
-
-
-
-

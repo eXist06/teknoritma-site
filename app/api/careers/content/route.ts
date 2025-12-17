@@ -1,23 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { CareersContent } from "@/lib/types/careers";
 import { getCurrentUser } from "@/lib/utils/role-verification";
-
-const dataFilePath = path.join(process.cwd(), "lib/data/careers-data.json");
-
-function readData() {
-  try {
-    const fileContents = fs.readFileSync(dataFilePath, "utf8");
-    return JSON.parse(fileContents);
-  } catch (error) {
-    return { jobs: [], content: {} };
-  }
-}
-
-function writeData(data: any) {
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), "utf8");
-}
+import { getCareersContent, updateCareersContent } from "@/lib/db/careers";
 
 async function verifyIKOrAdminRole(request: NextRequest): Promise<{ authorized: boolean; error?: string }> {
   const { user, error } = await getCurrentUser(request);
@@ -35,8 +19,17 @@ async function verifyIKOrAdminRole(request: NextRequest): Promise<{ authorized: 
 
 export async function GET() {
   try {
-    const data = readData();
-    return NextResponse.json({ content: data.content || {} });
+    const content = getCareersContent();
+    return NextResponse.json(
+      { content: content || {} },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          "Pragma": "no-cache",
+          "Expires": "0",
+        },
+      }
+    );
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch content" }, { status: 500 });
   }
@@ -50,23 +43,11 @@ export async function PUT(request: NextRequest) {
     }
     
     const content: CareersContent = await request.json();
-    
-    const data = readData();
-    data.content = content;
-    writeData(data);
+    updateCareersContent(content);
     
     return NextResponse.json({ content });
   } catch (error) {
+    console.error("Error updating content:", error);
     return NextResponse.json({ error: "Failed to update content" }, { status: 500 });
   }
 }
-
-
-
-
-
-
-
-
-
-

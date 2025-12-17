@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
-import fs from "fs";
-import path from "path";
+import { getAdminUserById } from "@/lib/db/admin";
 
-const ADMIN_DATA_PATH = path.join(process.cwd(), "lib/data/admin-data.json");
 const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
 
 async function verifyToken(request: NextRequest) {
@@ -21,15 +19,6 @@ async function verifyToken(request: NextRequest) {
   }
 }
 
-function readAdminData() {
-  try {
-    const data = fs.readFileSync(ADMIN_DATA_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { users: [], settings: {} };
-  }
-}
-
 export async function GET(request: NextRequest) {
   try {
     const payload = await verifyToken(request);
@@ -37,8 +26,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const data = readAdminData();
-    const user = data.users.find((u: any) => u.id === payload.userId);
+    const user = getAdminUserById(payload.userId as string);
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -52,12 +40,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-
-
-
-
-
-
-
-
-

@@ -42,7 +42,10 @@ export default function CareersAdmin() {
 
   const fetchContent = async () => {
     try {
-      const response = await fetch("/api/careers/content");
+      // Add cache-busting timestamp to prevent browser cache
+      const response = await fetch(`/api/careers/content?t=${Date.now()}`, {
+        cache: "no-store",
+      });
       const data = await response.json();
       setContent(data.content);
     } catch (error) {
@@ -98,7 +101,12 @@ export default function CareersAdmin() {
 
       if (response.ok) {
         setIsEditingContent(false);
+        // Refresh content after save
+        await fetchContent();
         alert("Content saved successfully!");
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to save content: ${errorData.error || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Failed to save content:", error);

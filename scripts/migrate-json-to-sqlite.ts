@@ -435,7 +435,34 @@ async function migrateSarusHubFromOldDb() {
   }
 }
 
+async function shouldSkipMigration(): Promise<boolean> {
+  try {
+    const db = getDatabase();
+    // Check if database already has migrated data
+    const adminUsersCount = db.prepare("SELECT COUNT(*) as count FROM admin_users").get() as { count: number };
+    const settingsCount = db.prepare("SELECT COUNT(*) as count FROM system_settings").get() as { count: number };
+    
+    db.close();
+    
+    // If database has data, migration already completed
+    if (adminUsersCount.count > 0 || settingsCount.count > 0) {
+      return true;
+    }
+    
+    return false;
+  } catch (error) {
+    // If database doesn't exist or error, don't skip migration
+    return false;
+  }
+}
+
 async function migrate() {
+  // Check if migration should be skipped
+  if (await shouldSkipMigration()) {
+    console.log("ℹ️  Migration skipped - database already has data");
+    return;
+  }
+
   console.log("🚀 Starting JSON to SQLite migration...\n");
 
   // Initialize database schema

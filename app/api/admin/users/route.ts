@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
-import fs from "fs";
-import path from "path";
 import bcrypt from "bcryptjs";
 import { AdminUser, UserRole } from "@/lib/types/admin";
 import { runMigrationIfNeeded } from "@/lib/db/migration";
+import {
+  getAllAdminUsers,
+  getAdminUserById,
+  getAdminUserByEmail,
+  getAdminUserByUsername,
+  createAdminUser,
+  updateAdminUser,
+  deleteAdminUser,
+} from "@/lib/db/admin";
 
 // Run migration on first import
 if (typeof window === "undefined") {
@@ -12,7 +19,6 @@ if (typeof window === "undefined") {
 }
 
 const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
-const ADMIN_DATA_PATH = path.join(process.cwd(), "lib/data/admin-data.json");
 
 async function verifyToken(request: NextRequest) {
   const token = request.cookies.get("admin_token")?.value;
@@ -29,27 +35,13 @@ async function verifyToken(request: NextRequest) {
   }
 }
 
-function readAdminData() {
-  try {
-    const data = fs.readFileSync(ADMIN_DATA_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { users: [], settings: {} };
-  }
-}
-
-function writeAdminData(data: any) {
-  fs.writeFileSync(ADMIN_DATA_PATH, JSON.stringify(data, null, 2), "utf8");
-}
-
 async function verifyAdminRole(request: NextRequest): Promise<{ isAdmin: boolean; error?: string }> {
   const payload = await verifyToken(request);
   if (!payload) {
     return { isAdmin: false, error: "No token payload" };
   }
 
-  const adminData = readAdminData();
-  const user = adminData.users.find((u: AdminUser) => u.id === payload.userId);
+  const user = getAdminUserById(payload.userId as string);
   
   if (!user) {
     return { isAdmin: false, error: `User not found with ID: ${payload.userId}` };
@@ -69,7 +61,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Only admin can view all users
     const adminCheck = await verifyAdminRole(request);
     if (!adminCheck.isAdmin) {
       console.error("[USERS API] Admin check failed:", adminCheck.error);
@@ -79,11 +70,11 @@ export async function GET(request: NextRequest) {
       }, { status: 403 });
     }
 
-    const adminData = readAdminData();
+    const users = getAllAdminUsers();
     // Don't send password hashes
-    const users = adminData.users.map(({ passwordHash, ...user }: { passwordHash: string; [key: string]: any }) => user);
+    const usersWithoutPasswords = users.map(({ passwordHash, ...user }) => user);
     
-    return NextResponse.json({ users });
+    return NextResponse.json({ users: usersWithoutPasswords });
   } catch (error) {
     console.error("Error reading users:", error);
     return NextResponse.json(
@@ -100,7 +91,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Only admin can create users
     const adminCheck = await verifyAdminRole(request);
     if (!adminCheck.isAdmin) {
       console.error("[USERS API] Admin check failed:", adminCheck.error);
@@ -127,10 +117,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const adminData = readAdminData();
-
     // Check if username already exists
-    if (adminData.users.some((u: AdminUser) => u.username === username)) {
+    if (getAdminUserByUsername(username)) {
       return NextResponse.json(
         { error: "Username already exists" },
         { status: 400 }
@@ -138,7 +126,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if email already exists
-    if (adminData.users.some((u: AdminUser) => u.email.toLowerCase() === email.toLowerCase())) {
+    if (getAdminUserByEmail(email)) {
       return NextResponse.json(
         { error: "Email already exists" },
         { status: 400 }
@@ -146,19 +134,13 @@ export async function POST(request: NextRequest) {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const newUser: AdminUser = {
-      id: Date.now().toString(),
+    const newUser = createAdminUser({
       username,
       passwordHash,
       email: email.toLowerCase(),
       role: role as UserRole,
       isFirstLogin: true,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    adminData.users.push(newUser);
-    writeAdminData(adminData);
+    });
 
     // Don't send password hash
     const { passwordHash: _, ...userWithoutPassword } = newUser;
@@ -183,7 +165,6 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Only admin can update users
     const adminCheck = await verifyAdminRole(request);
     if (!adminCheck.isAdmin) {
       console.error("[USERS API] Admin check failed:", adminCheck.error);
@@ -203,62 +184,55 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const adminData = readAdminData();
-    const userIndex = adminData.users.findIndex((u: AdminUser) => u.id === id);
-
-    if (userIndex === -1) {
+    const existingUser = getAdminUserById(id);
+    if (!existingUser) {
       return NextResponse.json(
         { error: "User not found" },
         { status: 404 }
       );
     }
 
-    const user = adminData.users[userIndex];
+    const updates: Partial<AdminUser> = {};
 
-    // Update fields
-    if (username && username !== user.username) {
-      // Check if new username already exists
-      if (adminData.users.some((u: AdminUser) => u.username === username && u.id !== id)) {
+    if (username && username !== existingUser.username) {
+      if (getAdminUserByUsername(username)) {
         return NextResponse.json(
           { error: "Username already exists" },
           { status: 400 }
         );
       }
-      user.username = username;
+      updates.username = username;
     }
 
-    if (email && email.toLowerCase() !== user.email.toLowerCase()) {
-      // Check if new email already exists
-      if (adminData.users.some((u: AdminUser) => u.email.toLowerCase() === email.toLowerCase() && u.id !== id)) {
+    if (email && email.toLowerCase() !== existingUser.email.toLowerCase()) {
+      if (getAdminUserByEmail(email)) {
         return NextResponse.json(
           { error: "Email already exists" },
           { status: 400 }
         );
       }
-      user.email = email.toLowerCase();
+      updates.email = email.toLowerCase();
     }
 
-    if (role && role !== user.role) {
+    if (role && role !== existingUser.role) {
       if (!["admin", "ik", "knowledge-base", "sarus-hub"].includes(role)) {
         return NextResponse.json(
           { error: "Invalid role. Must be: admin, ik, knowledge-base, or sarus-hub" },
           { status: 400 }
         );
       }
-      user.role = role as UserRole;
+      updates.role = role as UserRole;
     }
 
     if (password) {
-      user.passwordHash = await bcrypt.hash(password, 10);
-      user.isFirstLogin = false; // Reset password means they've logged in
+      updates.passwordHash = await bcrypt.hash(password, 10);
+      updates.isFirstLogin = false;
     }
 
-    user.updatedAt = new Date().toISOString();
-    adminData.users[userIndex] = user;
-    writeAdminData(adminData);
+    const updatedUser = updateAdminUser(id, updates);
 
     // Don't send password hash
-    const { passwordHash: _, ...userWithoutPassword } = user;
+    const { passwordHash: _, ...userWithoutPassword } = updatedUser;
 
     return NextResponse.json({
       success: true,
@@ -280,7 +254,6 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Only admin can delete users
     const adminCheck = await verifyAdminRole(request);
     if (!adminCheck.isAdmin) {
       console.error("[USERS API] Admin check failed:", adminCheck.error);
@@ -300,8 +273,6 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const adminData = readAdminData();
-    
     // Prevent deleting yourself
     if (id === payload.userId) {
       return NextResponse.json(
@@ -310,16 +281,13 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const userIndex = adminData.users.findIndex((u: AdminUser) => u.id === id);
-    if (userIndex === -1) {
+    const deleted = deleteAdminUser(id);
+    if (!deleted) {
       return NextResponse.json(
         { error: "User not found" },
         { status: 404 }
       );
     }
-
-    adminData.users.splice(userIndex, 1);
-    writeAdminData(adminData);
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -330,4 +298,3 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
-

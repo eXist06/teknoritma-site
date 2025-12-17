@@ -1,22 +1,12 @@
-import fs from "fs";
-import path from "path";
-import { EmailVerification, EmailVerifications } from "@/lib/types/email-queue";
+import { EmailVerification } from "@/lib/types/email-queue";
 import { sendEmail } from "./email";
-
-const VERIFICATIONS_PATH = path.join(process.cwd(), "lib/data/email-verifications.json");
-
-function readVerifications(): EmailVerifications {
-  try {
-    const data = fs.readFileSync(VERIFICATIONS_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { verifications: [] };
-  }
-}
-
-function writeVerifications(data: EmailVerifications) {
-  fs.writeFileSync(VERIFICATIONS_PATH, JSON.stringify(data, null, 2), "utf8");
-}
+import {
+  getAllEmailVerifications,
+  getEmailVerificationByEmailAndFormType,
+  createEmailVerification,
+  updateEmailVerification,
+  deleteExpiredEmailVerifications,
+} from "@/lib/db/email-verification";
 
 export function generateVerificationCode(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -26,28 +16,14 @@ export async function sendVerificationCode(
   email: string,
   formType: "demo" | "contact" | "careers" = "demo"
 ): Promise<{ success: boolean; error?: string }> {
-  const verifications = readVerifications();
+  // Clean up expired verifications
+  deleteExpiredEmailVerifications();
   
-  // Remove expired verifications and old verifications without formType
-  const now = new Date();
-  verifications.verifications = verifications.verifications.filter(
-    (v) => {
-      // Remove expired or verified
-      if (new Date(v.expiresAt) <= now || v.verified) {
-        return false;
-      }
-      // Remove old verifications without formType (migration)
-      if (!('formType' in v)) {
-        return false;
-      }
-      return true;
-    }
-  );
-
   // Check if there's a recent verification for this form type (within last 2 minutes)
-  const recentVerification = verifications.verifications.find(
+  const now = new Date();
+  const allVerifications = getAllEmailVerifications(formType);
+  const recentVerification = allVerifications.find(
     (v) => v.email.toLowerCase() === email.toLowerCase() && 
-           v.formType === formType &&
            new Date(v.createdAt).getTime() > now.getTime() - 120000
   );
 
@@ -61,8 +37,7 @@ export async function sendVerificationCode(
   const code = generateVerificationCode();
   const expiresAt = new Date(now.getTime() + 15 * 60 * 1000); // 15 minutes
 
-  const verification: EmailVerification = {
-    id: Date.now().toString(),
+  const verification = createEmailVerification({
     email: email.toLowerCase(),
     code,
     formType,
@@ -70,10 +45,7 @@ export async function sendVerificationCode(
     expiresAt: expiresAt.toISOString(),
     verified: false,
     attempts: 0,
-  };
-
-  verifications.verifications.push(verification);
-  writeVerifications(verifications);
+  });
 
   // Form tipine göre mesaj içeriği
   const formMessages = {
@@ -125,8 +97,8 @@ export async function sendVerificationCode(
 
   if (!emailResult.success) {
     // Remove verification if email failed
-    verifications.verifications = verifications.verifications.filter((v) => v.id !== verification.id);
-    writeVerifications(verifications);
+    const { deleteEmailVerification } = await import("@/lib/db/email-verification");
+    deleteEmailVerification(verification.id);
     const errorMsg = 'error' in emailResult ? emailResult.error : 'Unknown error';
     console.error(`[VERIFICATION] Failed to send ${formType} verification code to ${email}:`, errorMsg);
     return {
@@ -144,20 +116,13 @@ export function verifyCode(
   code: string, 
   formType: "demo" | "contact" | "careers" = "demo"
 ): { success: boolean; error?: string } {
-  const verifications = readVerifications();
   const now = new Date();
 
   console.log(`[VERIFICATION] Verifying ${formType} code for ${email}`);
 
-  const verification = verifications.verifications.find(
-    (v) =>
-      v.email.toLowerCase() === email.toLowerCase() &&
-      ('formType' in v ? v.formType === formType : false) && // Check formType exists and matches
-      !v.verified &&
-      new Date(v.expiresAt) > now
-  );
+  const verification = getEmailVerificationByEmailAndFormType(email, formType);
 
-  if (!verification) {
+  if (!verification || new Date(verification.expiresAt) <= now) {
     console.log(`[VERIFICATION] No valid ${formType} verification found for ${email}`);
     return {
       success: false,
@@ -165,27 +130,25 @@ export function verifyCode(
     };
   }
 
-  verification.attempts += 1;
+  const updatedAttempts = verification.attempts + 1;
 
-  if (verification.attempts > 5) {
-    verification.verified = false;
-    writeVerifications(verifications);
+  if (updatedAttempts > 5) {
+    updateEmailVerification(verification.id, { verified: false, attempts: updatedAttempts });
     return {
       success: false,
       error: "Too many attempts. Please request a new code",
     };
   }
 
-  if (verification.code !== code) {
-    writeVerifications(verifications);
+  if (verification.code !== code.trim()) {
+    updateEmailVerification(verification.id, { attempts: updatedAttempts });
     return {
       success: false,
       error: "Invalid verification code",
     };
   }
 
-  verification.verified = true;
-  writeVerifications(verifications);
+  updateEmailVerification(verification.id, { verified: true, attempts: updatedAttempts });
 
   return { success: true };
 }

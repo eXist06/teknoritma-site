@@ -1,38 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { writeFile } from "fs/promises";
 import { existsSync, mkdirSync } from "fs";
-import { addToQueue, processQueueItem, getQueue } from "@/lib/services/email-queue";
+import path from "path";
+import { addToQueue } from "@/lib/services/email-queue";
 import { sendEmail } from "@/lib/services/email";
 import { verifyCode } from "@/lib/services/email-verification";
-import { MailingList } from "@/lib/types/mailing";
-
-const MAILING_LIST_PATH = path.join(process.cwd(), "lib/data/mailing-list.json");
-
-function readMailingList(): MailingList {
-  try {
-    const data = fs.readFileSync(MAILING_LIST_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { subscribers: [] };
-  }
-}
-
-const dataFilePath = path.join(process.cwd(), "lib/data/careers-data.json");
-
-function readData() {
-  try {
-    const fileContents = fs.readFileSync(dataFilePath, "utf8");
-    return JSON.parse(fileContents);
-  } catch (error) {
-    return { jobs: [], content: {}, talentNetwork: [] };
-  }
-}
-
-function writeData(data: any) {
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), "utf8");
-}
+import { getMailingSubscribersByCategory } from "@/lib/db/mailing";
+import { createTalentNetworkEntry } from "@/lib/db/careers";
 
 export async function POST(request: NextRequest) {
   try {
@@ -68,7 +42,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate and save CV file if provided
-    let cvFilePath: string | null = null;
     let cvFileName: string | null = null;
     
     if (cvFile && cvFile.size > 0) {
@@ -93,7 +66,7 @@ export async function POST(request: NextRequest) {
       const timestamp = Date.now();
       const originalName = cvFile.name.replace(/[^a-zA-Z0-9.-]/g, "_");
       cvFileName = `${timestamp}_${originalName}`;
-      cvFilePath = path.join(uploadsDir, cvFileName);
+      const cvFilePath = path.join(uploadsDir, cvFileName);
 
       // Save file
       const bytes = await cvFile.arrayBuffer();
@@ -101,42 +74,25 @@ export async function POST(request: NextRequest) {
       await writeFile(cvFilePath, buffer);
     }
 
-    const data = readData();
-    if (!data.talentNetwork) {
-      data.talentNetwork = [];
-    }
-
-    const newEntry = {
-      id: Date.now().toString(),
-      firstName: firstName || "",
-      lastName: lastName || "",
+    // Save to database
+    createTalentNetworkEntry({
+      firstName: firstName || undefined,
+      lastName: lastName || undefined,
       email,
-      phone: phone || "",
-      jobCategory: jobCategory || "",
-      city: city || "",
-      remoteWorkplace: remoteWorkplace || "",
-      cvFileName: cvFileName || null,
-      createdAt: new Date().toISOString(),
-    };
-
-    data.talentNetwork.push(newEntry);
-    writeData(data);
+      phone: phone || undefined,
+      jobCategory: jobCategory || undefined,
+      city: city || undefined,
+      remoteWorkplace: remoteWorkplace || undefined,
+      cvFileName: cvFileName || undefined,
+    });
 
     // Collect queue item IDs to process
     const queueItemIds: string[] = [];
 
     // Add notifications to queue for all IK category subscribers
     try {
-      const mailingList = readMailingList();
-      const ikSubscribers = mailingList.subscribers.filter(
-        (subscriber) => {
-          const hasIkCategory = Array.isArray(subscriber.category) 
-            ? subscriber.category.includes("ik")
-            : subscriber.category === "ik";
-          return hasIkCategory && 
-            subscriber.active && 
-            subscriber.email.toLowerCase() !== email.toLowerCase();
-        }
+      const ikSubscribers = getMailingSubscribersByCategory("ik").filter(
+        (subscriber) => subscriber.email.toLowerCase() !== email.toLowerCase()
       );
 
       console.log(`[TALENT NETWORK] Found ${ikSubscribers.length} IK subscribers to notify`);
@@ -169,9 +125,9 @@ export async function POST(request: NextRequest) {
 
               console.log(`[TALENT NETWORK] Attempting to send notification to ${subscriber.email} (${index + 1}/${ikSubscribers.length})...`);
 
-              const attachments = cvFilePath && cvFileName ? [{
+              const attachments = cvFileName ? [{
                 filename: cvFileName,
-                path: cvFilePath,
+                path: path.join(process.cwd(), "public", "uploads", "talent-network", cvFileName),
               }] : undefined;
 
               const result = await sendEmail({
@@ -242,11 +198,9 @@ export async function POST(request: NextRequest) {
       console.error("[TALENT NETWORK] ❌ Error adding notifications to queue:", notificationError);
     }
 
-
     return NextResponse.json({ success: true, message: "Successfully joined talent network" });
   } catch (error) {
     console.error("Failed to save talent network entry:", error);
     return NextResponse.json({ error: "Failed to save entry" }, { status: 500 });
   }
 }
-

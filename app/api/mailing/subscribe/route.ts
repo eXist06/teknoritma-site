@@ -1,23 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { MailingSubscriber } from "@/lib/types/mailing";
 import { sendEmail } from "@/lib/services/email";
-
-const MAILING_LIST_PATH = path.join(process.cwd(), "lib/data/mailing-list.json");
-
-function readMailingList() {
-  try {
-    const data = fs.readFileSync(MAILING_LIST_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { subscribers: [] };
-  }
-}
-
-function writeMailingList(data: any) {
-  fs.writeFileSync(MAILING_LIST_PATH, JSON.stringify(data, null, 2), "utf8");
-}
+import { getMailingSubscriberByEmail, createMailingSubscriber, updateMailingSubscriber } from "@/lib/db/mailing";
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,55 +18,50 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const mailingList = readMailingList();
-    console.log("[MAILING SUBSCRIBE] Current subscribers count:", mailingList.subscribers.length);
-    
     // Determine category based on source if not provided
     let determinedCategory: "ik" | "general" = category || 
       (source === "talent-network" ? "ik" : "general");
 
     // Check if already subscribed
-    const existingIndex = mailingList.subscribers.findIndex(
-      (s: MailingSubscriber) => s.email.toLowerCase() === email.toLowerCase()
-    );
+    const existing = getMailingSubscriberByEmail(email);
 
     // Merge tags and remove duplicates
-    const existingTags = existingIndex >= 0 ? mailingList.subscribers[existingIndex].tags || [] : [];
+    const existingTags = existing?.tags || [];
     const mergedTags = [...existingTags, ...tags];
     const uniqueTags = Array.from(new Set(mergedTags.filter(Boolean)));
 
     // If existing subscriber, preserve their category unless explicitly changed
-    const finalCategory = existingIndex >= 0 && !category 
-      ? mailingList.subscribers[existingIndex].category 
+    const finalCategory = existing && !category 
+      ? existing.category 
       : determinedCategory;
 
-    const subscriber: MailingSubscriber = {
-      id: existingIndex >= 0 
-        ? mailingList.subscribers[existingIndex].id 
-        : Date.now().toString(),
-      email: email.toLowerCase(),
-      name: name || mailingList.subscribers[existingIndex]?.name,
-      organization: organization || mailingList.subscribers[existingIndex]?.organization,
-      subscribedAt: existingIndex >= 0 
-        ? mailingList.subscribers[existingIndex].subscribedAt 
-        : new Date().toISOString(),
-      source,
-      category: finalCategory,
-      tags: uniqueTags,
-      active: true,
-    };
+    let subscriber: MailingSubscriber;
+    const isNewSubscriber = !existing;
 
-    if (existingIndex >= 0) {
-      mailingList.subscribers[existingIndex] = subscriber;
+    if (existing) {
+      subscriber = updateMailingSubscriber(existing.id, {
+        name: name || existing.name,
+        organization: organization || existing.organization,
+        source,
+        category: finalCategory,
+        tags: uniqueTags,
+        active: true,
+      });
     } else {
-      mailingList.subscribers.push(subscriber);
+      subscriber = createMailingSubscriber({
+        email: email.toLowerCase(),
+        name: name || undefined,
+        organization: organization || undefined,
+        source,
+        category: finalCategory,
+        tags: uniqueTags,
+        active: true,
+      });
     }
 
-    writeMailingList(mailingList);
     console.log("[MAILING SUBSCRIBE] ✅ Successfully saved subscriber:", subscriber.email);
 
     // Send welcome email ONLY for new subscribers (not for existing ones being updated)
-    const isNewSubscriber = existingIndex < 0;
     if (isNewSubscriber) {
       try {
         const welcomeResult = await sendEmail({
@@ -124,4 +103,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

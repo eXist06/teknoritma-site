@@ -1,23 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { JobPosting } from "@/lib/types/careers";
 import { getCurrentUser } from "@/lib/utils/role-verification";
-
-const dataFilePath = path.join(process.cwd(), "lib/data/careers-data.json");
-
-function readData() {
-  try {
-    const fileContents = fs.readFileSync(dataFilePath, "utf8");
-    return JSON.parse(fileContents);
-  } catch (error) {
-    return { jobs: [], content: {} };
-  }
-}
-
-function writeData(data: any) {
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), "utf8");
-}
+import {
+  getAllCareersJobs,
+  createCareersJob,
+  updateCareersJob,
+  deleteCareersJob,
+} from "@/lib/db/careers";
 
 async function verifyIKOrAdminRole(request: NextRequest): Promise<{ authorized: boolean; error?: string }> {
   const { user, error } = await getCurrentUser(request);
@@ -35,14 +24,10 @@ async function verifyIKOrAdminRole(request: NextRequest): Promise<{ authorized: 
 
 export async function GET(request: NextRequest) {
   try {
-    const data = readData();
     const { searchParams } = new URL(request.url);
     const activeOnly = searchParams.get("active") === "true";
     
-    let jobs = data.jobs || [];
-    if (activeOnly) {
-      jobs = jobs.filter((job: JobPosting) => job.isActive);
-    }
+    const jobs = getAllCareersJobs(activeOnly);
     
     return NextResponse.json({ jobs });
   } catch (error) {
@@ -59,20 +44,17 @@ export async function POST(request: NextRequest) {
     
     const job: JobPosting = await request.json();
     
-    const data = readData();
-    const newJob: JobPosting = {
-      ...job,
-      id: job.id || `job-${Date.now()}`,
-      createdAt: job.createdAt || new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    // Extract fields excluding id, createdAt, updatedAt (these are handled by createCareersJob)
+    const { id, createdAt, updatedAt, ...jobData } = job;
     
-    data.jobs = data.jobs || [];
-    data.jobs.push(newJob);
-    writeData(data);
+    const newJob = createCareersJob({
+      ...jobData,
+      id: id || undefined,
+    });
     
     return NextResponse.json({ job: newJob });
   } catch (error) {
+    console.error("Error creating job:", error);
     return NextResponse.json({ error: "Failed to create job" }, { status: 500 });
   }
 }
@@ -86,23 +68,15 @@ export async function PUT(request: NextRequest) {
     
     const job: JobPosting = await request.json();
     
-    const data = readData();
-    data.jobs = data.jobs || [];
-    const index = data.jobs.findIndex((j: JobPosting) => j.id === job.id);
-    
-    if (index === -1) {
-      return NextResponse.json({ error: "Job not found" }, { status: 404 });
+    if (!job.id) {
+      return NextResponse.json({ error: "Job ID is required" }, { status: 400 });
     }
     
-    data.jobs[index] = {
-      ...job,
-      updatedAt: new Date().toISOString(),
-    };
+    const updatedJob = updateCareersJob(job.id, job);
     
-    writeData(data);
-    
-    return NextResponse.json({ job: data.jobs[index] });
+    return NextResponse.json({ job: updatedJob });
   } catch (error) {
+    console.error("Error updating job:", error);
     return NextResponse.json({ error: "Failed to update job" }, { status: 500 });
   }
 }
@@ -121,23 +95,14 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "Job ID required" }, { status: 400 });
     }
     
-    const data = readData();
-    data.jobs = data.jobs || [];
-    data.jobs = data.jobs.filter((j: JobPosting) => j.id !== id);
-    writeData(data);
+    const deleted = deleteCareersJob(id);
+    if (!deleted) {
+      return NextResponse.json({ error: "Job not found" }, { status: 404 });
+    }
     
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Error deleting job:", error);
     return NextResponse.json({ error: "Failed to delete job" }, { status: 500 });
   }
 }
-
-
-
-
-
-
-
-
-
-

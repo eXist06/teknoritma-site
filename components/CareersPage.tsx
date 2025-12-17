@@ -69,7 +69,10 @@ export default function CareersPage() {
 
   const fetchContent = async () => {
     try {
-      const response = await fetch("/api/careers/content");
+      // Add cache-busting timestamp to prevent browser cache
+      const response = await fetch(`/api/careers/content?t=${Date.now()}`, {
+        cache: "no-store",
+      });
       const data = await response.json();
       setContent(data.content);
     } catch (error) {
@@ -209,20 +212,26 @@ export default function CareersPage() {
             className="text-center mb-12"
           >
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading mb-4 leading-tight">
-              {language === "en" ? (
-                <>
-                  Let's create a healthier<br />
-                  world together
-                </>
-              ) : (
-                <>
-                  Birlikte daha sağlıklı<br />
-                  bir dünya yaratalım
-                </>
-              )}
+              {content?.hero?.title 
+                ? (language === "en" ? content.hero.titleEn : content.hero.title)
+                : (language === "en" ? (
+                    <>
+                      Let's create a healthier<br />
+                      world together
+                    </>
+                  ) : (
+                    <>
+                      Birlikte daha sağlıklı<br />
+                      bir dünya yaratalım
+                    </>
+                  ))
+              }
             </h1>
             <p className="text-xl md:text-2xl text-neutral-body">
-              {language === "en" ? "Start right here at Teknoritma." : "Teknoritma'da başlayın."}
+              {content?.hero?.subtitle
+                ? (language === "en" ? content.hero.subtitleEn : content.hero.subtitle)
+                : (language === "en" ? "Start right here at Teknoritma." : "Teknoritma'da başlayın.")
+              }
             </p>
           </motion.div>
 

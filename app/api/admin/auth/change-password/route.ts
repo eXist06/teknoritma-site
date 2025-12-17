@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { jwtVerify } from "jose";
-import fs from "fs";
-import path from "path";
+import { getAdminUserById, updateAdminUser } from "@/lib/db/admin";
 
-const ADMIN_DATA_PATH = path.join(process.cwd(), "lib/data/admin-data.json");
 const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
 
 async function verifyToken(request: NextRequest) {
@@ -20,19 +18,6 @@ async function verifyToken(request: NextRequest) {
   } catch {
     return null;
   }
-}
-
-function readAdminData() {
-  try {
-    const data = fs.readFileSync(ADMIN_DATA_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { users: [], settings: {} };
-  }
-}
-
-function writeAdminData(data: any) {
-  fs.writeFileSync(ADMIN_DATA_PATH, JSON.stringify(data, null, 2), "utf8");
 }
 
 export async function POST(request: NextRequest) {
@@ -51,8 +36,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = readAdminData();
-    const user = data.users.find((u: any) => u.id === payload.userId);
+    const user = getAdminUserById(payload.userId as string);
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -81,14 +65,16 @@ export async function POST(request: NextRequest) {
     console.log(`[CHANGE PASSWORD] Updating password for user: ${user.username}, email: ${user.email}`);
 
     // Kullanıcıyı güncelle
-    user.passwordHash = newPasswordHash;
-    user.isFirstLogin = false;
+    const updates: any = {
+      passwordHash: newPasswordHash,
+      isFirstLogin: false,
+    };
+    
     if (email) {
-      user.email = email;
+      updates.email = email.toLowerCase();
     }
-    user.updatedAt = new Date().toISOString();
 
-    writeAdminData(data);
+    updateAdminUser(user.id, updates);
     console.log(`[CHANGE PASSWORD] Password updated successfully for user: ${user.username}`);
 
     return NextResponse.json({ success: true });
@@ -100,4 +86,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

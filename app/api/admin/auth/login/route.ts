@@ -1,20 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { SignJWT } from "jose";
-import fs from "fs";
-import path from "path";
+import { getAllAdminUsers, getAdminUserByUsername } from "@/lib/db/admin";
 
-const ADMIN_DATA_PATH = path.join(process.cwd(), "lib/data/admin-data.json");
 const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
-
-function readAdminData() {
-  try {
-    const data = fs.readFileSync(ADMIN_DATA_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { users: [], settings: {} };
-  }
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,20 +16,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = readAdminData();
+    const allUsers = getAllAdminUsers();
 
     // Check if no users exist - redirect to first login
-    if (data.users.length === 0) {
+    if (allUsers.length === 0) {
       return NextResponse.json(
         { error: "No admin users found. Please use first login page." },
         { status: 403 }
       );
     }
 
-    const user = data.users.find((u: any) => u.username === username);
+    const user = getAdminUserByUsername(username);
 
     if (!user) {
-      console.error(`[LOGIN] User not found: ${username}. Available users:`, data.users.map((u: any) => u.username));
+      console.error(`[LOGIN] User not found: ${username}`);
       // Rate limiting için kısa bir delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return NextResponse.json(
