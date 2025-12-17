@@ -1,29 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose";
 import { sendEmail } from "@/lib/services/email";
-
-const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
-
-async function verifyToken(request: NextRequest) {
-  const token = request.cookies.get("admin_token")?.value;
-  if (!token) return null;
-
-  try {
-    const { payload } = await jwtVerify(
-      token,
-      new TextEncoder().encode(JWT_SECRET)
-    );
-    return payload;
-  } catch {
-    return null;
-  }
-}
+import { verifyAdminRole } from "@/lib/utils/role-verification";
 
 export async function POST(request: NextRequest) {
   try {
-    const payload = await verifyToken(request);
-    if (!payload) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Only admin can send test emails
+    const authCheck = await verifyAdminRole(request);
+    if (!authCheck.isAuthorized) {
+      return NextResponse.json(
+        { error: "Unauthorized. Admin role required." },
+        { status: 403 }
+      );
     }
 
     const { email } = await request.json();

@@ -1,26 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose";
 import fs from "fs";
 import path from "path";
 import { MailingList } from "@/lib/types/mailing";
+import { verifyAdminRole } from "@/lib/utils/role-verification";
 
-const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
 const MAILING_LIST_PATH = path.join(process.cwd(), "lib/data/mailing-list.json");
-
-async function verifyToken(request: NextRequest) {
-  const token = request.cookies.get("admin_token")?.value;
-  if (!token) return null;
-
-  try {
-    const { payload } = await jwtVerify(
-      token,
-      new TextEncoder().encode(JWT_SECRET)
-    );
-    return payload;
-  } catch {
-    return null;
-  }
-}
 
 function readMailingList(): MailingList {
   try {
@@ -33,9 +17,13 @@ function readMailingList(): MailingList {
 
 export async function GET(request: NextRequest) {
   try {
-    const payload = await verifyToken(request);
-    if (!payload) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Only admin can view mailing list
+    const authCheck = await verifyAdminRole(request);
+    if (!authCheck.isAuthorized) {
+      return NextResponse.json(
+        { error: "Unauthorized. Admin role required." },
+        { status: 403 }
+      );
     }
 
     const mailingList = readMailingList();
@@ -51,9 +39,13 @@ export async function GET(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const payload = await verifyToken(request);
-    if (!payload) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Only admin can delete from mailing list
+    const authCheck = await verifyAdminRole(request);
+    if (!authCheck.isAuthorized) {
+      return NextResponse.json(
+        { error: "Unauthorized. Admin role required." },
+        { status: 403 }
+      );
     }
 
     const { searchParams } = new URL(request.url);

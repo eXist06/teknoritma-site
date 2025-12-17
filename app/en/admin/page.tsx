@@ -6,10 +6,25 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { UserRole } from "@/lib/types/admin";
 
+interface HealthCheck {
+  name: string;
+  status: "ok" | "error";
+  message: string;
+  details?: any;
+}
+
+interface HealthCheckResponse {
+  status: "ok" | "error";
+  timestamp: string;
+  checks: HealthCheck[];
+}
+
 export default function AdminDashboardPageEn() {
   const router = useRouter();
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
+  const [healthCheck, setHealthCheck] = useState<HealthCheckResponse | null>(null);
+  const [healthLoading, setHealthLoading] = useState(false);
 
   useEffect(() => {
     // Token kontrolü ve role bilgisi
@@ -38,6 +53,28 @@ export default function AdminDashboardPageEn() {
     };
     checkAuth();
   }, [router]);
+
+  const fetchHealthCheck = async () => {
+    setHealthLoading(true);
+    try {
+      const response = await fetch("/api/admin/health-check");
+      if (response.ok) {
+        const data = await response.json();
+        setHealthCheck(data);
+      }
+    } catch (error) {
+      console.error("Health check failed:", error);
+    } finally {
+      setHealthLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch health check on mount if user has access
+    if (!loading && (userRole === "admin" || userRole === "sarus-hub")) {
+      fetchHealthCheck();
+    }
+  }, [loading, userRole]);
 
   if (loading) {
     return (
@@ -113,6 +150,88 @@ export default function AdminDashboardPageEn() {
               <p className="text-sm">Sign out from admin panel</p>
             </button>
           </div>
+
+          {/* Sarus-HUB Health Check */}
+          {(isAdmin || isSarusHub) && (
+            <div className="mt-8 pt-8 border-t border-neutral-border">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-neutral-heading">
+                  Sarus-HUB System Health Check
+                </h2>
+                <button
+                  onClick={fetchHealthCheck}
+                  disabled={healthLoading}
+                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                >
+                  {healthLoading ? "Checking..." : "Refresh"}
+                </button>
+              </div>
+
+              {healthCheck ? (
+                <div className="space-y-3">
+                  <div className={`p-4 rounded-lg border-2 ${
+                    healthCheck.status === "ok" 
+                      ? "bg-green-50 border-green-200" 
+                      : "bg-red-50 border-red-200"
+                  }`}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className={`text-2xl ${healthCheck.status === "ok" ? "text-green-600" : "text-red-600"}`}>
+                        {healthCheck.status === "ok" ? "✓" : "✗"}
+                      </span>
+                      <span className={`font-bold ${healthCheck.status === "ok" ? "text-green-700" : "text-red-700"}`}>
+                        Overall Status: {healthCheck.status === "ok" ? "OK" : "ERROR"}
+                      </span>
+                    </div>
+                    <p className="text-sm text-neutral-body">
+                      Last check: {new Date(healthCheck.timestamp).toLocaleString("en-US")}
+                    </p>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {healthCheck.checks.map((check, index) => (
+                      <div
+                        key={index}
+                        className={`p-4 rounded-lg border ${
+                          check.status === "ok"
+                            ? "bg-green-50 border-green-200"
+                            : "bg-red-50 border-red-200"
+                        }`}
+                      >
+                        <div className="flex items-start gap-2">
+                          <span className={`text-lg ${check.status === "ok" ? "text-green-600" : "text-red-600"}`}>
+                            {check.status === "ok" ? "✓" : "✗"}
+                          </span>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-neutral-heading mb-1">
+                              {check.name}
+                            </h3>
+                            <p className={`text-sm ${check.status === "ok" ? "text-green-700" : "text-red-700"}`}>
+                              {check.message}
+                            </p>
+                            {check.details && (
+                              <p className="text-xs text-neutral-body mt-1">
+                                {typeof check.details === "object" 
+                                  ? JSON.stringify(check.details, null, 2)
+                                  : check.details}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : healthLoading ? (
+                <div className="text-center py-8 text-neutral-body">
+                  Checking...
+                </div>
+              ) : (
+                <div className="text-center py-8 text-neutral-body">
+                  Health check not started
+                </div>
+              )}
+            </div>
+          )}
         </motion.div>
       </div>
     </div>

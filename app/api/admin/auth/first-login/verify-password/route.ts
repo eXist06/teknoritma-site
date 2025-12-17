@@ -69,22 +69,29 @@ export async function POST(request: NextRequest) {
     }
 
     // Find the password in temporary storage
+    // Get the most recent password for this email (sort by createdAt descending)
     const passwordsData = readFirstLoginPasswords();
-    const passwordEntry = passwordsData.passwords.find(
+    const matchingPasswords = passwordsData.passwords.filter(
       (p: any) => p.email.toLowerCase() === email.toLowerCase()
     );
-
-    if (!passwordEntry) {
+    
+    if (matchingPasswords.length === 0) {
       return NextResponse.json(
         { error: "Password not found. Please request a new password." },
         { status: 404 }
       );
     }
+    
+    // Sort by createdAt descending and get the most recent one
+    matchingPasswords.sort((a: any, b: any) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+    const passwordEntry = matchingPasswords[0];
 
     // Check if password is expired (1 hour)
     const createdAt = new Date(passwordEntry.createdAt);
     if (Date.now() - createdAt.getTime() > 60 * 60 * 1000) {
-      // Remove expired password
+      // Remove expired passwords for this email
       passwordsData.passwords = passwordsData.passwords.filter(
         (p: any) => p.email.toLowerCase() !== email.toLowerCase()
       );
@@ -95,8 +102,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify password
-    if (password !== passwordEntry.password) {
+    // Verify password (trim whitespace to handle copy-paste issues)
+    if (password.trim() !== passwordEntry.password.trim()) {
       return NextResponse.json(
         { error: "Invalid password" },
         { status: 401 }

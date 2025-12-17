@@ -1,22 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { SarusHubItem, SarusHubFilters } from "@/lib/types/sarus-hub";
 import { verifySarusHubRole } from "@/lib/utils/role-verification";
+import { initializeDatabase } from "@/lib/db/schema";
+import { getAllItems, createItem, updateItem, deleteItem, slugExists } from "@/lib/db/sarus-hub";
 
-const DATA_PATH = path.join(process.cwd(), "lib/data/sarus-hub.json");
-
-function readData(): { items: SarusHubItem[] } {
+// Initialize database on first import
+if (typeof window === "undefined") {
   try {
-    const data = fs.readFileSync(DATA_PATH, "utf8");
-    return JSON.parse(data);
-  } catch {
-    return { items: [] };
+    initializeDatabase();
+  } catch (error) {
+    console.error("Database initialization error:", error);
   }
-}
-
-function writeData(data: { items: SarusHubItem[] }) {
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), "utf8");
 }
 
 // GET - Public: Get published items, Admin: Get all items
@@ -33,66 +27,12 @@ export async function GET(request: NextRequest) {
       language: (searchParams.get("language") as any) || "all",
     };
 
-    const data = readData();
-    let items = data.items;
-
     // Check if user is admin/sarus-hub (can see drafts)
     const authCheck = await verifySarusHubRole(request);
     const isAuthorized = authCheck.isAuthorized;
 
-    // Filter by status (public users only see published)
-    if (!isAuthorized) {
-      items = items.filter((item) => item.status === "published");
-    }
-
-    // Apply filters
-    if (filters.type) {
-      items = items.filter((item) => item.type === filters.type);
-    }
-
-    if (filters.tags && filters.tags.length > 0) {
-      items = items.filter((item) =>
-        filters.tags!.some((tag) => item.tags.includes(tag))
-      );
-    }
-
-    if (filters.segment) {
-      items = items.filter((item) => item.segment === filters.segment);
-    }
-
-    if (filters.country) {
-      items = items.filter((item) => item.country === filters.country);
-    }
-
-    if (filters.year) {
-      items = items.filter((item) => {
-        const year = new Date(item.publishedAt).getFullYear();
-        return year === filters.year;
-      });
-    }
-
-    if (filters.search) {
-      const searchLower = filters.search.toLowerCase();
-      items = items.filter(
-        (item) =>
-          item.title.toLowerCase().includes(searchLower) ||
-          item.summary.toLowerCase().includes(searchLower) ||
-          item.tags.some((tag) => tag.toLowerCase().includes(searchLower)) ||
-          (item.hospital && item.hospital.toLowerCase().includes(searchLower))
-      );
-    }
-
-    if (filters.language && filters.language !== "all") {
-      items = items.filter(
-        (item) => item.language === filters.language || item.language === "mixed"
-      );
-    }
-
-    // Sort by publishedAt (newest first)
-    items.sort(
-      (a, b) =>
-        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-    );
+    // Get items from database (includeDrafts based on authorization)
+    const items = getAllItems(filters, isAuthorized);
 
     return NextResponse.json({ items });
   } catch (error) {
@@ -131,6 +71,9 @@ export async function POST(request: NextRequest) {
       status,
       author,
       image,
+      primaryImage,
+      images,
+      imageDisplayStyle,
       video,
       language,
     } = body;
@@ -142,10 +85,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = readData();
-
     // Check if slug already exists
-    if (data.items.some((item) => item.slug === slug)) {
+    if (slugExists(slug)) {
       return NextResponse.json(
         { error: "Slug already exists" },
         { status: 400 }
@@ -153,8 +94,7 @@ export async function POST(request: NextRequest) {
     }
 
     const now = new Date().toISOString();
-    const newItem: SarusHubItem = {
-      id: Date.now().toString(),
+    const newItem = createItem({
       type,
       title,
       slug,
@@ -164,24 +104,31 @@ export async function POST(request: NextRequest) {
       country: country || "",
       segment: segment || "",
       tags: tags || [],
-      publishedAt: status === "published" ? now : "",
+      publishedAt: status === "published" ? now : undefined,
       featured: featured || false,
       readingMinutes,
       status: status || "draft",
       author: author || authCheck.user?.username || "Unknown",
-      image: image || "",
+      image: image || "", // Legacy support
+      primaryImage: primaryImage || image || "",
+      images: images || [],
+      imageDisplayStyle: imageDisplayStyle || "cover",
       video: video || "",
       language: language || "tr",
-      createdAt: now,
-      updatedAt: now,
-    };
-
-    data.items.push(newItem);
-    writeData(data);
+    });
 
     return NextResponse.json({ item: newItem }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error creating Sarus-HUB content:", error);
+    
+    // Handle slug conflict error
+    if (error.message && error.message.includes("already exists")) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 400 }
+      );
+    }
+    
     return NextResponse.json(
       { error: "Failed to create content" },
       { status: 500 }
@@ -207,16 +154,18 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Missing id" }, { status: 400 });
     }
 
-    const data = readData();
-    const itemIndex = data.items.findIndex((item) => item.id === id);
-
-    if (itemIndex === -1) {
-      return NextResponse.json({ error: "Item not found" }, { status: 404 });
-    }
-
     // Check if slug is being updated and already exists
-    if (updates.slug && updates.slug !== data.items[itemIndex].slug) {
-      if (data.items.some((item) => item.slug === updates.slug && item.id !== id)) {
+    if (updates.slug) {
+      // Get existing item to check current slug
+      const { getItemById } = await import("@/lib/db/sarus-hub");
+      const existing = getItemById(id);
+      
+      if (!existing) {
+        return NextResponse.json({ error: "Item not found" }, { status: 404 });
+      }
+
+      // Only check if slug is actually changing
+      if (updates.slug !== existing.slug && slugExists(updates.slug)) {
         return NextResponse.json(
           { error: "Slug already exists" },
           { status: 400 }
@@ -224,23 +173,20 @@ export async function PUT(request: NextRequest) {
       }
     }
 
-    // Update item
-    const updatedItem: SarusHubItem = {
-      ...data.items[itemIndex],
-      ...updates,
-      updatedAt: new Date().toISOString(),
-      publishedAt:
-        updates.status === "published" && !data.items[itemIndex].publishedAt
-          ? new Date().toISOString()
-          : data.items[itemIndex].publishedAt,
-    };
-
-    data.items[itemIndex] = updatedItem;
-    writeData(data);
+    // Update item in database
+    const updatedItem = updateItem(id, updates);
 
     return NextResponse.json({ item: updatedItem });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error updating Sarus-HUB content:", error);
+    
+    if (error.message && error.message.includes("not found")) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 404 }
+      );
+    }
+    
     return NextResponse.json(
       { error: "Failed to update content" },
       { status: 500 }
@@ -266,15 +212,11 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "Missing id" }, { status: 400 });
     }
 
-    const data = readData();
-    const itemIndex = data.items.findIndex((item) => item.id === id);
-
-    if (itemIndex === -1) {
+    const deleted = deleteItem(id);
+    
+    if (!deleted) {
       return NextResponse.json({ error: "Item not found" }, { status: 404 });
     }
-
-    data.items.splice(itemIndex, 1);
-    writeData(data);
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -285,4 +227,3 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
-

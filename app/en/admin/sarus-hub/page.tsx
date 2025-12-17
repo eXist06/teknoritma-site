@@ -250,6 +250,15 @@ export default function AdminSarusHubPageEN() {
                   </td>
                   <td className="px-4 py-3 align-top text-right text-xs">
                     <div className="flex justify-end gap-2">
+                      <a
+                        href={`/en/sarus-hub/${item.slug}?preview=true`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-full bg-green-500/10 text-green-600 px-3 py-1 hover:bg-green-500/20"
+                        title="Preview"
+                      >
+                        👁️
+                      </a>
                       <button
                         type="button"
                         onClick={() => router.push(`/en/admin/sarus-hub/${item.id}`)}

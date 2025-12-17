@@ -220,17 +220,15 @@ export default function AdminSarusHubPage() {
                   </td>
                   <td className="px-4 py-3 align-top text-right text-xs">
                     <div className="flex justify-end gap-2">
-                      {item.status === "published" && (
-                        <a
-                          href={`/sarus-hub/${item.slug}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="rounded-full bg-green-500/10 text-green-600 px-3 py-1 hover:bg-green-500/20"
-                          title="Önizle"
-                        >
-                          👁️
-                        </a>
-                      )}
+                      <a
+                        href={`/sarus-hub/${item.slug}?preview=true`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-full bg-green-500/10 text-green-600 px-3 py-1 hover:bg-green-500/20"
+                        title="Önizle"
+                      >
+                        👁️
+                      </a>
                       <button
                         type="button"
                         onClick={() => router.push(`/admin/sarus-hub/${item.id}`)}

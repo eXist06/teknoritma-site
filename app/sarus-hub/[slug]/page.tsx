@@ -1,9 +1,12 @@
 import { Metadata } from "next";
+import { NextRequest } from "next/server";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { SarusHubItem, SarusHubItemType } from "@/lib/types/sarus-hub";
 import SarusHubContent from "@/components/SarusHubContent";
 import SocialShareButtons from "@/components/SocialShareButtons";
 import ViewCounter from "@/components/ViewCounter";
+import { verifySarusHubRole } from "@/lib/utils/role-verification";
 
 const typeLabels: Record<SarusHubItemType, string> = {
   "case-study": "Vaka Çalışması",
@@ -83,20 +86,93 @@ export async function generateMetadata({
   };
 }
 
-export default async function SarusHubDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function SarusHubDetailPage({ 
+  params,
+  searchParams,
+}: { 
+  params: Promise<{ slug: string }>;
+  searchParams?: Promise<{ preview?: string }>;
+}) {
   // Dynamic import to avoid bundling better-sqlite3 in client
   const { getItemBySlug } = await import("@/lib/db/sarus-hub");
   const { initializeDatabase } = await import("@/lib/db/schema");
   initializeDatabase();
   
   const { slug } = await params;
+  const resolvedSearchParams = await searchParams;
+  const isPreview = resolvedSearchParams?.preview === "true";
+  
+  // If preview mode, verify admin/sarus-hub role
+  if (isPreview) {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("admin_token")?.value;
+    
+    if (!token) {
+      return (
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-neutral-heading mb-4">Yetkisiz Erişim</h1>
+            <p className="text-neutral-body mb-4">Önizleme modu için admin girişi gereklidir.</p>
+            <Link href="/admin/login" className="text-primary hover:underline">
+              Admin paneline giriş yap
+            </Link>
+          </div>
+        </div>
+      );
+    }
+
+    // Create a request object for verification using headers
+    const headers = new Headers();
+    headers.set("cookie", `admin_token=${token}`);
+    const mockRequest = new NextRequest("http://localhost/api/admin/auth/me", {
+      headers,
+    });
+
+    const authCheck = await verifySarusHubRole(mockRequest);
+    if (!authCheck.isAuthorized) {
+      return (
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-neutral-heading mb-4">Yetkisiz Erişim</h1>
+            <p className="text-neutral-body mb-4">Önizleme modu için admin veya sarus-hub rolü gereklidir.</p>
+            <Link href="/admin/login" className="text-primary hover:underline">
+              Admin paneline giriş yap
+            </Link>
+          </div>
+        </div>
+      );
+    }
+  }
+  
+  // Get item from database
   const item = getItemBySlug(slug);
   
-  if (!item || item.status !== "published") {
+  // Check if item exists
+  if (!item) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-neutral-heading mb-4">İçerik Bulunamadı</h1>
+          {isPreview && (
+            <p className="text-sm text-neutral-body mb-4">
+              Bu slug ile bir içerik bulunamadı. Lütfen admin panelinden kontrol edin.
+            </p>
+          )}
+          <Link href={isPreview ? "/admin/sarus-hub" : "/sarus-hub"} className="text-primary hover:underline">
+            {isPreview ? "Admin paneline dön" : "Sarus-HUB'a dön"}
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // For preview mode, allow draft content. Otherwise, only show published.
+  if (!isPreview && item.status !== "published") {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-neutral-heading mb-4">İçerik Bulunamadı</h1>
+          <p className="text-neutral-body mb-4">Bu içerik henüz yayınlanmamış.</p>
           <Link href="/sarus-hub" className="text-primary hover:underline">
             Sarus-HUB'a dön
           </Link>
@@ -107,13 +183,20 @@ export default async function SarusHubDetailPage({ params }: { params: Promise<{
 
   return (
     <div className="min-h-screen bg-white">
+      {isPreview && item.status === "draft" && (
+        <div className="bg-yellow-100 border-b border-yellow-300 px-4 py-3 text-center">
+          <p className="text-sm text-yellow-800">
+            ⚠️ Bu bir önizleme. İçerik henüz yayınlanmamış.
+          </p>
+        </div>
+      )}
       <div className="max-w-4xl mx-auto px-4 md:px-8 py-16 md:py-24">
         {/* Back link */}
         <Link
-          href="/sarus-hub"
+          href={isPreview ? "/admin/sarus-hub" : "/sarus-hub"}
           className="inline-flex items-center text-sm text-neutral-body hover:text-primary mb-8"
         >
-          ← Sarus-HUB'a dön
+          ← {isPreview ? "Admin paneline dön" : "Sarus-HUB'a dön"}
         </Link>
 
         {/* Header */}

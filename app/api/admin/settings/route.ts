@@ -1,26 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose";
 import fs from "fs";
 import path from "path";
 import { SystemSettings } from "@/lib/types/admin";
+import { verifyAdminRole } from "@/lib/utils/role-verification";
 
 const ADMIN_DATA_PATH = path.join(process.cwd(), "lib/data/admin-data.json");
-const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
-
-async function verifyToken(request: NextRequest) {
-  const token = request.cookies.get("admin_token")?.value;
-  if (!token) return null;
-
-  try {
-    const { payload } = await jwtVerify(
-      token,
-      new TextEncoder().encode(JWT_SECRET)
-    );
-    return payload;
-  } catch {
-    return null;
-  }
-}
 
 function readAdminData() {
   try {
@@ -37,9 +21,13 @@ function writeAdminData(data: any) {
 
 export async function GET(request: NextRequest) {
   try {
-    const payload = await verifyToken(request);
-    if (!payload) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Only admin can view settings
+    const authCheck = await verifyAdminRole(request);
+    if (!authCheck.isAuthorized) {
+      return NextResponse.json(
+        { error: "Unauthorized. Admin role required." },
+        { status: 403 }
+      );
     }
 
     const data = readAdminData();
@@ -55,9 +43,13 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const payload = await verifyToken(request);
-    if (!payload) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Only admin can update settings
+    const authCheck = await verifyAdminRole(request);
+    if (!authCheck.isAuthorized) {
+      return NextResponse.json(
+        { error: "Unauthorized. Admin role required." },
+        { status: 403 }
+      );
     }
 
     const settings: SystemSettings = await request.json();

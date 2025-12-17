@@ -38,12 +38,16 @@ export default function AdminSarusHubEditPageEN() {
     status: "draft",
     author: "",
     image: "",
+    primaryImage: "",
+    images: [],
+    imageDisplayStyle: "cover",
     video: "",
     language: "en",
   });
   const [tagInput, setTagInput] = useState("");
   const [imageUploading, setImageUploading] = useState(false);
   const [videoUploading, setVideoUploading] = useState(false);
+  const [multipleImagesUploading, setMultipleImagesUploading] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -119,7 +123,7 @@ export default function AdminSarusHubEditPageEN() {
     });
   };
 
-  const handleImageUpload = async (file: File) => {
+  const handleImageUpload = async (file: File, setAsPrimary: boolean = false) => {
     setImageUploading(true);
     try {
       const uploadFormData = new FormData();
@@ -133,7 +137,21 @@ export default function AdminSarusHubEditPageEN() {
       const data = await response.json();
 
       if (response.ok && data.url) {
-        setFormData((prev) => ({ ...prev, image: data.url }));
+        if (setAsPrimary) {
+          setFormData((prev) => ({ 
+            ...prev, 
+            primaryImage: data.url,
+            image: data.url, // Legacy support
+          }));
+        } else {
+          setFormData((prev) => {
+            const currentImages = prev.images || [];
+            return { 
+              ...prev, 
+              images: [...currentImages, data.url],
+            };
+          });
+        }
       } else {
         alert(data.error || "Failed to upload image");
       }
@@ -143,6 +161,62 @@ export default function AdminSarusHubEditPageEN() {
     } finally {
       setImageUploading(false);
     }
+  };
+
+  const handleMultipleImageUpload = async (files: FileList) => {
+    setMultipleImagesUploading(true);
+    try {
+      const uploadPromises = Array.from(files).map((file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        return fetch("/api/sarus-hub/upload-image", {
+          method: "POST",
+          body: formData,
+        }).then((res) => res.json());
+      });
+
+      const results = await Promise.all(uploadPromises);
+      const uploadedUrls = results
+        .filter((r) => r.url)
+        .map((r) => r.url);
+
+      if (uploadedUrls.length > 0) {
+        setFormData((prev) => {
+          const currentImages = prev.images || [];
+          return {
+            ...prev,
+            images: [...currentImages, ...uploadedUrls],
+          };
+        });
+      }
+    } catch (error) {
+      console.error("Multiple image upload error:", error);
+      alert("An error occurred while uploading images");
+    } finally {
+      setMultipleImagesUploading(false);
+    }
+  };
+
+  const handleRemoveImage = (imageUrl: string) => {
+    setFormData((prev) => {
+      const currentImages = prev.images || [];
+      const isPrimary = prev.primaryImage === imageUrl;
+      
+      return {
+        ...prev,
+        images: currentImages.filter((img) => img !== imageUrl),
+        primaryImage: isPrimary ? "" : prev.primaryImage,
+        image: isPrimary ? "" : prev.image, // Legacy support
+      };
+    });
+  };
+
+  const handleSetPrimaryImage = (imageUrl: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      primaryImage: imageUrl,
+      image: imageUrl, // Legacy support
+    }));
   };
 
   const handleVideoUpload = async (file: File) => {
@@ -173,8 +247,8 @@ export default function AdminSarusHubEditPageEN() {
   };
 
   const handleSave = async (status: SarusHubItemStatus) => {
-    if (!formData.title || !formData.slug) {
-      alert("Please fill in title and slug fields");
+    if (!formData.title || !formData.slug || !formData.summary || !formData.content) {
+      alert("Please fill in all required fields (title, slug, summary, content)");
       return;
     }
 
@@ -462,26 +536,39 @@ export default function AdminSarusHubEditPageEN() {
           </div>
 
           {/* Media */}
-          <div className="space-y-4 rounded-lg border border-neutral-border p-6">
+          <div className="space-y-6 rounded-lg border border-neutral-border p-6">
             <h2 className="text-lg font-semibold text-neutral-heading">Media</h2>
             
+            {/* Primary Image */}
             <div>
               <label className="block text-sm font-medium text-neutral-heading mb-2">
-                Featured Image
+                Primary Image (Card Preview)
               </label>
-              {formData.image && (
-                <img
-                  src={formData.image}
-                  alt="Featured"
-                  className="w-full h-64 object-cover rounded-lg mb-2"
-                />
+              {formData.primaryImage && (
+                <div className="relative mb-2">
+                  <img
+                    src={formData.primaryImage}
+                    alt="Primary"
+                    className="w-full h-64 object-cover rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(formData.primaryImage!)}
+                    className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600"
+                  >
+                    Remove
+                  </button>
+                  <div className="absolute bottom-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-xs">
+                    ✓ Primary Image
+                  </div>
+                </div>
               )}
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) handleImageUpload(file);
+                  if (file) handleImageUpload(file, true);
                 }}
                 disabled={imageUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
@@ -489,46 +576,107 @@ export default function AdminSarusHubEditPageEN() {
               {imageUploading && <p className="text-sm text-neutral-body mt-2">Uploading...</p>}
             </div>
 
+            {/* Multiple Images */}
+            <div>
+              <label className="block text-sm font-medium text-neutral-heading mb-2">
+                Additional Images
+              </label>
+              {(formData.images && formData.images.length > 0) && (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3">
+                  {formData.images.map((img, idx) => (
+                    <div key={idx} className="relative group">
+                      <img
+                        src={img}
+                        alt={`Image ${idx + 1}`}
+                        className="w-full h-32 object-cover rounded-lg"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors rounded-lg flex items-center justify-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleSetPrimaryImage(img)}
+                          className="opacity-0 group-hover:opacity-100 bg-primary text-white px-2 py-1 rounded text-xs hover:bg-primary-dark"
+                          title="Set as primary"
+                        >
+                          ⭐ Primary
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(img)}
+                          className="opacity-0 group-hover:opacity-100 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600"
+                          title="Remove"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => {
+                  const files = e.target.files;
+                  if (files && files.length > 0) handleMultipleImageUpload(files);
+                }}
+                disabled={multipleImagesUploading}
+                className="w-full px-4 py-2 border border-neutral-border rounded-lg"
+              />
+              {multipleImagesUploading && <p className="text-sm text-neutral-body mt-2">Uploading...</p>}
+            </div>
+
+            {/* Image Display Style */}
+            {(formData.images && formData.images.length > 0) && (
+              <div>
+                <label className="block text-sm font-medium text-neutral-heading mb-2">
+                  Image Display Style
+                </label>
+                <select
+                  value={formData.imageDisplayStyle || "cover"}
+                  onChange={(e) => setFormData({ ...formData, imageDisplayStyle: e.target.value as any })}
+                  className="w-full px-4 py-2 border border-neutral-border rounded-lg"
+                >
+                  <option value="cover">Cover (Single image, full screen)</option>
+                  <option value="gallery">Gallery (Small thumbnails)</option>
+                  <option value="carousel">Carousel (Scrollable)</option>
+                  <option value="grid">Grid (Grid layout)</option>
+                </select>
+              </div>
+            )}
+
+            {/* Video */}
             <div>
               <label className="block text-sm font-medium text-neutral-heading mb-2">
                 Video
               </label>
               {formData.video && (
-                <div className="mb-2">
+                <div className="relative mb-2">
                   <video
                     src={formData.video}
                     controls
-                    className="w-full rounded-lg mb-2"
-                    onError={() => {
-                      alert("Video preview failed to load. Please check the video format (MP4 recommended).");
-                    }}
+                    className="w-full rounded-lg"
                   />
-                  <p className="text-xs text-neutral-body">
-                    Video URL: {formData.video}
-                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, video: "" })}
+                    className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600"
+                  >
+                    Remove
+                  </button>
                 </div>
               )}
               <input
                 type="file"
-                accept="video/mp4,video/webm,video/quicktime"
+                accept="video/*"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) {
-                    // Check file type
-                    if (!file.type.startsWith("video/")) {
-                      alert("Please select a valid video file (MP4, WebM or QuickTime)");
-                      return;
-                    }
-                    handleVideoUpload(file);
-                  }
+                  if (file) handleVideoUpload(file);
                 }}
                 disabled={videoUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
               />
               {videoUploading && <p className="text-sm text-neutral-body mt-2">Uploading...</p>}
-              <p className="text-xs text-neutral-body mt-1">
-                Note: MP4 format provides the best compatibility across all browsers. .mov files may not work in some browsers.
-              </p>
             </div>
           </div>
 

@@ -100,6 +100,29 @@ export async function verifyAdminRole(
   return { isAuthorized: false, error: "Insufficient permissions. Requires admin role." };
 }
 
+export async function verifyIKOrAdminRole(
+  request: NextRequest
+): Promise<{ authorized: boolean; error?: string; user?: AdminUser }> {
+  const payload = await verifyToken(request);
+  if (!payload) {
+    return { authorized: false, error: "Unauthorized" };
+  }
+
+  const adminData = readAdminData();
+  const user = adminData.users.find((u: AdminUser) => u.id === payload.userId);
+
+  if (!user) {
+    return { authorized: false, error: "User not found" };
+  }
+
+  // Admin ve IK rolleri erişebilir
+  if (user.role === "admin" || user.role === "ik") {
+    return { authorized: true, user };
+  }
+
+  return { authorized: false, error: "Insufficient permissions. Requires IK or admin role." };
+}
+
 export async function getCurrentUser(
   request: NextRequest
 ): Promise<{ user?: AdminUser; error?: string }> {
