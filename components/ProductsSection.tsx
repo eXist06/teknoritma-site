@@ -16,8 +16,10 @@ export default function ProductsSection() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 20 });
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -67,17 +69,19 @@ export default function ProductsSection() {
         {/* SarusHIS Featured Card */}
         {sarusHIS && (
           <motion.div
-            initial={{ opacity: isMobile ? 1 : 0 }}
-            whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={mounted && isMobile ? { opacity: 1 } : {}}
+            whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
             viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
             transition={{ 
-              duration: prefersReducedMotion ? 0 : (isMobile ? 0 : 0.6),
+              duration: prefersReducedMotion ? 0 : (isMobile ? 0.1 : 0.6),
               ease: "easeOut"
             }}
             style={{ 
-              willChange: isMobile ? "auto" : "opacity, transform",
+              willChange: isMobile ? "opacity" : "opacity, transform",
               transform: isMobile ? "none" : "translateZ(0)"
             }}
+            suppressHydrationWarning
             className="mb-20"
           >
             <div className="relative bg-white rounded-2xl border border-neutral-border/60 shadow-lg overflow-hidden group">
@@ -118,17 +122,19 @@ export default function ProductsSection() {
                       {productFeatures.map((feature, idx) => (
                         <motion.div
                           key={idx}
-                          initial={{ opacity: isMobile ? 1 : 0 }}
-                          whileInView={isMobile ? {} : { opacity: 1, x: 0 }}
+                          initial={{ opacity: 0 }}
+                          animate={mounted && isMobile ? { opacity: 1 } : {}}
+                          whileInView={mounted && !isMobile ? { opacity: 1, x: 0 } : {}}
                           viewport={{ once: true, margin: isMobile ? "0px" : "-20px" }}
                           transition={{ 
                             delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
-                            duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.3)
+                            duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3)
                           }}
                           style={{ 
-                            willChange: isMobile ? "auto" : "opacity, transform",
+                            willChange: isMobile ? "opacity" : "opacity, transform",
                             transform: isMobile ? "none" : "translateZ(0)"
                           }}
+                          suppressHydrationWarning
                           className="flex items-start gap-3 text-neutral-body"
                         >
                           <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
@@ -233,15 +239,17 @@ export default function ProductsSection() {
                     >
                       <Link href={productPath}>
                         <motion.div
-                          initial={{ opacity: isMobile ? 1 : 0 }}
-                          whileInView={isMobile ? {} : { opacity: 1 }}
+                          initial={{ opacity: 0 }}
+                          animate={mounted && isMobile ? { opacity: 1 } : {}}
+                          whileInView={mounted && !isMobile ? { opacity: 1 } : {}}
                           viewport={{ once: true, margin: isMobile ? "0px" : "-100px" }}
                           whileHover={isMobile || prefersReducedMotion ? {} : { y: -12, scale: 1.02 }}
-                          transition={{ duration: isMobile ? 0 : 0.2 }}
+                          transition={{ duration: isMobile ? 0.1 : 0.2 }}
                           style={{ 
-                            willChange: isMobile ? "auto" : "opacity, transform",
+                            willChange: isMobile ? "opacity" : "opacity, transform",
                             transform: isMobile ? "none" : "translateZ(0)"
                           }}
+                          suppressHydrationWarning
                           className="relative h-full bg-white rounded-2xl border border-neutral-border/60 p-8 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer"
                         >
                           {/* Subtle accent line at top */}

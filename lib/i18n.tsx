@@ -18,6 +18,7 @@ const I18nContext = createContext<I18nContextType | undefined>(undefined);
 export function I18nProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  // Initialize with default, will be set correctly in useEffect to avoid hydration mismatch
   const [language, setLanguageState] = useState<Language>("tr");
   const [isInitialized, setIsInitialized] = useState(false);
 

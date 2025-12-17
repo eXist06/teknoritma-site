@@ -14,6 +14,7 @@ export default function SarusPacsPage() {
   const [activeNavItem, setActiveNavItem] = useState("design-goals");
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const tabs = [
     {
@@ -65,6 +66,7 @@ export default function SarusPacsPage() {
 
   // Detect mobile and reduced motion preference
   useEffect(() => {
+    setMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -132,13 +134,14 @@ export default function SarusPacsPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div
-              initial={{ opacity: isMobile ? 1 : 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.6) }}
+              initial={{ opacity: 0 }}
+              animate={mounted ? { opacity: 1 } : {}}
+              transition={{ duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.6) }}
               style={{ 
-                willChange: isMobile ? "auto" : "opacity, transform",
+                willChange: isMobile ? "opacity" : "opacity, transform",
                 transform: isMobile ? "none" : "translateZ(0)"
               }}
+              suppressHydrationWarning
             >
               <Link
                 href={basePath || "/"}
@@ -251,9 +254,9 @@ export default function SarusPacsPage() {
       </section>
 
       {/* Navigation Buttons Section */}
-      <section id="navigation" className="w-full bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 md:px-10">
-          <nav className="flex flex-wrap items-center justify-center">
+      <section id="navigation" className="w-full bg-white sticky top-16 md:top-20 z-30 border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-2 md:px-10">
+          <nav className="flex overflow-x-auto scrollbar-hide items-center justify-start md:justify-center">
             {[
               {
                 id: "design-goals",
@@ -293,16 +296,18 @@ export default function SarusPacsPage() {
                     if (element) {
                       const elementRect = element.getBoundingClientRect();
                       const absoluteElementTop = elementRect.top + window.pageYOffset;
-                      const offset = 100;
+                      const headerHeight = isMobile ? 64 : 80;
+                      const navHeight = isMobile ? 80 : 100;
+                      const offset = headerHeight + navHeight;
                       window.scrollTo({
                         top: absoluteElementTop - offset,
                         behavior: 'smooth'
                       });
                     }
                   }}
-                  className={`group relative flex flex-col items-center justify-center gap-2 px-8 py-5
-                    transition-all duration-200 ease-out cursor-pointer
-                    border-b-2 -mb-px select-none
+                  className={`group relative flex flex-col items-center justify-center gap-1 md:gap-2 px-4 md:px-8 py-3 md:py-5 min-w-[80px] md:min-w-0
+                    transition-all duration-200 ease-out cursor-pointer touch-manipulation
+                    border-b-2 -mb-px select-none flex-shrink-0
                     ${isActive 
                       ? 'border-primary text-primary bg-primary/5' 
                       : 'border-transparent text-gray-600 hover:text-primary hover:border-primary/30 hover:bg-primary/3'
@@ -314,11 +319,11 @@ export default function SarusPacsPage() {
                       : 'opacity-60 text-gray-600 group-hover:opacity-100 group-hover:text-primary group-hover:scale-110'
                     }`}
                   >
-                    <IconComponent className="w-7 h-7 md:w-8 md:h-8" strokeWidth={2} />
+                    <IconComponent className="w-5 h-5 md:w-8 md:h-8" strokeWidth={2} />
                   </div>
                   <span 
-                    className={`text-xs md:text-sm font-medium whitespace-nowrap tracking-wide pointer-events-none
-                      transition-all duration-200
+                    className={`text-[10px] md:text-sm font-medium whitespace-nowrap tracking-wide pointer-events-none
+                      transition-all duration-200 leading-tight
                       ${isActive 
                         ? 'text-primary font-semibold' 
                         : 'text-gray-600 group-hover:text-primary'
@@ -336,12 +341,13 @@ export default function SarusPacsPage() {
       {/* Why Sarus PACS */}
       <section id="design-goals" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background">
         <motion.div
-          initial={{ opacity: isMobile ? 1 : 0 }}
-          whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={mounted && isMobile ? { opacity: 1 } : {}}
+          whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
           viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
-          transition={{ duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.4) }}
+          transition={{ duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.4) }}
           style={{ 
-            willChange: isMobile ? "auto" : "opacity, transform",
+            willChange: isMobile ? "opacity" : "opacity, transform",
             transform: isMobile ? "none" : "translateZ(0)"
           }}
           className="mb-12 text-center"
@@ -359,15 +365,16 @@ export default function SarusPacsPage() {
           {tabs.map((tab, idx) => (
             <motion.div
               key={tab.id}
-              initial={{ opacity: isMobile ? 1 : 0 }}
+              initial={{ opacity: 0 }}
+              animate={isMobile ? { opacity: 1 } : {}}
               whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
               transition={{ 
                 delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.1),
-                duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.3)
+                duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3)
               }}
               style={{ 
-                willChange: isMobile ? "auto" : "opacity, transform",
+                willChange: isMobile ? "opacity" : "opacity, transform",
                 transform: isMobile ? "none" : "translateZ(0)"
               }}
               className={`group relative bg-white border-2 rounded-lg p-6 md:p-8 transition-all duration-300 ${
@@ -718,15 +725,16 @@ export default function SarusPacsPage() {
           ].map((item, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: isMobile ? 1 : 0 }}
+              initial={{ opacity: 0 }}
+              animate={isMobile ? { opacity: 1 } : {}}
               whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
               transition={{ 
                 delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.1),
-                duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.3)
+                duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3)
               }}
               style={{ 
-                willChange: isMobile ? "auto" : "opacity, transform",
+                willChange: isMobile ? "opacity" : "opacity, transform",
                 transform: isMobile ? "none" : "translateZ(0)"
               }}
               className="bg-white rounded-2xl border border-neutral-border p-6 shadow-sm"

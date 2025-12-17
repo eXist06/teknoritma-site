@@ -13,7 +13,9 @@ import VantaGlobe from "./VantaGlobe";
 
 export default function Hero() {
   const { language, t } = useI18n();
-  const basePath = language === "en" ? "/en" : "";
+  const [mounted, setMounted] = useState(false);
+  // Only compute basePath after mount to avoid hydration mismatch
+  const basePath = mounted && language === "en" ? "/en" : "";
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -32,14 +34,20 @@ export default function Hero() {
     setCurrentSlide(index);
   };
 
+  // Set mounted on client-side
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Auto-play carousel - change slide every 12 seconds
   useEffect(() => {
+    if (!mounted) return;
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % totalSlides);
     }, 12000); // 12 seconds
 
     return () => clearInterval(interval);
-  }, [totalSlides]);
+  }, [totalSlides, mounted]);
 
   // Reset typewriter effect when slide changes
   useEffect(() => {
@@ -84,8 +92,8 @@ export default function Hero() {
       onTouchEnd={handleTouchEnd}
     >
       {/* Video Background - Only for slide 1 */}
-      {currentSlide === 0 && (
-        <div className="absolute inset-0 overflow-visible pointer-events-none">
+      {mounted && currentSlide === 0 && (
+        <div className="absolute inset-0 overflow-visible pointer-events-none" suppressHydrationWarning>
           <AnimatePresence mode="wait">
             <motion.div
               key="video-slide-1"
@@ -93,6 +101,7 @@ export default function Hero() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8 }}
+              suppressHydrationWarning
               className="absolute inset-0 -bottom-1"
             >
               <div className="absolute left-0 top-0 right-0 bottom-0">
@@ -111,13 +120,15 @@ export default function Hero() {
               </div>
               
               {/* Ankara Şehir Hastanesi Label - Top Right on Mobile, Bottom Right on Desktop */}
-              <div className="absolute top-4 right-4 md:top-auto md:bottom-6 lg:bottom-8 md:right-6 lg:right-8 z-10">
-                <div className="bg-black/40 backdrop-blur-sm px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-white/20">
-                  <p className="text-white/90 text-xs md:text-sm font-bold whitespace-nowrap">
-                    {language === "en" ? "Ankara City Hospital" : "Ankara Şehir Hastanesi"}
-                  </p>
+              {mounted && (
+                <div className="absolute top-4 right-4 md:top-auto md:bottom-6 lg:bottom-8 md:right-6 lg:right-8 z-10" suppressHydrationWarning>
+                  <div className="bg-black/40 backdrop-blur-sm px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-white/20">
+                    <p className="text-white/90 text-xs md:text-sm font-bold whitespace-nowrap">
+                      {language === "en" ? "Ankara City Hospital" : "Ankara Şehir Hastanesi"}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </motion.div>
           </AnimatePresence>
           
@@ -128,8 +139,8 @@ export default function Hero() {
       )}
 
       {/* Threads Background - Only for slide 2 */}
-      {currentSlide === 1 && (
-        <div className="absolute inset-0 overflow-hidden bg-white z-0">
+      {mounted && currentSlide === 1 && (
+        <div className="absolute inset-0 overflow-hidden bg-white z-0" suppressHydrationWarning>
           <AnimatePresence mode="wait">
             <motion.div
               key="threads-slide-2"
@@ -137,6 +148,7 @@ export default function Hero() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8 }}
+              suppressHydrationWarning
               className="absolute inset-0 z-0"
             >
               <Threads 
@@ -151,8 +163,8 @@ export default function Hero() {
       )}
 
       {/* Background for slide 3 - Vanta.js Globe Effect */}
-      {currentSlide === 2 && (
-        <div className="absolute inset-0 overflow-hidden z-0">
+      {mounted && currentSlide === 2 && (
+        <div className="absolute inset-0 overflow-hidden z-0" suppressHydrationWarning>
           <AnimatePresence mode="wait">
             <motion.div
               key="bg-slide-3"
@@ -160,6 +172,7 @@ export default function Hero() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8 }}
+              suppressHydrationWarning
               className="absolute inset-0 z-0"
             >
               <VantaGlobe
@@ -232,16 +245,17 @@ export default function Hero() {
 
       <div className="relative z-20 px-5 md:px-10 pt-8 md:pt-12 pb-6 md:pb-8 w-full h-full">
         {/* Carousel Container - Full width and height */}
-        <div className="relative w-full h-full min-h-[calc(85vh-8rem)]">
+        <div className="relative w-full h-full min-h-[calc(85vh-8rem)]" suppressHydrationWarning>
           <AnimatePresence mode="wait">
             {/* Slide 1: Sarus */}
-            {currentSlide === 0 && (
+            {mounted && currentSlide === 0 && (
               <motion.div
                 key="slide-1"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
+                suppressHydrationWarning
                 className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-8 md:mt-10"
               >
             {/* Title */}
@@ -347,8 +361,9 @@ export default function Hero() {
             {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={mounted ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.6, duration: 0.6 }}
+              suppressHydrationWarning
               className="flex flex-wrap items-center gap-4 pt-2 mt-4 md:mt-5"
             >
               <Link href={`${basePath}/urunler/sarus`}>
@@ -375,13 +390,14 @@ export default function Hero() {
             )}
 
             {/* Slide 2: Teknoritma */}
-            {currentSlide === 1 && (
+            {mounted && currentSlide === 1 && (
               <motion.div
                 key="slide-2"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
+                suppressHydrationWarning
                 className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-10 md:mt-12 z-30"
               >
                 {/* Title */}
@@ -458,13 +474,14 @@ export default function Hero() {
             )}
 
             {/* Slide 3: Beyond Boundaries */}
-            {currentSlide === 2 && (
+            {mounted && currentSlide === 2 && (
               <motion.div
                 key="slide-3"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
+                suppressHydrationWarning
                 className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-10 md:mt-12 z-30"
               >
                 {/* Title */}
@@ -589,8 +606,9 @@ export default function Hero() {
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                animate={mounted ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 0.9 + idx * 0.1 }}
+                suppressHydrationWarning
                 className="group text-center min-w-0"
               >
                 <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white mb-2 md:mb-3 break-words overflow-visible">

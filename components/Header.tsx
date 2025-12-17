@@ -59,7 +59,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-neutral-border/50 shadow-md">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-neutral-border/50 shadow-md" suppressHydrationWarning>
       <div className="max-w-7xl mx-auto px-0 md:px-5">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
@@ -228,37 +228,78 @@ export default function Header() {
               exit={{ height: 0, opacity: 0 }}
               className="md:hidden overflow-hidden"
             >
-              <nav className="py-4 space-y-2">
+              <nav className="py-4 space-y-1">
                 {getNavItems().map((item, index) => (
-                  <div key={`${item.href}-${index}`}>
+                  <div key={`${item.href}-${index}`} className="w-full">
                     {item.hasDropdown ? (
-                      <div>
-                        <div className="px-4 py-2.5 text-sm font-normal text-neutral-body tracking-wide uppercase">
-                          {item.label}
-                        </div>
-                        <div className="pl-6 space-y-1">
-                          {(item.label === t("nav.products") ? getProductsSubmenu() : getAboutSubmenu()).map((subItem, subIndex) => {
-                            const IconComponent = (subItem as any).icon;
-                            return (
-                              <a
-                                key={`sub-mobile-${subIndex}`}
-                                href={subItem.href}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="flex items-center gap-3 px-4 py-2 text-sm text-neutral-body hover:text-neutral-heading hover:bg-primary-light rounded-lg transition-all duration-300 group"
-                              >
-                                {IconComponent && (
-                                  <IconComponent className="w-4 h-4 text-primary/60 group-hover:text-primary transition-colors flex-shrink-0" strokeWidth={2} />
-                                )}
-                                <span>{subItem.label}</span>
-                              </a>
-                            );
-                          })}
-                        </div>
+                      <div className="w-full">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (item.label === t("nav.products")) {
+                              setIsProductsDropdownOpen(!isProductsDropdownOpen);
+                            } else if (item.label === t("nav.about")) {
+                              setIsAboutDropdownOpen(!isAboutDropdownOpen);
+                            }
+                          }}
+                          className="w-full flex items-center justify-between px-4 py-4 min-h-[52px] text-base font-medium text-neutral-heading hover:text-primary active:text-primary bg-white hover:bg-primary-light active:bg-primary-light rounded-lg transition-all duration-200 tracking-wide uppercase touch-manipulation text-left border border-transparent hover:border-primary/20 active:border-primary/30"
+                        >
+                          <span className="flex-1">{item.label}</span>
+                          <svg
+                            className={`w-5 h-5 transition-transform duration-300 flex-shrink-0 ${
+                              (item.label === t("nav.products") && isProductsDropdownOpen) ||
+                              (item.label === t("nav.about") && isAboutDropdownOpen)
+                                ? "rotate-180" : ""
+                            }`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                        <AnimatePresence>
+                          {((item.label === t("nav.products") && isProductsDropdownOpen) ||
+                            (item.label === t("nav.about") && isAboutDropdownOpen)) && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden mt-1"
+                            >
+                              <div className="pl-4 space-y-1">
+                                {(item.label === t("nav.products") ? getProductsSubmenu() : getAboutSubmenu()).map((subItem, subIndex) => {
+                                  const IconComponent = (subItem as any).icon;
+                                  return (
+                                    <a
+                                      key={`sub-mobile-${subIndex}`}
+                                      href={subItem.href}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setIsMobileMenuOpen(false);
+                                      }}
+                                      className="flex items-center gap-3 px-4 py-4 min-h-[52px] text-base text-neutral-body hover:text-primary active:text-primary hover:bg-primary-light active:bg-primary-light rounded-lg transition-all duration-200 group touch-manipulation border border-transparent hover:border-primary/20 active:border-primary/30"
+                                    >
+                                      {IconComponent && (
+                                        <IconComponent className="w-5 h-5 text-primary/70 group-hover:text-primary group-active:text-primary transition-colors flex-shrink-0" strokeWidth={2} />
+                                      )}
+                                      <span className="flex-1 font-medium">{subItem.label}</span>
+                                    </a>
+                                  );
+                                })}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     ) : (
                       <a
                         href={item.href}
                         onClick={(e) => {
+                          e.stopPropagation();
                           setIsMobileMenuOpen(false);
                           if (item.href.includes("#")) {
                             e.preventDefault();
@@ -276,12 +317,18 @@ export default function Header() {
                             setTimeout(() => {
                               const targetElement = document.getElementById(hash);
                               if (targetElement) {
-                                targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+                                const headerHeight = 64;
+                                const elementPosition = targetElement.getBoundingClientRect().top;
+                                const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                                window.scrollTo({
+                                  top: offsetPosition,
+                                  behavior: "smooth"
+                                });
                               }
-                            }, 100);
+                            }, 150);
                           }
                         }}
-                        className="block px-4 py-2.5 text-sm font-normal text-neutral-body hover:text-neutral-heading hover:bg-primary-light rounded-lg transition-all duration-300 tracking-wide uppercase"
+                        className="block w-full px-4 py-4 min-h-[52px] flex items-center text-base font-medium text-neutral-heading hover:text-primary active:text-primary hover:bg-primary-light active:bg-primary-light rounded-lg transition-all duration-200 tracking-wide uppercase touch-manipulation border border-transparent hover:border-primary/20 active:border-primary/30"
                       >
                         {item.label}
                       </a>

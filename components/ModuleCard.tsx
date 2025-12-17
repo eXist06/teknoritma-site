@@ -65,8 +65,10 @@ export function ModuleCard({
   const VisualIconComponent = visualIcon || Icon;
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -88,19 +90,21 @@ export function ModuleCard({
   
   return (
     <motion.div
-      initial={{ opacity: isMobile ? 1 : 0 }}
-      whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={mounted && isMobile ? { opacity: 1 } : {}}
+      whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
       viewport={{ once: true, margin: isMobile ? "0px" : "-30px" }}
       transition={{ 
         delay: isMobile ? 0 : (prefersReducedMotion ? 0 : delay),
-        duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.4),
+        duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.4),
         ease: "easeOut"
       }}
       whileHover={isMobile || prefersReducedMotion ? {} : { y: -6, scale: 1.02, transition: { duration: 0.2 } }}
       style={{ 
-        willChange: isMobile ? "auto" : "opacity, transform",
+        willChange: isMobile ? "opacity" : "opacity, transform",
         transform: isMobile ? "none" : "translateZ(0)"
       }}
+      suppressHydrationWarning
       className="rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl cursor-pointer flex flex-col h-full bg-white border border-gray-200 hover:border-blue-300 group"
     >
       {/* Visual Section - Image or Large Icon */}
