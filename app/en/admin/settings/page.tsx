@@ -49,7 +49,35 @@ export default function AdminSettingsPageEn() {
       .then((res) => res.json())
       .then((data) => {
         if (data.settings) {
-          setSettings(data.settings);
+          // DB'den gelen email ayarlarını al
+          const dbEmailSettings = data.settings.email || {};
+          
+          // Default değerlerle merge et (eksik alanları tamamla)
+          const mergedEmailSettings = {
+            provider: (dbEmailSettings.provider || "smtp") as EmailProvider,
+            enabled: dbEmailSettings.enabled ?? false,
+            smtpHost: dbEmailSettings.smtpHost || "",
+            smtpPort: dbEmailSettings.smtpPort || 587,
+            smtpUser: dbEmailSettings.smtpUser || "",
+            smtpPassword: dbEmailSettings.smtpPassword || "",
+            smtpSecure: dbEmailSettings.smtpSecure ?? false,
+            apiKey: dbEmailSettings.apiKey || "",
+            apiSecret: dbEmailSettings.apiSecret || "",
+            fromEmail: dbEmailSettings.fromEmail || "",
+            fromName: dbEmailSettings.fromName || "",
+            mailjetApiKey: dbEmailSettings.mailjetApiKey || dbEmailSettings.apiKey || "",
+            mailjetApiSecret: dbEmailSettings.mailjetApiSecret || dbEmailSettings.apiSecret || "",
+            sendgridApiKey: dbEmailSettings.sendgridApiKey || dbEmailSettings.apiKey || "",
+            sesRegion: dbEmailSettings.sesRegion || "us-east-1",
+            sesAccessKeyId: dbEmailSettings.sesAccessKeyId || dbEmailSettings.apiKey || "",
+            sesSecretAccessKey: dbEmailSettings.sesSecretAccessKey || dbEmailSettings.apiSecret || "",
+          };
+
+          setSettings({
+            email: mergedEmailSettings,
+            siteName: data.settings.siteName || "",
+            siteUrl: data.settings.siteUrl || "",
+          });
         }
       })
       .catch((error) => {

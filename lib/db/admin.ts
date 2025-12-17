@@ -162,6 +162,7 @@ export function getSystemSettings(): { email: any; siteName: string; siteUrl: st
     const emailRow = db.prepare("SELECT value FROM system_settings WHERE key = ?").get("email") as { value: string } | undefined;
     const siteRow = db.prepare("SELECT value FROM system_settings WHERE key = ?").get("site") as { value: string } | undefined;
     
+    // Sadece DB'den oku - JSON fallback yok
     const email = emailRow ? JSON.parse(emailRow.value) : {};
     const site = siteRow ? JSON.parse(siteRow.value) : { siteName: "", siteUrl: "" };
     

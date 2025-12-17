@@ -88,18 +88,18 @@ export function ModuleCard({
   
   return (
     <motion.div
-      initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
+      initial={{ opacity: isMobile ? 1 : 0 }}
+      whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: isMobile ? "0px" : "-30px" }}
       transition={{ 
-        delay: prefersReducedMotion ? 0 : (isMobile ? 0 : delay),
-        duration: prefersReducedMotion ? 0 : (isMobile ? 0.25 : 0.4),
+        delay: isMobile ? 0 : (prefersReducedMotion ? 0 : delay),
+        duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.4),
         ease: "easeOut"
       }}
       whileHover={isMobile || prefersReducedMotion ? {} : { y: -6, scale: 1.02, transition: { duration: 0.2 } }}
       style={{ 
-        willChange: isMobile ? "opacity" : "opacity, transform",
-        transform: "translateZ(0)"
+        willChange: isMobile ? "auto" : "opacity, transform",
+        transform: isMobile ? "none" : "translateZ(0)"
       }}
       className="rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl cursor-pointer flex flex-col h-full bg-white border border-gray-200 hover:border-blue-300 group"
     >

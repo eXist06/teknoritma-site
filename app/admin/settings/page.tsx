@@ -98,32 +98,32 @@ export default function AdminSettingsPage() {
       .then((res) => res.json())
       .then((data) => {
         if (data.settings) {
-          // Ensure email property exists with defaults
-          const defaultEmailSettings = {
-            provider: "smtp" as const,
-            enabled: false,
-            smtpHost: "",
-            smtpPort: 587,
-            smtpUser: "",
-            smtpPassword: "",
-            smtpSecure: false,
-            apiKey: "",
-            apiSecret: "",
-            fromEmail: "",
-            fromName: "",
-            mailjetApiKey: "",
-            mailjetApiSecret: "",
-            sendgridApiKey: "",
-            sesRegion: "us-east-1",
-            sesAccessKeyId: "",
-            sesSecretAccessKey: "",
+          // DB'den gelen email ayarlarını al
+          const dbEmailSettings = data.settings.email || {};
+          
+          // Default değerlerle merge et (eksik alanları tamamla)
+          const mergedEmailSettings = {
+            provider: (dbEmailSettings.provider || "smtp") as EmailProvider,
+            enabled: dbEmailSettings.enabled ?? false,
+            smtpHost: dbEmailSettings.smtpHost || "",
+            smtpPort: dbEmailSettings.smtpPort || 587,
+            smtpUser: dbEmailSettings.smtpUser || "",
+            smtpPassword: dbEmailSettings.smtpPassword || "",
+            smtpSecure: dbEmailSettings.smtpSecure ?? false,
+            apiKey: dbEmailSettings.apiKey || "",
+            apiSecret: dbEmailSettings.apiSecret || "",
+            fromEmail: dbEmailSettings.fromEmail || "",
+            fromName: dbEmailSettings.fromName || "",
+            mailjetApiKey: dbEmailSettings.mailjetApiKey || dbEmailSettings.apiKey || "",
+            mailjetApiSecret: dbEmailSettings.mailjetApiSecret || dbEmailSettings.apiSecret || "",
+            sendgridApiKey: dbEmailSettings.sendgridApiKey || dbEmailSettings.apiKey || "",
+            sesRegion: dbEmailSettings.sesRegion || "us-east-1",
+            sesAccessKeyId: dbEmailSettings.sesAccessKeyId || dbEmailSettings.apiKey || "",
+            sesSecretAccessKey: dbEmailSettings.sesSecretAccessKey || dbEmailSettings.apiSecret || "",
           };
 
           setSettings({
-            email: {
-              ...defaultEmailSettings,
-              ...(data.settings.email || {}), // Merge if exists
-            },
+            email: mergedEmailSettings,
             siteName: data.settings.siteName || "",
             siteUrl: data.settings.siteUrl || "",
           });
@@ -132,7 +132,7 @@ export default function AdminSettingsPage() {
       .catch((error) => {
         console.error("Failed to load settings:", error);
       });
-  }, []);
+  }, [authorized]);
 
   const loadSubscribers = async () => {
     try {
@@ -1184,7 +1184,7 @@ export default function AdminSettingsPage() {
                   Email Provider
                 </label>
                 <select
-                  value={settings.email.provider}
+                  value={settings?.email?.provider || "smtp"}
                   onChange={(e) =>
                     setSettings({
                       ...settings,
@@ -1211,7 +1211,7 @@ export default function AdminSettingsPage() {
                   </label>
                   <input
                     type="email"
-                    value={settings.email.fromEmail}
+                    value={settings?.email?.fromEmail || ""}
                     onChange={(e) =>
                       setSettings({
                         ...settings,
@@ -1228,7 +1228,7 @@ export default function AdminSettingsPage() {
                   </label>
                   <input
                     type="text"
-                    value={settings.email.fromName}
+                    value={settings?.email?.fromName || ""}
                     onChange={(e) =>
                       setSettings({
                         ...settings,
@@ -1252,7 +1252,7 @@ export default function AdminSettingsPage() {
                       </label>
                       <input
                         type="text"
-                        value={settings.email.smtpHost}
+                        value={settings?.email?.smtpHost || ""}
                         onChange={(e) =>
                           setSettings({
                             ...settings,
@@ -1269,7 +1269,7 @@ export default function AdminSettingsPage() {
                       </label>
                       <input
                         type="number"
-                        value={settings.email.smtpPort}
+                        value={settings?.email?.smtpPort || 587}
                         onChange={(e) =>
                           setSettings({
                             ...settings,
@@ -1290,7 +1290,7 @@ export default function AdminSettingsPage() {
                       </label>
                       <input
                         type="text"
-                        value={settings.email.smtpUser}
+                        value={settings?.email?.smtpUser || ""}
                         onChange={(e) =>
                           setSettings({
                             ...settings,
@@ -1306,7 +1306,7 @@ export default function AdminSettingsPage() {
                       </label>
                       <input
                         type="password"
-                        value={settings.email.smtpPassword}
+                        value={settings?.email?.smtpPassword || ""}
                         onChange={(e) =>
                           setSettings({
                             ...settings,
@@ -1324,7 +1324,7 @@ export default function AdminSettingsPage() {
                     <input
                       type="checkbox"
                       id="smtpSecure"
-                      checked={settings.email.smtpSecure}
+                      checked={settings?.email?.smtpSecure || false}
                       onChange={(e) =>
                         setSettings({
                           ...settings,
@@ -1351,7 +1351,7 @@ export default function AdminSettingsPage() {
                       </label>
                       <input
                         type="text"
-                        value={settings.email.mailjetApiKey || settings.email.apiKey}
+                        value={settings?.email?.mailjetApiKey || settings?.email?.apiKey || ""}
                         onChange={(e) =>
                           setSettings({
                             ...settings,
@@ -1372,7 +1372,7 @@ export default function AdminSettingsPage() {
                       </label>
                       <input
                         type="password"
-                        value={settings.email.mailjetApiSecret || settings.email.apiSecret}
+                        value={settings?.email?.mailjetApiSecret || settings?.email?.apiSecret || ""}
                         onChange={(e) =>
                           setSettings({
                             ...settings,
@@ -1404,7 +1404,7 @@ export default function AdminSettingsPage() {
                     </label>
                     <input
                       type="password"
-                      value={settings.email.sendgridApiKey || settings.email.apiKey}
+                      value={settings?.email?.sendgridApiKey || settings?.email?.apiKey || ""}
                       onChange={(e) =>
                         setSettings({
                           ...settings,

@@ -1,15 +1,18 @@
 import nodemailer from "nodemailer";
 import fs from "fs";
-import path from "path";
 import { EmailSettings, EmailProvider } from "@/lib/types/admin";
-
-const SETTINGS_PATH = path.join(process.cwd(), "lib/data/admin-data.json");
+import { getSystemSettings } from "@/lib/db/admin";
 
 function getEmailSettings(): EmailSettings | null {
   try {
-    const data = JSON.parse(fs.readFileSync(SETTINGS_PATH, "utf8"));
-    return data.settings?.email || null;
-  } catch {
+    // Sadece DB'den oku - JSON dosyasından okuma yok
+    const systemSettings = getSystemSettings();
+    if (systemSettings.email && Object.keys(systemSettings.email).length > 0) {
+      return systemSettings.email as EmailSettings;
+    }
+    return null;
+  } catch (error) {
+    console.error("[EMAIL SERVICE] Error getting email settings from DB:", error);
     return null;
   }
 }

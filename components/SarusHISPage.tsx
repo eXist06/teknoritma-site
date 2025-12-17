@@ -177,13 +177,16 @@ export default function SarusHISPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div
-              initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 30 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: isMobile ? 1 : 0 }}
+              animate={{ opacity: 1 }}
               transition={{ 
-                duration: prefersReducedMotion ? 0 : (isMobile ? 0.3 : 0.6),
+                duration: prefersReducedMotion ? 0 : (isMobile ? 0 : 0.6),
                 ease: "easeOut"
               }}
-              style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
+              style={{ 
+                willChange: isMobile ? "auto" : "opacity, transform",
+                transform: isMobile ? "none" : "translateZ(0)"
+              }}
             >
               <Link
                 href={basePath || "/"}
@@ -281,13 +284,16 @@ export default function SarusHISPage() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, scale: isMobile || prefersReducedMotion ? 1 : 0.9 }}
+              initial={{ opacity: isMobile ? 1 : 0, scale: isMobile ? 1 : 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ 
-                delay: prefersReducedMotion ? 0 : (isMobile ? 0 : 0.3),
-                duration: prefersReducedMotion ? 0 : (isMobile ? 0.3 : 0.6)
+                delay: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.3),
+                duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.6)
               }}
-              style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
+              style={{ 
+                willChange: isMobile ? "auto" : "opacity, transform",
+                transform: isMobile ? "none" : "translateZ(0)"
+              }}
               className="hidden md:block mt-12 md:mt-20"
             >
               <div className="relative w-full aspect-video bg-white/80 backdrop-blur-md rounded-2xl border border-neutral-border/50 shadow-xl overflow-hidden">
@@ -398,14 +404,17 @@ export default function SarusHISPage() {
 
         <div className="max-w-7xl mx-auto px-5 md:px-10 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
+            initial={{ opacity: isMobile ? 1 : 0 }}
+            whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
             transition={{ 
-              duration: prefersReducedMotion ? 0 : (isMobile ? 0.3 : 0.6),
+              duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.6),
               ease: "easeOut"
             }}
-            style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
+            style={{ 
+              willChange: isMobile ? "auto" : "opacity, transform",
+              transform: isMobile ? "none" : "translateZ(0)"
+            }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
@@ -425,14 +434,17 @@ export default function SarusHISPage() {
       {/* Core Features Section */}
       <section id="core-features" className="mx-auto max-w-7xl px-4 md:px-10 py-24 md:py-36 bg-background">
         <motion.div
-          initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-30px" }}
+          initial={{ opacity: isMobile ? 1 : 0 }}
+          whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: isMobile ? "0px" : "-30px" }}
           transition={{ 
-            duration: prefersReducedMotion ? 0 : (isMobile ? 0.25 : 0.4),
+            duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.4),
             ease: "easeOut"
           }}
-          style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
+          style={{ 
+            willChange: isMobile ? "auto" : "opacity, transform",
+            transform: isMobile ? "none" : "translateZ(0)"
+          }}
           className="mb-12 text-center"
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
@@ -453,17 +465,17 @@ export default function SarusHISPage() {
               <React.Fragment key={tab.id}>
                 {/* Card */}
                 <motion.div
-                  initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-20px" }}
+                  initial={{ opacity: isMobile ? 1 : 0 }}
+                  whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: isMobile ? "0px" : "-20px" }}
                   transition={{ 
-                    delay: prefersReducedMotion ? 0 : (isMobile ? 0 : idx * 0.05),
-                    duration: prefersReducedMotion ? 0 : (isMobile ? 0.2 : 0.3),
+                    delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
+                    duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.3),
                     ease: "easeOut"
                   }}
                   style={{ 
-                    willChange: isMobile ? "opacity" : "opacity, transform",
-                    transform: "translateZ(0)"
+                    willChange: isMobile ? "auto" : "opacity, transform",
+                    transform: isMobile ? "none" : "translateZ(0)"
                   }}
                   className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
                 >

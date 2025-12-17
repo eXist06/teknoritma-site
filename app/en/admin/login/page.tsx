@@ -8,6 +8,7 @@ export default function AdminLoginPageEn() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [setupRequired, setSetupRequired] = useState(false);
@@ -54,7 +55,7 @@ export default function AdminLoginPageEn() {
       const response = await fetch("/api/admin/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, rememberMe }),
       });
 
       const data = await response.json();
@@ -143,6 +144,18 @@ export default function AdminLoginPageEn() {
               className="w-full px-4 py-2 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               required
             />
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="w-4 h-4 text-primary border-neutral-border rounded focus:ring-primary focus:ring-2"
+            />
+            <label htmlFor="rememberMe" className="ml-2 text-sm text-neutral-body cursor-pointer">
+              Remember Me
+            </label>
           </div>
           <button
             type="submit"

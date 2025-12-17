@@ -7,7 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-pr
 
 export async function POST(request: NextRequest) {
   try {
-    const { username, password } = await request.json();
+    const { username, password, rememberMe } = await request.json();
 
     if (!username || !password) {
       return NextResponse.json(
@@ -54,13 +54,18 @@ export async function POST(request: NextRequest) {
 
     // JWT token oluştur (role bilgisini de ekle)
     const userRole = user.role || "admin"; // Backward compatibility
+    
+    // Remember me varsa 30 gün, yoksa 24 saat
+    const expirationTime = rememberMe ? "30d" : "24h";
+    const cookieMaxAge = rememberMe ? 60 * 60 * 24 * 30 : 60 * 60 * 24; // 30 gün veya 24 saat
+    
     const token = await new SignJWT({ 
       userId: user.id, 
       username: user.username,
       role: userRole 
     })
       .setProtectedHeader({ alg: "HS256" })
-      .setExpirationTime("24h")
+      .setExpirationTime(expirationTime)
       .setIssuedAt()
       .sign(new TextEncoder().encode(JWT_SECRET));
 
@@ -76,7 +81,7 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 60 * 60 * 24, // 24 saat
+      maxAge: cookieMaxAge,
       path: "/",
     });
 

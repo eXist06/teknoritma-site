@@ -67,14 +67,17 @@ export default function ProductsSection() {
         {/* SarusHIS Featured Card */}
         {sarusHIS && (
           <motion.div
-            initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
+            initial={{ opacity: isMobile ? 1 : 0 }}
+            whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
             transition={{ 
-              duration: prefersReducedMotion ? 0 : (isMobile ? 0.3 : 0.6),
+              duration: prefersReducedMotion ? 0 : (isMobile ? 0 : 0.6),
               ease: "easeOut"
             }}
-            style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
+            style={{ 
+              willChange: isMobile ? "auto" : "opacity, transform",
+              transform: isMobile ? "none" : "translateZ(0)"
+            }}
             className="mb-20"
           >
             <div className="relative bg-white rounded-2xl border border-neutral-border/60 shadow-lg overflow-hidden group">
@@ -115,14 +118,17 @@ export default function ProductsSection() {
                       {productFeatures.map((feature, idx) => (
                         <motion.div
                           key={idx}
-                          initial={{ opacity: 0, x: isMobile || prefersReducedMotion ? 0 : -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true, margin: "-20px" }}
+                          initial={{ opacity: isMobile ? 1 : 0 }}
+                          whileInView={isMobile ? {} : { opacity: 1, x: 0 }}
+                          viewport={{ once: true, margin: isMobile ? "0px" : "-20px" }}
                           transition={{ 
-                            delay: prefersReducedMotion ? 0 : (isMobile ? 0 : idx * 0.05),
-                            duration: prefersReducedMotion ? 0 : (isMobile ? 0.2 : 0.3)
+                            delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
+                            duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.3)
                           }}
-                          style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
+                          style={{ 
+                            willChange: isMobile ? "auto" : "opacity, transform",
+                            transform: isMobile ? "none" : "translateZ(0)"
+                          }}
                           className="flex items-start gap-3 text-neutral-body"
                         >
                           <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
@@ -227,11 +233,14 @@ export default function ProductsSection() {
                     >
                       <Link href={productPath}>
                         <motion.div
+                          initial={{ opacity: isMobile ? 1 : 0 }}
+                          whileInView={isMobile ? {} : { opacity: 1 }}
+                          viewport={{ once: true, margin: isMobile ? "0px" : "-100px" }}
                           whileHover={isMobile || prefersReducedMotion ? {} : { y: -12, scale: 1.02 }}
-                          transition={{ duration: isMobile ? 0.2 : 0.3 }}
+                          transition={{ duration: isMobile ? 0 : 0.2 }}
                           style={{ 
-                            willChange: isMobile ? "auto" : "transform",
-                            transform: "translateZ(0)"
+                            willChange: isMobile ? "auto" : "opacity, transform",
+                            transform: isMobile ? "none" : "translateZ(0)"
                           }}
                           className="relative h-full bg-white rounded-2xl border border-neutral-border/60 p-8 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer"
                         >

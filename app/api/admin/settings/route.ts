@@ -21,7 +21,13 @@ export async function GET(request: NextRequest) {
     }
 
     const settings = getSystemSettings();
-    return NextResponse.json({ settings });
+    return NextResponse.json({ settings }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
+    });
   } catch (error) {
     console.error("Get settings error:", error);
     return NextResponse.json(

@@ -12,6 +12,8 @@ export default function SarusCloudPage() {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [activeNavItem, setActiveNavItem] = useState("clinical-features");
+  const [isMobile, setIsMobile] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const tabs = [
     {
@@ -61,6 +63,27 @@ export default function SarusCloudPage() {
     },
   ];
 
+  // Detect mobile and reduced motion preference
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    const checkReducedMotion = () => {
+      setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    };
+    
+    checkMobile();
+    checkReducedMotion();
+    window.addEventListener('resize', checkMobile);
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    mediaQuery.addEventListener('change', checkReducedMotion);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      mediaQuery.removeEventListener('change', checkReducedMotion);
+    };
+  }, []);
+
   // Auto-rotate cards every 8 seconds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -109,9 +132,13 @@ export default function SarusCloudPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              initial={{ opacity: isMobile ? 1 : 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.6) }}
+              style={{ 
+                willChange: isMobile ? "auto" : "opacity, transform",
+                transform: isMobile ? "none" : "translateZ(0)"
+              }}
             >
               <Link
                 href={basePath || "/"}
@@ -308,9 +335,14 @@ export default function SarusCloudPage() {
       {/* Clinical Features Section */}
       <section id="clinical-features" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          initial={{ opacity: isMobile ? 1 : 0 }}
+          whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
+          transition={{ duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.4) }}
+          style={{ 
+            willChange: isMobile ? "auto" : "opacity, transform",
+            transform: isMobile ? "none" : "translateZ(0)"
+          }}
           className="mb-12 text-center"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
@@ -326,10 +358,17 @@ export default function SarusCloudPage() {
           {tabs.map((tab, idx) => (
             <motion.div
               key={tab.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
+              initial={{ opacity: isMobile ? 1 : 0 }}
+              whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
+              transition={{ 
+                delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.1),
+                duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.3)
+              }}
+              style={{ 
+                willChange: isMobile ? "auto" : "opacity, transform",
+                transform: isMobile ? "none" : "translateZ(0)"
+              }}
               className={`group relative bg-white border-2 rounded-lg p-6 md:p-8 transition-all duration-300 ${
                 activeTab === idx
                   ? "border-primary shadow-lg shadow-primary/10"
@@ -374,8 +413,13 @@ export default function SarusCloudPage() {
       <section id="platform-features" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background-alt">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
+          transition={{ duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.4) }}
+          style={{ 
+            willChange: isMobile ? "auto" : "opacity, transform",
+            transform: isMobile ? "none" : "translateZ(0)"
+          }}
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-4">
@@ -440,10 +484,17 @@ export default function SarusCloudPage() {
             return (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.05 }}
+              initial={{ opacity: isMobile ? 1 : 0 }}
+              whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
+              transition={{ 
+                delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
+                duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.3)
+              }}
+              style={{ 
+                willChange: isMobile ? "auto" : "opacity, transform",
+                transform: isMobile ? "none" : "translateZ(0)"
+              }}
               className="bg-white rounded-xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-all duration-300"
             >
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
@@ -549,8 +600,13 @@ export default function SarusCloudPage() {
       <section className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background-alt">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
+          transition={{ duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.4) }}
+          style={{ 
+            willChange: isMobile ? "auto" : "opacity, transform",
+            transform: isMobile ? "none" : "translateZ(0)"
+          }}
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-6">
@@ -575,10 +631,17 @@ export default function SarusCloudPage() {
           ].map((item, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
+              initial={{ opacity: isMobile ? 1 : 0 }}
+              whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
+              transition={{ 
+                delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.1),
+                duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.3)
+              }}
+              style={{ 
+                willChange: isMobile ? "auto" : "opacity, transform",
+                transform: isMobile ? "none" : "translateZ(0)"
+              }}
               className="bg-white rounded-2xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
             >
               <h4 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2">
