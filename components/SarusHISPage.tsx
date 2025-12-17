@@ -204,35 +204,37 @@ export default function SarusHISPage() {
                 {t(`${translationKey}.description`)}
               </p>
 
-              <div className="mb-8">
-                <AnimatePresence>
-                  {isDescriptionExpanded && (
-                    <motion.p
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="text-lg md:text-xl text-neutral-body leading-relaxed mb-3"
-                    >
-                      {t(`${translationKey}.descriptionSecond`)}
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-                <button
-                  onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                  className="text-primary hover:text-primary-dark font-semibold text-sm md:text-base transition-colors flex items-center gap-2"
-                >
-                  {isDescriptionExpanded ? t(`${translationKey}.collapseText`) : t(`${translationKey}.expandText`)}
-                  <svg
-                    className={`w-4 h-4 transition-transform duration-300 ${isDescriptionExpanded ? "rotate-180" : ""}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+              {t(`${translationKey}.descriptionSecond`) && (
+                <div className="mb-8">
+                  <AnimatePresence>
+                    {isDescriptionExpanded && (
+                      <motion.p
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="text-lg md:text-xl text-neutral-body leading-relaxed mb-3"
+                      >
+                        {t(`${translationKey}.descriptionSecond`)}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                  <button
+                    onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                    className="text-primary hover:text-primary-dark font-semibold text-sm md:text-base transition-colors flex items-center gap-2"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-              </div>
+                    {isDescriptionExpanded ? t(`${translationKey}.collapseText`) : t(`${translationKey}.expandText`)}
+                    <svg
+                      className={`w-4 h-4 transition-transform duration-300 ${isDescriptionExpanded ? "rotate-180" : ""}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                </div>
+              )}
 
               {/* Demo Request Button */}
               <div className="flex flex-wrap gap-4">

@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const verificationResult = verifyCode(email, verificationCode);
+    const verificationResult = verifyCode(email, verificationCode, "careers");
     if (!verificationResult.success) {
       return NextResponse.json(
         { error: verificationResult.error || "Invalid verification code" },

@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await sendVerificationCode(email);
+    const result = await sendVerificationCode(email, "contact");
 
     if (result.success) {
       return NextResponse.json({

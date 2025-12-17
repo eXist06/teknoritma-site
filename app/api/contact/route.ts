@@ -20,7 +20,7 @@ function readMailingList(): MailingList {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, organization, message, verificationCode, language = "tr" } = body;
+    const { name, email, organization, phone, message, verificationCode, language = "tr" } = body;
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const verificationResult = verifyCode(email, verificationCode);
+    const verificationResult = verifyCode(email, verificationCode, "contact");
     if (!verificationResult.success) {
       return NextResponse.json(
         { error: verificationResult.error || "Invalid verification code" },
@@ -106,11 +106,12 @@ export async function POST(request: NextRequest) {
       } else {
         const notificationHtml = isEnglish
           ? `
-            <h2>New Contact Form Message Notification</h2>
-            <p>A new contact form message has been received by Teknoritma:</p>
+            <h2>New Contact Request</h2>
+            <p>A new contact request has been received by Teknoritma:</p>
             <ul>
               <li><strong>Name:</strong> ${name}</li>
               <li><strong>Email:</strong> ${email}</li>
+              ${phone ? `<li><strong>Phone:</strong> ${phone}</li>` : ""}
               ${organization ? `<li><strong>Organization:</strong> ${organization}</li>` : ""}
               <li><strong>Message:</strong> ${message.replace(/\n/g, "<br>")}</li>
             </ul>
@@ -118,11 +119,12 @@ export async function POST(request: NextRequest) {
             <p>Teknoritma</p>
           `
           : `
-            <h2>Yeni İletişim Formu Mesajı Bildirimi</h2>
-            <p>Teknoritma'ya yeni bir iletişim formu mesajı geldi:</p>
+            <h2>Yeni İletişim Talebi</h2>
+            <p>Teknoritma'ya yeni bir iletişim talebi geldi:</p>
             <ul>
               <li><strong>Ad:</strong> ${name}</li>
               <li><strong>E-posta:</strong> ${email}</li>
+              ${phone ? `<li><strong>Telefon:</strong> ${phone}</li>` : ""}
               ${organization ? `<li><strong>Kurum:</strong> ${organization}</li>` : ""}
               <li><strong>Mesaj:</strong> ${message.replace(/\n/g, "<br>")}</li>
             </ul>
@@ -130,8 +132,8 @@ export async function POST(request: NextRequest) {
             <p>Teknoritma</p>
           `;
         const notificationText = isEnglish
-          ? `New Contact Form Message Notification\n\nName: ${name}\nEmail: ${email}\n${organization ? `Organization: ${organization}\n` : ""}Message: ${message}\n\nThank you!\nTeknoritma`
-          : `Yeni İletişim Formu Mesajı Bildirimi\n\nAd: ${name}\nE-posta: ${email}\n${organization ? `Kurum: ${organization}\n` : ""}Mesaj: ${message}\n\nTeşekkürler\nTeknoritma`;
+          ? `New Contact Request\n\nName: ${name}\nEmail: ${email}\n${phone ? `Phone: ${phone}\n` : ""}${organization ? `Organization: ${organization}\n` : ""}Message: ${message}\n\nThank you!\nTeknoritma`
+          : `Yeni İletişim Talebi\n\nAd: ${name}\nE-posta: ${email}\n${phone ? `Telefon: ${phone}\n` : ""}${organization ? `Kurum: ${organization}\n` : ""}Mesaj: ${message}\n\nTeşekkürler\nTeknoritma`;
 
         console.log(`[CONTACT] Sending notifications to ${generalSubscribers.length} subscribers immediately...`);
 
@@ -152,7 +154,7 @@ export async function POST(request: NextRequest) {
               
               const result = await sendEmail({
                 to: subscriber.email,
-                subject: isEnglish ? "New Contact Form Message" : "Yeni İletişim Formu Mesajı",
+                subject: isEnglish ? "New Contact Request" : "Yeni İletişim Talebi",
                 html: `<p>${subscriberGreeting}</p>${notificationHtml}`,
                 text: `${subscriberGreeting}\n\n${notificationText}`,
               });
@@ -165,14 +167,14 @@ export async function POST(request: NextRequest) {
                 console.error(`[CONTACT] ❌ Failed to send notification to ${subscriber.email}: ${errorMsg}`);
                 const queueId = addToQueue(
                   subscriber.email,
-                  isEnglish ? "New Contact Form Message" : "Yeni İletişim Formu Mesajı",
+                  isEnglish ? "New Contact Request" : "Yeni İletişim Talebi",
                   `<p>${subscriberGreeting}</p>${notificationHtml}`,
                   `${subscriberGreeting}\n\n${notificationText}`,
                   undefined,
                   undefined,
                   name,
                   email,
-                  undefined,
+                  phone,
                   message
                 );
                 console.log(`[CONTACT] Added failed notification to queue (ID: ${queueId}) for ${subscriber.email}`);
@@ -186,14 +188,14 @@ export async function POST(request: NextRequest) {
               
               const queueId = addToQueue(
                 subscriber.email,
-                isEnglish ? "New Contact Form Message" : "Yeni İletişim Formu Mesajı",
+                isEnglish ? "New Contact Request" : "Yeni İletişim Talebi",
                 `<p>${subscriberGreeting}</p>${notificationHtml}`,
                 `${subscriberGreeting}\n\n${notificationText}`,
                 undefined,
                 undefined,
                 name,
                 email,
-                undefined,
+                phone,
                 message
               );
               failed++;

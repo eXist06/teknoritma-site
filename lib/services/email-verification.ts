@@ -22,18 +22,32 @@ export function generateVerificationCode(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-export async function sendVerificationCode(email: string): Promise<{ success: boolean; error?: string }> {
+export async function sendVerificationCode(
+  email: string,
+  formType: "demo" | "contact" | "careers" = "demo"
+): Promise<{ success: boolean; error?: string }> {
   const verifications = readVerifications();
   
-  // Remove expired verifications
+  // Remove expired verifications and old verifications without formType
   const now = new Date();
   verifications.verifications = verifications.verifications.filter(
-    (v) => new Date(v.expiresAt) > now && !v.verified
+    (v) => {
+      // Remove expired or verified
+      if (new Date(v.expiresAt) <= now || v.verified) {
+        return false;
+      }
+      // Remove old verifications without formType (migration)
+      if (!('formType' in v)) {
+        return false;
+      }
+      return true;
+    }
   );
 
-  // Check if there's a recent verification (within last 2 minutes)
+  // Check if there's a recent verification for this form type (within last 2 minutes)
   const recentVerification = verifications.verifications.find(
     (v) => v.email.toLowerCase() === email.toLowerCase() && 
+           v.formType === formType &&
            new Date(v.createdAt).getTime() > now.getTime() - 120000
   );
 
@@ -51,6 +65,7 @@ export async function sendVerificationCode(email: string): Promise<{ success: bo
     id: Date.now().toString(),
     email: email.toLowerCase(),
     code,
+    formType,
     createdAt: now.toISOString(),
     expiresAt: expiresAt.toISOString(),
     verified: false,
@@ -60,18 +75,52 @@ export async function sendVerificationCode(email: string): Promise<{ success: bo
   verifications.verifications.push(verification);
   writeVerifications(verifications);
 
+  // Form tipine göre mesaj içeriği
+  const formMessages = {
+    demo: {
+      subject: "Demo Talebi Doğrulama Kodu - Teknoritma",
+      html: `
+        <h2>Doğrulama Kodu</h2>
+        <p>Demo talebiniz için doğrulama kodunuz:</p>
+        <h1 style="font-size: 32px; letter-spacing: 8px; text-align: center; color: #007bff; font-family: monospace;">${code}</h1>
+        <p>Bu kod 15 dakika geçerlidir.</p>
+        <p>Eğer bu talebi siz yapmadıysanız, bu e-postayı görmezden gelebilirsiniz.</p>
+      `,
+      text: `Doğrulama Kodunuz: ${code}\n\nBu kod 15 dakika geçerlidir.`,
+    },
+    contact: {
+      subject: "İletişim Formu Doğrulama Kodu - Teknoritma",
+      html: `
+        <h2>Doğrulama Kodu</h2>
+        <p>İletişim formu başvurunuz için doğrulama kodunuz:</p>
+        <h1 style="font-size: 32px; letter-spacing: 8px; text-align: center; color: #007bff; font-family: monospace;">${code}</h1>
+        <p>Bu kod 15 dakika geçerlidir.</p>
+        <p>Eğer bu başvuruyu siz yapmadıysanız, bu e-postayı görmezden gelebilirsiniz.</p>
+      `,
+      text: `Doğrulama Kodunuz: ${code}\n\nBu kod 15 dakika geçerlidir.`,
+    },
+    careers: {
+      subject: "Kariyer Başvurusu Doğrulama Kodu - Teknoritma",
+      html: `
+        <h2>Doğrulama Kodu</h2>
+        <p>Kariyer başvurunuz için doğrulama kodunuz:</p>
+        <h1 style="font-size: 32px; letter-spacing: 8px; text-align: center; color: #007bff; font-family: monospace;">${code}</h1>
+        <p>Bu kod 15 dakika geçerlidir.</p>
+        <p>Eğer bu başvuruyu siz yapmadıysanız, bu e-postayı görmezden gelebilirsiniz.</p>
+      `,
+      text: `Doğrulama Kodunuz: ${code}\n\nBu kod 15 dakika geçerlidir.`,
+    },
+  };
+
+  const message = formMessages[formType];
+
   // Send verification code email
+  console.log(`[VERIFICATION] Sending ${formType} verification code to ${email}`);
   const emailResult = await sendEmail({
     to: email,
-    subject: "Demo Talebi Doğrulama Kodu - Teknoritma",
-    html: `
-      <h2>Doğrulama Kodu</h2>
-      <p>Demo talebiniz için doğrulama kodunuz:</p>
-      <h1 style="font-size: 32px; letter-spacing: 8px; text-align: center; color: #007bff; font-family: monospace;">${code}</h1>
-      <p>Bu kod 15 dakika geçerlidir.</p>
-      <p>Eğer bu talebi siz yapmadıysanız, bu e-postayı görmezden gelebilirsiniz.</p>
-    `,
-    text: `Doğrulama Kodunuz: ${code}\n\nBu kod 15 dakika geçerlidir.`,
+    subject: message.subject,
+    html: message.html,
+    text: message.text,
   });
 
   if (!emailResult.success) {
@@ -79,27 +128,37 @@ export async function sendVerificationCode(email: string): Promise<{ success: bo
     verifications.verifications = verifications.verifications.filter((v) => v.id !== verification.id);
     writeVerifications(verifications);
     const errorMsg = 'error' in emailResult ? emailResult.error : 'Unknown error';
+    console.error(`[VERIFICATION] Failed to send ${formType} verification code to ${email}:`, errorMsg);
     return {
       success: false,
       error: errorMsg || "Failed to send verification code",
     };
   }
 
+  console.log(`[VERIFICATION] Successfully sent ${formType} verification code to ${email}`);
   return { success: true };
 }
 
-export function verifyCode(email: string, code: string): { success: boolean; error?: string } {
+export function verifyCode(
+  email: string, 
+  code: string, 
+  formType: "demo" | "contact" | "careers" = "demo"
+): { success: boolean; error?: string } {
   const verifications = readVerifications();
   const now = new Date();
+
+  console.log(`[VERIFICATION] Verifying ${formType} code for ${email}`);
 
   const verification = verifications.verifications.find(
     (v) =>
       v.email.toLowerCase() === email.toLowerCase() &&
+      ('formType' in v ? v.formType === formType : false) && // Check formType exists and matches
       !v.verified &&
       new Date(v.expiresAt) > now
   );
 
   if (!verification) {
+    console.log(`[VERIFICATION] No valid ${formType} verification found for ${email}`);
     return {
       success: false,
       error: "Invalid or expired verification code",

@@ -11,6 +11,7 @@ export default function ContactSection() {
     name: "",
     email: "",
     organization: "",
+    phone: "",
     message: "",
   });
   const [verificationCode, setVerificationCode] = useState("");
@@ -102,7 +103,7 @@ export default function ContactSection() {
             ? "Message sent successfully! We'll get back to you soon." 
             : "Mesajınız gönderildi! En kısa sürede size dönüş yapacağız." 
         });
-        setFormData({ name: "", email: "", organization: "", message: "" });
+        setFormData({ name: "", email: "", organization: "", phone: "", message: "" });
         setVerificationCode("");
         setStep("form");
       } else {
@@ -205,6 +206,13 @@ export default function ContactSection() {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required
+                    className="w-full px-5 py-3.5 rounded-xl border border-neutral-border bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
+                  <input
+                    type="tel"
+                    placeholder={language === "en" ? "Phone" : "Telefon"}
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full px-5 py-3.5 rounded-xl border border-neutral-border bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   />
                   <textarea

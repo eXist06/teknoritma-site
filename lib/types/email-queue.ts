@@ -28,6 +28,7 @@ export interface EmailVerification {
   id: string;
   email: string;
   code: string;
+  formType: "demo" | "contact" | "careers";
   createdAt: string;
   expiresAt: string;
   verified: boolean;

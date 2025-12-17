@@ -219,6 +219,30 @@
       "remoteWorkplace": "remote",
       "cvFileName": "1764879155054_CompanyProfile__1_.pdf",
       "createdAt": "2025-12-04T20:12:35.075Z"
+    },
+    {
+      "id": "1765974885880",
+      "firstName": "cem",
+      "lastName": "salas",
+      "email": "funkypulse@gmail.com",
+      "phone": "05333389329",
+      "jobCategory": "software-development",
+      "city": "Ankara",
+      "remoteWorkplace": "hybrid",
+      "cvFileName": "1765974885879_Teknoritma.pdf",
+      "createdAt": "2025-12-17T12:34:45.880Z"
+    },
+    {
+      "id": "1765976080676",
+      "firstName": "cem",
+      "lastName": "salas",
+      "email": "cemsalas@gmail.com",
+      "phone": "05333389329",
+      "jobCategory": "software-development",
+      "city": "Ankara",
+      "remoteWorkplace": "hybrid",
+      "cvFileName": "1765976080673_Teknoritma.pdf",
+      "createdAt": "2025-12-17T12:54:40.676Z"
     }
   ]
 }
