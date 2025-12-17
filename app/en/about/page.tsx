@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import TimelineSection from "@/components/TimelineSection";
 
 export const metadata: Metadata = {
   title: "About Us | Teknoritma",
@@ -146,6 +147,9 @@ export default function AboutPageEN() {
           </div>
         </div>
       </section>
+
+      {/* Timeline Section */}
+      <TimelineSection />
 
       {/* Standards */}
       <section id="standards" className="py-16 md:py-24 scroll-mt-20">

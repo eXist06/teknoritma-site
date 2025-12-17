@@ -145,7 +145,7 @@ export const translations: Record<string, any> = {
         },
       },
       cta: {
-        title: "SarusHIS ile Dijital Dönüşümünüze Başlayın",
+        title: "Sarus HBS ile Dijital Dönüşümünüze Başlayın",
         description: "Modern hastane yönetimi için kapsamlı çözümümüz hakkında daha fazla bilgi almak veya demo talep etmek için bizimle iletişime geçin.",
       },
       modules: {
@@ -159,12 +159,12 @@ export const translations: Record<string, any> = {
             { id: "emergency", title: "Acil Yönetim Modülü" },
             { id: "nursing", title: "Hemşirelik Yönetim Modülü" },
             { id: "telemedicine", title: "Teletıp Modülü" },
-            { id: "patient-monitoring", title: "Hasta İzleme" },
-            { id: "patient-chart", title: "Hasta Dosyası" },
-            { id: "doctor-notes", title: "Doktor Notları" },
-            { id: "examination", title: "Muayene ve Konsültasyon" },
-            { id: "medication", title: "İlaç Yönetimi" },
-            { id: "prescription", title: "Reçete Yönetimi" },
+            { id: "patient-monitoring", title: "Hasta İzleme Modülü" },
+            { id: "patient-chart", title: "Hasta Dosyası Modülü" },
+            { id: "doctor-notes", title: "Doktor Notları Modülü" },
+            { id: "examination", title: "Muayene ve Konsültasyon Modülü" },
+            { id: "medication", title: "İlaç Yönetimi Modülü" },
+            { id: "prescription", title: "Reçete Yönetimi Modülü" },
             { id: "lab-integration", title: "Laboratuvar Entegrasyonu" },
             { id: "radiology-integration", title: "Radyoloji Entegrasyonu" },
             { id: "operating-rooms", title: "Ameliyathane Yönetimi" },
@@ -187,8 +187,8 @@ export const translations: Record<string, any> = {
             { id: "blood-center", title: "Kan Merkezi Modülü" },
             { id: "genetics-lab", title: "Genetik Modülü" },
             { id: "pathology", title: "Patoloji Modülü" },
-            { id: "ris", title: "Radyoloji Bilgi Sistemi (RIS)" },
-            { id: "pacs", title: "PACS" },
+            { id: "ris", title: "Radyoloji Bilgi Sistemi" },
+            { id: "pacs", title: "Görüntü Arşivleme ve İletişim Sistemi" },
             { id: "nuclear-medicine", title: "Nükleer Tıp Modülü" },
             { id: "radiotherapy-chemo-diag", title: "Radyoterapi ve Kemoterapi Modülü" },
             { id: "pharmacy", title: "Eczane Modülü" },
@@ -612,8 +612,8 @@ export const translations: Record<string, any> = {
           detail: "SBS yazılımı, e-Reçete, Klinik Veri Kayıtları, Otomatik Bakım Boşluk Uyarıları.",
         },
         practiceManagement: {
-          title: "Pratik Yönetimi",
-          description: "Randevu yönetimi, hasta takibi ve operasyonel süreçleri kolaylaştıran entegre pratik yönetim çözümü.",
+          title: "Kaynak Yönetimi",
+          description: "Randevu yönetimi, hasta takibi ve operasyonel süreçleri kolaylaştıran entegre kaynak yönetim çözümü.",
           detail: "AI destekli randevu planlama, hasta akış yönetimi, operasyonel raporlama.",
         },
         patientEngagement: {
@@ -1065,7 +1065,7 @@ export const translations: Record<string, any> = {
         },
       },
       cta: {
-        title: "Start Your Digital Transformation with SarusHIS",
+        title: "Start Your Digital Transformation with Sarus EMR",
         description: "Contact us to learn more about our comprehensive solution for modern hospital management or to request a demo.",
       },
       modules: {
@@ -1531,8 +1531,8 @@ export const translations: Record<string, any> = {
           detail: "EHR software, e-Prescribing, Clinical Data Registries, Automated Care Gap Alerts.",
         },
         practiceManagement: {
-          title: "Practice Management",
-          description: "Integrated practice management solution that simplifies appointment management, patient tracking, and operational processes.",
+          title: "Resource Management",
+          description: "Integrated resource management solution that simplifies appointment management, patient tracking, and operational processes.",
           detail: "AI-powered appointment scheduling, patient flow management, operational reporting.",
         },
         patientEngagement: {

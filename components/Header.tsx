@@ -29,12 +29,14 @@ export default function Header() {
       return [
         { label: "Our Story", href: "/en/about#story" },
         { label: "Values", href: "/en/about#values" },
+        { label: "Timeline", href: "/en/about#timeline" },
         { label: "Our Standards", href: "/en/about#standards" },
       ];
     } else {
       return [
         { label: "Hikayemiz", href: "/hakkimizda#story" },
         { label: "Değerlerimiz", href: "/hakkimizda#values" },
+        { label: "Zaman İçinde Sarus", href: "/hakkimizda#timeline" },
         { label: "Standartlarımız", href: "/hakkimizda#standards" },
       ];
     }

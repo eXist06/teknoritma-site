@@ -611,7 +611,7 @@ export default function SarusCloudPage() {
       {/* Use Cases Section */}
       <section className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background-alt">
         <motion.div
-          initial={{ opacity: 0, y: isMobile ? 0 : 30 }}
+          initial={{ opacity: 0 }}
           animate={mounted && isMobile ? { opacity: 1 } : {}}
           whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
           viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
@@ -620,6 +620,7 @@ export default function SarusCloudPage() {
             willChange: isMobile ? "opacity" : "opacity, transform",
             transform: isMobile ? "none" : "translateZ(0)"
           }}
+          suppressHydrationWarning
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-6">
@@ -644,17 +645,19 @@ export default function SarusCloudPage() {
           ].map((item, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: isMobile ? 1 : 0 }}
-              whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              animate={mounted && isMobile ? { opacity: 1 } : {}}
+              whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
               viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
               transition={{ 
                 delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.1),
-                duration: isMobile ? 0 : (prefersReducedMotion ? 0 : 0.3)
+                duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3)
               }}
               style={{ 
-                willChange: isMobile ? "auto" : "opacity, transform",
+                willChange: isMobile ? "opacity" : "opacity, transform",
                 transform: isMobile ? "none" : "translateZ(0)"
               }}
+              suppressHydrationWarning
               className="bg-white rounded-2xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
             >
               <h4 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2">

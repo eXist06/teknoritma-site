@@ -27,7 +27,7 @@ export default function TimelineSection() {
   }, [emblaApi]);
 
   return (
-    <section id="projects" className="py-16 md:py-24 bg-background-alt">
+    <section id="timeline" className="py-16 md:py-24 bg-background-alt scroll-mt-20">
       <div className="max-w-7xl mx-auto px-5 md:px-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

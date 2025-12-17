@@ -290,16 +290,16 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="flex flex-col gap-3 md:gap-3.5 -mt-2 md:-mt-3 list-none"
+              className="flex flex-col gap-3 md:gap-4 -mt-2 md:-mt-3 list-none"
             >
               <motion.li
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
-                className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
+                className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
               >
-                <span className="text-xl">🏆</span>
-                <span className="font-medium">
+                <span className="text-xl mt-1">🏆</span>
+                <span className="font-bold text-amber-600">
                   <TypewriterText 
                     key={`himss-${typewriterKey}`}
                     text={t("hero.badges.himss")} 
@@ -312,9 +312,9 @@ export default function Hero() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.7, duration: 0.5 }}
-                className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
+                className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
               >
-                <span className="text-green-600 text-lg">✔</span>
+                <span className="text-primary text-xl mt-1">●</span>
                 <span className="font-medium">
                   <TypewriterText 
                     key={`robust-${typewriterKey}`}
@@ -328,9 +328,9 @@ export default function Hero() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.8, duration: 0.5 }}
-                className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
+                className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
               >
-                <span className="text-green-600 text-lg">✔</span>
+                <span className="text-primary text-xl mt-1">●</span>
                 <span className="font-medium">
                   <TypewriterText 
                     key={`support-${typewriterKey}`}
@@ -344,9 +344,9 @@ export default function Hero() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.9, duration: 0.5 }}
-                className="flex items-center gap-3 text-base md:text-lg text-neutral-heading"
+                className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
               >
-                <span className="text-green-600 text-lg">✔</span>
+                <span className="text-primary text-xl mt-1">●</span>
                 <span className="font-medium">
                   <TypewriterText 
                     key={`ai-${typewriterKey}`}
@@ -436,11 +436,11 @@ export default function Hero() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.6 }}
-                  className="text-lg md:text-xl text-neutral-body leading-relaxed max-w-2xl"
+                  className="text-xl md:text-2xl lg:text-3xl font-bold text-neutral-heading leading-tight max-w-2xl tracking-tight"
                 >
                   {language === "en"
-                    ? "Founded by professionals with over 20 years of health informatics experience, Teknoritma offers innovative solutions through the Sarus Digital Health Platform."
-                    : "20 yılı aşkın sağlık bilişimi deneyimine sahip profesyoneller tarafından kurulan Teknoritma, Sarus Dijital Sağlık Platformu aracılığıyla yenilikçi çözümler sunmaktadır."}
+                    ? "Discover innovative solutions through the Sarus Digital Health Platform..."
+                    : "Sarus Dijital Sağlık Platformu aracılığıyla yenilikçi çözümler ile buluşun..."}
                 </motion.p>
 
                 {/* CTAs */}

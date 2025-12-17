@@ -9,7 +9,7 @@ export const supportIntro = {
   paragraph1En:
     "We have completed over 200 healthcare informatics projects in Turkey and more than 15 projects outside Turkey. A significant portion of our projects involve mega hospitals with over 1,000 beds and EMR platforms used nationwide.",
   kpis: [
-    "200+ Türkiye içi sağlık bilişimi projesi",
+    "200+ Tamamlanan sağlık bilişimi projesi",
     "15+ uluslararası sağlık bilişimi projesi",
     "30+ adet 1.000+ yatak kapasiteli hastane",
     "4 farklı ülkede proje deneyimi",
@@ -27,24 +27,24 @@ export const supportIntro = {
 export const supportHighlights: SupportHighlight = {
   title: "Öne çıkan başlıklar",
   points: [
-    "200+ Türkiye içi sağlık bilişimi projesi",
-    "15+ uluslararası sağlık bilişimi projesi",
-    "30+ adet 1.000+ yatak kapasiteli hastane",
-    "Ankara ve Mersin Şehir Hastaneleri (PPP modeli)",
-    "Katar'da 100+ kliniğe hizmet veren ulusal EMR sistemi",
-    "4 ülkede aktif proje deneyimi",
+    "200+ başarıyla tamamlanmış sağlık bilişimi projesi",
+    "15+ uluslararası sağlık bilişimi ve EMR projesi",
+    "30+ adet 1.000+ yatak kapasiteli mega hastane deneyimi",
+    "Mega Hastane Projeleri: Ankara ve Mersin Şehir Hastaneleri (Kamu-Özel İş Birliği – PPP modeli)",
+    "Katar genelinde 100+ kliniğe hizmet veren ulusal EMR platformu",
+    "4 farklı ülkede aktif proje ve operasyon deneyimi",
   ],
 };
 
 export const supportHighlightsEn: SupportHighlight = {
   title: "Key highlights",
   points: [
-    "200+ domestic healthcare informatics projects",
-    "15+ international healthcare informatics projects",
-    "30+ hospitals with 1,000+ bed capacity",
-    "Ankara and Mersin City Hospitals (PPP model)",
-    "National EMR system serving 100+ clinics in Qatar",
-    "Active project experience in 4 countries",
+    "200+ Successfully completed healthcare informatics projects",
+    "15+ international healthcare informatics and EMR projects",
+    "30+ mega hospitals with 1,000+ bed capacity experience",
+    "Mega Hospital Projects: Ankara and Mersin City Hospitals (Public-Private Partnership – PPP model)",
+    "National EMR platform serving 100+ clinics across Qatar",
+    "Active project and operations experience in 4 different countries",
   ],
 };
 

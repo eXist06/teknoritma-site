@@ -27,8 +27,8 @@ export default function SarusHISPage() {
       id: "integrated-structure",
       title: language === "en" ? "Integrated Structure" : "Bütünleşik Yapı",
       icon: Layers,
-      iconBgClass: "bg-blue-50",
-      iconColorClass: "text-blue-600",
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
       subtitle: language === "en" 
         ? "Single system approach instead of fragmented solutions"
         : "Parça parça çözümler yerine tek sistem yaklaşımı",
@@ -40,8 +40,8 @@ export default function SarusHISPage() {
       id: "scalable-structure",
       title: language === "en" ? "Scalable Structure" : "Ölçeklenebilir Yapı",
       icon: TrendingUp,
-      iconBgClass: "bg-green-50",
-      iconColorClass: "text-green-600",
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
       subtitle: language === "en"
         ? "Designed for mega hospitals and national structures"
         : "Mega hastaneler ve ulusal yapılar için tasarlanmıştır",
@@ -53,8 +53,8 @@ export default function SarusHISPage() {
       id: "standards",
       title: language === "en" ? "Standards" : "Standartlar",
       icon: Globe,
-      iconBgClass: "bg-purple-50",
-      iconColorClass: "text-purple-600",
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
       subtitle: language === "en"
         ? "Compliance with international healthcare informatics standards"
         : "Uluslararası sağlık bilişimi standartlarıyla uyum",
@@ -66,8 +66,8 @@ export default function SarusHISPage() {
       id: "strong-clinical-components",
       title: language === "en" ? "Strong Clinical Components" : "Güçlü Klinik Bileşenler",
       icon: Stethoscope,
-      iconBgClass: "bg-amber-50",
-      iconColorClass: "text-amber-600",
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
       subtitle: language === "en"
         ? "Design centered on clinical workflows"
         : "Klinik iş akışlarını merkeze alan tasarım",
@@ -79,8 +79,8 @@ export default function SarusHISPage() {
       id: "security",
       title: language === "en" ? "Security" : "Güvenlik",
       icon: Shield,
-      iconBgClass: "bg-cyan-50",
-      iconColorClass: "text-cyan-600",
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
       subtitle: language === "en"
         ? "Enterprise-level data security and auditability"
         : "Kurumsal düzeyde veri güvenliği ve denetlenebilirlik",
@@ -499,9 +499,9 @@ export default function SarusHISPage() {
                       <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
                         isExpanded 
                           ? "bg-primary text-white shadow-md" 
-                          : `bg-gradient-to-br ${tab.iconBgClass} text-primary group-hover:from-primary/15 group-hover:to-primary/10`
+                          : `bg-gradient-to-br ${tab.iconBgClass} group-hover:from-slate-100 group-hover:to-slate-50`
                       }`}>
-                        <TabIcon className={`w-7 h-7 ${isExpanded ? "text-white" : tab.iconColorClass}`} strokeWidth={2.5} />
+                        <TabIcon className={`w-7 h-7 transition-colors ${isExpanded ? "text-white" : `${tab.iconColorClass} group-hover:text-slate-600`}`} strokeWidth={2.5} />
                       </div>
                       
                       {/* Title */}

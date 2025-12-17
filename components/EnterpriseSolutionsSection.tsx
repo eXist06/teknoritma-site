@@ -30,10 +30,10 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       descriptionTr: "Ayaktan/yatan hasta süreçleri, klinik branş modülleri ve temel klinik iş akışları",
       descriptionEn: "Outpatient/inpatient processes, clinical specialty modules and core clinical workflows",
       bulletsTr: [
-        "Randevu ve kabul süreçleri: Acil, Ayaktan (Outpatient), Yatan (Inpatient), Danışma/Information Desk",
-        "Poliklinik, Yatan Hasta, Yoğun Bakım, Acil, Hemşirelik, Tele-tıp modülleri",
+        "Randevu ve kabul süreçleri: Acil, Ayaktan Hasta, Yatan Hasta, Danışma/Bilgi Masası",
+        "Poliklinik, Yatan Hasta, Yoğun Bakım, Acil, Hemşirelik, Teletıp modülleri",
         "Branş modülleri: Onkoloji, Ortopedi, Kadın Doğum, Ağız & Diş, Psikoloji, Diyet, FTR, IVF, Hemodiyaliz vb.",
-        "Laboratuvar, Kan Merkezi, Genetik, Patoloji, Radyoloji (RIS/PACS) entegrasyonlu klinik akışlar",
+        "Laboratuvar, Kan Merkezi, Genetik, Patoloji, Radyoloji entegrasyonlu klinik akışlar",
       ],
       bulletsEn: [
         "Appointment and admission processes: Emergency, Outpatient, Inpatient, Consultation/Information Desk",
@@ -47,21 +47,19 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       icon: Building2,
       titleTr: "Yönetsel Uygulamalar",
       titleEn: "Administrative Applications",
-      descriptionTr: "Satınalma, stok/lojistik, hizmet yönetimi, doküman ve süreç yönetimi",
-      descriptionEn: "Procurement, inventory/logistics, service management, document and process management",
+      descriptionTr: "Satınalma, stok/lojistik, hizmet yönetimi",
+      descriptionEn: "Procurement, inventory/logistics, service management",
       bulletsTr: [
         "Satınalma yönetimi: satınalma, ihale, tedarikçiler",
-        "Stok/varlık yönetimi: demirbaş (asset), envanter, lojistik, kaynak planlama",
+        "Stok/varlık yönetimi: demirbaş, envanter, lojistik, kaynak planlama",
         "Hizmet yönetimi: ameliyathane, temizlik, yemek, yazılım platformu, atık yönetimi",
-        "Doküman yönetimi ve İş Süreç Yönetimi (BPM)",
-        "İK yönetimi: personel, bordro, eğitim, planlama, KPI",
+        "İK yönetimi: personel, bordro, eğitim, planlama, performans göstergeleri",
         "Kalite yönetimi ve Cihaz yönetimi (maliyet, bakım, onarım, kalibrasyon, takip)",
       ],
       bulletsEn: [
         "Procurement management: purchasing, tendering, suppliers",
         "Inventory/asset management: fixed assets, inventory, logistics, resource planning",
         "Service management: operating room, cleaning, catering, software platform, waste management",
-        "Document management and Business Process Management (BPM)",
         "HR management: personnel, payroll, training, planning, KPIs",
         "Quality management and Device management (cost, maintenance, repair, calibration, tracking)",
       ],
@@ -76,7 +74,7 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       bulletsTr: [
         "Finans yönetimi: faturalama, sigorta, maliyet ve kaynak planlama",
         "Döner sermaye, faturalama ve finansal işlemler modülü",
-        "Vezne (Cash Desk) modülü",
+        "Vezne modülü",
         "İstatistik ve raporlama ile finansal görünürlük",
       ],
       bulletsEn: [
@@ -94,9 +92,9 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       descriptionTr: "Karar destek, kalite ve performans izleme katmanı",
       descriptionEn: "Decision support, quality and performance monitoring layer",
       bulletsTr: [
-        "Karar Destek Sistemi (DSS) bileşenleri",
+        "Karar Destek Sistemi bileşenleri",
         "Klinik süreçlerde hata azaltma ve verimlilik izleme yaklaşımı",
-        "KPI'lar ile planlama ve performans takibi",
+        "Performans göstergeleri ile planlama ve performans takibi",
       ],
       bulletsEn: [
         "Decision Support System (DSS) components",
@@ -113,7 +111,7 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       descriptionEn: "End-to-end custom process and screen management supporting hospital operations",
       bulletsTr: [
         "Sterilizasyon, çamaşırhane, kemoterapi, TPN, yemek, temizlik, atık yönetimi gibi süreçler için yazılım geliştirme ve süreç tasarımı",
-        "Bilgilendirme (Digital Signage) ekranlarının merkezi yönetimi ve HBS'ye bilgi akışı",
+        "Bilgilendirme ekranlarının merkezi yönetimi ve HBS'ye bilgi akışı",
       ],
       bulletsEn: [
         "Software development and process design for processes such as sterilization, laundry, chemotherapy, TPN, catering, cleaning, waste management",
@@ -130,7 +128,7 @@ export const EnterpriseSolutionsSection: React.FC = () => {
       bulletsTr: [
         "SOA uyumlu entegrasyon altyapısı tasarımı",
         "Gateway / ESB / RFID ile tüm entegrasyonların yönetimi",
-        "HL7 ve DICOM gibi standartlarla RIS/PACS/LIS ve 3. parti sistem entegrasyonları",
+        "HL7 ve DICOM gibi standartlarla Radyoloji Bilgi Sistemi, Görüntü Arşivleme ve İletişim Sistemi, Laboratuvar Bilgi Sistemi ve 3. parti sistem entegrasyonları",
       ],
       bulletsEn: [
         "SOA-compliant integration infrastructure design",
@@ -149,7 +147,7 @@ export const EnterpriseSolutionsSection: React.FC = () => {
         "Kan alma noktaları ve kemoterapide mobil çözümler",
         "Acil, yoğun bakım ve servislerde tablet kullanımı",
         "Pnömatik sistem için mobil uygulama",
-        "Mobil hasta asistanı ve konum/yön bulma (wayfinding) uygulaması",
+        "Mobil hasta asistanı ve konum/yön bulma uygulaması",
       ],
       bulletsEn: [
         "Mobile solutions at blood collection points and chemotherapy",
@@ -260,9 +258,9 @@ export const EnterpriseSolutionsSection: React.FC = () => {
                   <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
                     isExpanded 
                       ? "bg-primary text-white shadow-md" 
-                      : "bg-gradient-to-br from-primary/10 to-primary/5 text-primary group-hover:from-primary/15 group-hover:to-primary/10"
+                      : `bg-gradient-to-br from-slate-50 to-slate-50 group-hover:from-slate-100 group-hover:to-slate-50`
                   }`}>
-                    <IconComponent className={`w-7 h-7 ${isExpanded ? "text-white" : "text-primary"}`} strokeWidth={2.5} />
+                    <IconComponent className={`w-7 h-7 transition-colors ${isExpanded ? "text-white" : "text-slate-500 group-hover:text-slate-600"}`} strokeWidth={2.5} />
                   </div>
                   
                   {/* Title */}
@@ -327,11 +325,9 @@ export const EnterpriseSolutionsSection: React.FC = () => {
                           </h4>
                           <ul className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                             {bullets.map((bullet, bulletIdx) => (
-                              <li key={bulletIdx} className="flex items-start gap-4 p-5 rounded-xl hover:bg-white/70 transition-all duration-200 border border-transparent hover:border-primary/10">
-                                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mt-0.5 shadow-sm">
-                                  <span className="text-primary text-base font-extrabold">✓</span>
-                                </div>
-                                <span className="text-base md:text-lg text-gray-800 leading-relaxed font-semibold flex-1">
+                              <li key={bulletIdx} className="flex items-start gap-3 text-base md:text-lg text-gray-800">
+                                <span className="text-primary text-xl mt-1 flex-shrink-0">●</span>
+                                <span className="font-medium leading-relaxed">
                                   {bullet}
                                 </span>
                               </li>

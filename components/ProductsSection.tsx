@@ -137,10 +137,8 @@ export default function ProductsSection() {
                           suppressHydrationWarning
                           className="flex items-start gap-3 text-neutral-body"
                         >
-                          <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                            <span className="text-primary text-xs font-bold">✓</span>
-                          </div>
-                          <span className="text-sm md:text-base leading-relaxed">{feature}</span>
+                          <span className="text-primary text-xl mt-1 flex-shrink-0">●</span>
+                          <span className="text-sm md:text-base leading-relaxed font-medium">{feature}</span>
                         </motion.div>
                       ))}
                     </div>
