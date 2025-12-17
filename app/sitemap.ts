@@ -3,8 +3,13 @@ import { routeMapping } from "@/lib/route-mapping";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://teknoritma.com.tr";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = [
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const routes: Array<{
+    path: string;
+    priority: number;
+    changefreq: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
+    lastModified?: Date;
+  }> = [
     // Turkish routes
     { path: "", priority: 1.0, changefreq: "weekly" },
     { path: "/hakkimizda", priority: 0.8, changefreq: "monthly" },
@@ -45,9 +50,51 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/en/request-demo", priority: 0.6, changefreq: "monthly" },
   ];
 
+  // Add dynamic Sarus Hub content from database
+  try {
+    const { getAllItems } = await import("@/lib/db/sarus-hub");
+    const { initializeDatabase } = await import("@/lib/db/schema");
+    initializeDatabase();
+    
+    // Get only published items
+    const sarusHubItems = getAllItems({}, false);
+    
+    // Add Sarus Hub items to sitemap
+    for (const item of sarusHubItems) {
+      const lastModified = item.updatedAt || item.publishedAt || item.createdAt;
+      const lastModifiedDate = lastModified ? new Date(lastModified) : new Date();
+      
+      // Determine priority based on featured status
+      const priority = item.featured ? 0.8 : 0.6;
+      
+      // Turkish version (if language is tr or mixed)
+      if (item.language === "tr" || item.language === "mixed") {
+        routes.push({
+          path: `/sarus-hub/${item.slug}`,
+          priority,
+          changefreq: "monthly",
+          lastModified: lastModifiedDate,
+        });
+      }
+      
+      // English version (if language is en or mixed)
+      if (item.language === "en" || item.language === "mixed") {
+        routes.push({
+          path: `/en/sarus-hub/${item.slug}`,
+          priority,
+          changefreq: "monthly",
+          lastModified: lastModifiedDate,
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching Sarus Hub items for sitemap:", error);
+    // Continue without dynamic content if database error occurs
+  }
+
   return routes.map((route) => ({
     url: `${siteUrl}${route.path}`,
-    lastModified: new Date(),
+    lastModified: route.lastModified || new Date(),
     changeFrequency: route.changefreq as "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never",
     priority: route.priority,
     alternates: {
