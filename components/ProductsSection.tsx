@@ -14,6 +14,28 @@ export default function ProductsSection() {
   const basePath = language === "en" ? "/en" : "";
   const [activeIndex, setActiveIndex] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 20 });
+  const [isMobile, setIsMobile] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    const checkReducedMotion = () => {
+      setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    };
+    
+    checkMobile();
+    checkReducedMotion();
+    window.addEventListener('resize', checkMobile);
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    mediaQuery.addEventListener('change', checkReducedMotion);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      mediaQuery.removeEventListener('change', checkReducedMotion);
+    };
+  }, []);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -45,10 +67,14 @@ export default function ProductsSection() {
         {/* SarusHIS Featured Card */}
         {sarusHIS && (
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ 
+              duration: prefersReducedMotion ? 0 : (isMobile ? 0.3 : 0.6),
+              ease: "easeOut"
+            }}
+            style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
             className="mb-20"
           >
             <div className="relative bg-white rounded-2xl border border-neutral-border/60 shadow-lg overflow-hidden group">
@@ -89,10 +115,14 @@ export default function ProductsSection() {
                       {productFeatures.map((feature, idx) => (
                         <motion.div
                           key={idx}
-                          initial={{ opacity: 0, x: -10 }}
+                          initial={{ opacity: 0, x: isMobile || prefersReducedMotion ? 0 : -10 }}
                           whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: idx * 0.05 }}
+                          viewport={{ once: true, margin: "-20px" }}
+                          transition={{ 
+                            delay: prefersReducedMotion ? 0 : (isMobile ? 0 : idx * 0.05),
+                            duration: prefersReducedMotion ? 0 : (isMobile ? 0.2 : 0.3)
+                          }}
+                          style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
                           className="flex items-start gap-3 text-neutral-body"
                         >
                           <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
@@ -197,8 +227,12 @@ export default function ProductsSection() {
                     >
                       <Link href={productPath}>
                         <motion.div
-                          whileHover={{ y: -12, scale: 1.02 }}
-                          transition={{ duration: 0.3 }}
+                          whileHover={isMobile || prefersReducedMotion ? {} : { y: -12, scale: 1.02 }}
+                          transition={{ duration: isMobile ? 0.2 : 0.3 }}
+                          style={{ 
+                            willChange: isMobile ? "auto" : "transform",
+                            transform: "translateZ(0)"
+                          }}
                           className="relative h-full bg-white rounded-2xl border border-neutral-border/60 p-8 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer"
                         >
                           {/* Subtle accent line at top */}

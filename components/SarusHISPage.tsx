@@ -177,9 +177,13 @@ export default function SarusHISPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ 
+                duration: prefersReducedMotion ? 0 : (isMobile ? 0.3 : 0.6),
+                ease: "easeOut"
+              }}
+              style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
             >
               <Link
                 href={basePath || "/"}
@@ -240,8 +244,9 @@ export default function SarusHISPage() {
               <div className="flex flex-wrap gap-4">
                 <Link href={`${basePath}/demo-talep`}>
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={isMobile || prefersReducedMotion ? {} : { scale: 1.05 }}
+                    whileTap={isMobile || prefersReducedMotion ? {} : { scale: 0.95 }}
+                    style={{ willChange: isMobile ? "auto" : "transform" }}
                     className="px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all duration-300 shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40"
                   >
                     {t(`${translationKey}.requestDemo`)}
@@ -264,8 +269,9 @@ export default function SarusHISPage() {
                   }}
                 >
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={isMobile || prefersReducedMotion ? {} : { scale: 1.05 }}
+                    whileTap={isMobile || prefersReducedMotion ? {} : { scale: 0.95 }}
+                    style={{ willChange: isMobile ? "auto" : "transform" }}
                     className="px-8 py-4 border-2 border-neutral-border text-neutral-heading rounded-full font-semibold hover:border-primary hover:text-primary transition-all duration-300 hover:bg-primary/5"
                   >
                     {t(`${translationKey}.explore`)}
@@ -275,9 +281,13 @@ export default function SarusHISPage() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: isMobile || prefersReducedMotion ? 1 : 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
+              transition={{ 
+                delay: prefersReducedMotion ? 0 : (isMobile ? 0 : 0.3),
+                duration: prefersReducedMotion ? 0 : (isMobile ? 0.3 : 0.6)
+              }}
+              style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
               className="hidden md:block mt-12 md:mt-20"
             >
               <div className="relative w-full aspect-video bg-white/80 backdrop-blur-md rounded-2xl border border-neutral-border/50 shadow-xl overflow-hidden">
@@ -388,9 +398,14 @@ export default function SarusHISPage() {
 
         <div className="max-w-7xl mx-auto px-5 md:px-10 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ 
+              duration: prefersReducedMotion ? 0 : (isMobile ? 0.3 : 0.6),
+              ease: "easeOut"
+            }}
+            style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
@@ -410,9 +425,14 @@ export default function SarusHISPage() {
       {/* Core Features Section */}
       <section id="core-features" className="mx-auto max-w-7xl px-4 md:px-10 py-24 md:py-36 bg-background">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-30px" }}
+          transition={{ 
+            duration: prefersReducedMotion ? 0 : (isMobile ? 0.25 : 0.4),
+            ease: "easeOut"
+          }}
+          style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
           className="mb-12 text-center"
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
@@ -433,10 +453,18 @@ export default function SarusHISPage() {
               <React.Fragment key={tab.id}>
                 {/* Card */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.05 }}
+                  viewport={{ once: true, margin: "-20px" }}
+                  transition={{ 
+                    delay: prefersReducedMotion ? 0 : (isMobile ? 0 : idx * 0.05),
+                    duration: prefersReducedMotion ? 0 : (isMobile ? 0.2 : 0.3),
+                    ease: "easeOut"
+                  }}
+                  style={{ 
+                    willChange: isMobile ? "opacity" : "opacity, transform",
+                    transform: "translateZ(0)"
+                  }}
                   className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
                 >
                   {/* Header - Always Visible */}
@@ -541,10 +569,14 @@ export default function SarusHISPage() {
             
             <div className="relative z-10 px-8 md:px-12 py-20 md:py-24 min-h-[650px] md:min-h-[750px] flex flex-col justify-between">
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ 
+                  duration: prefersReducedMotion ? 0 : (isMobile ? 0.3 : 0.6),
+                  ease: "easeOut"
+                }}
+                style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
                 className="text-center flex justify-center mb-12"
               >
                 {/* Text container with overlay ONLY behind text */}
@@ -590,10 +622,18 @@ export default function SarusHISPage() {
                 ].map((stat, idx) => (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1, duration: 0.5 }}
+                    viewport={{ once: true, margin: "-20px" }}
+                    transition={{ 
+                      delay: prefersReducedMotion ? 0 : (isMobile ? 0 : idx * 0.1),
+                      duration: prefersReducedMotion ? 0 : (isMobile ? 0.25 : 0.5),
+                      ease: "easeOut"
+                    }}
+                    style={{ 
+                      willChange: isMobile ? "opacity" : "opacity, transform",
+                      transform: "translateZ(0)"
+                    }}
                     className={`bg-white/98 backdrop-blur-md rounded-xl border border-neutral-200/50 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 text-center min-h-[140px] flex flex-col justify-center ${
                       idx === 0 ? 'px-10 md:px-12 py-6 md:py-7' : 'p-6 md:p-7'
                     }`}
@@ -627,10 +667,14 @@ export default function SarusHISPage() {
             
             {/* Badge - Top left with trophy icon and two-line text - Enterprise Design */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: isMobile || prefersReducedMotion ? 1 : 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ 
+                duration: prefersReducedMotion ? 0 : (isMobile ? 0.3 : 0.5),
+                delay: prefersReducedMotion ? 0 : (isMobile ? 0 : 0.2)
+              }}
+              style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
               className="absolute top-8 md:top-12 left-6 md:left-10 z-20"
             >
               <div className="bg-gradient-to-br from-white via-white to-neutral-50/80 backdrop-blur-lg rounded-2xl px-8 md:px-10 py-6 md:py-7 shadow-2xl flex items-start gap-5 md:gap-6 border border-neutral-300/60 hover:shadow-3xl transition-shadow duration-300">
@@ -668,9 +712,14 @@ export default function SarusHISPage() {
       >
         <div className="mx-auto max-w-5xl px-4 md:px-10 text-center">
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-30px" }}
+            transition={{ 
+              duration: prefersReducedMotion ? 0 : (isMobile ? 0.25 : 0.4),
+              ease: "easeOut"
+            }}
+            style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
             className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight"
           >
             {t(`${translationKey}.cta.title`)}
@@ -685,16 +734,22 @@ export default function SarusHISPage() {
             {t(`${translationKey}.cta.description`)}
           </motion.p>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+            viewport={{ once: true, margin: "-20px" }}
+            transition={{ 
+              delay: prefersReducedMotion ? 0 : (isMobile ? 0 : 0.2),
+              duration: prefersReducedMotion ? 0 : (isMobile ? 0.25 : 0.4),
+              ease: "easeOut"
+            }}
+            style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
             className="mt-6 flex justify-center"
           >
             <Link href={`${basePath}/demo-talep`}>
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={isMobile || prefersReducedMotion ? {} : { scale: 1.05 }}
+                whileTap={isMobile || prefersReducedMotion ? {} : { scale: 0.95 }}
+                style={{ willChange: isMobile ? "auto" : "transform" }}
                 className="rounded-full bg-white px-8 py-3.5 text-base font-bold text-primary hover:bg-blue-50 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
               >
                 {t(`${translationKey}.requestDemo`)}

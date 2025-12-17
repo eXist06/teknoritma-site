@@ -3,6 +3,12 @@ import fs from "fs";
 import path from "path";
 import { SystemSettings } from "@/lib/types/admin";
 import { verifyAdminRole } from "@/lib/utils/role-verification";
+import { runMigrationIfNeeded } from "@/lib/db/migration";
+
+// Run migration on first import
+if (typeof window === "undefined") {
+  runMigrationIfNeeded();
+}
 
 const ADMIN_DATA_PATH = path.join(process.cwd(), "lib/data/admin-data.json");
 

@@ -4,6 +4,12 @@ import fs from "fs";
 import path from "path";
 import bcrypt from "bcryptjs";
 import { AdminUser, UserRole } from "@/lib/types/admin";
+import { runMigrationIfNeeded } from "@/lib/db/migration";
+
+// Run migration on first import
+if (typeof window === "undefined") {
+  runMigrationIfNeeded();
+}
 
 const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
 const ADMIN_DATA_PATH = path.join(process.cwd(), "lib/data/admin-data.json");

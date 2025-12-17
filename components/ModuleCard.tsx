@@ -3,7 +3,7 @@
 import { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface ModuleCardProps {
   icon: LucideIcon;
@@ -63,14 +63,44 @@ export function ModuleCard({
   healthIconUrl
 }: ModuleCardProps) {
   const VisualIconComponent = visualIcon || Icon;
+  const [isMobile, setIsMobile] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    const checkReducedMotion = () => {
+      setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    };
+    
+    checkMobile();
+    checkReducedMotion();
+    window.addEventListener('resize', checkMobile);
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    mediaQuery.addEventListener('change', checkReducedMotion);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      mediaQuery.removeEventListener('change', checkReducedMotion);
+    };
+  }, []);
   
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: isMobile || prefersReducedMotion ? 0 : 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
-      whileHover={{ y: -6, scale: 1.02, transition: { duration: 0.2 } }}
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ 
+        delay: prefersReducedMotion ? 0 : (isMobile ? 0 : delay),
+        duration: prefersReducedMotion ? 0 : (isMobile ? 0.25 : 0.4),
+        ease: "easeOut"
+      }}
+      whileHover={isMobile || prefersReducedMotion ? {} : { y: -6, scale: 1.02, transition: { duration: 0.2 } }}
+      style={{ 
+        willChange: isMobile ? "opacity" : "opacity, transform",
+        transform: "translateZ(0)"
+      }}
       className="rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl cursor-pointer flex flex-col h-full bg-white border border-gray-200 hover:border-blue-300 group"
     >
       {/* Visual Section - Image or Large Icon */}

@@ -3,11 +3,13 @@ import { SarusHubItem, SarusHubFilters } from "@/lib/types/sarus-hub";
 import { verifySarusHubRole } from "@/lib/utils/role-verification";
 import { initializeDatabase } from "@/lib/db/schema";
 import { getAllItems, createItem, updateItem, deleteItem, slugExists } from "@/lib/db/sarus-hub";
+import { runMigrationIfNeeded } from "@/lib/db/migration";
 
-// Initialize database on first import
+// Initialize database and run migration on first import
 if (typeof window === "undefined") {
   try {
     initializeDatabase();
+    runMigrationIfNeeded();
   } catch (error) {
     console.error("Database initialization error:", error);
   }
