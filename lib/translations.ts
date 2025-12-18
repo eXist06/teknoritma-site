@@ -2,7 +2,7 @@ export const translations: Record<string, any> = {
   tr: {
     nav: {
       home: "Ana Sayfa",
-      products: "Ürünler",
+      products: "Çözümler",
       sarus: "Sarus-HUB",
       projects: "Projeler",
       about: "Hakkımızda",
@@ -958,7 +958,7 @@ export const translations: Record<string, any> = {
   en: {
     nav: {
       home: "Home",
-      products: "Products",
+      products: "Solutions",
       sarus: "Sarus-HUB",
       projects: "Projects",
       about: "About",

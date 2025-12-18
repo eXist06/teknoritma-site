@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Logo from "./Logo";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useI18n } from "@/lib/i18n";
-import { Stethoscope, Cloud, Scan, FlaskConical, Link2 } from "lucide-react";
+import { Stethoscope, Cloud, Scan, FlaskConical, Link2, BookOpen, Heart, Clock, Award } from "lucide-react";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -27,17 +27,17 @@ export default function Header() {
   const getAboutSubmenu = () => {
     if (language === "en") {
       return [
-        { label: "Our Story", href: "/en/about#story" },
-        { label: "Values", href: "/en/about#values" },
-        { label: "Timeline", href: "/en/about#timeline" },
-        { label: "Our Standards", href: "/en/about#standards" },
+        { label: "Our Story", href: "/en/about#story", icon: BookOpen },
+        { label: "Values", href: "/en/about#values", icon: Heart },
+        { label: "Timeline", href: "/en/about#timeline", icon: Clock },
+        { label: "Our Standards", href: "/en/about#standards", icon: Award },
       ];
     } else {
       return [
-        { label: "Hikayemiz", href: "/hakkimizda#story" },
-        { label: "Değerlerimiz", href: "/hakkimizda#values" },
-        { label: "Zaman İçinde Sarus", href: "/hakkimizda#timeline" },
-        { label: "Standartlarımız", href: "/hakkimizda#standards" },
+        { label: "Hikayemiz", href: "/hakkimizda#story", icon: BookOpen },
+        { label: "Değerlerimiz", href: "/hakkimizda#values", icon: Heart },
+        { label: "Zaman İçinde Sarus", href: "/hakkimizda#timeline", icon: Clock },
+        { label: "Standartlarımız", href: "/hakkimizda#standards", icon: Award },
       ];
     }
   };
@@ -63,14 +63,14 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-neutral-border/50 shadow-md" suppressHydrationWarning>
       <div className="max-w-7xl mx-auto px-0 md:px-5">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-16 md:h-20 gap-2 lg:gap-4">
           {/* Logo */}
-          <a href={language === "en" ? "/en" : "/"} className="flex items-center group pl-0 md:pl-1">
+          <a href={language === "en" ? "/en" : "/"} className="flex items-center group pl-0 md:pl-1 flex-shrink-0">
             <Logo />
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-2">
+          <nav className="hidden lg:flex items-center gap-2 flex-wrap">
             {getNavItems().map((item, index) => (
               item.hasDropdown ? (
                 <div
@@ -93,7 +93,7 @@ export default function Header() {
                 >
                   <a
                     href={item.href}
-                    className="relative px-4 py-2.5 text-sm font-normal text-neutral-body hover:text-neutral-heading transition-all duration-300 rounded-lg group tracking-wide uppercase hover:bg-primary/5 flex items-center gap-1"
+                    className="relative px-3 py-2 text-xs lg:text-sm font-normal text-neutral-body hover:text-neutral-heading transition-all duration-300 rounded-lg group tracking-wide uppercase hover:bg-primary/5 flex items-center gap-1 whitespace-nowrap"
                   >
                     {item.label}
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,17 +131,21 @@ export default function Header() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute top-full left-0 mt-2 w-56 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl shadow-2xl border border-primary/20 py-3 z-50 backdrop-blur-sm"
+                        className="absolute top-full left-0 mt-2 w-56 bg-gradient-to-br from-blue-50 to-blue-100/80 rounded-xl shadow-2xl border border-blue-200/50 py-3 z-50 backdrop-blur-sm"
                       >
-                        {getAboutSubmenu().map((subItem, subIndex) => (
-                          <a
-                            key={`about-sub-${subIndex}`}
-                            href={subItem.href}
-                            className="block px-5 py-2.5 text-sm font-medium text-neutral-heading hover:text-primary hover:bg-white/60 transition-all duration-200 first:rounded-t-lg last:rounded-b-lg"
-                          >
-                            {subItem.label}
-                          </a>
-                        ))}
+                        {getAboutSubmenu().map((subItem, subIndex) => {
+                          const IconComponent = subItem.icon;
+                          return (
+                            <a
+                              key={`about-sub-${subIndex}`}
+                              href={subItem.href}
+                              className="flex items-center gap-3 px-5 py-2.5 text-sm font-medium text-neutral-heading hover:text-primary hover:bg-white/60 transition-all duration-200 first:rounded-t-lg last:rounded-b-lg group"
+                            >
+                              <IconComponent className="w-4 h-4 text-primary/60 group-hover:text-primary transition-colors flex-shrink-0" strokeWidth={2} />
+                              <span>{subItem.label}</span>
+                            </a>
+                          );
+                        })}
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -182,23 +186,23 @@ export default function Header() {
           </nav>
 
           {/* CTA Buttons and Language Switcher */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-2 lg:gap-3 flex-shrink-0">
             <LanguageSwitcher />
             <motion.a
               href={language === "en" ? "/en/request-demo" : "/demo-talep"}
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.95 }}
-              className="relative px-6 py-3 text-sm font-medium text-white bg-primary rounded-full hover:bg-primary-dark transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 tracking-wide uppercase overflow-hidden group"
+              className="relative px-4 lg:px-6 py-2 lg:py-3 text-xs lg:text-sm font-medium text-white bg-primary rounded-full hover:bg-primary-dark transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 tracking-wide uppercase overflow-hidden group whitespace-nowrap"
             >
               <span className="relative z-10">{t("cta.requestDemo")}</span>
               <span className="absolute inset-0 bg-gradient-to-r from-primary-dark to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </motion.a>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile/Tablet Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2"
+            className="lg:hidden p-2"
             aria-label="Menu"
           >
             <div className="w-6 h-6 flex flex-col justify-center gap-1.5">
@@ -228,7 +232,7 @@ export default function Header() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden overflow-hidden"
+              className="lg:hidden overflow-hidden"
             >
               <nav className="py-4 space-y-1">
                 {getNavItems().map((item, index) => (

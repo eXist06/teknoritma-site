@@ -10,13 +10,13 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary/5 via-white to-accent/5 py-20 md:py-28">
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
+      <section className="relative py-20 md:py-28 overflow-hidden bg-blue-900">
+        <div className="relative max-w-6xl mx-auto px-4 md:px-8 z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-900 mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
               Sağlık sektöründe dijital dönüşümün öncüsü
             </h1>
-            <p className="text-xl md:text-2xl text-neutral-body leading-relaxed">
+            <p className="text-xl md:text-2xl text-white/90 leading-relaxed">
               Teknoritma olarak, hastanelerin ve sağlık kuruluşlarının dijital dönüşüm yolculuğunda güvenilir ortağıyız.
             </p>
           </div>
@@ -24,7 +24,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 bg-blue-50/50">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <div className="grid md:grid-cols-2 gap-12 md:gap-16">
             <div className="text-center">
@@ -50,7 +50,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section id="values" className="py-16 md:py-24 bg-neutral-light/30 scroll-mt-20">
+      <section id="values" className="py-16 md:py-24 bg-blue-100/40 scroll-mt-20">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-12 text-center">
             Değerlerimiz
@@ -94,35 +94,44 @@ export default function AboutPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
-          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-8">
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary mb-2">200+</div>
-              <div className="text-neutral-body">Proje</div>
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
+            {/* Project Card */}
+            <div className="bg-white rounded-lg border-t-4 border-blue-900 shadow-sm hover:shadow-md transition-all duration-300 p-8 text-center">
+              <div className="text-5xl md:text-6xl font-bold text-blue-900 mb-3 tracking-tight">200+</div>
+              <div className="text-sm uppercase tracking-wider text-neutral-600 font-semibold">Proje</div>
             </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary mb-2">20+</div>
-              <div className="text-neutral-body">Yıllık Deneyim</div>
+
+            {/* Experience Card */}
+            <div className="bg-white rounded-lg border-t-4 border-blue-900 shadow-sm hover:shadow-md transition-all duration-300 p-8 text-center">
+              <div className="text-5xl md:text-6xl font-bold text-blue-900 mb-3 tracking-tight">20+</div>
+              <div className="text-sm uppercase tracking-wider text-neutral-600 font-semibold">Yıllık Deneyim</div>
             </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary mb-2">80+</div>
-              <div className="text-neutral-body">Uzman Ekip</div>
+
+            {/* Team Card */}
+            <div className="bg-white rounded-lg border-t-4 border-blue-900 shadow-sm hover:shadow-md transition-all duration-300 p-8 text-center">
+              <div className="text-5xl md:text-6xl font-bold text-blue-900 mb-3 tracking-tight">80+</div>
+              <div className="text-sm uppercase tracking-wider text-neutral-600 font-semibold">Uzman Ekip</div>
             </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary mb-2">5</div>
-              <div className="text-neutral-body">Ülke</div>
+
+            {/* Countries Card */}
+            <div className="bg-white rounded-lg border-t-4 border-blue-900 shadow-sm hover:shadow-md transition-all duration-300 p-8 text-center">
+              <div className="text-5xl md:text-6xl font-bold text-blue-900 mb-3 tracking-tight">5</div>
+              <div className="text-sm uppercase tracking-wider text-neutral-600 font-semibold">Ülke</div>
             </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary mb-2">7/24</div>
-              <div className="text-neutral-body">Destek</div>
+
+            {/* Support Card */}
+            <div className="bg-white rounded-lg border-t-4 border-blue-900 shadow-sm hover:shadow-md transition-all duration-300 p-8 text-center">
+              <div className="text-5xl md:text-6xl font-bold text-blue-900 mb-3 tracking-tight">7/24</div>
+              <div className="text-sm uppercase tracking-wider text-neutral-600 font-semibold">Destek</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Our Story */}
-      <section id="story" className="py-16 md:py-24 bg-neutral-light/30 scroll-mt-20">
+      <section id="story" className="py-16 md:py-24 bg-blue-50/60 scroll-mt-20">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-8 text-center">
             Hikayemiz
@@ -151,7 +160,7 @@ export default function AboutPage() {
       <TimelineSection />
 
       {/* Standards */}
-      <section id="standards" className="py-16 md:py-24 scroll-mt-20">
+      <section id="standards" className="py-16 md:py-24 bg-blue-50/30 scroll-mt-20">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-12 text-center">
             Standartlarımız
