@@ -105,6 +105,17 @@ export default function CareersPage() {
         { id: 5, title: "Stajyerlik", number: "6" },
       ]);
 
+  // Helper function to convert title to slug
+  const titleToSlug = (title: string): string => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  };
+
+  // Get job categories from content (dynamic)
+  const jobCategories = content?.featuredCareers?.categories || [];
+
   const testimonials = content?.testimonials?.map((t) => ({
     quote: language === "en" ? t.quoteEn : t.quote,
     name: t.name,
@@ -959,12 +970,15 @@ export default function CareersPage() {
                     className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   >
                     <option value="">{language === "en" ? "Select a Job Category" : "Bir İş Kategorisi Seçin"}</option>
-                    <option value="software-development">{language === "en" ? "Software Development" : "Yazılım Geliştirme"}</option>
-                    <option value="healthcare-it">{language === "en" ? "Healthcare IT" : "Sağlık Bilişimi"}</option>
-                    <option value="clinical-systems">{language === "en" ? "Clinical Systems" : "Klinik Sistemler"}</option>
-                    <option value="data-analytics">{language === "en" ? "Data Analytics" : "Veri Analitiği"}</option>
-                    <option value="project-management">{language === "en" ? "Project Management" : "Proje Yönetimi"}</option>
-                    <option value="internship">{language === "en" ? "Internship" : "Stajyerlik"}</option>
+                    {jobCategories.map((category) => {
+                      const categoryTitle = language === "en" ? category.titleEn : category.title;
+                      const categorySlug = titleToSlug(categoryTitle);
+                      return (
+                        <option key={category.id} value={categorySlug}>
+                          {categoryTitle}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
                 <div className="mb-6">
