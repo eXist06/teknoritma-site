@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 const JWT_SECRET = process.env.JWT_SECRET || "teknoritma-secret-key-change-in-production";
+const isProd = process.env.NODE_ENV === "production";
 
 // Route mapping for language switching (inline version for middleware)
 const routeMapping: Record<string, string> = {
@@ -203,7 +204,8 @@ export async function middleware(request: NextRequest) {
       response.cookies.set("lang_preference", preferredLang, { 
         maxAge: 365 * 24 * 60 * 60,
         sameSite: "lax",
-        path: "/"
+        path: "/",
+        secure: isProd
       });
     }
     
@@ -216,7 +218,8 @@ export async function middleware(request: NextRequest) {
       redirectResponse.cookies.set("lang_preference", "en", { 
         maxAge: 365 * 24 * 60 * 60,
         sameSite: "lax",
-        path: "/"
+        path: "/",
+        secure: isProd
       });
       return redirectResponse;
     }
@@ -232,7 +235,8 @@ export async function middleware(request: NextRequest) {
       response.cookies.set("lang_preference", "en", { 
         maxAge: 365 * 24 * 60 * 60,
         sameSite: "lax",
-        path: "/"
+        path: "/",
+        secure: isProd
       });
     }
     
@@ -244,7 +248,8 @@ export async function middleware(request: NextRequest) {
       redirectResponse.cookies.set("lang_preference", "tr", { 
         maxAge: 365 * 24 * 60 * 60,
         sameSite: "lax",
-        path: "/"
+        path: "/",
+        secure: isProd
       });
       return redirectResponse;
     }
@@ -263,7 +268,8 @@ export async function middleware(request: NextRequest) {
     response.cookies.set("lang_preference", pathLang, { 
       maxAge: 365 * 24 * 60 * 60,
       sameSite: "lax",
-      path: "/"
+      path: "/",
+      secure: isProd
     });
   }
   
