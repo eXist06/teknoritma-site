@@ -23,7 +23,7 @@ export default function EnterpriseExperienceSection() {
     ? [
         { value: "200+", label: "Health informatics projects" },
         { value: "20+", label: "1,000+ bed hospital experience" },
-        { value: "15+", label: "International Health Informatics Programs" },
+        { value: "15+", label: "International Health Informatics Projects" },
         { value: "100+", label: "National Scale Clinical Platform" },
         { value: "5", label: "Multi-country Operation Experience" },
         { value: "Mega Health Projects", label: "Ankara & Mersin City Hospitals (PPP)" },
@@ -100,22 +100,22 @@ export default function EnterpriseExperienceSection() {
                 className="pt-6 pb-3"
               >
                 <motion.div 
-                  className="text-xs text-neutral-700 uppercase tracking-wider leading-tight font-sans mb-3 font-medium"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4 + index * 0.08, duration: 0.3 }}
-                >
-                  {metric.label}
-                </motion.div>
-                <motion.div 
-                  className="text-lg md:text-xl font-semibold font-sans leading-tight text-blue-800"
+                  className="text-lg md:text-xl font-semibold font-sans leading-tight text-blue-800 mb-2"
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.35 + index * 0.08, duration: 0.3 }}
                 >
                   {metric.value}
+                </motion.div>
+                <motion.div 
+                  className="text-xs text-neutral-700 uppercase tracking-wider leading-tight font-sans font-medium"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 + index * 0.08, duration: 0.3 }}
+                >
+                  {metric.label}
                 </motion.div>
               </motion.div>
             ))}
