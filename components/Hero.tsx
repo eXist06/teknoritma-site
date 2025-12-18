@@ -300,7 +300,7 @@ export default function Hero() {
                 className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
               >
                 <span className="text-xl mt-1">🏆</span>
-                <span className="font-bold text-[#D4AF37]">
+                <span className="font-bold text-[#B8860B]">
                   <TypewriterText 
                     key={`himss-${typewriterKey}`}
                     text={t("hero.badges.himss")} 
