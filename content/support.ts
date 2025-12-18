@@ -11,13 +11,13 @@ export const supportIntro = {
   kpis: [
     "200+ Tamamlanan sağlık bilişimi projesi",
     "15+ uluslararası sağlık bilişimi projesi",
-    "30+ adet 1.000+ yatak kapasiteli hastane",
+    "20+ adet 1.000+ yatak kapasiteli hastane deneyimi",
     "4 farklı ülkede proje deneyimi",
   ],
   paragraph2Visible:
-    "Türkiye genelinde 30'dan fazla 1.000+ yatak kapasiteli hastane projesi başarıyla hayata geçirilmiştir. Bu projeler arasında Ankara Şehir Hastanesi ve Mersin Şehir Hastanesi yer almaktadır. Her iki proje de PPP (Public–Private Partnership) modeliyle yürütülmüş, ölçek ve entegrasyon seviyesi açısından dünyada benzeri çok az olan projelerdir.",
+    "Türkiye genelinde 20'den fazla 1.000+ yatak kapasiteli hastane projesi başarıyla hayata geçirilmiştir. Bu projeler arasında Ankara Şehir Hastanesi ve Mersin Şehir Hastanesi yer almaktadır. Her iki proje de PPP (Public–Private Partnership) modeliyle yürütülmüş, ölçek ve entegrasyon seviyesi açısından dünyada benzeri çok az olan projelerdir.",
   paragraph2VisibleEn:
-    "More than 30 hospital projects with 1,000+ bed capacity have been successfully implemented across Turkey. These projects include Ankara City Hospital and Mersin City Hospital. Both projects were executed under the PPP (Public–Private Partnership) model and are among the few projects of their kind in the world in terms of scale and integration level.",
+    "More than 20 hospital projects with 1,000+ bed capacity have been successfully implemented across Turkey. These projects include Ankara City Hospital and Mersin City Hospital. Both projects were executed under the PPP (Public–Private Partnership) model and are among the few projects of their kind in the world in terms of scale and integration level.",
   paragraph2Hidden:
     "Katar'da, McKinsey tarafından denetlenen ulusal ölçekte bir sağlık bilişimi projesi kapsamında; Azure altyapısı üzerinde çalışan, ayaktan hasta (Outpatient) odaklı, 100'den fazla kliniğe hizmet veren ve merkezi olarak yönetilen bir EMR platformu geliştirilmiş ve ülke genelinde başarıyla devreye alınmıştır. Bu çalışma klasik bir sağlık bilişimi projesi değil, uçtan uca bir sağlık bilişimi uygulamasıdır. Türkiye dışında 4 farklı ülkede toplam 15'ten fazla sağlık bilişimi projesi tamamlanmıştır. Bu projelerde farklı mevzuatlara, klinik iş akışlarına ve altyapı koşullarına uyum sağlanmıştır.",
   paragraph2HiddenEn:
@@ -29,7 +29,7 @@ export const supportHighlights: SupportHighlight = {
   points: [
     "200+ başarıyla tamamlanmış sağlık bilişimi projesi",
     "15+ uluslararası sağlık bilişimi ve EMR projesi",
-    "30+ adet 1.000+ yatak kapasiteli mega hastane deneyimi",
+    "20+ adet 1.000+ yatak kapasiteli hastane deneyimi",
     "Mega Hastane Projeleri: Ankara ve Mersin Şehir Hastaneleri (Kamu-Özel İş Birliği – PPP modeli)",
     "Katar genelinde 100+ kliniğe hizmet veren ulusal EMR platformu",
     "4 farklı ülkede aktif proje ve operasyon deneyimi",
@@ -41,7 +41,7 @@ export const supportHighlightsEn: SupportHighlight = {
   points: [
     "200+ Successfully completed healthcare informatics projects",
     "15+ international healthcare informatics and EMR projects",
-    "30+ mega hospitals with 1,000+ bed capacity experience",
+    "20+ hospitals with 1,000+ bed capacity experience",
     "Mega Hospital Projects: Ankara and Mersin City Hospitals (Public-Private Partnership – PPP model)",
     "National EMR platform serving 100+ clinics across Qatar",
     "Active project and operations experience in 4 different countries",

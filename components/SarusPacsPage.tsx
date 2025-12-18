@@ -1,20 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
-import { Zap, Shield, Sparkles, Link2, Gem, Scan, Target, Database, Server, CheckCircle2, Settings, Trophy, Rocket, Globe, RefreshCw, Radio, Plug } from "lucide-react";
+import { Zap, Shield, Sparkles, Link2, Gem, Scan, Database, Server, CheckCircle2, Settings, Trophy, Rocket, Globe, RefreshCw, Radio, Plug, Layers, Monitor, Mic, FileText, Stethoscope, ChevronDown } from "lucide-react";
 
 export default function SarusPacsPage() {
   const { language, t } = useI18n();
   const basePath = language === "en" ? "/en" : "";
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
-  const [activeNavItem, setActiveNavItem] = useState("design-goals");
+  const [activeNavItem, setActiveNavItem] = useState("solutions");
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [expandedSolutionId, setExpandedSolutionId] = useState<string | null>(null);
 
   const tabs = [
     {
@@ -89,15 +90,15 @@ export default function SarusPacsPage() {
   // Auto-rotate cards every 8 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveTab((prev) => (prev + 1) % tabs.length);
+      setActiveTab((prev) => (prev + 1) % 5);
     }, 8000);
     return () => clearInterval(interval);
-  }, [tabs.length]);
+  }, []);
 
   // Track active navigation item based on scroll position
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["design-goals", "ecosystem", "enterprise", "achievements"];
+      const sections = ["solutions", "core-features", "architecture", "success-story"];
       const scrollPosition = window.scrollY + 200;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -112,7 +113,7 @@ export default function SarusPacsPage() {
     // Also check hash on mount
     if (window.location.hash) {
       const hash = window.location.hash.substring(1);
-      if (["design-goals", "ecosystem", "enterprise", "achievements"].includes(hash)) {
+      if (["solutions", "core-features", "architecture", "success-story"].includes(hash)) {
         setActiveNavItem(hash);
       }
     }
@@ -121,6 +122,39 @@ export default function SarusPacsPage() {
     handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const toggleSolutionExpanded = (id: string) => {
+    const newExpandedId = expandedSolutionId === id ? null : id;
+    setExpandedSolutionId(newExpandedId);
+    
+    // Scroll to expanded panel after state update
+    if (newExpandedId) {
+      // Wait for animation to complete, then scroll
+      setTimeout(() => {
+        const element = document.getElementById(`solution-panel-${newExpandedId}`);
+        if (element) {
+          // Get element position
+          const elementRect = element.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const elementTop = elementRect.top + scrollTop;
+          
+          // Calculate center position: viewport center minus half of element height
+          const viewportCenter = window.innerHeight / 2;
+          const elementHeight = elementRect.height;
+          const targetScroll = elementTop - viewportCenter + (elementHeight / 2);
+          
+          // Add some padding from top (for header/navbar)
+          const headerOffset = 100;
+          const finalScroll = Math.max(0, targetScroll - headerOffset);
+          
+          window.scrollTo({
+            top: finalScroll,
+            behavior: 'smooth'
+          });
+        }
+      }, 350); // Wait for animation to complete (300ms animation + 50ms buffer)
+    }
+  };
 
   return (
     <main className="min-h-screen bg-background">
@@ -259,26 +293,26 @@ export default function SarusPacsPage() {
           <nav className="flex overflow-x-auto scrollbar-hide items-center justify-start md:justify-center">
             {[
               {
-                id: "design-goals",
-                href: "#design-goals",
-                label: t("pacs.why.title"),
-                icon: Target,
+                id: "solutions",
+                href: "#solutions",
+                label: language === "en" ? "Sarus PACS Solutions" : "Sarus PACS Çözümleri",
+                icon: Stethoscope,
               },
               {
-                id: "ecosystem",
-                href: "#ecosystem",
+                id: "core-features",
+                href: "#core-features",
+                label: language === "en" ? "Core Features" : "Temel Özellikler",
+                icon: Layers,
+              },
+              {
+                id: "architecture",
+                href: "#architecture",
                 label: language === "en" ? "Architecture" : "Mimari",
-                icon: Settings,
+                icon: Layers,
               },
               {
-                id: "enterprise",
-                href: "#enterprise",
-                label: language === "en" ? "Enterprise" : "Enterprise",
-                icon: Zap,
-              },
-              {
-                id: "achievements",
-                href: "#achievements",
+                id: "success-story",
+                href: "#success-story",
                 label: language === "en" ? "Success Story" : "Başarı Hikayesi",
                 icon: Trophy,
               },
@@ -326,7 +360,7 @@ export default function SarusPacsPage() {
                       transition-all duration-200 leading-tight
                       ${isActive 
                         ? 'text-primary font-semibold' 
-                        : 'text-gray-600 group-hover:text-primary'
+                        : 'text-gray-600 group-hover:text-primary group-hover:font-semibold'
                       }`}
                   >
                     {item.label}
@@ -338,11 +372,11 @@ export default function SarusPacsPage() {
         </div>
       </section>
 
-      {/* Why Sarus PACS */}
-      <section id="design-goals" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background">
+      {/* Solutions Section */}
+      <section id="solutions" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background">
         <motion.div
           initial={{ opacity: 0 }}
-          animate={mounted && isMobile ? { opacity: 1 } : {}}
+          animate={mounted ? (isMobile ? { opacity: 1 } : {}) : {}}
           whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
           viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
           transition={{ duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.4) }}
@@ -350,75 +384,311 @@ export default function SarusPacsPage() {
             willChange: isMobile ? "opacity" : "opacity, transform",
             transform: isMobile ? "none" : "translateZ(0)"
           }}
+          suppressHydrationWarning
           className="mb-12 text-center"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
             <span className="text-primary">Sarus</span>{" "}
-            <span className="text-neutral-heading">PACS</span>{" "}
-            <span className="text-neutral-heading">{t("pacs.why.title")}</span>
+            <span className="text-neutral-heading">PACS Çözümleri</span>
           </h2>
-          <div className="w-20 h-0.5 bg-primary mx-auto"></div>
+          <p className="text-lg md:text-xl text-neutral-body max-w-3xl mx-auto mt-4">
+            {t("pacs.solutions.subtitle")}
+          </p>
+          <div className="w-20 h-0.5 bg-primary mx-auto mt-4"></div>
         </motion.div>
 
-        {/* Enterprise Grid Layout */}
+        {/* Solutions Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min">
+          {[
+            {
+              id: "webViewer",
+              title: t("pacs.solutions.webViewer.title"),
+              icon: Monitor,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t("pacs.solutions.webViewer.description"),
+              detail: t("pacs.solutions.webViewer.detail"),
+            },
+            {
+              id: "workstation",
+              title: t("pacs.solutions.workstation.title"),
+              icon: Monitor,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t("pacs.solutions.workstation.description"),
+              detail: t("pacs.solutions.workstation.detail"),
+            },
+            {
+              id: "telemedicine",
+              title: t("pacs.solutions.telemedicine.title"),
+              icon: Stethoscope,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t("pacs.solutions.telemedicine.description"),
+              detail: t("pacs.solutions.telemedicine.detail"),
+            },
+            {
+              id: "audioManager",
+              title: t("pacs.solutions.audioManager.title"),
+              icon: Mic,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t("pacs.solutions.audioManager.description"),
+              detail: t("pacs.solutions.audioManager.detail"),
+            },
+            {
+              id: "ris",
+              title: t("pacs.solutions.ris.title"),
+              icon: FileText,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t("pacs.solutions.ris.description"),
+              detail: t("pacs.solutions.ris.detail"),
+            },
+          ].map((solution, idx) => {
+            const SolutionIcon = solution.icon;
+            const isExpanded = expandedSolutionId === solution.id;
+
+            return (
+              <React.Fragment key={solution.id}>
+                {/* Card */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={mounted && isMobile ? { opacity: 1 } : {}}
+                  whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
+                  viewport={{ once: true, margin: isMobile ? "0px" : "-20px" }}
+                  transition={{ 
+                    delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
+                    duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3),
+                    ease: "easeOut"
+                  }}
+                  style={{ 
+                    willChange: isMobile ? "opacity" : "opacity, transform",
+                    transform: isMobile ? "none" : "translateZ(0)"
+                  }}
+                  suppressHydrationWarning
+                  className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
+                >
+                  {/* Header - Always Visible */}
+                  <button
+                    onClick={() => toggleSolutionExpanded(solution.id)}
+                    className="w-full flex items-start justify-between p-6 text-left hover:bg-gray-50/50 transition-all duration-200"
+                  >
+                    <div className="flex items-start gap-4 flex-1 min-w-0">
+                      {/* Icon */}
+                      <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
+                        isExpanded 
+                          ? "bg-primary text-white shadow-md" 
+                          : `bg-gradient-to-br ${solution.iconBgClass} group-hover:from-slate-100 group-hover:to-slate-50`
+                      }`}>
+                        <SolutionIcon className={`w-7 h-7 transition-colors ${isExpanded ? "text-white" : `${solution.iconColorClass} group-hover:text-slate-600`}`} strokeWidth={2.5} />
+                      </div>
+                      
+                      {/* Title */}
+                      <h3 className={`text-lg font-bold transition-colors leading-tight ${
+                        isExpanded 
+                          ? "text-primary" 
+                          : "text-gray-900 group-hover:text-primary"
+                      }`}>
+                        {solution.title}
+                      </h3>
+                    </div>
+
+                    {/* Chevron Icon */}
+                    <motion.div
+                      animate={{ rotate: isExpanded ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex-shrink-0 ml-4 mt-1"
+                    >
+                      <ChevronDown className={`w-6 h-6 transition-colors ${isExpanded ? "text-primary" : "text-gray-400"}`} strokeWidth={2.5} />
+                    </motion.div>
+                  </button>
+                </motion.div>
+
+                {/* Expandable Detail Panel - Below the clicked card, full width */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      id={`solution-panel-${solution.id}`}
+                      initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                      animate={{ height: "auto", opacity: 1, marginTop: 20 }}
+                      exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="col-span-1 md:col-span-2 lg:col-span-3 overflow-hidden scroll-mt-24"
+                    >
+                      <div className="bg-gradient-to-br from-blue-50/90 via-slate-50/90 to-white rounded-xl border-2 border-primary/30 shadow-2xl p-8 md:p-10 lg:p-12 relative overflow-hidden">
+                        {/* Subtle pattern overlay */}
+                        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
+                          backgroundImage: `radial-gradient(circle at 2px 2px, #1e40af 1px, transparent 0)`,
+                          backgroundSize: '40px 40px'
+                        }}></div>
+                        <div className="relative z-10">
+                          {/* Header Section */}
+                          <div className="flex items-start gap-6 mb-12">
+                            <div className={`flex-shrink-0 w-20 h-20 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-xl`}>
+                              <SolutionIcon className="w-10 h-10 text-white" strokeWidth={2.5} />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 leading-tight tracking-tight">
+                                {solution.title}
+                              </h3>
+                              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl font-bold mb-5">
+                                {solution.subtitle}
+                              </p>
+                              {solution.detail && (
+                                <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-4xl font-medium">
+                                  {solution.detail}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Core Features Section */}
+      <section id="core-features" className="mx-auto max-w-7xl px-4 md:px-10 py-24 md:py-36 bg-background">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={mounted && isMobile ? { opacity: 1 } : {}}
+          whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
+          viewport={{ once: true, margin: isMobile ? "0px" : "-30px" }}
+          transition={{ 
+            duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.4),
+            ease: "easeOut"
+          }}
+          style={{ 
+            willChange: isMobile ? "opacity" : "opacity, transform",
+            transform: isMobile ? "none" : "translateZ(0)"
+          }}
+          suppressHydrationWarning
+          className="mb-12 text-center"
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
+            <span className="text-primary">Sarus</span>{" "}
+            <span className="text-neutral-heading">PACS</span>{" "}
+            <span className="text-neutral-heading">{language === "en" ? "Core Features" : "Temel Özellikler"}</span>
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"></div>
+        </motion.div>
+
+        {/* Cards Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tabs.map((tab, idx) => (
-            <motion.div
-              key={tab.id}
-              initial={{ opacity: 0 }}
-              animate={isMobile ? { opacity: 1 } : {}}
-              whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
-              transition={{ 
-                delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.1),
-                duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3)
-              }}
-              style={{ 
-                willChange: isMobile ? "opacity" : "opacity, transform",
-                transform: isMobile ? "none" : "translateZ(0)"
-              }}
-              className={`group relative bg-white border-2 rounded-lg p-6 md:p-8 transition-all duration-300 ${
-                activeTab === idx
-                  ? "border-primary shadow-lg shadow-primary/10"
-                  : "border-neutral-border hover:border-primary/50 hover:shadow-md"
-              }`}
-            >
-              {/* Active Indicator */}
-              {activeTab === idx && (
-                <div className="absolute top-0 left-0 right-0 h-1 bg-primary"></div>
-              )}
+          {[
+            // Design Goals (from tabs)
+            ...tabs.map(tab => ({
+              id: tab.id,
+              title: tab.title,
+              icon: tab.icon,
+              subtitle: tab.subtitle,
+            })),
+            // Enterprise Features
+            {
+              id: "dicom",
+              title: t("pacs.enterpriseFeatures.dicom.title"),
+              icon: Link2,
+              subtitle: t("pacs.enterpriseFeatures.dicom.description"),
+            },
+            {
+              id: "availability",
+              title: t("pacs.enterpriseFeatures.availability.title"),
+              icon: Zap,
+              subtitle: t("pacs.enterpriseFeatures.availability.description"),
+            },
+            {
+              id: "performance",
+              title: t("pacs.enterpriseFeatures.performance.title"),
+              icon: Rocket,
+              subtitle: t("pacs.enterpriseFeatures.performance.description"),
+            },
+            {
+              id: "security",
+              title: t("pacs.enterpriseFeatures.security.title"),
+              icon: Shield,
+              subtitle: t("pacs.enterpriseFeatures.security.description"),
+            },
+            {
+              id: "vendorNeutral",
+              title: t("pacs.enterpriseFeatures.vendorNeutral.title"),
+              icon: Globe,
+              subtitle: t("pacs.enterpriseFeatures.vendorNeutral.description"),
+            },
+            {
+              id: "teleradiology",
+              title: t("pacs.enterpriseFeatures.teleradiology.title"),
+              icon: Radio,
+              subtitle: t("pacs.enterpriseFeatures.teleradiology.description"),
+            },
+            {
+              id: "autoSync",
+              title: t("pacs.integration.autoSync"),
+              icon: RefreshCw,
+              subtitle: t("pacs.integration.benefit1"),
+            },
+            {
+              id: "clinicalIntegration",
+              title: t("pacs.integration.clinicalIntegration"),
+              icon: Plug,
+              subtitle: t("pacs.integration.benefit2"),
+            },
+            {
+              id: "standardWorkflow",
+              title: t("pacs.integration.standardWorkflow"),
+              icon: Settings,
+              subtitle: t("pacs.integration.benefit3"),
+            },
+          ].map((feature, idx) => {
+            const FeatureIcon = feature.icon;
 
-              {/* Icon */}
-              <div className={`mb-4 h-14 w-14 rounded-lg flex items-center justify-center ${tab.iconBgClass} transition-transform duration-300 ${
-                activeTab === idx ? "scale-110" : "group-hover:scale-105"
-              }`}>
-                {(() => {
-                  const IconComponent = tab.icon;
-                  return <IconComponent className={`w-7 h-7 ${tab.iconColorClass}`} strokeWidth={2.5} />;
-                })()}
-              </div>
-
-              {/* Content */}
-              <h3 className="text-xl md:text-2xl font-bold text-neutral-heading mb-3 leading-tight">
-                {tab.title}
-              </h3>
-              <p className="text-sm md:text-base text-neutral-body leading-relaxed mb-4">
-                {tab.subtitle}
-              </p>
-              {tab.detail && (
-                <div className="pt-4 border-t border-neutral-border/50">
-                  <p className="text-xs md:text-sm text-neutral-body/70 font-medium leading-relaxed">
-                    {tab.detail}
-                  </p>
+            return (
+              <motion.div
+                key={feature.id}
+                initial={{ opacity: 0 }}
+                animate={mounted && isMobile ? { opacity: 1 } : {}}
+                whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
+                viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
+                transition={{ 
+                  delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
+                  duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3)
+                }}
+                style={{ 
+                  willChange: isMobile ? "opacity" : "opacity, transform",
+                  transform: isMobile ? "none" : "translateZ(0)"
+                }}
+                suppressHydrationWarning
+                className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
+              >
+                <div className="flex items-start gap-4 p-6">
+                  {/* Icon */}
+                  <div className="flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-slate-50 to-slate-50 group-hover:from-slate-100 group-hover:to-slate-50">
+                    <FeatureIcon className="w-7 h-7 transition-colors text-slate-500 group-hover:text-slate-600" strokeWidth={2.5} />
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight mb-2">
+                      {feature.title}
+                    </h4>
+                    <p className="text-sm text-neutral-body leading-relaxed">
+                      {feature.subtitle}
+                    </p>
+                  </div>
                 </div>
-              )}
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
       {/* Ecosystem */}
-      <section id="ecosystem" className="mx-auto max-w-6xl px-4 md:px-10 py-16 md:py-24 bg-background">
+      <section id="architecture" className="mx-auto max-w-6xl px-4 md:px-10 py-16 md:py-24 bg-background">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -552,8 +822,8 @@ export default function SarusPacsPage() {
         </div>
       </section>
 
-      {/* Enterprise Features & Integration */}
-      <section id="enterprise" className="relative border-t border-neutral-border bg-gradient-to-b from-white via-background-alt/30 to-white overflow-hidden">
+      {/* Enterprise section removed - merged into Core Features */}
+      <section id="enterprise" className="relative border-t border-neutral-border bg-gradient-to-b from-white via-background-alt/30 to-white overflow-hidden hidden">
         {/* Decorative background elements */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
@@ -751,7 +1021,7 @@ export default function SarusPacsPage() {
       </section>
 
       {/* Statistics Section */}
-      <section id="achievements" className="relative py-20 md:py-32 overflow-hidden">
+      <section id="success-story" className="relative py-24 md:py-36 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img

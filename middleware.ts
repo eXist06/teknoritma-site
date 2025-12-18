@@ -256,13 +256,16 @@ export async function middleware(request: NextRequest) {
   // Just set cookie based on pathname language to preserve SEO-friendly URLs
   const response = NextResponse.next();
   const pathLang = pathname.startsWith("/en") ? "en" : "tr";
+  const currentCookie = request.cookies.get("lang_preference")?.value;
   
-  // Update cookie based on current pathname (user is explicitly accessing this language version)
-  response.cookies.set("lang_preference", pathLang, { 
-    maxAge: 365 * 24 * 60 * 60,
-    sameSite: "lax",
-    path: "/"
-  });
+  // Only update cookie if it's different or doesn't exist to prevent unnecessary cookie updates
+  if (currentCookie !== pathLang) {
+    response.cookies.set("lang_preference", pathLang, { 
+      maxAge: 365 * 24 * 60 * 60,
+      sameSite: "lax",
+      path: "/"
+    });
+  }
   
   return response;
 }

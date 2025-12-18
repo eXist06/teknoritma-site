@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LayoutGrid, Link2, Globe, Pill, Activity, ChevronDown, Stethoscope, Building2, DollarSign, Brain } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
@@ -20,6 +20,31 @@ export const EnterpriseSolutionsSection: React.FC = () => {
   const { language } = useI18n();
   const isEn = language === "en";
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Detect mobile and reduced motion preference
+  useEffect(() => {
+    setMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    const checkReducedMotion = () => {
+      setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    };
+    
+    checkMobile();
+    checkReducedMotion();
+    window.addEventListener('resize', checkMobile);
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    mediaQuery.addEventListener('change', checkReducedMotion);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      mediaQuery.removeEventListener('change', checkReducedMotion);
+    };
+  }, []);
 
   const enterpriseSolutions: EnterpriseSolution[] = [
     {
@@ -242,10 +267,20 @@ export const EnterpriseSolutionsSection: React.FC = () => {
           <React.Fragment key={solution.id}>
             {/* Card */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.05 }}
+              initial={{ opacity: 0 }}
+              animate={mounted && isMobile ? { opacity: 1 } : {}}
+              whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
+              viewport={{ once: true, margin: isMobile ? "0px" : "-20px" }}
+              transition={{ 
+                delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
+                duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3),
+                ease: "easeOut"
+              }}
+              style={{ 
+                willChange: isMobile ? "opacity" : "opacity, transform",
+                transform: isMobile ? "none" : "translateZ(0)"
+              }}
+              suppressHydrationWarning
               className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
             >
               {/* Header - Always Visible */}

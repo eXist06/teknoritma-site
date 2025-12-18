@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
-import { Stethoscope, Calendar, Users, DollarSign, Cloud as CloudIcon, FileText, Pill, Clock, Clipboard, Smartphone, CreditCard, BarChart3, Link2, CheckCircle2, Zap, Building2, Shield, TrendingUp, RefreshCw, Lock, Settings, Wrench } from "lucide-react";
+import { Stethoscope, Calendar, Users, DollarSign, Cloud as CloudIcon, FileText, Pill, Clock, Clipboard, Smartphone, CreditCard, BarChart3, Link2, CheckCircle2, Zap, Building2, Shield, TrendingUp, RefreshCw, Lock, Settings, Wrench, Layers, Trophy, ChevronDown, Package, LayoutDashboard } from "lucide-react";
 
 export default function SarusCloudPage() {
   const { language, t } = useI18n();
@@ -15,52 +15,53 @@ export default function SarusCloudPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [expandedFeatureId, setExpandedFeatureId] = useState<string | null>(null);
 
   const tabs = [
     {
-      id: "clinicalEfficiency",
-      title: t("cloud.why.clinicalEfficiency.title"),
+      id: "clinicalOperations",
+      title: t("cloud.why.clinicalOperations.title"),
       icon: Stethoscope,
-      iconBgClass: "bg-blue-50",
-      iconColorClass: "text-blue-600",
-      subtitle: t("cloud.why.clinicalEfficiency.description"),
-      detail: t("cloud.why.clinicalEfficiency.detail"),
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: t("cloud.why.clinicalOperations.description"),
+      detail: t("cloud.why.clinicalOperations.detail"),
     },
     {
-      id: "practiceManagement",
-      title: t("cloud.why.practiceManagement.title"),
+      id: "appointmentManagement",
+      title: t("cloud.why.appointmentManagement.title"),
       icon: Calendar,
-      iconBgClass: "bg-green-50",
-      iconColorClass: "text-green-600",
-      subtitle: t("cloud.why.practiceManagement.description"),
-      detail: t("cloud.why.practiceManagement.detail"),
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: t("cloud.why.appointmentManagement.description"),
+      detail: t("cloud.why.appointmentManagement.detail"),
     },
     {
-      id: "patientEngagement",
-      title: t("cloud.why.patientEngagement.title"),
-      icon: Users,
-      iconBgClass: "bg-purple-50",
-      iconColorClass: "text-purple-600",
-      subtitle: t("cloud.why.patientEngagement.description"),
-      detail: t("cloud.why.patientEngagement.detail"),
-    },
-    {
-      id: "revenueCycle",
-      title: t("cloud.why.revenueCycle.title"),
+      id: "financialManagement",
+      title: t("cloud.why.financialManagement.title"),
       icon: DollarSign,
-      iconBgClass: "bg-amber-50",
-      iconColorClass: "text-amber-600",
-      subtitle: t("cloud.why.revenueCycle.description"),
-      detail: t("cloud.why.revenueCycle.detail"),
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: t("cloud.why.financialManagement.description"),
+      detail: t("cloud.why.financialManagement.detail"),
     },
     {
-      id: "cloudInfrastructure",
-      title: t("cloud.why.cloudInfrastructure.title"),
-      icon: CloudIcon,
-      iconBgClass: "bg-cyan-50",
-      iconColorClass: "text-cyan-600",
-      subtitle: t("cloud.why.cloudInfrastructure.description"),
-      detail: t("cloud.why.cloudInfrastructure.detail"),
+      id: "inventoryManagement",
+      title: t("cloud.why.inventoryManagement.title"),
+      icon: Package,
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: t("cloud.why.inventoryManagement.description"),
+      detail: t("cloud.why.inventoryManagement.detail"),
+    },
+    {
+      id: "administrationReporting",
+      title: t("cloud.why.administrationReporting.title"),
+      icon: LayoutDashboard,
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: t("cloud.why.administrationReporting.description"),
+      detail: t("cloud.why.administrationReporting.detail"),
     },
   ];
 
@@ -89,10 +90,10 @@ export default function SarusCloudPage() {
   // Auto-rotate cards every 8 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveTab((prev) => (prev + 1) % tabs.length);
+      setActiveTab((prev) => (prev + 1) % 5);
     }, 8000);
     return () => clearInterval(interval);
-  }, [tabs.length]);
+  }, []);
 
   // Track active navigation item based on scroll position
   useEffect(() => {
@@ -121,6 +122,33 @@ export default function SarusCloudPage() {
     handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const toggleFeatureExpanded = (id: string) => {
+    const newExpandedId = expandedFeatureId === id ? null : id;
+    setExpandedFeatureId(newExpandedId);
+    
+    // Scroll to expanded panel after state update
+    if (newExpandedId) {
+      setTimeout(() => {
+        const element = document.getElementById(`feature-panel-${newExpandedId}`);
+        if (element) {
+          const elementRect = element.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const elementTop = elementRect.top + scrollTop;
+          const viewportCenter = window.innerHeight / 2;
+          const elementHeight = elementRect.height;
+          const targetScroll = elementTop - viewportCenter + (elementHeight / 2);
+          const headerOffset = 100;
+          const finalScroll = Math.max(0, targetScroll - headerOffset);
+          
+          window.scrollTo({
+            top: finalScroll,
+            behavior: 'smooth'
+          });
+        }
+      }, 350);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-background">
@@ -260,26 +288,26 @@ export default function SarusCloudPage() {
               {
                 id: "clinical-features",
                 href: "#clinical-features",
-                label: t("cloud.why.title"),
+                label: language === "en" ? "Sarus Cloud Solutions" : "Sarus Bulut Çözümleri",
                 icon: Stethoscope,
               },
               {
                 id: "platform-features",
                 href: "#platform-features",
-                label: language === "en" ? "Platform Features" : "Platform Özellikleri",
+                label: t("cloud.features.title"),
                 icon: Settings,
               },
               {
                 id: "architecture",
                 href: "#architecture",
                 label: language === "en" ? "Architecture" : "Mimari",
-                icon: Wrench,
+                icon: Layers,
               },
               {
                 id: "success-story",
                 href: "#success-story",
                 label: language === "en" ? "Success Story" : "Başarı Hikayesi",
-                icon: CheckCircle2,
+                icon: Trophy,
               },
             ].map((item) => {
               const isActive = activeNavItem === item.id;
@@ -325,7 +353,7 @@ export default function SarusCloudPage() {
                       transition-all duration-200 leading-tight
                       ${isActive 
                         ? 'text-primary font-semibold' 
-                        : 'text-gray-600 group-hover:text-primary'
+                        : 'text-gray-600 group-hover:text-primary group-hover:font-semibold'
                       }`}
                   >
                     {item.label}
@@ -360,66 +388,118 @@ export default function SarusCloudPage() {
           <div className="w-20 h-0.5 bg-primary mx-auto"></div>
         </motion.div>
 
-        {/* Enterprise Grid Layout */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tabs.map((tab, idx) => (
-            <motion.div
-              key={tab.id}
-              initial={{ opacity: 0 }}
-              animate={mounted && isMobile ? { opacity: 1 } : {}}
-              whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
-              viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
-              transition={{ 
-                delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.1),
-                duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3)
-              }}
-              style={{ 
-                willChange: isMobile ? "opacity" : "opacity, transform",
-                transform: isMobile ? "none" : "translateZ(0)"
-              }}
-              suppressHydrationWarning
-              className={`group relative bg-white border-2 rounded-lg p-6 md:p-8 transition-all duration-300 ${
-                activeTab === idx
-                  ? "border-primary shadow-lg shadow-primary/10"
-                  : "border-neutral-border hover:border-primary/50 hover:shadow-md"
-              }`}
-            >
-              {/* Active Indicator */}
-              {activeTab === idx && (
-                <div className="absolute top-0 left-0 right-0 h-1 bg-primary"></div>
-              )}
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min">
+          {tabs.map((tab, idx) => {
+            const TabIcon = tab.icon;
+            const isExpanded = expandedFeatureId === tab.id;
 
-              {/* Icon */}
-              <div className={`mb-4 h-14 w-14 rounded-lg flex items-center justify-center ${tab.iconBgClass} transition-transform duration-300 ${
-                activeTab === idx ? "scale-110" : "group-hover:scale-105"
-              }`}>
-                {(() => {
-                  const IconComponent = tab.icon;
-                  return <IconComponent className={`w-7 h-7 ${tab.iconColorClass}`} strokeWidth={2.5} />;
-                })()}
-              </div>
+            return (
+              <React.Fragment key={tab.id}>
+                {/* Card */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={mounted && isMobile ? { opacity: 1 } : {}}
+                  whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
+                  viewport={{ once: true, margin: isMobile ? "0px" : "-20px" }}
+                  transition={{ 
+                    delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
+                    duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3),
+                    ease: "easeOut"
+                  }}
+                  style={{ 
+                    willChange: isMobile ? "opacity" : "opacity, transform",
+                    transform: isMobile ? "none" : "translateZ(0)"
+                  }}
+                  suppressHydrationWarning
+                  className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
+                >
+                  {/* Header - Always Visible */}
+                  <button
+                    onClick={() => toggleFeatureExpanded(tab.id)}
+                    className="w-full flex items-start justify-between p-6 text-left hover:bg-gray-50/50 transition-all duration-200"
+                  >
+                    <div className="flex items-start gap-4 flex-1 min-w-0">
+                      {/* Icon */}
+                      <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
+                        isExpanded 
+                          ? "bg-primary text-white shadow-md" 
+                          : `bg-gradient-to-br ${tab.iconBgClass} group-hover:from-slate-100 group-hover:to-slate-50`
+                      }`}>
+                        <TabIcon className={`w-7 h-7 transition-colors ${isExpanded ? "text-white" : `${tab.iconColorClass} group-hover:text-slate-600`}`} strokeWidth={2.5} />
+                      </div>
+                      
+                      {/* Title */}
+                      <h3 className={`text-lg font-bold transition-colors leading-tight ${
+                        isExpanded 
+                          ? "text-primary" 
+                          : "text-gray-900 group-hover:text-primary"
+                      }`}>
+                        {tab.title}
+                      </h3>
+                    </div>
 
-              {/* Content */}
-              <h3 className="text-xl md:text-2xl font-bold text-neutral-heading mb-3 leading-tight">
-                {tab.title}
-              </h3>
-              <p className="text-sm md:text-base text-neutral-body leading-relaxed mb-4">
-                {tab.subtitle}
-              </p>
-              {tab.detail && (
-                <div className="pt-4 border-t border-neutral-border/50">
-                  <p className="text-xs md:text-sm text-neutral-body/70 font-medium leading-relaxed">
-                    {tab.detail}
-                  </p>
-                </div>
-              )}
-            </motion.div>
-          ))}
+                    {/* Chevron Icon */}
+                    <motion.div
+                      animate={{ rotate: isExpanded ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex-shrink-0 ml-4 mt-1"
+                    >
+                      <ChevronDown className={`w-6 h-6 transition-colors ${isExpanded ? "text-primary" : "text-gray-400"}`} strokeWidth={2.5} />
+                    </motion.div>
+                  </button>
+                </motion.div>
+
+                {/* Expandable Detail Panel - Below the clicked card, full width */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      id={`feature-panel-${tab.id}`}
+                      initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                      animate={{ height: "auto", opacity: 1, marginTop: 20 }}
+                      exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="col-span-1 md:col-span-2 lg:col-span-3 overflow-hidden scroll-mt-24"
+                    >
+                      <div className="bg-gradient-to-br from-blue-50/90 via-slate-50/90 to-white rounded-xl border-2 border-primary/30 shadow-2xl p-8 md:p-10 lg:p-12 relative overflow-hidden">
+                        {/* Subtle pattern overlay */}
+                        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
+                          backgroundImage: `radial-gradient(circle at 2px 2px, #1e40af 1px, transparent 0)`,
+                          backgroundSize: '40px 40px'
+                        }}></div>
+                        <div className="relative z-10">
+                          {/* Header Section */}
+                          <div className="flex items-start gap-6 mb-12">
+                            <div className={`flex-shrink-0 w-20 h-20 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-xl`}>
+                              <TabIcon className="w-10 h-10 text-white" strokeWidth={2.5} />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 leading-tight tracking-tight">
+                                {tab.title}
+                              </h3>
+                              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl font-bold mb-5">
+                                {tab.subtitle}
+                              </p>
+                              {tab.detail && (
+                                <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-4xl font-medium">
+                                  {tab.detail}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            );
+          })}
         </div>
       </section>
 
       {/* Platform Features Section */}
-      <section id="platform-features" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background-alt">
+      <section id="platform-features" className="mx-auto max-w-7xl px-4 md:px-10 py-24 md:py-36 bg-background-alt">
         <motion.div
           initial={{ opacity: 0, y: isMobile ? 0 : 30 }}
           animate={mounted && isMobile ? { opacity: 1 } : {}}
@@ -432,11 +512,12 @@ export default function SarusCloudPage() {
           }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-4">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
             <span className="text-primary">Sarus</span>{" "}
             <span className="text-neutral-heading">{t("cloud.productName")}</span>{" "}
             <span className="text-neutral-heading">{t("cloud.features.title")}</span>
           </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"></div>
           <p className="text-lg text-neutral-body max-w-3xl mx-auto">
             {t("cloud.features.subtitle")}
           </p>
@@ -507,17 +588,24 @@ export default function SarusCloudPage() {
                 transform: isMobile ? "none" : "translateZ(0)"
               }}
               suppressHydrationWarning
-              className="bg-white rounded-xl border border-neutral-border p-6 shadow-sm hover:shadow-md transition-all duration-300"
+              className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
             >
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
-                <IconComponent className="w-6 h-6 text-primary" strokeWidth={2.5} />
+              <div className="flex items-start gap-4 p-6">
+                {/* Icon */}
+                <div className="flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-slate-50 to-slate-50 group-hover:from-slate-100 group-hover:to-slate-50">
+                  {IconComponent && <IconComponent className="w-7 h-7 transition-colors text-slate-500 group-hover:text-slate-600" strokeWidth={2.5} />}
+                </div>
+                
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight mb-2">
+                    {item.title}
+                  </h4>
+                  <p className="text-sm text-neutral-body leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
               </div>
-              <h4 className="text-lg md:text-xl font-semibold text-neutral-heading mb-2">
-                {item.title}
-              </h4>
-              <p className="text-sm text-neutral-body leading-relaxed">
-                {item.description}
-              </p>
             </motion.div>
           );
           })}
@@ -672,7 +760,7 @@ export default function SarusCloudPage() {
       </section>
 
       {/* Success Story Section */}
-      <section id="success-story" className="py-20 md:py-32 bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5">
+      <section id="success-story" className="py-24 md:py-36 bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5">
         <div className="max-w-7xl mx-auto px-5 md:px-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

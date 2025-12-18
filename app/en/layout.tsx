@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://teknoritma.com.tr";
+import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
     template: "%s | Teknoritma",
     default: "Teknoritma - Health Informatics Solutions",

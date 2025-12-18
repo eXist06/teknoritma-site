@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 import {
-  Zap, Settings, Layers, Link2, Globe, ChevronDown, Trophy, Shield, TrendingUp, Stethoscope
+  Zap, Settings, Layers, Link2, Globe, Trophy, Shield, TrendingUp, Stethoscope, Heart, Monitor, Wrench, FileText, Smartphone, Brain, Network
 } from "lucide-react";
 import { EnterpriseSolutionsSection } from "./EnterpriseSolutionsSection";
 
@@ -19,7 +19,6 @@ export default function SarusHISPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [expandedFeatureId, setExpandedFeatureId] = useState<string | null>(null);
 
 
   const tabs = [
@@ -37,14 +36,40 @@ export default function SarusHISPage() {
         : "Sarus EMR; klinik, idari ve finansal süreçleri ayrı uygulamalar olarak değil, tek ve bütünleşik bir yapı içinde yönetir. Tüm bileşenler ortak bir çekirdek üzerinde çalışır ve kurum genelinde tutarlı, sürdürülebilir bir sistem mimarisi sağlar.",
     },
     {
+      id: "ai-integration",
+      title: language === "en" ? "AI Tools Integration" : "AI Araçları Entegrasyon",
+      icon: Brain,
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: language === "en"
+        ? "Full integration with AI tools across different clinical areas"
+        : "Farklı klinik alanlarda AI araçları ile tam entegrasyon",
+      detail: language === "en"
+        ? ""
+        : "",
+    },
+    {
+      id: "end-to-end-solution",
+      title: language === "en" ? "End-to-End Solution" : "Uçtan Uca Çözüm",
+      icon: Network,
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: language === "en"
+        ? "Comprehensive solution across mobile, PC, and bedside monitors"
+        : "Mobil, PC ve hasta başı monitörlerde kapsamlı çözüm",
+      detail: language === "en"
+        ? ""
+        : "",
+    },
+    {
       id: "scalable-structure",
       title: language === "en" ? "Scalable Structure" : "Ölçeklenebilir Yapı",
       icon: TrendingUp,
       iconBgClass: "bg-slate-50",
       iconColorClass: "text-slate-500",
       subtitle: language === "en"
-        ? "Designed for mega hospitals and national structures"
-        : "Mega hastaneler ve ulusal yapılar için tasarlanmıştır",
+        ? "Scalable from mega hospitals and national structures to single-center hospitals"
+        : "Mega hastaneler ve ulusal yapılardan tek merkezli hastanelere kadar ölçeklenebilir",
       detail: language === "en"
         ? "Sarus EMR, designed considering high user numbers and intensive transaction volumes, delivers performance, continuity and scalability in large-scale hospitals and multi-center healthcare structures."
         : "Yüksek kullanıcı sayıları ve yoğun işlem hacimleri göz önünde bulundurularak tasarlanan Sarus EMR, büyük ölçekli hastaneler ve çok merkezli sağlık yapılarında performans, süreklilik ve büyüyebilirlik sunar.",
@@ -88,6 +113,71 @@ export default function SarusHISPage() {
         ? "All operations are made traceable through role-based authorization, access control and detailed logging mechanisms. This structure meets data security, regulatory compliance and corporate governance requirements."
         : "Rol bazlı yetkilendirme, erişim kontrolü ve detaylı kayıt (log) mekanizmaları ile tüm işlemler izlenebilir hale getirilir. Bu yapı, veri güvenliği, mevzuata uyum ve kurumsal yönetişim gereksinimlerini karşılar.",
     },
+    {
+      id: "integration",
+      title: language === "en" ? "Integration Layer" : "Entegrasyon Katmanı",
+      icon: Link2,
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: language === "en"
+        ? "Sarus ICP enables seamless integration between different systems, medical devices, and third-party applications"
+        : "Sarus ICP, farklı sistemler, tıbbi cihazlar ve üçüncü parti uygulamalar arasında sorunsuz entegrasyon sağlar",
+      detail: language === "en"
+        ? ""
+        : "",
+    },
+    {
+      id: "patient-centered",
+      title: language === "en" ? "Patient-Centered Structure" : "Hasta Odaklı Yapı",
+      icon: Heart,
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: language === "en"
+        ? "Patient-centered design that prioritizes patient safety and care quality"
+        : "Hasta güvenliği ve bakım kalitesini ön planda tutan hasta odaklı tasarım",
+      detail: language === "en"
+        ? ""
+        : "",
+    },
+    {
+      id: "user-friendly",
+      title: language === "en" ? "User-Friendly Screens" : "Kullanıcı Dostu Ekranlar",
+      icon: Monitor,
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: language === "en"
+        ? "Intuitive and easy-to-use interface designed for healthcare professionals"
+        : "Sağlık profesyonelleri için tasarlanmış sezgisel ve kullanımı kolay arayüz",
+      detail: language === "en"
+        ? ""
+        : "",
+    },
+    {
+      id: "easy-installation",
+      title: language === "en" ? "Easy Installation" : "Kolay Kurulum",
+      icon: Wrench,
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: language === "en"
+        ? "Streamlined installation process with minimal configuration requirements"
+        : "Minimum yapılandırma gereksinimleri ile sadeleştirilmiş kurulum süreci",
+      detail: language === "en"
+        ? ""
+        : "",
+    },
+    {
+      id: "dynamic-forms",
+      title: language === "en" ? "Dynamic Clinical Forms" : "Dinamik Klinik Formlar",
+      icon: FileText,
+      iconBgClass: "bg-slate-50",
+      iconColorClass: "text-slate-500",
+      subtitle: language === "en"
+        ? "Flexible and customizable clinical forms that adapt to different clinical workflows"
+        : "Farklı klinik iş akışlarına uyum sağlayan esnek ve özelleştirilebilir klinik formlar",
+      detail: language === "en"
+        ? ""
+        : "",
+    },
   ];
 
   // Detect mobile and reduced motion preference
@@ -111,33 +201,6 @@ export default function SarusHISPage() {
       mediaQuery.removeEventListener('change', checkReducedMotion);
     };
   }, []);
-
-  const toggleFeatureExpanded = (id: string) => {
-    const newExpandedId = expandedFeatureId === id ? null : id;
-    setExpandedFeatureId(newExpandedId);
-    
-    // Scroll to expanded panel after state update
-    if (newExpandedId) {
-      setTimeout(() => {
-        const element = document.getElementById(`feature-panel-${newExpandedId}`);
-        if (element) {
-          const elementRect = element.getBoundingClientRect();
-          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          const elementTop = elementRect.top + scrollTop;
-          const viewportCenter = window.innerHeight / 2;
-          const elementHeight = elementRect.height;
-          const targetScroll = elementTop - viewportCenter + (elementHeight / 2);
-          const headerOffset = 100;
-          const finalScroll = Math.max(0, targetScroll - headerOffset);
-          
-          window.scrollTo({
-            top: finalScroll,
-            behavior: 'smooth'
-          });
-        }
-      }, 350);
-    }
-  };
 
   // Track active navigation item based on scroll position
   useEffect(() => {
@@ -464,110 +527,45 @@ export default function SarusHISPage() {
         </motion.div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tabs.map((tab, idx) => {
             const TabIcon = tab.icon;
-            const isExpanded = expandedFeatureId === tab.id;
 
             return (
-              <React.Fragment key={tab.id}>
-                {/* Card */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={mounted && isMobile ? { opacity: 1 } : {}}
-                  whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
-                  viewport={{ once: true, margin: isMobile ? "0px" : "-20px" }}
-                  transition={{ 
-                    delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
-                    duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3),
-                    ease: "easeOut"
-                  }}
-                  style={{ 
-                    willChange: isMobile ? "opacity" : "opacity, transform",
-                    transform: isMobile ? "none" : "translateZ(0)"
-                  }}
-                  suppressHydrationWarning
-                  className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
-                >
-                  {/* Header - Always Visible */}
-                  <button
-                    onClick={() => toggleFeatureExpanded(tab.id)}
-                    className="w-full flex items-start justify-between p-6 text-left hover:bg-gray-50/50 transition-all duration-200"
-                  >
-                    <div className="flex items-start gap-4 flex-1 min-w-0">
-                      {/* Icon */}
-                      <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
-                        isExpanded 
-                          ? "bg-primary text-white shadow-md" 
-                          : `bg-gradient-to-br ${tab.iconBgClass} group-hover:from-slate-100 group-hover:to-slate-50`
-                      }`}>
-                        <TabIcon className={`w-7 h-7 transition-colors ${isExpanded ? "text-white" : `${tab.iconColorClass} group-hover:text-slate-600`}`} strokeWidth={2.5} />
-                      </div>
-                      
-                      {/* Title */}
-                      <h3 className={`text-lg font-bold transition-colors leading-tight ${
-                        isExpanded 
-                          ? "text-primary" 
-                          : "text-gray-900 group-hover:text-primary"
-                      }`}>
-                        {tab.title}
-                      </h3>
-                    </div>
-
-                    {/* Chevron Icon */}
-                    <motion.div
-                      animate={{ rotate: isExpanded ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="flex-shrink-0 ml-4 mt-1"
-                    >
-                      <ChevronDown className={`w-6 h-6 transition-colors ${isExpanded ? "text-primary" : "text-gray-400"}`} strokeWidth={2.5} />
-                    </motion.div>
-                  </button>
-                </motion.div>
-
-                {/* Expandable Detail Panel - Below the clicked card, full width */}
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      id={`feature-panel-${tab.id}`}
-                      initial={{ height: 0, opacity: 0, marginTop: 0 }}
-                      animate={{ height: "auto", opacity: 1, marginTop: 20 }}
-                      exit={{ height: 0, opacity: 0, marginTop: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="col-span-1 md:col-span-2 lg:col-span-3 overflow-hidden scroll-mt-24"
-                    >
-                      <div className="bg-gradient-to-br from-blue-50/90 via-slate-50/90 to-white rounded-xl border-2 border-primary/30 shadow-2xl p-8 md:p-10 lg:p-12 relative overflow-hidden">
-                        {/* Subtle pattern overlay */}
-                        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
-                          backgroundImage: `radial-gradient(circle at 2px 2px, #1e40af 1px, transparent 0)`,
-                          backgroundSize: '40px 40px'
-                        }}></div>
-                        <div className="relative z-10">
-                          {/* Header Section */}
-                          <div className="flex items-start gap-6 mb-12">
-                            <div className={`flex-shrink-0 w-20 h-20 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-xl`}>
-                              <TabIcon className="w-10 h-10 text-white" strokeWidth={2.5} />
-                            </div>
-                            <div className="flex-1">
-                              <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 leading-tight tracking-tight">
-                                {tab.title}
-                              </h3>
-                              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl font-bold mb-5">
-                                {tab.subtitle}
-                              </p>
-                              {tab.detail && (
-                                <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-4xl font-medium">
-                                  {tab.detail}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </React.Fragment>
+              <motion.div
+                key={tab.id}
+                initial={{ opacity: 0 }}
+                animate={mounted && isMobile ? { opacity: 1 } : {}}
+                whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
+                viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
+                transition={{ 
+                  delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
+                  duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3)
+                }}
+                style={{ 
+                  willChange: isMobile ? "opacity" : "opacity, transform",
+                  transform: isMobile ? "none" : "translateZ(0)"
+                }}
+                suppressHydrationWarning
+                className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
+              >
+                <div className="flex items-start gap-4 p-6">
+                  {/* Icon */}
+                  <div className="flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-slate-50 to-slate-50 group-hover:from-slate-100 group-hover:to-slate-50">
+                    <TabIcon className="w-7 h-7 transition-colors text-slate-500 group-hover:text-slate-600" strokeWidth={2.5} />
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight mb-2">
+                      {tab.title}
+                    </h4>
+                    <p className="text-sm text-neutral-body leading-relaxed">
+                      {tab.subtitle}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
             );
           })}
         </div>

@@ -20,6 +20,7 @@ interface VantaGlobeProps {
   minWidth?: number;
   scale?: number;
   scaleMobile?: number;
+  maxDistance?: number;
 }
 
 export default function VantaGlobe({
@@ -33,12 +34,15 @@ export default function VantaGlobe({
   minWidth = 200,
   scale = 1,
   scaleMobile = 1,
+  maxDistance = 0,
 }: VantaGlobeProps) {
   const vantaRef = useRef<HTMLDivElement>(null);
   const vantaEffect = useRef<any>(null);
 
   useEffect(() => {
     if (!vantaRef.current) return;
+
+    let checkThreeInterval: NodeJS.Timeout | null = null;
 
     // Load Vanta.js scripts dynamically
     const loadVanta = async () => {
@@ -59,7 +63,16 @@ export default function VantaGlobe({
           color,
           color2,
           backgroundColor,
+          maxDistance,
         });
+        // Ensure canvas has low z-index so overlay can appear above it
+        if (vantaRef.current) {
+          const canvas = vantaRef.current.querySelector('canvas');
+          if (canvas) {
+            canvas.style.zIndex = '0';
+            canvas.style.position = 'absolute';
+          }
+        }
         return;
       }
 
@@ -82,7 +95,16 @@ export default function VantaGlobe({
               color,
               color2,
               backgroundColor,
+              maxDistance,
             });
+            // Ensure canvas has low z-index so overlay can appear above it
+            if (vantaRef.current) {
+              const canvas = vantaRef.current.querySelector('canvas');
+              if (canvas) {
+                canvas.style.zIndex = '0';
+                canvas.style.position = 'absolute';
+              }
+            }
           } catch (error) {
             console.error('Vanta Globe initialization error:', error);
           }
@@ -130,9 +152,12 @@ export default function VantaGlobe({
         }
       } else {
         // Three.js script exists but not loaded yet, wait for it
-        const checkThree = setInterval(() => {
+        checkThreeInterval = setInterval(() => {
           if (window.THREE) {
-            clearInterval(checkThree);
+            if (checkThreeInterval) {
+              clearInterval(checkThreeInterval);
+              checkThreeInterval = null;
+            }
             if (!window.VANTA || !window.VANTA.GLOBE) {
               const vantaScript = document.createElement('script');
               vantaScript.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js';
@@ -149,18 +174,28 @@ export default function VantaGlobe({
         }, 100);
 
         // Timeout after 10 seconds
-        setTimeout(() => clearInterval(checkThree), 10000);
+        setTimeout(() => {
+          if (checkThreeInterval) {
+            clearInterval(checkThreeInterval);
+            checkThreeInterval = null;
+          }
+        }, 10000);
       }
     };
 
     loadVanta();
 
     return () => {
+      // Clean up interval if component unmounts
+      if (checkThreeInterval) {
+        clearInterval(checkThreeInterval);
+        checkThreeInterval = null;
+      }
       if (vantaEffect.current) {
         vantaEffect.current.destroy();
       }
     };
-  }, [color, color2, backgroundColor, mouseControls, touchControls, gyroControls, minHeight, minWidth, scale, scaleMobile]);
+  }, [color, color2, backgroundColor, maxDistance]);
 
   return (
     <div

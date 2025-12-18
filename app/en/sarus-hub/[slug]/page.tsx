@@ -61,9 +61,9 @@ export async function generateMetadata({
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://teknoritma.com.tr";
-  const url = `${siteUrl}/en/sarus-hub/${item.slug}`;
-  const image = item.primaryImage || item.image ? `${siteUrl}${item.primaryImage || item.image}` : undefined;
+  const { SITE_URL } = await import("@/lib/config");
+  const url = `${SITE_URL}/en/sarus-hub/${item.slug}`;
+  const image = item.primaryImage || item.image ? `${SITE_URL}${item.primaryImage || item.image}` : undefined;
 
   return {
     title: item.title,

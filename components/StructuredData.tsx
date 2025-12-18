@@ -1,7 +1,6 @@
 import { usePathname } from "next/navigation";
 import { useI18n } from "@/lib/i18n";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://emr.cemorion.com";
+import { SITE_URL, SITE_LOGO } from "@/lib/config";
 
 export default function StructuredData() {
   const pathname = usePathname();
@@ -12,8 +11,8 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Teknoritma",
-    url: siteUrl,
-    logo: `${siteUrl}/logo.png`,
+    url: SITE_URL,
+    logo: SITE_LOGO,
     sameAs: [
       // Add social media links if available
     ],
@@ -29,14 +28,14 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Teknoritma",
-    url: siteUrl,
+    url: SITE_URL,
     inLanguage: language === "en" ? "en-US" : "tr-TR",
     alternateName: language === "en" ? "Teknoritma Health Informatics" : "Teknoritma Sağlık Bilişimi",
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: `${siteUrl}/search?q={search_term_string}`,
+        urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },
@@ -52,7 +51,7 @@ export default function StructuredData() {
         "@type": "ListItem",
         position: 1,
         name: language === "en" ? "Home" : "Ana Sayfa",
-        item: siteUrl,
+        item: SITE_URL,
       },
     ];
 
@@ -68,7 +67,7 @@ export default function StructuredData() {
         "@type": "ListItem",
         position: index + 2,
         name: name,
-        item: `${siteUrl}${currentPath}`,
+        item: `${SITE_URL}${currentPath}`,
       });
     });
 

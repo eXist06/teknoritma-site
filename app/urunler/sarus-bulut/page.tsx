@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import SarusCloudPage from "@/components/SarusCloudPage";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://teknoritma.com.tr";
+import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Sarus Bulut - Bulut Tabanlı Hastane Bilgi Sistemi",

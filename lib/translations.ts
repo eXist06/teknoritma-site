@@ -247,6 +247,35 @@ export const translations: Record<string, any> = {
           description: "DICOM, HL7, IHE profilleri ve regülasyonlara uyumlu, denetlenebilir ve güvenli veri yönetimi.",
         },
       },
+      solutions: {
+        title: "Sarus PACS Çözümleri",
+        subtitle: "Görüntüleme ve Raporlama Katmanı",
+        webViewer: {
+          title: "Web Görüntüleyici",
+          description: "Tarayıcı tabanlı, hızlı ve güvenli tanı amaçlı görüntüleyici. Kurum içi ve uzaktan erişim için optimize edilmiştir.",
+          detail: "HTML5 tabanlı, zero-footprint web görüntüleyici. Kurulum gerektirmez, herhangi bir cihazdan erişim sağlar. Yüksek çözünürlüklü görüntüleri hızlı bir şekilde görüntüleme, ölçüm yapma ve not alma özellikleri sunar. DICOM standartlarına tam uyumlu çalışır ve tüm modalitelerden gelen görüntüleri destekler.",
+        },
+        workstation: {
+          title: "Workstation",
+          description: "Radyologlar için çok monitör destekli, yüksek performanslı tanı ve raporlama istasyonu.",
+          detail: "3D görüntüleme, gelişmiş ölçüm araçları ve entegre raporlama ile radyologlar için optimize edilmiş diagnostik uygulama. Çoklu monitör desteği ile geniş görüntü alanı sağlar. Gelişmiş görüntü işleme algoritmaları ve AI destekli tanı araçları ile radyologların daha hızlı ve doğru tanı koymasına yardımcı olur.",
+        },
+        telemedicine: {
+          title: "Teletıp",
+          description: "Merkezler arası teleradyoloji, konsültasyon ve ikinci görüş senaryolarını destekleyen çözüm.",
+          detail: "Kurumlar arası görüntü paylaşımı ve uzaktan diagnostik okuma için tam entegre teletıp altyapısı. Güvenli ve hızlı görüntü transferi ile merkezler arası konsültasyon ve ikinci görüş süreçlerini kolaylaştırır. Gerçek zamanlı görüntü paylaşımı ve işbirliği araçları ile uzaktan tanı desteği sağlar.",
+        },
+        audioManager: {
+          title: "Audio Manager",
+          description: "Merkezi ses kayıtları ve hızlı raporlama çözümü.",
+          detail: "Kurumsal düzeyde merkezi ses kayıt sistemi. RIS/PACS entegrasyonu ile raporlama süreçlerini hızlandırır. Sesli raporlama, otomatik transkripsiyon ve rapor onay süreçlerini tek bir platformda birleştirir. Radyologların raporlama verimliliğini artırır ve iş akışını optimize eder.",
+        },
+        ris: {
+          title: "RIS",
+          description: "Randevu, iş listesi, raporlama ve onay süreçlerini tek platformda konsolide eden radyoloji bilgi sistemi.",
+          detail: "Radyoloji departmanı için kapsamlı iş akışı yönetimi, tetkik yönetiminden rapor dağıtımına kadar tüm süreçleri kapsar. Merkezi worklist yönetimi ile tüm modalitelerden gelen çalışmaları tek bir noktadan yönetin ve dağıtın. Raporlama, onay ve dağıtım süreçlerini otomatikleştirerek radyoloji departmanının operasyonel verimliliğini artırır.",
+        },
+      },
       why: {
         title: "Tasarım Hedefleri",
         fastViewing: {
@@ -391,7 +420,7 @@ export const translations: Record<string, any> = {
         },
         ris: {
           title: "Radyoloji Bilgi Sistemi",
-          description: "Radyoloji departmanı için kapsamlı iş akışı yönetimi, sipariş yönetiminden rapor dağıtımına kadar tüm süreçleri kapsar.",
+          description: "Radyoloji departmanı için kapsamlı iş akışı yönetimi, tetkik yönetiminden rapor dağıtımına kadar tüm süreçleri kapsar.",
         },
         worklist: {
           title: "Modality Worklist Yönetimi",
@@ -543,7 +572,7 @@ export const translations: Record<string, any> = {
         bullets: [
           "200'den fazla yerli sağlık bilişimi projesi deneyimi",
           "15'ten fazla uluslararası sağlık bilişimi projesi",
-          "30'dan fazla 1000+ yatak kapasiteli hastane projesi",
+          "20+ adet 1.000+ yatak kapasiteli hastane deneyimi",
           "Ankara Şehir Hastanesi ve Mersin Şehir Hastanesi gibi PPP modeli mega projeler",
           "McKinsey tarafından denetlenen referans projeler",
           "Katar ulusal sağlık bilişimi programı: Azure tabanlı, ayakta tedavi odaklı EMR, 100+ klinik, ülke genelinde yayılım",
@@ -573,7 +602,7 @@ export const translations: Record<string, any> = {
       },
       kpis: [
         "200+ Yerli Sağlık Bilişimi Projesi",
-        "30+ Mega Hastane (1000+ Yatak)",
+        "20+ adet 1.000+ yatak kapasiteli hastane deneyimi",
         "15+ Uluslararası Proje",
         "4 Ülke (Türkiye Dışında)",
         "100+ Klinik (Katar Ulusal Programı)",
@@ -605,35 +634,35 @@ export const translations: Record<string, any> = {
       requestDemo: "Demo Talep Et",
       explore: "İncele",
       why: {
-        title: "Klinik Özellikler",
-        clinicalEfficiency: {
-          title: "Klinik Verimlilik",
+        title: "Çözümleri",
+        clinicalOperations: {
+          title: "Klinik İşlemler",
           description: "Kapsamlı klinik dokümantasyon, hasta kayıt yönetimi ve klinik iş akışları ile sağlık profesyonellerinin verimliliğini artırır.",
-          detail: "SBS yazılımı, e-Reçete, Klinik Veri Kayıtları, Otomatik Bakım Boşluk Uyarıları.",
+          detail: "Kapsamlı klinik modülü ile hasta listesi yönetimi, hasta kayıt işlemleri ve klinik dokümantasyon süreçlerini tek bir platformda yönetin. Detaylı hasta geçmişi takibi, klinik notlar, tanı ve tedavi planları ile sağlık profesyonellerinin günlük iş akışlarını optimize edin. Elektronik hasta kayıtları ile kağıt bazlı süreçleri ortadan kaldırarak verimliliği artırın.",
         },
-        practiceManagement: {
-          title: "Kaynak Yönetimi",
-          description: "Randevu yönetimi, hasta takibi ve operasyonel süreçleri kolaylaştıran entegre kaynak yönetim çözümü.",
-          detail: "AI destekli randevu planlama, hasta akış yönetimi, operasyonel raporlama.",
+        appointmentManagement: {
+          title: "Randevu Yönetimi",
+          description: "Randevu planlama, hasta takibi ve operasyonel süreçleri kolaylaştıran entegre randevu yönetim çözümü.",
+          detail: "Entegre randevu modülü ile hasta kayıt sistemine tam entegrasyon sağlayarak randevu planlama ve takip süreçlerini otomatikleştirin. Çoklu doktor ve klinik için esnek randevu planlama, hasta akış yönetimi ve randevu durumu takibi ile operasyonel verimliliği artırın. Randevu hatırlatmaları ve iptal yönetimi ile hasta memnuniyetini optimize edin.",
         },
-        patientEngagement: {
-          title: "Hasta Katılımı",
-          description: "Mobil öncelikli hasta katılım platformu ile hasta deneyimini iyileştirin ve hasta memnuniyetini artırın.",
-          detail: "Hasta portalı, mobil uygulama, randevu yönetimi, sonuç görüntüleme.",
+        financialManagement: {
+          title: "Finansal Yönetim",
+          description: "Faturalama, ödeme takibi ve finansal raporlama ile gelir döngüsünü optimize edin.",
+          detail: "Kapsamlı finans modülü ile faturalama ve ödeme işlemlerini merkezi olarak yönetin. Otomatik faturalama süreçleri, ödeme takibi ve finansal raporlama ile gelir döngüsü yönetimini optimize edin. Sigorta entegrasyonları, ödeme planları ve finansal analitik araçları ile kurumsal finansal görünürlüğü artırın.",
         },
-        revenueCycle: {
-          title: "Gelir Döngüsü Yönetimi",
-          description: "Faturalama, kodlama ve ödeme süreçlerini optimize ederek gelir döngüsünü maksimize edin.",
-          detail: "Otomatik faturalama, kodlama hizmetleri, ödeme takibi, red oranı azaltma.",
+        inventoryManagement: {
+          title: "Envanter Yönetimi",
+          description: "Stok takibi, malzeme yönetimi ve envanter kontrolü ile operasyonel verimliliği artırın.",
+          detail: "Gelişmiş envanter modülü ile stok takibi ve yönetimini otomatikleştirin. Malzeme giriş-çıkış işlemleri, stok seviyesi takibi ve envanter raporlama ile operasyonel verimliliği artırın. Otomatik stok uyarıları, tedarikçi yönetimi ve maliyet analizi araçları ile envanter maliyetlerini optimize edin.",
         },
-        cloudInfrastructure: {
-          title: "Bulut Altyapısı",
-          description: "Azure Ready, multi-tenant mimari ile ölçeklenebilir ve güvenli bulut altyapısı. Kurumsal bulut (private cloud) desteği ile kurumlara ait datacenter'lardan çalışabilme.",
-          detail: "Kurumsal bulut (private cloud), public cloud, hybrid deployment, otomatik ölçeklendirme.",
+        administrationReporting: {
+          title: "Yönetim ve Raporlama",
+          description: "Dashboard, raporlama ve sistem yönetimi ile stratejik karar verme süreçlerini destekleyin.",
+          detail: "Kapsamlı yönetim modülü ile dashboard ve analitik araçları kullanarak operasyonel performansı izleyin. Özelleştirilebilir raporlama sistemi ile stratejik karar verme süreçlerini destekleyin. Genel navigasyon, kullanıcı yönetimi ve giriş mekanizmaları ile sistem güvenliğini ve erişim kontrolünü sağlayın.",
         },
       },
       features: {
-        title: "Platform Özellikleri",
+        title: "Temel Özellikler",
         subtitle: "Kapsamlı SBS çözümü ile klinik operasyonlarınızı optimize edin",
         ehr: {
           title: "SBS Yazılımı",
@@ -774,43 +803,52 @@ export const translations: Record<string, any> = {
         },
       },
       features: {
-        title: "Platform Özellikleri",
+        title: "Sarus LBYS Çözümleri",
         subtitle: "Kapsamlı LBYS çözümü ile laboratuvar operasyonlarınızı optimize edin",
         orderEntry: {
           title: "Numune Girişi",
           description: "Merkezi numune girişi ve yönetimi. Web tabanlı erişim ile uzak lokasyonlardan numune girişi imkanı.",
+          detail: "Merkezi numune girişi sistemi ile tüm numune kayıtlarını tek bir noktadan yönetin. Web tabanlı arayüz sayesinde uzak lokasyonlardan kolayca numune girişi yapabilir, barkod oluşturma ve etiket yazdırma işlemlerini otomatikleştirebilirsiniz. Numune takip numarası atama, hasta bilgisi doğrulama ve ön analitik kontroller ile hata oranını minimize edin.",
         },
         resultManagement: {
           title: "Sonuç Yönetimi",
           description: "Otomatik sonuç işleme, doğrulama ve yayınlama. Kritik değer yönetimi ve otomatik bildirimler.",
+          detail: "Test sonuçlarının otomatik işlenmesi, doğrulama kuralları ile kontrol edilmesi ve yayınlanması için kapsamlı bir sistem. Kritik değer yönetimi ile acil durumlarda otomatik bildirimler gönderin. Sonuç geçmişi takibi, karşılaştırmalı analiz ve trend görüntüleme özellikleri ile laboratuvar verimliliğini artırın.",
         },
         instrumentInterface: {
           title: "Cihaz Arayüzü",
           description: "Tüm laboratuvar cihazları ile standart protokoller üzerinden entegrasyon. Otomatik veri aktarımı ve hata yönetimi.",
+          detail: "HL7, ASTM ve diğer standart protokoller üzerinden tüm laboratuvar cihazları ile sorunsuz entegrasyon. Otomatik veri aktarımı ile manuel giriş hatalarını ortadan kaldırın. Cihaz durumu izleme, hata yönetimi ve otomatik yeniden deneme mekanizmaları ile kesintisiz çalışma sağlayın.",
         },
         qualityControl: {
           title: "Kalite Kontrol",
           description: "Gelişmiş kalite kontrol yönetimi, otomatik QC kuralları ve kalite kontrol raporlama.",
+          detail: "Westgard kuralları, Levey-Jennings grafikleri ve hareketli ortalama yöntemleri ile kapsamlı kalite kontrol yönetimi. Otomatik QC kuralları ile anormal sonuçları tespit edin ve gerçek zamanlı alarmlar alın. Kalite kontrol raporlama ve trend analizi ile laboratuvar kalitesini sürekli izleyin.",
         },
         workflowManagement: {
           title: "İş Akışı Yönetimi",
           description: "Numune takibi, iş akışı otomasyonu ve laboratuvar süreçlerinin merkezi yönetimi.",
+          detail: "Numune kabulünden sonuç yayınlamaya kadar tüm laboratuvar süreçlerini tek bir platformdan yönetin. İş akışı otomasyonu ile rutin işlemleri hızlandırın, numune takip sistemi ile kayıp numuneleri önleyin. Merkezi yönetim paneli ile tüm laboratuvar operasyonlarını gerçek zamanlı izleyin ve optimize edin.",
         },
         billing: {
           title: "Faturalama",
           description: "Gerçek zamanlı faturalama, otomatik kodlama ve gelir döngüsü yönetimi.",
+          detail: "Test sonuçları yayınlandığında otomatik faturalama oluşturma ile gelir döngüsünü hızlandırın. Otomatik kodlama ile doğru fiyatlandırma yapın, sigorta kurallarına göre otomatik indirim ve iade işlemlerini yönetin. Detaylı faturalama raporları ile gelir analizi yapın.",
         },
         reporting: {
           title: "Raporlama ve Analitik",
           description: "Kapsamlı raporlama araçları, özel raporlar ve laboratuvar performans analitiği.",
+          detail: "Hazır rapor şablonları ve özel rapor oluşturma araçları ile ihtiyacınıza özel raporlar üretin. Laboratuvar performans metrikleri, test hacmi analizleri ve trend raporları ile operasyonel verimliliği artırın. Grafik ve görselleştirme araçları ile verileri anlamlı şekilde sunun.",
         },
         integration: {
           title: "Entegrasyon",
           description: "HIS, EMR, referans laboratuvarları ve diğer sistemlerle sorunsuz entegrasyon.",
+          detail: "HL7, FHIR ve diğer standart protokoller üzerinden HIS, EMR ve referans laboratuvarları ile tam entegrasyon. Otomatik sipariş alımı, sonuç gönderimi ve hasta bilgisi senkronizasyonu ile kesintisiz veri akışı sağlayın. API desteği ile özel entegrasyonlar geliştirin.",
         },
         webAccess: {
           title: "Web Erişimi",
           description: "Web tabanlı erişim ile uzak lokasyonlardan numune girişi, numune toplama ve etiket yazdırma.",
+          detail: "Herhangi bir cihazdan, herhangi bir yerden web tabanlı erişim ile laboratuvar sistemine bağlanın. Uzak lokasyonlardan numune girişi yapın, numune toplama listelerini görüntüleyin ve etiket yazdırın. Güvenli kimlik doğrulama ve yetkilendirme ile veri güvenliğini koruyun.",
         },
       },
       architecture: {
@@ -1167,6 +1205,35 @@ export const translations: Record<string, any> = {
           description: "DICOM, HL7, IHE profile compliant, auditable and secure data management.",
         },
       },
+      solutions: {
+        title: "Sarus PACS Solutions",
+        subtitle: "Imaging and Reporting Layer",
+        webViewer: {
+          title: "Web Viewer",
+          description: "Browser-based, fast, and secure diagnostic viewer. Optimized for in-house and remote access.",
+          detail: "HTML5-based, zero-footprint web viewer. Requires no installation, provides access from any device. Offers fast viewing of high-resolution images, measurement capabilities, and annotation features. Fully DICOM compliant and supports images from all modalities.",
+        },
+        workstation: {
+          title: "Workstation",
+          description: "Multi-monitor supported, high-performance diagnostic and reporting station for radiologists.",
+          detail: "Diagnostic application optimized for radiologists with 3D imaging, advanced measurement tools, and integrated reporting. Provides extensive image viewing area with multi-monitor support. Helps radiologists make faster and more accurate diagnoses with advanced image processing algorithms and AI-assisted diagnostic tools.",
+        },
+        telemedicine: {
+          title: "Telemedicine",
+          description: "A solution supporting inter-center teleradiology, consultation, and second opinion scenarios.",
+          detail: "Fully integrated telemedicine infrastructure for cross-institutional image sharing and remote diagnostic reading. Facilitates inter-center consultation and second opinion processes with secure and fast image transfer. Provides remote diagnostic support with real-time image sharing and collaboration tools.",
+        },
+        audioManager: {
+          title: "Audio Manager",
+          description: "Centralized voice recording and fast reporting solution.",
+          detail: "Enterprise-level centralized voice recording system. Accelerates reporting processes with RIS/PACS integration. Combines voice reporting, automatic transcription, and report approval processes on a single platform. Increases radiologists' reporting efficiency and optimizes workflow.",
+        },
+        ris: {
+          title: "RIS",
+          description: "Radiology information system that consolidates appointment, worklist, reporting, and approval processes on a single platform.",
+          detail: "Comprehensive workflow management for radiology departments, covering all processes from examination management to report distribution. Manage and distribute studies from all modalities from a single point with central worklist management. Increases radiology department operational efficiency by automating reporting, approval, and distribution processes.",
+        },
+      },
       why: {
         title: "Design Goals",
         fastViewing: {
@@ -1311,7 +1378,7 @@ export const translations: Record<string, any> = {
         },
         ris: {
           title: "Radiology Information System",
-          description: "Comprehensive workflow management for radiology departments, covering all processes from order management to report distribution.",
+          description: "Comprehensive workflow management for radiology departments, covering all processes from examination management to report distribution.",
         },
         worklist: {
           title: "Modality Worklist Management",
@@ -1462,7 +1529,7 @@ export const translations: Record<string, any> = {
         bullets: [
           "Experience in 200+ domestic healthcare informatics projects",
           "15+ international healthcare informatics projects",
-          "30+ hospitals with 1000+ bed capacity",
+          "20+ hospitals with 1000+ bed capacity experience",
           "Mega projects in PPP (Public-Private Partnership) model such as Ankara City Hospital and Mersin City Hospital",
           "Reference projects audited by McKinsey",
           "Qatar national healthcare informatics program: Azure-based, outpatient-focused EMR, 100+ clinics, nationwide rollout",
@@ -1492,7 +1559,7 @@ export const translations: Record<string, any> = {
       },
       kpis: [
         "200+ Domestic Healthcare Informatics Projects",
-        "30+ Mega Hospitals (1000+ Beds)",
+        "20+ hospitals with 1000+ bed capacity experience",
         "15+ International Projects",
         "4 Countries (Outside Turkey)",
         "100+ Clinics (Qatar National Program)",
@@ -1524,35 +1591,35 @@ export const translations: Record<string, any> = {
       requestDemo: "Request Demo",
       explore: "Explore",
       why: {
-        title: "Clinical Features",
-        clinicalEfficiency: {
-          title: "Clinical Efficiency",
+        title: "Solutions",
+        clinicalOperations: {
+          title: "Clinical Operations",
           description: "Increases healthcare professionals' efficiency with comprehensive clinical documentation, patient record management, and clinical workflows.",
-          detail: "EHR software, e-Prescribing, Clinical Data Registries, Automated Care Gap Alerts.",
+          detail: "Manage patient list, patient registration, and clinical documentation processes on a single platform with the comprehensive clinical module. Optimize daily workflows of healthcare professionals with detailed patient history tracking, clinical notes, diagnosis, and treatment plans. Increase efficiency by eliminating paper-based processes with electronic patient records.",
         },
-        practiceManagement: {
-          title: "Resource Management",
-          description: "Integrated resource management solution that simplifies appointment management, patient tracking, and operational processes.",
-          detail: "AI-powered appointment scheduling, patient flow management, operational reporting.",
+        appointmentManagement: {
+          title: "Appointment Management",
+          description: "Integrated appointment management solution that simplifies appointment scheduling, patient tracking, and operational processes.",
+          detail: "Automate appointment scheduling and tracking processes with full integration to the patient registration system through the integrated appointment module. Increase operational efficiency with flexible appointment scheduling for multiple doctors and clinics, patient flow management, and appointment status tracking. Optimize patient satisfaction with appointment reminders and cancellation management.",
         },
-        patientEngagement: {
-          title: "Patient Engagement",
-          description: "Improve patient experience and increase patient satisfaction with a mobile-first patient engagement platform.",
-          detail: "Patient portal, mobile application, appointment management, results viewing.",
+        financialManagement: {
+          title: "Financial Management",
+          description: "Maximize revenue cycle by optimizing billing, payment tracking, and financial reporting.",
+          detail: "Manage billing and payment processes centrally with the comprehensive finance module. Optimize revenue cycle management with automated billing processes, payment tracking, and financial reporting. Increase corporate financial visibility with insurance integrations, payment plans, and financial analytics tools.",
         },
-        revenueCycle: {
-          title: "Revenue Cycle Management",
-          description: "Maximize revenue cycle by optimizing billing, coding, and payment processes.",
-          detail: "Automated billing, coding services, payment tracking, denial rate reduction.",
+        inventoryManagement: {
+          title: "Inventory Management",
+          description: "Increase operational efficiency with stock tracking, material management, and inventory control.",
+          detail: "Automate stock tracking and management with the advanced inventory module. Increase operational efficiency with material in-out operations, stock level tracking, and inventory reporting. Optimize inventory costs with automatic stock alerts, supplier management, and cost analysis tools.",
         },
-        cloudInfrastructure: {
-          title: "Cloud Infrastructure",
-          description: "Scalable and secure cloud infrastructure with Azure Ready, multi-tenant architecture.",
-          detail: "Private cloud, public cloud, hybrid deployment, automatic scaling.",
+        administrationReporting: {
+          title: "Administration & Reporting",
+          description: "Support strategic decision-making processes with dashboard, reporting, and system management.",
+          detail: "Monitor operational performance using dashboard and analytics tools with the comprehensive administration module. Support strategic decision-making processes with a customizable reporting system. Ensure system security and access control with general navigation, user management, and login mechanisms.",
         },
       },
       features: {
-        title: "Platform Features",
+        title: "Core Features",
         subtitle: "Optimize your clinical operations with comprehensive EMR solution",
         ehr: {
           title: "EHR Software",
@@ -1693,43 +1760,52 @@ export const translations: Record<string, any> = {
         },
       },
       features: {
-        title: "Platform Features",
+        title: "Sarus LIMS Solutions",
         subtitle: "Optimize your laboratory operations with comprehensive LIMS solution",
         orderEntry: {
           title: "Order Entry",
           description: "Centralized order entry and management. Web-based access for placing orders from remote locations.",
+          detail: "Manage all specimen registrations from a single point with centralized order entry system. Easily enter orders from remote locations through web-based interface, automate barcode generation and label printing. Minimize error rates with automatic specimen tracking number assignment, patient information verification, and pre-analytical checks.",
         },
         resultManagement: {
           title: "Result Management",
           description: "Automatic result processing, validation, and publishing. Critical value management and automatic notifications.",
+          detail: "Comprehensive system for automatic processing, validation with rules, and publishing of test results. Send automatic notifications in emergency situations with critical value management. Increase laboratory efficiency with result history tracking, comparative analysis, and trend visualization features.",
         },
         instrumentInterface: {
           title: "Instrument Interface",
           description: "Integration with all laboratory instruments through standard protocols. Automatic data transfer and error management.",
+          detail: "Seamless integration with all laboratory instruments through HL7, ASTM and other standard protocols. Eliminate manual entry errors with automatic data transfer. Ensure uninterrupted operation with instrument status monitoring, error management, and automatic retry mechanisms.",
         },
         qualityControl: {
           title: "Quality Control",
           description: "Advanced quality control management, automatic QC rules, and quality control reporting.",
+          detail: "Comprehensive quality control management with Westgard rules, Levey-Jennings charts, and moving average methods. Detect abnormal results with automatic QC rules and receive real-time alarms. Continuously monitor laboratory quality with quality control reporting and trend analysis.",
         },
         workflowManagement: {
           title: "Workflow Management",
           description: "Specimen tracking, workflow automation, and centralized management of laboratory processes.",
+          detail: "Manage all laboratory processes from specimen acceptance to result publishing from a single platform. Speed up routine operations with workflow automation, prevent lost specimens with specimen tracking system. Monitor and optimize all laboratory operations in real-time with centralized management panel.",
         },
         billing: {
           title: "Billing",
           description: "Real-time billing, automatic coding, and revenue cycle management.",
+          detail: "Accelerate revenue cycle with automatic billing creation when test results are published. Ensure accurate pricing with automatic coding, manage automatic discounts and refunds according to insurance rules. Perform revenue analysis with detailed billing reports.",
         },
         reporting: {
           title: "Reporting and Analytics",
           description: "Comprehensive reporting tools, custom reports, and laboratory performance analytics.",
+          detail: "Generate custom reports tailored to your needs with ready-made report templates and custom report creation tools. Increase operational efficiency with laboratory performance metrics, test volume analyses, and trend reports. Present data meaningfully with charts and visualization tools.",
         },
         integration: {
           title: "Integration",
           description: "Seamless integration with HIS, EMR, reference laboratories, and other systems.",
+          detail: "Full integration with HIS, EMR, and reference laboratories through HL7, FHIR and other standard protocols. Ensure uninterrupted data flow with automatic order receipt, result sending, and patient information synchronization. Develop custom integrations with API support.",
         },
         webAccess: {
           title: "Web Access",
           description: "Web-based access for placing orders, collecting specimens, and printing labels from remote locations.",
+          detail: "Connect to the laboratory system from anywhere, on any device with web-based access. Enter orders from remote locations, view specimen collection lists, and print labels. Protect data security with secure authentication and authorization.",
         },
       },
       architecture: {

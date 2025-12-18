@@ -43,11 +43,11 @@ export default function Hero() {
   useEffect(() => {
     if (!mounted) return;
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % totalSlides);
+      setCurrentSlide((prev) => (prev + 1) % 3);
     }, 12000); // 12 seconds
 
     return () => clearInterval(interval);
-  }, [totalSlides, mounted]);
+  }, [mounted]);
 
   // Reset typewriter effect when slide changes
   useEffect(() => {
@@ -176,9 +176,9 @@ export default function Hero() {
               className="absolute inset-0 z-0"
             >
               <VantaGlobe
-                color={0x1d14aa}
-                color2={0xe31eb4}
-                backgroundColor={0xf5f5f5}
+                color={0x1e3a8a}
+                color2={0x991b1b}
+                backgroundColor={0xf7f7f7}
                 mouseControls={true}
                 touchControls={true}
                 gyroControls={false}
@@ -186,6 +186,7 @@ export default function Hero() {
                 minWidth={200}
                 scale={1}
                 scaleMobile={1}
+                maxDistance={0}
               />
             </motion.div>
           </AnimatePresence>
@@ -299,7 +300,7 @@ export default function Hero() {
                 className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
               >
                 <span className="text-xl mt-1">🏆</span>
-                <span className="font-bold text-amber-600">
+                <span className="font-bold text-[#D4AF37]">
                   <TypewriterText 
                     key={`himss-${typewriterKey}`}
                     text={t("hero.badges.himss")} 
@@ -524,37 +525,37 @@ export default function Hero() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5, duration: 0.5 }}
-                    className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
+                    className="flex items-start gap-3 text-lg md:text-xl text-neutral-heading"
                   >
-                    <span className="text-primary text-xl mt-1">●</span>
-                    <span className="font-medium">{t("hero.slide3.bullets.multilang")}</span>
+                    <span className="text-primary text-xl md:text-2xl mt-0.5">●</span>
+                    <span className="font-semibold leading-relaxed">{t("hero.slide3.bullets.multilang")}</span>
                   </motion.li>
                   <motion.li
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.6, duration: 0.5 }}
-                    className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
+                    className="flex items-start gap-3 text-lg md:text-xl text-neutral-heading"
                   >
-                    <span className="text-primary text-xl mt-1">●</span>
-                    <span className="font-medium">{t("hero.slide3.bullets.integration")}</span>
+                    <span className="text-primary text-xl md:text-2xl mt-0.5">●</span>
+                    <span className="font-semibold leading-relaxed">{t("hero.slide3.bullets.integration")}</span>
                   </motion.li>
                   <motion.li
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7, duration: 0.5 }}
-                    className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
+                    className="flex items-start gap-3 text-lg md:text-xl text-neutral-heading"
                   >
-                    <span className="text-primary text-xl mt-1">●</span>
-                    <span className="font-medium">{t("hero.slide3.bullets.project")}</span>
+                    <span className="text-primary text-xl md:text-2xl mt-0.5">●</span>
+                    <span className="font-semibold leading-relaxed">{t("hero.slide3.bullets.project")}</span>
                   </motion.li>
                   <motion.li
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.8, duration: 0.5 }}
-                    className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
+                    className="flex items-start gap-3 text-lg md:text-xl text-neutral-heading"
                   >
-                    <span className="text-primary text-xl mt-1">●</span>
-                    <span className="font-medium">{t("hero.slide3.bullets.compliance")}</span>
+                    <span className="text-primary text-xl md:text-2xl mt-0.5">●</span>
+                    <span className="font-semibold leading-relaxed">{t("hero.slide3.bullets.compliance")}</span>
                   </motion.li>
                 </motion.ul>
 

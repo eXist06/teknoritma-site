@@ -5,11 +5,10 @@ import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
 import { LanguageAwareHtml } from "@/components/LanguageAwareHtml";
 import CookieConsent from "@/components/CookieConsent";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://teknoritma.com.tr";
+import { SITE_URL, SITE_LOGO } from "@/lib/config";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
     template: "%s | Teknoritma",
     default: "Teknoritma - Sağlık Bilişim Çözümleri",
@@ -90,8 +89,8 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Teknoritma",
-    url: siteUrl,
-    logo: `${siteUrl}/logo.png`,
+    url: SITE_URL,
+    logo: SITE_LOGO,
     description:
       "Orta ve büyük ölçekli hastaneler için uçtan uca sağlık bilişim çözümleri sunan teknoloji şirketi.",
     address: {

@@ -24,11 +24,14 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Check if URL starts with /en
-    if (pathname.startsWith("/en")) {
-      setLanguageState("en");
-    } else {
-      setLanguageState("tr");
-    }
+    const newLanguage = pathname.startsWith("/en") ? "en" : "tr";
+    // Only update state if language actually changed to prevent unnecessary re-renders
+    setLanguageState((prevLang) => {
+      if (prevLang !== newLanguage) {
+        return newLanguage;
+      }
+      return prevLang;
+    });
     setIsInitialized(true);
   }, [pathname]);
 

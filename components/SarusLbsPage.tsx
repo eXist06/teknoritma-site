@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 import LisWorkflowDiagram from "@/components/LisWorkflowDiagram";
-import { Zap, Clipboard, BarChart3, FlaskConical, CheckCircle2, RefreshCw, Settings, Wrench, Trophy, FileText, CreditCard, Database, TrendingUp, Link2, Globe, Building2, Lock } from "lucide-react";
+import React from "react";
+import { Zap, Clipboard, BarChart3, FlaskConical, CheckCircle2, RefreshCw, Settings, Wrench, Trophy, FileText, CreditCard, Database, TrendingUp, Link2, Globe, Building2, Lock, Layers, ChevronDown } from "lucide-react";
 
 export default function SarusLbsPage() {
   const { language, t } = useI18n();
@@ -13,10 +14,11 @@ export default function SarusLbsPage() {
   const translationKey = language === "en" ? "lims" : "lbs";
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
-  const [activeNavItem, setActiveNavItem] = useState("core-features");
+  const [activeNavItem, setActiveNavItem] = useState("platform-features");
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [expandedFeatureId, setExpandedFeatureId] = useState<string | null>(null);
 
   const tabs = [
     {
@@ -91,15 +93,15 @@ export default function SarusLbsPage() {
   // Auto-rotate cards every 8 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveTab((prev) => (prev + 1) % tabs.length);
+      setActiveTab((prev) => (prev + 1) % 5);
     }, 8000);
     return () => clearInterval(interval);
-  }, [tabs.length]);
+  }, []);
 
   // Track active navigation item based on scroll position
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["core-features", "platform-features", "architecture", "workflow", "success-story"];
+      const sections = ["platform-features", "core-features", "workflow", "success-story"];
       const scrollPosition = window.scrollY + 200;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -114,7 +116,7 @@ export default function SarusLbsPage() {
     // Also check hash on mount
     if (window.location.hash) {
       const hash = window.location.hash.substring(1);
-      if (["core-features", "platform-features", "architecture", "workflow", "success-story"].includes(hash)) {
+      if (["platform-features", "core-features", "workflow", "success-story"].includes(hash)) {
         setActiveNavItem(hash);
       }
     }
@@ -123,6 +125,39 @@ export default function SarusLbsPage() {
     handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const toggleFeatureExpanded = (id: string) => {
+    const newExpandedId = expandedFeatureId === id ? null : id;
+    setExpandedFeatureId(newExpandedId);
+    
+    // Scroll to expanded panel after state update
+    if (newExpandedId) {
+      // Wait for animation to complete, then scroll
+      setTimeout(() => {
+        const element = document.getElementById(`feature-panel-${newExpandedId}`);
+        if (element) {
+          // Get element position
+          const elementRect = element.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const elementTop = elementRect.top + scrollTop;
+          
+          // Calculate center position: viewport center minus half of element height
+          const viewportCenter = window.innerHeight / 2;
+          const elementHeight = elementRect.height;
+          const targetScroll = elementTop - viewportCenter + (elementHeight / 2);
+          
+          // Add some padding from top (for header/navbar)
+          const headerOffset = 100;
+          const finalScroll = Math.max(0, targetScroll - headerOffset);
+          
+          window.scrollTo({
+            top: finalScroll,
+            behavior: 'smooth'
+          });
+        }
+      }, 350); // Wait for animation to complete (300ms animation + 50ms buffer)
+    }
+  };
 
   return (
     <main className="min-h-screen bg-background">
@@ -260,22 +295,16 @@ export default function SarusLbsPage() {
           <nav className="flex overflow-x-auto scrollbar-hide items-center justify-start md:justify-center">
             {[
               {
-                id: "core-features",
-                href: "#core-features",
-                label: t(`${translationKey}.why.title`),
-                icon: Zap,
-              },
-              {
                 id: "platform-features",
                 href: "#platform-features",
-                label: language === "en" ? "Platform Features" : "Platform Özellikleri",
-                icon: Settings,
+                label: language === "en" ? "Sarus LIMS Solutions" : "Sarus LBYS Çözümleri",
+                icon: Layers,
               },
               {
-                id: "architecture",
-                href: "#architecture",
-                label: language === "en" ? "Architecture" : "Mimari",
-                icon: Wrench,
+                id: "core-features",
+                href: "#core-features",
+                label: language === "en" ? "Core Features" : "Temel Özellikler",
+                icon: Layers,
               },
               {
                 id: "workflow",
@@ -333,7 +362,7 @@ export default function SarusLbsPage() {
                       transition-all duration-200 leading-tight
                       ${isActive 
                         ? 'text-primary font-semibold' 
-                        : 'text-gray-600 group-hover:text-primary'
+                        : 'text-gray-600 group-hover:text-primary group-hover:font-semibold'
                       }`}
                   >
                     {item.label}
@@ -345,11 +374,11 @@ export default function SarusLbsPage() {
         </div>
       </section>
 
-      {/* Core Features Section */}
-      <section id="core-features" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background">
+      {/* Solutions Section */}
+      <section id="platform-features" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background">
         <motion.div
           initial={{ opacity: 0 }}
-          animate={mounted && isMobile ? { opacity: 1 } : {}}
+          animate={mounted ? (isMobile ? { opacity: 1 } : {}) : {}}
           whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
           viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
           transition={{ duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.4) }}
@@ -357,250 +386,351 @@ export default function SarusLbsPage() {
             willChange: isMobile ? "opacity" : "opacity, transform",
             transform: isMobile ? "none" : "translateZ(0)"
           }}
+          suppressHydrationWarning
           className="mb-12 text-center"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
             <span className="text-primary">Sarus</span>{" "}
-            <span className="text-neutral-heading">{t(`${translationKey}.productName`)}</span>{" "}
-            <span className="text-neutral-heading">{t(`${translationKey}.why.title`)}</span>
+            <span className="text-neutral-heading">LBYS Çözümleri</span>
           </h2>
-          <div className="w-20 h-0.5 bg-primary mx-auto"></div>
-        </motion.div>
-
-        {/* Enterprise Grid Layout - Dedalus Style */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tabs.map((tab, idx) => (
-            <motion.div
-              key={tab.id}
-              initial={{ opacity: 0 }}
-              animate={isMobile ? { opacity: 1 } : {}}
-              whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
-              transition={{ 
-                delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.1),
-                duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3)
-              }}
-              style={{ 
-                willChange: isMobile ? "opacity" : "opacity, transform",
-                transform: isMobile ? "none" : "translateZ(0)"
-              }}
-              whileHover={{ y: -2 }}
-              className={`group relative bg-white border border-gray-200 rounded-lg p-6 md:p-8 transition-all duration-300 hover:border-primary/50 hover:shadow-lg ${
-                activeTab === idx
-                  ? "border-primary shadow-md"
-                  : "shadow-sm"
-              }`}
-            >
-              {/* Active Indicator */}
-              {activeTab === idx && (
-                <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary rounded-t-lg"></div>
-              )}
-
-              {/* Icon Container - Minimal Style */}
-              <div className="mb-4">
-                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${tab.iconBgClass} transition-transform duration-300 group-hover:scale-105`}>
-                  {(() => {
-                    const IconComponent = tab.icon;
-                    return <IconComponent className={`w-6 h-6 ${tab.iconColorClass}`} strokeWidth={2.5} />;
-                  })()}
-                </div>
-              </div>
-
-              {/* Content */}
-              <div>
-                <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 leading-tight group-hover:text-primary transition-colors duration-300">
-                  {tab.title}
-                </h3>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-3">
-                  {tab.subtitle}
-                </p>
-                {tab.detail && (
-                  <div className="pt-3 border-t border-gray-100">
-                    <p className="text-xs md:text-sm text-gray-500 leading-relaxed">
-                      {tab.detail}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Platform Features Section */}
-      <section id="platform-features" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background-alt">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-4">
-            <span className="text-primary">Sarus</span>{" "}
-            <span className="text-neutral-heading">{t(`${translationKey}.productName`)}</span>{" "}
-            <span className="text-neutral-heading">{t(`${translationKey}.features.title`)}</span>
-          </h2>
-          <p className="text-lg text-neutral-body max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-neutral-body max-w-3xl mx-auto mt-4">
             {t(`${translationKey}.features.subtitle`)}
           </p>
+          <div className="w-20 h-0.5 bg-primary mx-auto mt-4"></div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Solutions Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min">
           {[
             {
+              id: "orderEntry",
               title: t(`${translationKey}.features.orderEntry.title`),
-              description: t(`${translationKey}.features.orderEntry.description`),
               icon: FileText,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t(`${translationKey}.features.orderEntry.description`),
+              detail: t(`${translationKey}.features.orderEntry.detail`),
             },
             {
+              id: "resultManagement",
               title: t(`${translationKey}.features.resultManagement.title`),
-              description: t(`${translationKey}.features.resultManagement.description`),
               icon: BarChart3,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t(`${translationKey}.features.resultManagement.description`),
+              detail: t(`${translationKey}.features.resultManagement.detail`),
             },
             {
+              id: "instrumentInterface",
               title: t(`${translationKey}.features.instrumentInterface.title`),
-              description: t(`${translationKey}.features.instrumentInterface.description`),
               icon: FlaskConical,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t(`${translationKey}.features.instrumentInterface.description`),
+              detail: t(`${translationKey}.features.instrumentInterface.detail`),
             },
             {
+              id: "qualityControl",
               title: t(`${translationKey}.features.qualityControl.title`),
-              description: t(`${translationKey}.features.qualityControl.description`),
               icon: CheckCircle2,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t(`${translationKey}.features.qualityControl.description`),
+              detail: t(`${translationKey}.features.qualityControl.detail`),
             },
             {
+              id: "workflowManagement",
               title: t(`${translationKey}.features.workflowManagement.title`),
-              description: t(`${translationKey}.features.workflowManagement.description`),
               icon: RefreshCw,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t(`${translationKey}.features.workflowManagement.description`),
+              detail: t(`${translationKey}.features.workflowManagement.detail`),
             },
             {
+              id: "billing",
               title: t(`${translationKey}.features.billing.title`),
-              description: t(`${translationKey}.features.billing.description`),
               icon: CreditCard,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t(`${translationKey}.features.billing.description`),
+              detail: t(`${translationKey}.features.billing.detail`),
             },
             {
+              id: "reporting",
               title: t(`${translationKey}.features.reporting.title`),
-              description: t(`${translationKey}.features.reporting.description`),
               icon: TrendingUp,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t(`${translationKey}.features.reporting.description`),
+              detail: t(`${translationKey}.features.reporting.detail`),
             },
             {
+              id: "integration",
               title: t(`${translationKey}.features.integration.title`),
-              description: t(`${translationKey}.features.integration.description`),
               icon: Link2,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t(`${translationKey}.features.integration.description`),
+              detail: t(`${translationKey}.features.integration.detail`),
             },
             {
+              id: "webAccess",
               title: t(`${translationKey}.features.webAccess.title`),
-              description: t(`${translationKey}.features.webAccess.description`),
               icon: Globe,
+              iconBgClass: "bg-slate-50",
+              iconColorClass: "text-slate-500",
+              subtitle: t(`${translationKey}.features.webAccess.description`),
+              detail: t(`${translationKey}.features.webAccess.detail`),
             },
-          ].map((item, idx) => {
-            const IconComponent = item.icon;
+          ].map((feature, idx) => {
+            const FeatureIcon = feature.icon;
+            const isExpanded = expandedFeatureId === feature.id;
+
             return (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.05 }}
-              whileHover={{ y: -2 }}
-              className="group bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all duration-300"
-            >
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <IconComponent className="w-6 h-6 text-primary" strokeWidth={2.5} />
-              </div>
-              <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 leading-tight group-hover:text-primary transition-colors duration-300">
-                {item.title}
-              </h4>
-              <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                {item.description}
-              </p>
-            </motion.div>
-          );
+              <React.Fragment key={feature.id}>
+                {/* Card */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={mounted && isMobile ? { opacity: 1 } : {}}
+                  whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
+                  viewport={{ once: true, margin: isMobile ? "0px" : "-20px" }}
+                  transition={{ 
+                    delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
+                    duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3),
+                    ease: "easeOut"
+                  }}
+                  style={{ 
+                    willChange: isMobile ? "opacity" : "opacity, transform",
+                    transform: isMobile ? "none" : "translateZ(0)"
+                  }}
+                  suppressHydrationWarning
+                  className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
+                >
+                  {/* Header - Always Visible */}
+                  <button
+                    onClick={() => toggleFeatureExpanded(feature.id)}
+                    className="w-full flex items-start justify-between p-6 text-left hover:bg-gray-50/50 transition-all duration-200"
+                  >
+                    <div className="flex items-start gap-4 flex-1 min-w-0">
+                      {/* Icon */}
+                      <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
+                        isExpanded 
+                          ? "bg-primary text-white shadow-md" 
+                          : `bg-gradient-to-br ${feature.iconBgClass} group-hover:from-slate-100 group-hover:to-slate-50`
+                      }`}>
+                        <FeatureIcon className={`w-7 h-7 transition-colors ${isExpanded ? "text-white" : `${feature.iconColorClass} group-hover:text-slate-600`}`} strokeWidth={2.5} />
+                      </div>
+                      
+                      {/* Title */}
+                      <h3 className={`text-lg font-bold transition-colors leading-tight ${
+                        isExpanded 
+                          ? "text-primary" 
+                          : "text-gray-900 group-hover:text-primary"
+                      }`}>
+                        {feature.title}
+                      </h3>
+                    </div>
+
+                    {/* Chevron Icon */}
+                    <motion.div
+                      animate={{ rotate: isExpanded ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex-shrink-0 ml-4 mt-1"
+                    >
+                      <ChevronDown className={`w-6 h-6 transition-colors ${isExpanded ? "text-primary" : "text-gray-400"}`} strokeWidth={2.5} />
+                    </motion.div>
+                  </button>
+                </motion.div>
+
+                {/* Expandable Detail Panel - Below the clicked card, full width */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      id={`feature-panel-${feature.id}`}
+                      initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                      animate={{ height: "auto", opacity: 1, marginTop: 20 }}
+                      exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="col-span-1 md:col-span-2 lg:col-span-3 overflow-hidden scroll-mt-24"
+                    >
+                      <div className="bg-gradient-to-br from-blue-50/90 via-slate-50/90 to-white rounded-xl border-2 border-primary/30 shadow-2xl p-8 md:p-10 lg:p-12 relative overflow-hidden">
+                        {/* Subtle pattern overlay */}
+                        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
+                          backgroundImage: `radial-gradient(circle at 2px 2px, #1e40af 1px, transparent 0)`,
+                          backgroundSize: '40px 40px'
+                        }}></div>
+                        <div className="relative z-10">
+                          {/* Header Section */}
+                          <div className="flex items-start gap-6 mb-12">
+                            <div className={`flex-shrink-0 w-20 h-20 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-xl`}>
+                              <FeatureIcon className="w-10 h-10 text-white" strokeWidth={2.5} />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 leading-tight tracking-tight">
+                                {feature.title}
+                              </h3>
+                              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl font-bold mb-5">
+                                {feature.subtitle}
+                              </p>
+                              {feature.detail && (
+                                <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-4xl font-medium">
+                                  {feature.detail}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            );
           })}
         </div>
       </section>
 
-      {/* Architecture Section */}
-      <section id="architecture" className="relative border-t border-neutral-border bg-gradient-to-b from-white via-background-alt/30 to-white overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
+      {/* Core Features Section - Combined with Architecture */}
+      <section id="core-features" className="mx-auto max-w-7xl px-4 md:px-10 py-24 md:py-36 bg-background">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={mounted && isMobile ? { opacity: 1 } : {}}
+          whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
+          viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
+          transition={{ 
+            duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.6),
+            ease: "easeOut"
+          }}
+          style={{ 
+            willChange: isMobile ? "opacity" : "opacity, transform",
+            transform: isMobile ? "none" : "translateZ(0)"
+          }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
+            <span className="text-primary">Sarus</span>{" "}
+            <span className="text-neutral-heading">{language === "en" ? "LIMS Core Features" : "LBYS Temel Özellikler"}</span>
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"></div>
+        </motion.div>
+
+        {/* Cards Grid - Sarus HBS Style */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            // Core Features from tabs
+            ...tabs.map(tab => ({
+              id: tab.id,
+              title: tab.title,
+              subtitle: tab.subtitle,
+              icon: tab.icon,
+            })),
+            // Architecture features
+            {
+              id: "scalable",
+              title: t(`${translationKey}.architecture.scalable.title`),
+              subtitle: t(`${translationKey}.architecture.scalable.description`),
+              icon: TrendingUp,
+            },
+            {
+              id: "integration",
+              title: t(`${translationKey}.architecture.integration.title`),
+              subtitle: t(`${translationKey}.architecture.integration.description`),
+              icon: Link2,
+            },
+            {
+              id: "security",
+              title: t(`${translationKey}.architecture.security.title`),
+              subtitle: t(`${translationKey}.architecture.security.description`),
+              icon: Lock,
+            },
+            {
+              id: "realTime",
+              title: t(`${translationKey}.architecture.realTime.title`),
+              subtitle: t(`${translationKey}.architecture.realTime.description`),
+              icon: Zap,
+            },
+            {
+              id: "customizable",
+              title: t(`${translationKey}.architecture.customizable.title`),
+              subtitle: t(`${translationKey}.architecture.customizable.description`),
+              icon: Settings,
+            },
+            {
+              id: "multiSite",
+              title: t(`${translationKey}.architecture.multiSite.title`),
+              subtitle: t(`${translationKey}.architecture.multiSite.description`),
+              icon: Building2,
+            },
+          ].map((item, idx) => {
+            const TabIcon = item.icon;
+
+            return (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0 }}
+                animate={mounted && isMobile ? { opacity: 1 } : {}}
+                whileInView={mounted && !isMobile ? { opacity: 1, y: 0 } : {}}
+                viewport={{ once: true, margin: isMobile ? "0px" : "-50px" }}
+                transition={{ 
+                  delay: isMobile ? 0 : (prefersReducedMotion ? 0 : idx * 0.05),
+                  duration: isMobile ? 0.1 : (prefersReducedMotion ? 0 : 0.3)
+                }}
+                style={{ 
+                  willChange: isMobile ? "opacity" : "opacity, transform",
+                  transform: isMobile ? "none" : "translateZ(0)"
+                }}
+                suppressHydrationWarning
+                className="bg-white rounded-xl border border-gray-200/80 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 group"
+              >
+                <div className="flex items-start gap-4 p-6">
+                  {/* Icon */}
+                  <div className="flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-slate-50 to-slate-50 group-hover:from-slate-100 group-hover:to-slate-50">
+                    <TabIcon className="w-7 h-7 transition-colors text-slate-500 group-hover:text-slate-600" strokeWidth={2.5} />
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight mb-2">
+                      {item.title}
+                    </h4>
+                    <p className="text-sm text-neutral-body leading-relaxed">
+                      {item.subtitle}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
-        
-        <div className="relative mx-auto max-w-7xl px-4 md:px-10 py-20 md:py-28">
+      </section>
+
+      {/* Workflow Section */}
+      <section id="workflow" className="w-full px-4 md:px-6 py-8 md:py-12 bg-background">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-8 md:mb-12"
+        >
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-neutral-heading mb-3">
+            {t(`${translationKey}.workflow.title`)}
+          </h2>
+          <p className="text-base md:text-lg text-neutral-body max-w-3xl mx-auto">
+            {t(`${translationKey}.workflow.subtitle`)}
+          </p>
+        </motion.div>
+
+        <div className="relative w-full">
+          {/* React Flow Workflow Diagram - Full Screen Responsive */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="w-full"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-6">
-              <span className="text-primary">Sarus</span>{" "}
-              <span className="text-neutral-heading">{t(`${translationKey}.productName`)}</span>{" "}
-              <span className="text-neutral-heading">{t(`${translationKey}.architecture.title`)}</span>
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
-            <p className="text-lg md:text-xl text-neutral-body max-w-3xl mx-auto leading-relaxed">
-              {t(`${translationKey}.architecture.subtitle`)}
-            </p>
+            <LisWorkflowDiagram translationKey={translationKey} />
           </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: t(`${translationKey}.architecture.scalable.title`),
-                description: t(`${translationKey}.architecture.scalable.description`),
-                icon: TrendingUp,
-              },
-              {
-                title: t(`${translationKey}.architecture.integration.title`),
-                description: t(`${translationKey}.architecture.integration.description`),
-                icon: Link2,
-              },
-              {
-                title: t(`${translationKey}.architecture.security.title`),
-                description: t(`${translationKey}.architecture.security.description`),
-                icon: Lock,
-              },
-              {
-                title: t(`${translationKey}.architecture.realTime.title`),
-                description: t(`${translationKey}.architecture.realTime.description`),
-                icon: Zap,
-              },
-              {
-                title: t(`${translationKey}.architecture.customizable.title`),
-                description: t(`${translationKey}.architecture.customizable.description`),
-                icon: Settings,
-              },
-              {
-                title: t(`${translationKey}.architecture.multiSite.title`),
-                description: t(`${translationKey}.architecture.multiSite.description`),
-                icon: Building2,
-              },
-            ].map((item, idx) => {
-              const IconComponent = item.icon;
-              return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                whileHover={{ y: -2 }}
-                className="group bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all duration-300"
-              >
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <IconComponent className="w-6 h-6 text-primary" strokeWidth={2.5} />
-                </div>
-                <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 leading-tight group-hover:text-primary transition-colors duration-300">
-                  {item.title}
-                </h4>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                  {item.description}
-                </p>
-              </motion.div>
-            );
-            })}
-          </div>
         </div>
       </section>
 
@@ -660,37 +790,8 @@ export default function SarusLbsPage() {
         </div>
       </section>
 
-      {/* Workflow Section */}
-      <section id="workflow" className="w-full px-4 md:px-6 py-8 md:py-12 bg-background">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-8 md:mb-12"
-        >
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-neutral-heading mb-3">
-            {t(`${translationKey}.workflow.title`)}
-          </h2>
-          <p className="text-base md:text-lg text-neutral-body max-w-3xl mx-auto">
-            {t(`${translationKey}.workflow.subtitle`)}
-          </p>
-        </motion.div>
-
-        <div className="relative w-full">
-          {/* React Flow Workflow Diagram - Full Screen Responsive */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="w-full"
-          >
-            <LisWorkflowDiagram translationKey={translationKey} />
-          </motion.div>
-        </div>
-      </section>
-
       {/* Success Story Section */}
-      <section id="success-story" className="relative py-20 md:py-32 overflow-hidden">
+      <section id="success-story" className="relative py-24 md:py-36 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img

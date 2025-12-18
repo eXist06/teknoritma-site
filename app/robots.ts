@@ -1,6 +1,5 @@
 import { MetadataRoute } from "next";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://teknoritma.com.tr";
+import { SITE_URL } from "@/lib/config";
 const isProduction = process.env.NODE_ENV === "production";
 
 export default function robots(): MetadataRoute.Robots {
@@ -26,6 +25,6 @@ export default function robots(): MetadataRoute.Robots {
             ],
       },
     ],
-    sitemap: `${siteUrl}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

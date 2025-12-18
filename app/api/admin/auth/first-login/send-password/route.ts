@@ -68,6 +68,7 @@ export async function POST(request: NextRequest) {
     // Send password via email
     const settings = getSystemSettings();
     const emailSettings = settings.email;
+    const { SITE_URL } = await import("@/lib/config");
     
     if (emailSettings?.enabled) {
       try {
@@ -82,10 +83,10 @@ export async function POST(request: NextRequest) {
               <strong>${generatedPassword}</strong>
             </div>
             <p><strong>Güvenlik Uyarısı:</strong> Bu şifreyi kimseyle paylaşmayın. Şifreyi doğruladıktan sonra yeni bir şifre belirlemeniz gerekecektir.</p>
-            <p>Şifreyi doğrulamak için: <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://teknoritma.com.tr'}/admin/first-login">İlk Giriş Sayfası</a></p>
+            <p>Şifreyi doğrulamak için: <a href="${SITE_URL}/admin/first-login">İlk Giriş Sayfası</a></p>
             <p>Teşekkürler,<br>Teknoritma</p>
           `,
-          text: `Teknoritma Admin Panel - İlk Giriş Şifreniz\n\nMerhaba,\n\nTeknoritma Admin Panel'e ilk giriş için şifreniz oluşturuldu:\n\n${generatedPassword}\n\nGüvenlik Uyarısı: Bu şifreyi kimseyle paylaşmayın. Şifreyi doğruladıktan sonra yeni bir şifre belirlemeniz gerekecektir.\n\nŞifreyi doğrulamak için: ${process.env.NEXT_PUBLIC_SITE_URL || 'https://teknoritma.com.tr'}/admin/first-login\n\nTeşekkürler,\nTeknoritma`,
+          text: `Teknoritma Admin Panel - İlk Giriş Şifreniz\n\nMerhaba,\n\nTeknoritma Admin Panel'e ilk giriş için şifreniz oluşturuldu:\n\n${generatedPassword}\n\nGüvenlik Uyarısı: Bu şifreyi kimseyle paylaşmayın. Şifreyi doğruladıktan sonra yeni bir şifre belirlemeniz gerekecektir.\n\nŞifreyi doğrulamak için: ${SITE_URL}/admin/first-login\n\nTeşekkürler,\nTeknoritma`,
         });
 
         if (!emailResult.success) {

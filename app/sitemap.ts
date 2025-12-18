@@ -1,7 +1,6 @@
 import { MetadataRoute } from "next";
 import { routeMapping } from "@/lib/route-mapping";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://teknoritma.com.tr";
+import { SITE_URL } from "@/lib/config";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes: Array<{
@@ -93,19 +92,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   return routes.map((route) => ({
-    url: `${siteUrl}${route.path}`,
+    url: `${SITE_URL}${route.path}`,
     lastModified: route.lastModified || new Date(),
     changeFrequency: route.changefreq as "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never",
     priority: route.priority,
     alternates: {
       languages: route.path.startsWith("/en")
         ? {
-            tr: `${siteUrl}${routeMapping[route.path] || route.path.replace("/en", "")}`,
-            en: `${siteUrl}${route.path}`,
+            tr: `${SITE_URL}${routeMapping[route.path] || route.path.replace("/en", "")}`,
+            en: `${SITE_URL}${route.path}`,
           }
         : {
-            tr: `${siteUrl}${route.path}`,
-            en: `${siteUrl}${routeMapping[route.path] || `/en${route.path}`}`,
+            tr: `${SITE_URL}${route.path}`,
+            en: `${SITE_URL}${routeMapping[route.path] || `/en${route.path}`}`,
           },
     },
   }));
