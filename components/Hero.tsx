@@ -599,7 +599,7 @@ export default function Hero() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 lg:gap-16">
           {metrics.map((metric, idx) => {
             let labelKey = "users";
-            if (metric.value.includes("80")) labelKey = "patients";
+            if (metric.value.includes("80") || metric.value.includes("60")) labelKey = "patients";
             if (metric.value.includes("40")) labelKey = "applications";
             if (metric.value.includes("HIMSS")) labelKey = "himss";
             
