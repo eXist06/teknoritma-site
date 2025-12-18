@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { JobPosting, CareersContent } from "@/lib/types/careers";
@@ -637,18 +637,27 @@ function ImageUpload({
   value,
   onChange,
   label,
+  hidePreview = false,
 }: {
   value?: string;
   onChange: (url: string) => void;
   label: string;
+  hidePreview?: boolean;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Reset error state
+    setError(null);
+    setSelectedFileName(file.name);
     setUploading(true);
+
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -661,12 +670,31 @@ function ImageUpload({
       const data = await response.json();
       if (response.ok && data.url) {
         onChange(data.url);
+        setSelectedFileName(null);
+        // Clear the input so the same file can be selected again
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       } else {
-        alert(data.error || "Failed to upload image");
+        const errorMessage = data.error || "Failed to upload image";
+        setError(errorMessage);
+        alert(errorMessage);
+        // Clear the input on error
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        setSelectedFileName(null);
       }
     } catch (error) {
       console.error("Upload error:", error);
-      alert("Failed to upload image");
+      const errorMessage = "Failed to upload image";
+      setError(errorMessage);
+      alert(errorMessage);
+      // Clear the input on error
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      setSelectedFileName(null);
     } finally {
       setUploading(false);
     }
@@ -675,26 +703,43 @@ function ImageUpload({
   return (
     <div className="space-y-2">
       <label className="block text-sm font-medium text-neutral-heading">{label}</label>
-      {value && (
+      {value && !hidePreview && (
         <div className="relative w-full h-48 border border-neutral-border rounded-lg overflow-hidden mb-2">
           <img src={value} alt="Preview" className="w-full h-full object-cover" />
           <button
             type="button"
-            onClick={() => onChange("")}
+            onClick={() => {
+              onChange("");
+              setError(null);
+              if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+              }
+            }}
             className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
           >
             ×
           </button>
         </div>
       )}
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        disabled={uploading}
-        className="w-full px-4 py-2 border border-neutral-border rounded-lg text-sm"
-      />
-      {uploading && <p className="text-sm text-neutral-body">Uploading...</p>}
+      <div className="relative">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          disabled={uploading}
+          className="w-full px-4 py-2 border border-neutral-border rounded-lg text-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        />
+        {selectedFileName && !value && (
+          <p className="text-xs text-neutral-body mt-1">Selected: {selectedFileName}</p>
+        )}
+      </div>
+      {uploading && (
+        <p className="text-sm text-blue-600">Uploading...</p>
+      )}
+      {error && (
+        <p className="text-sm text-red-600">{error}</p>
+      )}
     </div>
   );
 }
@@ -1581,51 +1626,26 @@ function ContentEditor({
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-neutral-heading mb-2">
-                  {currentLang === "en" ? "Photo" : "Fotoğraf"}
-                </label>
-                <div className="flex items-center gap-4">
-                  {testimonial.photo && (
+                <ImageUpload
+                  value={testimonial.photo}
+                  onChange={(url) => {
+                    const newTestimonials = [...content.testimonials];
+                    newTestimonials[index] = { ...testimonial, photo: url || undefined };
+                    onChange({
+                      ...content,
+                      testimonials: newTestimonials,
+                    });
+                  }}
+                  label={currentLang === "en" ? "Photo" : "Fotoğraf"}
+                  hidePreview={true}
+                />
+                {testimonial.photo && (
+                  <div className="mt-2 flex items-center gap-4">
                     <img
                       src={testimonial.photo}
                       alt={testimonial.name}
                       className="w-20 h-20 rounded-full object-cover border-2 border-neutral-border"
                     />
-                  )}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-
-                      const formData = new FormData();
-                      formData.append("file", file);
-
-                      try {
-                        const response = await fetch("/api/careers/upload-image", {
-                          method: "POST",
-                          body: formData,
-                        });
-
-                        const data = await response.json();
-                        if (response.ok && data.url) {
-                          const newTestimonials = [...content.testimonials];
-                          newTestimonials[index] = { ...testimonial, photo: data.url };
-                          onChange({
-                            ...content,
-                            testimonials: newTestimonials,
-                          });
-                        } else {
-                          alert(data.error || "Failed to upload image");
-                        }
-                      } catch (error) {
-                        alert("Failed to upload image");
-                      }
-                    }}
-                    className="flex-1 px-4 py-2 border border-neutral-border rounded-lg"
-                  />
-                  {testimonial.photo && (
                     <button
                       type="button"
                       onClick={() => {
@@ -1638,10 +1658,10 @@ function ContentEditor({
                       }}
                       className="px-4 py-2 bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition-colors"
                     >
-                      {currentLang === "en" ? "Remove" : "Kaldır"}
+                      {currentLang === "en" ? "Remove Photo" : "Fotoğrafı Kaldır"}
                     </button>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
