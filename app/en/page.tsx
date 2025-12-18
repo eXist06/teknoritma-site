@@ -1,6 +1,6 @@
 import Hero from "@/components/Hero";
 import ProductsSection from "@/components/ProductsSection";
-import SupportSection from "@/components/SupportSection";
+import EnterpriseExperienceSection from "@/components/EnterpriseExperienceSection";
 import SegmentsSection from "@/components/SegmentsSection";
 import ContactSection from "@/components/ContactSection";
 
@@ -9,7 +9,7 @@ export default function HomeEN() {
     <main className="min-h-screen">
       <Hero />
       <ProductsSection />
-      <SupportSection />
+      <EnterpriseExperienceSection />
       <SegmentsSection />
       <ContactSection />
     </main>
