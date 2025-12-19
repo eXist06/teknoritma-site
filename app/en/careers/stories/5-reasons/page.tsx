@@ -59,11 +59,11 @@ export default function FiveReasonsPageEn() {
         </div>
       </section>
 
-      <article className="py-16 md:py-24 bg-white">
+      <article className="py-16 md:py-24 bg-blue-50/30">
         <div className="max-w-4xl mx-auto px-4 md:px-8">
           <div className="prose prose-lg max-w-none">
             {story?.image ? (
-              <div className="rounded-xl h-64 md:h-96 mb-8 overflow-hidden">
+              <div className="rounded-xl h-64 md:h-96 mb-6 md:mb-8 overflow-hidden">
                 <img 
                   src={story.image} 
                   alt={story.titleEn}
@@ -71,7 +71,7 @@ export default function FiveReasonsPageEn() {
                 />
               </div>
             ) : (
-              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl h-64 md:h-96 mb-8 flex items-center justify-center">
+              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl h-64 md:h-96 mb-6 md:mb-8 flex items-center justify-center">
                 <span className="text-neutral-body text-lg">Story Image</span>
               </div>
             )}
@@ -84,10 +84,10 @@ export default function FiveReasonsPageEn() {
               />
             ) : (
               <>
-                <p className="text-xl text-neutral-body leading-relaxed mb-8">
+                <p className="text-xl text-neutral-body leading-relaxed mb-6 md:mb-8">
                   There are countless reasons people choose Teknoritma; the collaborative people, the breadth and depth of opportunities, and so much more.
                 </p>
-                <div className="space-y-6">
+                <div className="space-y-4 md:space-y-6">
                   {reasons.map((reason, index) => (
                     <motion.div
                       key={index}
@@ -95,7 +95,7 @@ export default function FiveReasonsPageEn() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.1 }}
-                      className="bg-neutral-light rounded-xl p-6 border-l-4 border-primary"
+                      className="bg-neutral-light rounded-xl p-5 md:p-6 border-l-4 border-primary"
                     >
                       <div className="flex items-start gap-4">
                         <div className="flex-shrink-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg">

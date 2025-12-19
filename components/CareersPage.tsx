@@ -227,7 +227,7 @@ export default function CareersPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-12"
+            className="text-center mb-10 md:mb-12"
           >
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading mb-4 leading-tight">
               {content?.hero?.title 
@@ -278,7 +278,7 @@ export default function CareersPage() {
       </section>
 
       {/* Unleash Your Potential */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-16 md:py-24 bg-blue-50/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -365,9 +365,9 @@ export default function CareersPage() {
       </section>
 
       {/* Featured Careers */}
-      <section className="py-16 md:py-24 bg-neutral-light">
+      <section className="py-16 md:py-24 bg-blue-50/50">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-4xl md:text-5xl font-bold text-neutral-heading mb-12 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-neutral-heading mb-10 md:mb-12 text-center">
             {content?.featuredCareers
               ? language === "en"
                 ? content.featuredCareers.titleEn
@@ -378,7 +378,7 @@ export default function CareersPage() {
           </h2>
 
           {/* Category Tabs */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 md:mb-12">
             {categories.map((category) => (
               <button
                 key={category.id}
@@ -401,7 +401,7 @@ export default function CareersPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="bg-white rounded-2xl shadow-lg p-8 md:p-12"
+            className="bg-white rounded-2xl shadow-lg p-6 md:p-10 lg:p-12"
           >
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
@@ -451,7 +451,7 @@ export default function CareersPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-16 md:py-24 bg-blue-50/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="relative">
             <div className="flex items-center justify-between mb-8">
@@ -522,7 +522,7 @@ export default function CareersPage() {
       </section>
 
       {/* Company Info Cards */}
-      <section className="py-16 md:py-24 bg-neutral-light">
+      <section className="py-16 md:py-24 bg-blue-100/40">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid md:grid-cols-3 gap-8">
             {(content?.companyCards || [
@@ -563,7 +563,7 @@ export default function CareersPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow"
+                className="bg-white rounded-xl shadow-lg p-6 md:p-8 hover:shadow-xl transition-shadow"
               >
                 <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg h-48 mb-6 overflow-hidden">
                   {card.image ? (
@@ -592,7 +592,7 @@ export default function CareersPage() {
       </section>
 
       {/* Culture Section */}
-      <section id="culture" className="py-16 md:py-24 bg-white">
+      <section id="culture" className="py-16 md:py-24 bg-blue-50/40">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -623,7 +623,7 @@ export default function CareersPage() {
       </section>
 
       {/* Belonging Section */}
-      <section id="belonging" className="py-16 md:py-24 bg-neutral-light">
+      <section id="belonging" className="py-16 md:py-24 bg-blue-100/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -677,14 +677,14 @@ export default function CareersPage() {
       </section>
 
       {/* Talent Network Form */}
-      <section id="talent-network" className="py-16 md:py-24 bg-white">
+      <section id="talent-network" className="py-16 md:py-24 bg-blue-50/30">
         <div className="max-w-4xl mx-auto px-4 md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            className="text-center mb-10 md:mb-12"
           >
             <h3 className="text-3xl md:text-4xl font-bold text-neutral-heading mb-4">
               {content?.talentNetwork
@@ -711,7 +711,7 @@ export default function CareersPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="bg-neutral-light rounded-2xl p-8 md:p-12"
+            className="bg-neutral-light rounded-2xl p-6 md:p-10 lg:p-12"
             onSubmit={async (e) => {
               e.preventDefault();
               
@@ -831,7 +831,7 @@ export default function CareersPage() {
           >
             {talentFormStep === "form" ? (
               <>
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <div className="grid md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
                   <div>
                     <label className="block text-sm font-medium text-neutral-heading mb-2">
                       {language === "en" ? "First Name" : "Ad"}
@@ -855,7 +855,7 @@ export default function CareersPage() {
                     />
                   </div>
                 </div>
-                <div className="mb-6">
+                <div className="mb-4 md:mb-6">
                   <label className="block text-sm font-medium text-neutral-heading mb-2">
                     {language === "en" ? "Email*" : "E-posta*"}
                   </label>
@@ -868,7 +868,7 @@ export default function CareersPage() {
                     className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
-                <div className="mb-6">
+                <div className="mb-4 md:mb-6">
                   <label className="block text-sm font-medium text-neutral-heading mb-2">
                     {language === "en" ? "Phone*" : "Cep Telefonu*"}
                   </label>
@@ -881,7 +881,7 @@ export default function CareersPage() {
                     className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
-                <div className="mb-6">
+                <div className="mb-4 md:mb-6">
                   <label className="block text-sm font-medium text-neutral-heading mb-2">
                     {language === "en" ? "CV (PDF only)" : "CV (Sadece PDF)"}
                   </label>
@@ -902,6 +902,9 @@ export default function CareersPage() {
                     }}
                     className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   />
+                  <p className="mt-2 text-xs text-neutral-body">
+                    {language === "en" ? "Please upload your CV in PDF format" : "Lütfen CV'nizi PDF formatında yükleyin"}
+                  </p>
                   {cvFile && (
                     <p className="mt-2 text-sm text-neutral-body">
                       {language === "en" ? "Selected:" : "Seçilen:"} {cvFile.name}
@@ -910,7 +913,7 @@ export default function CareersPage() {
                 </div>
               </>
             ) : (
-              <div className="mb-6">
+              <div className="mb-4 md:mb-6">
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                   <p className="text-sm text-blue-800">
                     {language === "en" 
@@ -945,7 +948,7 @@ export default function CareersPage() {
             )}
             {talentFormStep === "form" && (
               <>
-                <div className="mb-6">
+                <div className="mb-4 md:mb-6">
                   <label className="block text-sm font-medium text-neutral-heading mb-2">
                     {language === "en" ? "Job Category" : "İş Kategorisi"}
                   </label>
@@ -966,7 +969,7 @@ export default function CareersPage() {
                     })}
                   </select>
                 </div>
-                <div className="mb-6">
+                <div className="mb-4 md:mb-6">
                   <label className="block text-sm font-medium text-neutral-heading mb-2">
                     {language === "en" ? "City" : "Şehir"}
                   </label>
@@ -978,7 +981,7 @@ export default function CareersPage() {
                     className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
-                <div className="mb-8">
+                <div className="mb-6 md:mb-8">
                   <label className="block text-sm font-medium text-neutral-heading mb-2">
                     {language === "en" ? "Remote / Workplace" : "Uzaktan / İş Yeri"}
                   </label>
@@ -1024,9 +1027,9 @@ export default function CareersPage() {
       </section>
 
       {/* Explore Life at Teknoritma */}
-      <section className="py-16 md:py-24 bg-neutral-light">
+      <section className="py-16 md:py-24 bg-blue-100/40">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-4xl md:text-5xl font-bold text-neutral-heading mb-12 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-neutral-heading mb-10 md:mb-12 text-center">
             {content?.exploreLife
               ? language === "en"
                 ? content.exploreLife.titleEn
@@ -1035,7 +1038,7 @@ export default function CareersPage() {
               ? "Explore life at Teknoritma"
               : "Teknoritma'da yaşamı keşfedin"}
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {stories.map((story, index) => (
               <motion.a
                 key={index}
@@ -1044,7 +1047,7 @@ export default function CareersPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow group"
+                className="bg-white rounded-xl shadow-lg p-5 md:p-6 hover:shadow-xl transition-shadow group"
               >
                 <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg h-48 mb-4 overflow-hidden">
                   {story.image ? (
@@ -1123,7 +1126,7 @@ export default function CareersPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4 }}
-                  className="bg-white border border-neutral-border rounded-xl p-6 md:p-8 hover:shadow-lg transition-shadow"
+                  className="bg-white border border-neutral-border rounded-xl p-5 md:p-6 lg:p-8 hover:shadow-lg transition-shadow"
                 >
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                     <div className="flex-1">

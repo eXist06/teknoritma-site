@@ -51,11 +51,11 @@ export default function SoftwareEngineerDayPageEn() {
         </div>
       </section>
 
-      <article className="py-16 md:py-24 bg-white">
+      <article className="py-16 md:py-24 bg-blue-50/30">
         <div className="max-w-4xl mx-auto px-4 md:px-8">
           <div className="prose prose-lg max-w-none">
             {story?.image ? (
-              <div className="rounded-xl h-64 md:h-96 mb-8 overflow-hidden">
+              <div className="rounded-xl h-64 md:h-96 mb-6 md:mb-8 overflow-hidden">
                 <img 
                   src={story.image} 
                   alt={story.titleEn}
@@ -63,7 +63,7 @@ export default function SoftwareEngineerDayPageEn() {
                 />
               </div>
             ) : (
-              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl h-64 md:h-96 mb-8 flex items-center justify-center">
+              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl h-64 md:h-96 mb-6 md:mb-8 flex items-center justify-center">
                 <span className="text-neutral-body text-lg">Story Image</span>
               </div>
             )}

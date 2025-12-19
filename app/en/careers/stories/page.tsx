@@ -61,7 +61,7 @@ export default function StoriesPageEn() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-12"
+            className="text-center mb-10 md:mb-12"
           >
             <Link
               href="/en/careers"
@@ -82,9 +82,9 @@ export default function StoriesPageEn() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-16 md:py-24 bg-blue-50/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {stories.map((story, index) => (
               <motion.a
                 key={index}
@@ -93,7 +93,7 @@ export default function StoriesPageEn() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow group border border-neutral-border"
+                className="bg-white rounded-xl shadow-lg p-5 md:p-6 hover:shadow-xl transition-shadow group border border-neutral-border"
               >
                 <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg h-48 mb-4 overflow-hidden">
                   {story.image ? (
