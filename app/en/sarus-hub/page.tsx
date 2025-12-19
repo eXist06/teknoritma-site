@@ -123,11 +123,11 @@ export default function SarusHubPageEN() {
               href={`/en/sarus-hub/${featured.slug}`}
               className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white hover:shadow-xl transition-all"
             >
-              <div className="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5">
+              <div className="relative w-full flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg overflow-hidden">
                 {featured.video ? (
                   <video
                     src={featured.video}
-                    className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5"
+                    className="w-full h-auto max-w-full max-h-[600px] object-contain"
                     muted
                     loop
                     playsInline
@@ -142,7 +142,7 @@ export default function SarusHubPageEN() {
                   <img
                     src={featured.primaryImage || featured.image || ""}
                     alt={featured.title}
-                    className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5"
+                    className="w-full h-auto max-w-full max-h-[600px] object-contain"
                     onError={(e) => {
                       console.error("Görsel yüklenemedi:", featured.primaryImage || featured.image);
                       const target = e.target as HTMLImageElement;
@@ -291,11 +291,11 @@ export default function SarusHubPageEN() {
                 className="group flex flex-col rounded-2xl border border-neutral-border bg-white overflow-hidden hover:border-primary hover:shadow-xl transition-all"
               >
                 {(item.primaryImage || item.image || item.video) && (
-                  <div className="relative h-48 overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5">
+                  <div className="relative w-full flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5 overflow-hidden">
                     {item.video ? (
                       <video
                         src={item.video}
-                        className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5"
+                        className="w-full h-auto max-w-full max-h-[300px] object-contain"
                         muted
                         loop
                         playsInline
@@ -310,7 +310,7 @@ export default function SarusHubPageEN() {
                       <img
                         src={item.primaryImage || item.image}
                         alt={item.title}
-                        className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5"
+                        className="w-full h-auto max-w-full max-h-[300px] object-contain"
                         onError={(e) => {
                           console.error("Görsel yüklenemedi:", item.primaryImage || item.image);
                           const target = e.target as HTMLImageElement;

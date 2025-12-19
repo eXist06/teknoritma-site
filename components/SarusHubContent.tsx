@@ -36,13 +36,18 @@ export default function SarusHubContent({
 
       img.setAttribute('data-error-handled', 'true');
       
-      // Apply object-contain style to content images
+      // Apply auto-fit style to content images
       const imgElement = img as HTMLImageElement;
       imgElement.style.objectFit = 'contain';
       imgElement.style.maxWidth = '100%';
-      imgElement.style.maxHeight = '100%';
       imgElement.style.width = 'auto';
       imgElement.style.height = 'auto';
+      imgElement.style.display = 'block';
+      imgElement.style.margin = '0 auto';
+      // Remove fixed height constraints
+      if (imgElement.style.height && imgElement.style.height !== 'auto') {
+        imgElement.style.height = 'auto';
+      }
       if (!imgElement.classList.contains('bg-gradient-to-br')) {
         imgElement.classList.add('bg-gradient-to-br', 'from-primary/5', 'to-accent/5');
       }
@@ -77,12 +82,13 @@ export default function SarusHubContent({
         // Image loaded successfully, ensure it's visible
         const target = img as HTMLImageElement;
         target.style.display = "";
-        // Ensure object-contain for content images
-        if (!target.style.objectFit) {
-          target.style.objectFit = "contain";
-          target.style.maxWidth = "100%";
-          target.style.maxHeight = "100%";
-        }
+        // Ensure auto-fit for content images
+        target.style.objectFit = "contain";
+        target.style.maxWidth = "100%";
+        target.style.width = "auto";
+        target.style.height = "auto";
+        target.style.display = "block";
+        target.style.margin = "0 auto";
       };
 
       img.addEventListener('error', handleError);
@@ -116,11 +122,11 @@ export default function SarusHubContent({
         return (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             {allImages.map((img, idx) => (
-              <div key={idx} className="relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg overflow-hidden">
+              <div key={idx} className="relative flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg overflow-hidden min-h-[192px]">
                 <img
                   src={img}
                   alt={`Image ${idx + 1}`}
-                  className="w-full h-48 object-contain bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                  className="w-full h-auto max-w-full max-h-[300px] object-contain rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                   onClick={() => window.open(img, "_blank")}
                   onError={(e) => {
                     console.error("Galeri görseli yüklenemedi:", img);
@@ -144,14 +150,14 @@ export default function SarusHubContent({
 
       case "carousel":
         return (
-          <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden mb-6 bg-gradient-to-br from-primary/5 to-accent/5">
+          <div className="relative w-full flex items-center justify-center rounded-lg overflow-hidden mb-6 bg-gradient-to-br from-primary/5 to-accent/5 min-h-[400px]">
             {allImages.map((img, idx) => (
               <img
                 key={idx}
                 src={img}
                 alt={`Image ${idx + 1}`}
-                className={`absolute inset-0 w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5 transition-opacity duration-500 ${
-                  idx === currentImageIndex ? "opacity-100" : "opacity-0"
+                className={`w-full h-auto max-w-full max-h-[600px] object-contain mx-auto transition-opacity duration-500 ${
+                  idx === currentImageIndex ? "opacity-100 relative" : "opacity-0 absolute inset-0"
                 }`}
                 onError={(e) => {
                   console.error("Carousel görseli yüklenemedi:", img);
@@ -203,11 +209,11 @@ export default function SarusHubContent({
         return (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             {allImages.map((img, idx) => (
-              <div key={idx} className="relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg overflow-hidden">
+              <div key={idx} className="relative flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg overflow-hidden min-h-[256px]">
                 <img
                   src={img}
                   alt={`Image ${idx + 1}`}
-                  className="w-full h-64 object-contain bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg shadow-md"
+                  className="w-full h-auto max-w-full max-h-[500px] object-contain rounded-lg shadow-md"
                   onError={(e) => {
                     console.error("Grid görseli yüklenemedi:", img);
                     const target = e.target as HTMLImageElement;
@@ -231,11 +237,11 @@ export default function SarusHubContent({
       case "cover":
       default:
         return (
-          <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden mb-6 bg-gradient-to-br from-primary/5 to-accent/5">
+          <div className="relative w-full flex items-center justify-center rounded-lg overflow-hidden mb-6 bg-gradient-to-br from-primary/5 to-accent/5 min-h-[400px]">
             <img
               src={allImages[0]}
               alt="Featured"
-              className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5"
+              className="w-full h-auto max-w-full max-h-[600px] object-contain"
               onError={(e) => {
                 console.error("Resim yüklenemedi:", allImages[0]);
                 const target = e.target as HTMLImageElement;
