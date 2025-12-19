@@ -3,9 +3,31 @@
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { CareersContent } from "@/lib/types/careers";
 
 export default function FiveReasonsPage() {
   const { language } = useI18n();
+  const [content, setContent] = useState<CareersContent | null>(null);
+  const storyUrl = language === "en" ? "/en/careers/stories/5-reasons" : "/kariyer/hikayeler/5-neden";
+
+  useEffect(() => {
+    fetchContent();
+  }, []);
+
+  const fetchContent = async () => {
+    try {
+      const response = await fetch(`/api/careers/content?t=${Date.now()}`, {
+        cache: "no-store",
+      });
+      const data = await response.json();
+      setContent(data.content);
+    } catch (error) {
+      console.error("Failed to fetch content:", error);
+    }
+  };
+
+  const story = content?.exploreLife?.stories?.find((s) => s.url === storyUrl);
 
   const reasons = language === "en"
     ? [
@@ -42,7 +64,10 @@ export default function FiveReasonsPage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-5xl md:text-6xl font-extrabold text-neutral-heading mb-6 leading-tight">
-              {language === "en" ? "5 reasons to join Teknoritma" : "Teknoritma'ya katılmanın 5 nedeni"}
+              {story 
+                ? (language === "en" ? story.titleEn : story.title)
+                : (language === "en" ? "5 reasons to join Teknoritma" : "Teknoritma'ya katılmanın 5 nedeni")
+              }
             </h1>
           </motion.div>
         </div>
@@ -51,35 +76,58 @@ export default function FiveReasonsPage() {
       <article className="py-16 md:py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 md:px-8">
           <div className="prose prose-lg max-w-none">
-            <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl h-64 md:h-96 mb-8 flex items-center justify-center">
-              <span className="text-neutral-body text-lg">
-                {language === "en" ? "Story Image" : "Hikaye Görseli"}
-              </span>
-            </div>
-            <p className="text-xl text-neutral-body leading-relaxed mb-8">
-              {language === "en"
-                ? "There are countless reasons people choose Teknoritma; the collaborative people, the breadth and depth of opportunities, and so much more."
-                : "İnsanların Teknoritma'yı seçmesinin sayısız nedeni var; işbirlikçi insanlar, fırsatların genişliği ve derinliği ve çok daha fazlası."}
-            </p>
-            <div className="space-y-6">
-              {reasons.map((reason, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-neutral-light rounded-xl p-6 border-l-4 border-primary"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg">
-                      {index + 1}
-                    </div>
-                    <p className="text-lg text-neutral-heading font-medium pt-1">{reason}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            {story?.image ? (
+              <div className="rounded-xl h-64 md:h-96 mb-8 overflow-hidden">
+                <img 
+                  src={story.image} 
+                  alt={story.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl h-64 md:h-96 mb-8 flex items-center justify-center">
+                <span className="text-neutral-body text-lg">
+                  {language === "en" ? "Story Image" : "Hikaye Görseli"}
+                </span>
+              </div>
+            )}
+            {story?.description ? (
+              <div 
+                className="prose prose-lg max-w-none text-neutral-body leading-relaxed"
+                dangerouslySetInnerHTML={{ 
+                  __html: (language === "en" 
+                    ? (story.descriptionEn || story.description)
+                    : story.description).replace(/\n/g, '<br />')
+                }}
+              />
+            ) : (
+              <>
+                <p className="text-xl text-neutral-body leading-relaxed mb-8">
+                  {language === "en"
+                    ? "There are countless reasons people choose Teknoritma; the collaborative people, the breadth and depth of opportunities, and so much more."
+                    : "İnsanların Teknoritma'yı seçmesinin sayısız nedeni var; işbirlikçi insanlar, fırsatların genişliği ve derinliği ve çok daha fazlası."}
+                </p>
+                <div className="space-y-6">
+                  {reasons.map((reason, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className="bg-neutral-light rounded-xl p-6 border-l-4 border-primary"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg">
+                          {index + 1}
+                        </div>
+                        <p className="text-lg text-neutral-heading font-medium pt-1">{reason}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </article>

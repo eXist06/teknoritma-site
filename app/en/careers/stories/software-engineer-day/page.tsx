@@ -2,8 +2,30 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { CareersContent } from "@/lib/types/careers";
 
 export default function SoftwareEngineerDayPageEn() {
+  const [content, setContent] = useState<CareersContent | null>(null);
+  const storyUrl = "/en/careers/stories/software-engineer-day";
+
+  useEffect(() => {
+    fetchContent();
+  }, []);
+
+  const fetchContent = async () => {
+    try {
+      const response = await fetch(`/api/careers/content?t=${Date.now()}`, {
+        cache: "no-store",
+      });
+      const data = await response.json();
+      setContent(data.content);
+    } catch (error) {
+      console.error("Failed to fetch content:", error);
+    }
+  };
+
+  const story = content?.exploreLife?.stories?.find((s) => s.url === storyUrl);
   return (
     <div className="min-h-screen bg-white">
       <section className="relative bg-gradient-to-br from-primary/10 via-white to-accent/10 py-20 md:py-32">
@@ -23,7 +45,7 @@ export default function SoftwareEngineerDayPageEn() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-5xl md:text-6xl font-extrabold text-neutral-heading mb-6 leading-tight">
-              A day in the life as a Software Engineer
+              {story?.titleEn || "A day in the life as a Software Engineer"}
             </h1>
           </motion.div>
         </div>
@@ -32,23 +54,27 @@ export default function SoftwareEngineerDayPageEn() {
       <article className="py-16 md:py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 md:px-8">
           <div className="prose prose-lg max-w-none">
-            <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl h-64 md:h-96 mb-8 flex items-center justify-center">
-              <span className="text-neutral-body text-lg">Story Image</span>
-            </div>
-            <p className="text-xl text-neutral-body leading-relaxed mb-6">
-              Join our team member as they share what it's like to work in software development at Teknoritma's Ankara office.
-            </p>
-            <div className="space-y-6 text-neutral-body leading-relaxed">
-              <p>
-                Every morning starts with a team standup where we discuss our progress and plan the day ahead. The collaborative atmosphere at Teknoritma makes it easy to share ideas and get support from colleagues.
-              </p>
-              <p>
-                Working on healthcare technology means every line of code we write has the potential to improve patient outcomes. This sense of purpose drives us to deliver high-quality solutions.
-              </p>
-              <p>
-                The best part of working here is the continuous learning opportunities. Whether it's new technologies, best practices, or healthcare domain knowledge, there's always something new to explore.
-              </p>
-            </div>
+            {story?.image ? (
+              <div className="rounded-xl h-64 md:h-96 mb-8 overflow-hidden">
+                <img 
+                  src={story.image} 
+                  alt={story.titleEn}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl h-64 md:h-96 mb-8 flex items-center justify-center">
+                <span className="text-neutral-body text-lg">Story Image</span>
+              </div>
+            )}
+            {story?.descriptionEn && (
+              <div 
+                className="prose prose-lg max-w-none text-neutral-body leading-relaxed"
+                dangerouslySetInnerHTML={{ 
+                  __html: (story.descriptionEn || story.description || "").replace(/\n/g, '<br />')
+                }}
+              />
+            )}
           </div>
         </div>
       </article>
