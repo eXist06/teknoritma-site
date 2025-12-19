@@ -31,6 +31,7 @@ export default function CareersPage() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchLocation, setSearchLocation] = useState("");
   const [filteredJobs, setFilteredJobs] = useState<JobPosting[]>([]);
+  const [noJobsMessage, setNoJobsMessage] = useState<{ show: boolean; text: string } | null>(null);
 
   useEffect(() => {
     fetchJobs();
@@ -246,77 +247,26 @@ export default function CareersPage() {
             </p>
           </motion.div>
 
-          {/* Search Box */}
+          {/* Talent Network CTA */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-neutral-border/50"
+            className="max-w-3xl mx-auto text-center"
           >
-            <form
-              onSubmit={(e) => {
+            <a
+              href="#talent-network"
+              onClick={(e) => {
                 e.preventDefault();
-                const keyword = searchKeyword.trim();
-                const location = searchLocation.trim();
-                let filtered = [...jobs];
-                if (keyword) {
-                  const kw = keyword.toLowerCase();
-                  filtered = filtered.filter(
-                    (job) =>
-                      (language === "en" ? job.titleEn : job.title).toLowerCase().includes(kw) ||
-                      (language === "en" ? job.descriptionEn : job.description).toLowerCase().includes(kw) ||
-                      (language === "en" ? job.departmentEn : job.department).toLowerCase().includes(kw)
-                  );
-                }
-                if (location) {
-                  const loc = location.toLowerCase();
-                  filtered = filtered.filter((job) =>
-                    (language === "en" ? job.locationEn : job.location).toLowerCase().includes(loc)
-                  );
-                }
-                setFilteredJobs(filtered);
-                const jobsSection = document.getElementById("jobs");
-                if (jobsSection) {
-                  jobsSection.scrollIntoView({ behavior: "smooth" });
+                const talentNetworkSection = document.getElementById("talent-network");
+                if (talentNetworkSection) {
+                  talentNetworkSection.scrollIntoView({ behavior: "smooth" });
                 }
               }}
+              className="inline-block px-8 py-4 bg-primary text-white rounded-lg font-semibold text-lg hover:bg-primary-dark transition-colors shadow-lg hover:shadow-xl"
             >
-              <div className="flex flex-col md:flex-row gap-4">
-                <input
-                  type="text"
-                  value={searchKeyword}
-                  onChange={(e) => setSearchKeyword(e.target.value)}
-                  placeholder={language === "en" ? "Keyword Search" : "Anahtar Kelime Ara"}
-                  className="flex-1 px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-                <input
-                  type="text"
-                  value={searchLocation}
-                  onChange={(e) => setSearchLocation(e.target.value)}
-                  placeholder={language === "en" ? "City, State, or ZIP" : "Şehir, İl veya Posta Kodu"}
-                  className="flex-1 px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-                <button
-                  type="submit"
-                  className="px-8 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
-                >
-                  {language === "en" ? "Search Jobs" : "İş Ara"}
-                </button>
-              </div>
-            </form>
-            <p className="mt-4 text-sm text-neutral-body text-center">
-              {language === "en" ? (
-                <>
-                  Not ready to apply? Join our{" "}
-                  <a href="#talent-network" className="text-primary hover:underline">Talent Network</a>.
-                </>
-              ) : (
-                <>
-                  Başvurmaya hazır değil misiniz?{" "}
-                  <a href="#talent-network" className="text-primary hover:underline">Yetenek Ağımıza</a> katılın.
-                </>
-              )}
-            </p>
+              {language === "en" ? "Join our Talent Network" : "Yetenek Ağımıza Katılın"}
+            </a>
           </motion.div>
         </div>
       </section>
@@ -364,7 +314,27 @@ export default function CareersPage() {
               </>
             )}
             <a
-              href={language === "en" ? "/en/careers#jobs" : "/kariyer#jobs"}
+              href="#jobs"
+              onClick={(e) => {
+                e.preventDefault();
+                const activeJobs = filteredJobs.length > 0 ? filteredJobs : jobs;
+                if (activeJobs.length > 0) {
+                  const jobsSection = document.getElementById("jobs");
+                  if (jobsSection) {
+                    jobsSection.scrollIntoView({ behavior: "smooth" });
+                  }
+                } else {
+                  setNoJobsMessage({
+                    show: true,
+                    text: language === "en" 
+                      ? "There are currently no open positions available." 
+                      : "Şu an için açık pozisyon bulunmamaktadır."
+                  });
+                  setTimeout(() => {
+                    setNoJobsMessage(null);
+                  }, 5000);
+                }
+              }}
               className="inline-block px-8 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
             >
               {content?.unleashPotential
@@ -375,6 +345,15 @@ export default function CareersPage() {
                 ? "View all jobs"
                 : "Tüm işleri görüntüle"}
             </a>
+            {noJobsMessage && noJobsMessage.show && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-center"
+              >
+                <p className="text-yellow-800 font-medium">{noJobsMessage.text}</p>
+              </motion.div>
+            )}
           </motion.div>
         </div>
       </section>
