@@ -123,16 +123,72 @@ export default function SarusHubPageEN() {
               href={`/en/sarus-hub/${featured.slug}`}
               className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white hover:shadow-xl transition-all"
             >
-              {featured.image && (
-                <div className="relative h-64 md:h-80 overflow-hidden">
+              <div className="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5">
+                {featured.video ? (
+                  <video
+                    src={featured.video}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    muted
+                    loop
+                    playsInline
+                    autoPlay
+                    onError={(e) => {
+                      console.error("Video yüklenemedi:", featured.video);
+                      const target = e.target as HTMLVideoElement;
+                      target.style.display = "none";
+                    }}
+                  />
+                ) : featured.primaryImage || featured.image ? (
                   <img
-                    src={featured.image}
+                    src={featured.primaryImage || featured.image || ""}
                     alt={featured.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      console.error("Görsel yüklenemedi:", featured.primaryImage || featured.image);
+                      const target = e.target as HTMLImageElement;
+                      const container = target.parentElement;
+                      if (container) {
+                        target.style.display = "none";
+                        if (!container.querySelector('.image-placeholder')) {
+                          const placeholder = document.createElement('div');
+                          placeholder.className = 'image-placeholder absolute inset-0 flex items-center justify-center text-neutral-body';
+                          placeholder.innerHTML = '<div class="text-center"><svg class="w-16 h-16 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><p class="text-sm">Image failed to load</p></div>';
+                          container.appendChild(placeholder);
+                        }
+                      }
+                    }}
+                    onLoad={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      const container = target.parentElement;
+                      if (container) {
+                        const placeholder = container.querySelector('.image-placeholder');
+                        if (placeholder) {
+                          placeholder.remove();
+                        }
+                      }
+                    }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                </div>
-              )}
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center text-neutral-body">
+                    <div className="text-center">
+                      <svg className="w-16 h-16 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <p className="text-sm">No image found</p>
+                    </div>
+                  </div>
+                )}
+                {(featured.primaryImage || featured.image || featured.video) && (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    {featured.video && (
+                      <div className="absolute top-4 right-4 bg-black/50 text-white px-2 py-1 rounded text-xs">
+                        🎥 Video
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
               <div className="p-6 md:p-8">
                 <div className="mb-4 flex items-center gap-3 text-xs">
                   <span
@@ -234,13 +290,53 @@ export default function SarusHubPageEN() {
                 key={item.id}
                 className="group flex flex-col rounded-2xl border border-neutral-border bg-white overflow-hidden hover:border-primary hover:shadow-xl transition-all"
               >
-                {item.image && (
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+                {(item.primaryImage || item.image || item.video) && (
+                  <div className="relative h-48 overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5">
+                    {item.video ? (
+                      <video
+                        src={item.video}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        muted
+                        loop
+                        playsInline
+                        autoPlay
+                        onError={(e) => {
+                          console.error("Video yüklenemedi:", item.video);
+                          const target = e.target as HTMLVideoElement;
+                          target.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={item.primaryImage || item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => {
+                          console.error("Görsel yüklenemedi:", item.primaryImage || item.image);
+                          const target = e.target as HTMLImageElement;
+                          const container = target.parentElement;
+                          if (container) {
+                            target.style.display = "none";
+                            if (!container.querySelector('.image-placeholder')) {
+                              const placeholder = document.createElement('div');
+                              placeholder.className = 'image-placeholder absolute inset-0 flex items-center justify-center text-neutral-body';
+                              placeholder.innerHTML = '<div class="text-center"><svg class="w-12 h-12 mx-auto mb-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><p class="text-xs">Image failed to load</p></div>';
+                              container.appendChild(placeholder);
+                            }
+                          }
+                        }}
+                        onLoad={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          const container = target.parentElement;
+                          if (container) {
+                            const placeholder = container.querySelector('.image-placeholder');
+                            if (placeholder) {
+                              placeholder.remove();
+                            }
+                          }
+                        }}
+                      />
+                    )}
                     <div className="absolute top-3 left-3">
                       <span
                         className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] ring-1 backdrop-blur-sm ${typeColors[item.type]}`}
@@ -248,22 +344,27 @@ export default function SarusHubPageEN() {
                         {typeLabels[item.type]}
                       </span>
                     </div>
+                    {item.video && (
+                      <div className="absolute top-3 right-3 bg-black/50 text-white px-2 py-0.5 rounded text-[10px]">
+                        🎥
+                      </div>
+                    )}
                   </div>
                 )}
                 <div className="flex flex-col flex-1 p-5">
-                  {!item.image && (
+                  {!(item.primaryImage || item.image || item.video) && (
                     <div className="mb-3 flex items-center justify-between text-[11px] text-neutral-body">
                       <span
                         className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 ring-1 ${typeColors[item.type]}`}
                       >
                         {typeLabels[item.type]}
                       </span>
-                      <span>{formatDate(item.publishedAt)}</span>
+                      <span>{item.publishedAt ? formatDate(item.publishedAt) : ""}</span>
                     </div>
                   )}
-                  {item.image && (
+                  {(item.primaryImage || item.image || item.video) && (
                     <div className="mb-2 text-[11px] text-neutral-body">
-                      {formatDate(item.publishedAt)}
+                      {item.publishedAt ? formatDate(item.publishedAt) : ""}
                     </div>
                   )}
                   <h4 className="mb-2 line-clamp-2 text-base font-bold text-neutral-heading group-hover:text-primary transition-colors">

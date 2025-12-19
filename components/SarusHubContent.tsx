@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ImageDisplayStyle } from "@/lib/types/sarus-hub";
 
 interface SarusHubContentProps {
@@ -22,6 +22,69 @@ export default function SarusHubContent({
 }: SarusHubContentProps) {
   const [videoError, setVideoError] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Handle images in rich text content
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    const images = contentRef.current.querySelectorAll('img');
+    
+    images.forEach((img) => {
+      // Skip if already has error handler
+      if (img.hasAttribute('data-error-handled')) return;
+
+      img.setAttribute('data-error-handled', 'true');
+      
+      const handleError = (e: Event) => {
+        const target = e.target as HTMLImageElement;
+        const originalSrc = target.src;
+        console.error("Content içindeki görsel yüklenemedi:", originalSrc);
+        
+        // Hide broken image
+        target.style.display = "none";
+        
+        // Create placeholder
+        const placeholder = document.createElement('div');
+        placeholder.className = 'flex items-center justify-center p-8 bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg border border-neutral-border';
+        placeholder.innerHTML = `
+          <div class="text-center">
+            <svg class="w-12 h-12 mx-auto mb-2 opacity-50 text-neutral-body" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p class="text-sm text-neutral-body">Görsel yüklenemedi</p>
+          </div>
+        `;
+        
+        // Insert placeholder after the broken image
+        if (target.parentNode) {
+          target.parentNode.insertBefore(placeholder, target.nextSibling);
+        }
+      };
+
+      const handleLoad = () => {
+        // Image loaded successfully, ensure it's visible
+        const target = img as HTMLImageElement;
+        target.style.display = "";
+      };
+
+      img.addEventListener('error', handleError);
+      img.addEventListener('load', handleLoad);
+      
+      // If image is already broken, trigger error handler
+      if (img.complete && img.naturalHeight === 0) {
+        handleError({ target: img } as any);
+      }
+    });
+
+    // Cleanup function
+    return () => {
+      images.forEach((img) => {
+        img.removeEventListener('error', () => {});
+        img.removeEventListener('load', () => {});
+      });
+    };
+  }, [content]);
 
   // Determine which images to show
   const allImages = images && images.length > 0 
@@ -36,20 +99,35 @@ export default function SarusHubContent({
         return (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             {allImages.map((img, idx) => (
-              <img
-                key={idx}
-                src={img}
-                alt={`Image ${idx + 1}`}
-                className="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => window.open(img, "_blank")}
-              />
+              <div key={idx} className="relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg overflow-hidden">
+                <img
+                  src={img}
+                  alt={`Image ${idx + 1}`}
+                  className="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => window.open(img, "_blank")}
+                  onError={(e) => {
+                    console.error("Galeri görseli yüklenemedi:", img);
+                    const target = e.target as HTMLImageElement;
+                    const container = target.parentElement;
+                    if (container) {
+                      target.style.display = "none";
+                      if (!container.querySelector('.image-placeholder')) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'image-placeholder absolute inset-0 flex items-center justify-center text-neutral-body';
+                        placeholder.innerHTML = '<div class="text-center"><svg class="w-8 h-8 mx-auto mb-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><p class="text-xs">Görsel yüklenemedi</p></div>';
+                        container.appendChild(placeholder);
+                      }
+                    }
+                  }}
+                />
+              </div>
             ))}
           </div>
         );
 
       case "carousel":
         return (
-          <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden mb-6">
+          <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden mb-6 bg-gradient-to-br from-primary/5 to-accent/5">
             {allImages.map((img, idx) => (
               <img
                 key={idx}
@@ -58,6 +136,20 @@ export default function SarusHubContent({
                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
                   idx === currentImageIndex ? "opacity-100" : "opacity-0"
                 }`}
+                onError={(e) => {
+                  console.error("Carousel görseli yüklenemedi:", img);
+                  const target = e.target as HTMLImageElement;
+                  const container = target.parentElement;
+                  if (container && idx === currentImageIndex) {
+                    target.style.display = "none";
+                    if (!container.querySelector('.image-placeholder')) {
+                      const placeholder = document.createElement('div');
+                      placeholder.className = 'image-placeholder absolute inset-0 flex items-center justify-center text-neutral-body';
+                      placeholder.innerHTML = '<div class="text-center"><svg class="w-16 h-16 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><p class="text-sm">Görsel yüklenemedi</p></div>';
+                      container.appendChild(placeholder);
+                    }
+                  }
+                }}
               />
             ))}
             {allImages.length > 1 && (
@@ -94,12 +186,27 @@ export default function SarusHubContent({
         return (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             {allImages.map((img, idx) => (
-              <img
-                key={idx}
-                src={img}
-                alt={`Image ${idx + 1}`}
-                className="w-full h-64 object-cover rounded-lg shadow-md"
-              />
+              <div key={idx} className="relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg overflow-hidden">
+                <img
+                  src={img}
+                  alt={`Image ${idx + 1}`}
+                  className="w-full h-64 object-cover rounded-lg shadow-md"
+                  onError={(e) => {
+                    console.error("Grid görseli yüklenemedi:", img);
+                    const target = e.target as HTMLImageElement;
+                    const container = target.parentElement;
+                    if (container) {
+                      target.style.display = "none";
+                      if (!container.querySelector('.image-placeholder')) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'image-placeholder absolute inset-0 flex items-center justify-center text-neutral-body';
+                        placeholder.innerHTML = '<div class="text-center"><svg class="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><p class="text-sm">Görsel yüklenemedi</p></div>';
+                        container.appendChild(placeholder);
+                      }
+                    }
+                  }}
+                />
+              </div>
             ))}
           </div>
         );
@@ -107,7 +214,7 @@ export default function SarusHubContent({
       case "cover":
       default:
         return (
-          <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden mb-6">
+          <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden mb-6 bg-gradient-to-br from-primary/5 to-accent/5">
             <img
               src={allImages[0]}
               alt="Featured"
@@ -115,7 +222,28 @@ export default function SarusHubContent({
               onError={(e) => {
                 console.error("Resim yüklenemedi:", allImages[0]);
                 const target = e.target as HTMLImageElement;
-                target.style.display = "none";
+                const container = target.parentElement;
+                if (container) {
+                  target.style.display = "none";
+                  // Show placeholder if not already shown
+                  if (!container.querySelector('.image-placeholder')) {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'image-placeholder absolute inset-0 flex items-center justify-center text-neutral-body';
+                    placeholder.innerHTML = '<div class="text-center"><svg class="w-16 h-16 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><p class="text-sm">Görsel yüklenemedi</p></div>';
+                    container.appendChild(placeholder);
+                  }
+                }
+              }}
+              onLoad={(e) => {
+                // Remove placeholder if image loads successfully
+                const target = e.target as HTMLImageElement;
+                const container = target.parentElement;
+                if (container) {
+                  const placeholder = container.querySelector('.image-placeholder');
+                  if (placeholder) {
+                    placeholder.remove();
+                  }
+                }
               }}
             />
           </div>
@@ -173,6 +301,7 @@ export default function SarusHubContent({
 
       {/* Rich Text Content */}
       <div
+        ref={contentRef}
         className="prose prose-lg max-w-none prose-headings:text-neutral-heading prose-p:text-neutral-body prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-neutral-heading prose-img:rounded-lg prose-img:shadow-lg"
         dangerouslySetInnerHTML={{ __html: content }}
       />
