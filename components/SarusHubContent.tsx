@@ -36,6 +36,17 @@ export default function SarusHubContent({
 
       img.setAttribute('data-error-handled', 'true');
       
+      // Apply object-contain style to content images
+      const imgElement = img as HTMLImageElement;
+      imgElement.style.objectFit = 'contain';
+      imgElement.style.maxWidth = '100%';
+      imgElement.style.maxHeight = '100%';
+      imgElement.style.width = 'auto';
+      imgElement.style.height = 'auto';
+      if (!imgElement.classList.contains('bg-gradient-to-br')) {
+        imgElement.classList.add('bg-gradient-to-br', 'from-primary/5', 'to-accent/5');
+      }
+      
       const handleError = (e: Event) => {
         const target = e.target as HTMLImageElement;
         const originalSrc = target.src;
@@ -66,6 +77,12 @@ export default function SarusHubContent({
         // Image loaded successfully, ensure it's visible
         const target = img as HTMLImageElement;
         target.style.display = "";
+        // Ensure object-contain for content images
+        if (!target.style.objectFit) {
+          target.style.objectFit = "contain";
+          target.style.maxWidth = "100%";
+          target.style.maxHeight = "100%";
+        }
       };
 
       img.addEventListener('error', handleError);
@@ -103,7 +120,7 @@ export default function SarusHubContent({
                 <img
                   src={img}
                   alt={`Image ${idx + 1}`}
-                  className="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                  className="w-full h-48 object-contain bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                   onClick={() => window.open(img, "_blank")}
                   onError={(e) => {
                     console.error("Galeri görseli yüklenemedi:", img);
@@ -133,7 +150,7 @@ export default function SarusHubContent({
                 key={idx}
                 src={img}
                 alt={`Image ${idx + 1}`}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                className={`absolute inset-0 w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5 transition-opacity duration-500 ${
                   idx === currentImageIndex ? "opacity-100" : "opacity-0"
                 }`}
                 onError={(e) => {
@@ -190,7 +207,7 @@ export default function SarusHubContent({
                 <img
                   src={img}
                   alt={`Image ${idx + 1}`}
-                  className="w-full h-64 object-cover rounded-lg shadow-md"
+                  className="w-full h-64 object-contain bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg shadow-md"
                   onError={(e) => {
                     console.error("Grid görseli yüklenemedi:", img);
                     const target = e.target as HTMLImageElement;
@@ -218,7 +235,7 @@ export default function SarusHubContent({
             <img
               src={allImages[0]}
               alt="Featured"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5"
               onError={(e) => {
                 console.error("Resim yüklenemedi:", allImages[0]);
                 const target = e.target as HTMLImageElement;
@@ -282,7 +299,7 @@ export default function SarusHubContent({
           ) : (
             <video
               controls
-              className="w-full h-full"
+              className="w-full h-full object-contain bg-black"
               src={video}
               onError={() => {
                 console.error("Video yüklenemedi:", video);

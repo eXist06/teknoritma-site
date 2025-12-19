@@ -127,7 +127,7 @@ export default function SarusHubPageEN() {
                 {featured.video ? (
                   <video
                     src={featured.video}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5"
                     muted
                     loop
                     playsInline
@@ -142,7 +142,7 @@ export default function SarusHubPageEN() {
                   <img
                     src={featured.primaryImage || featured.image || ""}
                     alt={featured.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5"
                     onError={(e) => {
                       console.error("Görsel yüklenemedi:", featured.primaryImage || featured.image);
                       const target = e.target as HTMLImageElement;
@@ -295,7 +295,7 @@ export default function SarusHubPageEN() {
                     {item.video ? (
                       <video
                         src={item.video}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5"
                         muted
                         loop
                         playsInline
@@ -310,7 +310,7 @@ export default function SarusHubPageEN() {
                       <img
                         src={item.primaryImage || item.image}
                         alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-accent/5"
                         onError={(e) => {
                           console.error("Görsel yüklenemedi:", item.primaryImage || item.image);
                           const target = e.target as HTMLImageElement;

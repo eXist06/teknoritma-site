@@ -123,7 +123,7 @@ export default function AdminSarusHubEditPageEN() {
     });
   };
 
-  const handleImageUpload = async (file: File, setAsPrimary: boolean = false) => {
+  const handleImageUpload = async (file: File, setAsPrimary: boolean = false, inputElement?: HTMLInputElement) => {
     setImageUploading(true);
     try {
       const uploadFormData = new FormData();
@@ -152,18 +152,30 @@ export default function AdminSarusHubEditPageEN() {
             };
           });
         }
+        // Clear input so same file can be selected again
+        if (inputElement) {
+          inputElement.value = "";
+        }
       } else {
         alert(data.error || "Failed to upload image");
+        // Clear input on error
+        if (inputElement) {
+          inputElement.value = "";
+        }
       }
     } catch (error) {
       console.error("Image upload error:", error);
       alert("An error occurred while uploading image");
+      // Clear input on error
+      if (inputElement) {
+        inputElement.value = "";
+      }
     } finally {
       setImageUploading(false);
     }
   };
 
-  const handleMultipleImageUpload = async (files: FileList) => {
+  const handleMultipleImageUpload = async (files: FileList, inputElement?: HTMLInputElement) => {
     setMultipleImagesUploading(true);
     try {
       const uploadPromises = Array.from(files).map((file) => {
@@ -188,10 +200,24 @@ export default function AdminSarusHubEditPageEN() {
             images: [...currentImages, ...uploadedUrls],
           };
         });
+        // Clear input
+        if (inputElement) {
+          inputElement.value = "";
+        }
+      } else {
+        alert("No images were uploaded");
+        // Clear input on error
+        if (inputElement) {
+          inputElement.value = "";
+        }
       }
     } catch (error) {
       console.error("Multiple image upload error:", error);
       alert("An error occurred while uploading images");
+      // Clear input on error
+      if (inputElement) {
+        inputElement.value = "";
+      }
     } finally {
       setMultipleImagesUploading(false);
     }
@@ -219,7 +245,7 @@ export default function AdminSarusHubEditPageEN() {
     }));
   };
 
-  const handleVideoUpload = async (file: File) => {
+  const handleVideoUpload = async (file: File, inputElement?: HTMLInputElement) => {
     setVideoUploading(true);
     try {
       const uploadFormData = new FormData();
@@ -234,13 +260,24 @@ export default function AdminSarusHubEditPageEN() {
 
       if (response.ok && data.url) {
         setFormData((prev) => ({ ...prev, video: data.url }));
-        alert("Video uploaded successfully!");
+        // Clear input
+        if (inputElement) {
+          inputElement.value = "";
+        }
       } else {
         alert(data.error || "Failed to upload video");
+        // Clear input on error
+        if (inputElement) {
+          inputElement.value = "";
+        }
       }
     } catch (error) {
       console.error("Video upload error:", error);
       alert("An error occurred while uploading video");
+      // Clear input on error
+      if (inputElement) {
+        inputElement.value = "";
+      }
     } finally {
       setVideoUploading(false);
     }
@@ -549,12 +586,35 @@ export default function AdminSarusHubEditPageEN() {
                   <img
                     src={formData.primaryImage}
                     alt="Primary"
-                    className="w-full h-64 object-cover rounded-lg"
+                    className="w-full h-64 object-cover rounded-lg border border-neutral-border"
+                    onError={(e) => {
+                      console.error("Image failed to load:", formData.primaryImage);
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = "none";
+                      const container = target.parentElement;
+                      if (container && !container.querySelector('.image-error')) {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'image-error w-full h-64 flex items-center justify-center bg-red-50 border border-red-200 rounded-lg';
+                        errorDiv.innerHTML = '<div class="text-center text-red-600"><p class="text-sm font-medium">Image failed to load</p><p class="text-xs mt-1">' + formData.primaryImage + '</p></div>';
+                        container.appendChild(errorDiv);
+                      }
+                    }}
+                    onLoad={(e) => {
+                      // Remove error message when image loads successfully
+                      const target = e.target as HTMLImageElement;
+                      const container = target.parentElement;
+                      if (container) {
+                        const errorDiv = container.querySelector('.image-error');
+                        if (errorDiv) {
+                          errorDiv.remove();
+                        }
+                      }
+                    }}
                   />
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(formData.primaryImage!)}
-                    className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600"
+                    className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600 z-10"
                   >
                     Remove
                   </button>
@@ -568,7 +628,10 @@ export default function AdminSarusHubEditPageEN() {
                 accept="image/*"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) handleImageUpload(file, true);
+                  const inputElement = e.target as HTMLInputElement;
+                  if (file) {
+                    handleImageUpload(file, true, inputElement);
+                  }
                 }}
                 disabled={imageUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
@@ -588,7 +651,29 @@ export default function AdminSarusHubEditPageEN() {
                       <img
                         src={img}
                         alt={`Image ${idx + 1}`}
-                        className="w-full h-32 object-cover rounded-lg"
+                        className="w-full h-32 object-cover rounded-lg border border-neutral-border"
+                        onError={(e) => {
+                          console.error("Image failed to load:", img);
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = "none";
+                          const container = target.parentElement;
+                          if (container && !container.querySelector('.image-error')) {
+                            const errorDiv = document.createElement('div');
+                            errorDiv.className = 'image-error w-full h-32 flex items-center justify-center bg-red-50 border border-red-200 rounded-lg';
+                            errorDiv.innerHTML = '<p class="text-xs text-red-600 text-center">Image failed to load</p>';
+                            container.appendChild(errorDiv);
+                          }
+                        }}
+                        onLoad={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          const container = target.parentElement;
+                          if (container) {
+                            const errorDiv = container.querySelector('.image-error');
+                            if (errorDiv) {
+                              errorDiv.remove();
+                            }
+                          }
+                        }}
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors rounded-lg flex items-center justify-center gap-2">
                         <button
@@ -618,7 +703,10 @@ export default function AdminSarusHubEditPageEN() {
                 multiple
                 onChange={(e) => {
                   const files = e.target.files;
-                  if (files && files.length > 0) handleMultipleImageUpload(files);
+                  const inputElement = e.target as HTMLInputElement;
+                  if (files && files.length > 0) {
+                    handleMultipleImageUpload(files, inputElement);
+                  }
                 }}
                 disabled={multipleImagesUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
@@ -671,7 +759,10 @@ export default function AdminSarusHubEditPageEN() {
                 accept="video/*"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) handleVideoUpload(file);
+                  const inputElement = e.target as HTMLInputElement;
+                  if (file) {
+                    handleVideoUpload(file, inputElement);
+                  }
                 }}
                 disabled={videoUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"

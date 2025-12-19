@@ -95,7 +95,7 @@ export default function AdminSarusHubEditPage() {
     });
   };
 
-  const handleImageUpload = async (file: File, setAsPrimary: boolean = false) => {
+  const handleImageUpload = async (file: File, setAsPrimary: boolean = false, inputElement?: HTMLInputElement) => {
     setImageUploading(true);
     try {
       const uploadFormData = new FormData();
@@ -124,18 +124,30 @@ export default function AdminSarusHubEditPage() {
             };
           });
         }
+        // Input'u temizle ki aynı dosya tekrar seçilebilsin
+        if (inputElement) {
+          inputElement.value = "";
+        }
       } else {
         alert(data.error || "Resim yüklenemedi");
+        // Hata durumunda da input'u temizle
+        if (inputElement) {
+          inputElement.value = "";
+        }
       }
     } catch (error) {
       console.error("Image upload error:", error);
       alert("Resim yüklenirken bir hata oluştu");
+      // Hata durumunda da input'u temizle
+      if (inputElement) {
+        inputElement.value = "";
+      }
     } finally {
       setImageUploading(false);
     }
   };
 
-  const handleMultipleImageUpload = async (files: FileList) => {
+  const handleMultipleImageUpload = async (files: FileList, inputElement?: HTMLInputElement) => {
     setMultipleImagesUploading(true);
     try {
       const uploadPromises = Array.from(files).map(async (file) => {
@@ -150,16 +162,32 @@ export default function AdminSarusHubEditPage() {
       });
 
       const uploadedUrls = (await Promise.all(uploadPromises)).filter(Boolean) as string[];
-      setFormData((prev) => {
-        const currentImages = prev.images || [];
-        return { 
-          ...prev, 
-          images: [...currentImages, ...uploadedUrls],
-        };
-      });
+      if (uploadedUrls.length > 0) {
+        setFormData((prev) => {
+          const currentImages = prev.images || [];
+          return { 
+            ...prev, 
+            images: [...currentImages, ...uploadedUrls],
+          };
+        });
+        // Input'u temizle
+        if (inputElement) {
+          inputElement.value = "";
+        }
+      } else {
+        alert("Hiçbir resim yüklenemedi");
+        // Hata durumunda da input'u temizle
+        if (inputElement) {
+          inputElement.value = "";
+        }
+      }
     } catch (error) {
       console.error("Multiple image upload error:", error);
       alert("Resimler yüklenirken bir hata oluştu");
+      // Hata durumunda da input'u temizle
+      if (inputElement) {
+        inputElement.value = "";
+      }
     } finally {
       setMultipleImagesUploading(false);
     }
@@ -185,7 +213,7 @@ export default function AdminSarusHubEditPage() {
     });
   };
 
-  const handleVideoUpload = async (file: File) => {
+  const handleVideoUpload = async (file: File, inputElement?: HTMLInputElement) => {
     setVideoUploading(true);
     try {
       const formData = new FormData();
@@ -200,12 +228,24 @@ export default function AdminSarusHubEditPage() {
 
       if (response.ok && data.url) {
         setFormData({ ...formData, video: data.url });
+        // Input'u temizle
+        if (inputElement) {
+          inputElement.value = "";
+        }
       } else {
         alert(data.error || "Video yüklenemedi");
+        // Hata durumunda da input'u temizle
+        if (inputElement) {
+          inputElement.value = "";
+        }
       }
     } catch (error) {
       console.error("Video upload error:", error);
       alert("Video yüklenirken bir hata oluştu");
+      // Hata durumunda da input'u temizle
+      if (inputElement) {
+        inputElement.value = "";
+      }
     } finally {
       setVideoUploading(false);
     }
@@ -502,12 +542,35 @@ export default function AdminSarusHubEditPage() {
                   <img
                     src={formData.primaryImage}
                     alt="Primary"
-                    className="w-full h-64 object-cover rounded-lg"
+                    className="w-full h-64 object-cover rounded-lg border border-neutral-border"
+                    onError={(e) => {
+                      console.error("Görsel yüklenemedi:", formData.primaryImage);
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = "none";
+                      const container = target.parentElement;
+                      if (container && !container.querySelector('.image-error')) {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'image-error w-full h-64 flex items-center justify-center bg-red-50 border border-red-200 rounded-lg';
+                        errorDiv.innerHTML = '<div class="text-center text-red-600"><p class="text-sm font-medium">Görsel yüklenemedi</p><p class="text-xs mt-1">' + formData.primaryImage + '</p></div>';
+                        container.appendChild(errorDiv);
+                      }
+                    }}
+                    onLoad={(e) => {
+                      // Görsel yüklendiğinde error mesajını kaldır
+                      const target = e.target as HTMLImageElement;
+                      const container = target.parentElement;
+                      if (container) {
+                        const errorDiv = container.querySelector('.image-error');
+                        if (errorDiv) {
+                          errorDiv.remove();
+                        }
+                      }
+                    }}
                   />
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(formData.primaryImage!)}
-                    className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600"
+                    className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600 z-10"
                   >
                     Kaldır
                   </button>
@@ -521,7 +584,10 @@ export default function AdminSarusHubEditPage() {
                 accept="image/*"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) handleImageUpload(file, true);
+                  const inputElement = e.target as HTMLInputElement;
+                  if (file) {
+                    handleImageUpload(file, true, inputElement);
+                  }
                 }}
                 disabled={imageUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
@@ -541,7 +607,29 @@ export default function AdminSarusHubEditPage() {
                       <img
                         src={img}
                         alt={`Image ${idx + 1}`}
-                        className="w-full h-32 object-cover rounded-lg"
+                        className="w-full h-32 object-cover rounded-lg border border-neutral-border"
+                        onError={(e) => {
+                          console.error("Görsel yüklenemedi:", img);
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = "none";
+                          const container = target.parentElement;
+                          if (container && !container.querySelector('.image-error')) {
+                            const errorDiv = document.createElement('div');
+                            errorDiv.className = 'image-error w-full h-32 flex items-center justify-center bg-red-50 border border-red-200 rounded-lg';
+                            errorDiv.innerHTML = '<p class="text-xs text-red-600 text-center">Görsel yüklenemedi</p>';
+                            container.appendChild(errorDiv);
+                          }
+                        }}
+                        onLoad={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          const container = target.parentElement;
+                          if (container) {
+                            const errorDiv = container.querySelector('.image-error');
+                            if (errorDiv) {
+                              errorDiv.remove();
+                            }
+                          }
+                        }}
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors rounded-lg flex items-center justify-center gap-2">
                         <button
@@ -571,7 +659,10 @@ export default function AdminSarusHubEditPage() {
                 multiple
                 onChange={(e) => {
                   const files = e.target.files;
-                  if (files && files.length > 0) handleMultipleImageUpload(files);
+                  const inputElement = e.target as HTMLInputElement;
+                  if (files && files.length > 0) {
+                    handleMultipleImageUpload(files, inputElement);
+                  }
                 }}
                 disabled={multipleImagesUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
@@ -624,7 +715,10 @@ export default function AdminSarusHubEditPage() {
                 accept="video/*"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) handleVideoUpload(file);
+                  const inputElement = e.target as HTMLInputElement;
+                  if (file) {
+                    handleVideoUpload(file, inputElement);
+                  }
                 }}
                 disabled={videoUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
