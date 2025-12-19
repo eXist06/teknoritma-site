@@ -885,31 +885,40 @@ export default function CareersPage() {
                   <label className="block text-sm font-medium text-neutral-heading mb-2">
                     {language === "en" ? "CV (PDF only)" : "CV (Sadece PDF)"}
                   </label>
-                  <input
-                    type="file"
-                    accept=".pdf,application/pdf"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0] || null;
-                      if (file && file.type !== "application/pdf") {
-                        setTalentFormMessage({ 
-                          type: "error", 
-                          text: language === "en" ? "CV must be a PDF file" : "CV PDF formatında olmalıdır" 
-                        });
-                        e.target.value = "";
-                        return;
-                      }
-                      setCvFile(file);
-                    }}
-                    className="w-full px-4 py-3 border border-neutral-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
+                  <div className="relative">
+                    <input
+                      type="file"
+                      id="cv-upload"
+                      accept=".pdf,application/pdf"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        if (file && file.type !== "application/pdf") {
+                          setTalentFormMessage({ 
+                            type: "error", 
+                            text: language === "en" ? "CV must be a PDF file" : "CV PDF formatında olmalıdır" 
+                          });
+                          e.target.value = "";
+                          return;
+                        }
+                        setCvFile(file);
+                      }}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                    />
+                    <div className="w-full px-4 py-3 border border-neutral-border rounded-lg bg-white flex items-center justify-between">
+                      <span className="text-neutral-body text-sm">
+                        {cvFile 
+                          ? cvFile.name 
+                          : (language === "en" ? "Choose File" : "Dosya Seçin")
+                        }
+                      </span>
+                      <span className="text-primary text-sm font-medium">
+                        {language === "en" ? "Browse" : "Gözat"}
+                      </span>
+                    </div>
+                  </div>
                   <p className="mt-2 text-xs text-neutral-body">
                     {language === "en" ? "Please upload your CV in PDF format" : "Lütfen CV'nizi PDF formatında yükleyin"}
                   </p>
-                  {cvFile && (
-                    <p className="mt-2 text-sm text-neutral-body">
-                      {language === "en" ? "Selected:" : "Seçilen:"} {cvFile.name}
-                    </p>
-                  )}
                 </div>
               </>
             ) : (
