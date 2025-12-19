@@ -389,7 +389,7 @@ export default function SarusPacsPage() {
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
             <span className="text-primary">Sarus</span>{" "}
-            <span className="text-neutral-heading">PACS Çözümleri</span>
+            <span className="text-neutral-heading">{language === "en" ? "PACS Solutions" : "PACS Çözümleri"}</span>
           </h2>
           <p className="text-lg md:text-xl text-neutral-body max-w-3xl mx-auto mt-4">
             {t("pacs.solutions.subtitle")}
@@ -1026,7 +1026,7 @@ export default function SarusPacsPage() {
         <div className="absolute inset-0 z-0">
           <img
             src="/bilkent.jpg"
-            alt="Bilkent Şehir Hastanesi"
+            alt={language === "en" ? "Bilkent City Hospital" : "Bilkent Şehir Hastanesi"}
             className="w-full h-full object-cover"
           />
           {/* Overlay for better text readability */}

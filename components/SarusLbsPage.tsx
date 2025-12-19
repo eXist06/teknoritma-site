@@ -391,7 +391,7 @@ export default function SarusLbsPage() {
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
             <span className="text-primary">Sarus</span>{" "}
-            <span className="text-neutral-heading">LBYS Çözümleri</span>
+            <span className="text-neutral-heading">{language === "en" ? "LIMS Solutions" : "LBYS Çözümleri"}</span>
           </h2>
           <p className="text-lg md:text-xl text-neutral-body max-w-3xl mx-auto mt-4">
             {t(`${translationKey}.features.subtitle`)}
