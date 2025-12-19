@@ -31,21 +31,25 @@ export default function StoriesPageEn() {
     title: language === "en" ? s.titleEn : s.title,
     description: language === "en" ? s.descriptionEn : s.description,
     url: s.url,
+    image: s.image,
   })) || [
     {
       title: "A day in the life as a Software Engineer",
       description: "Join our team member as they share what it's like to work in software development at Teknoritma's Ankara office.",
       url: "/en/careers/stories/software-engineer-day",
+      image: undefined,
     },
     {
       title: "5 reasons to join Teknoritma",
       description: "There are countless reasons people choose Teknoritma; the collaborative people, the breadth and depth of opportunities, and so much more.",
       url: "/en/careers/stories/5-reasons",
+      image: undefined,
     },
     {
       title: "Empowering growth: Career journey",
       description: "Embarking on a career journey with Teknoritma has been a transformative experience. Watch to learn more about the remarkable growth.",
       url: "/en/careers/stories/career-journey",
+      image: undefined,
     },
   ];
 
@@ -91,13 +95,28 @@ export default function StoriesPageEn() {
                 transition={{ delay: index * 0.1, duration: 0.6 }}
                 className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow group border border-neutral-border"
               >
-                <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg h-48 mb-4 flex items-center justify-center">
-                  <span className="text-neutral-body">{story.title}</span>
+                <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg h-48 mb-4 overflow-hidden">
+                  {story.image ? (
+                    <img 
+                      src={story.image} 
+                      alt={story.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-neutral-body">{story.title}</span>
+                    </div>
+                  )}
                 </div>
                 <h3 className="text-xl font-bold text-neutral-heading mb-2 group-hover:text-primary transition-colors">
                   {story.title}
                 </h3>
-                <p className="text-neutral-body mb-4 leading-relaxed">{story.description}</p>
+                <p className="text-neutral-body mb-4 leading-relaxed overflow-hidden" style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  textOverflow: 'ellipsis'
+                }}>{story.description}</p>
                 <span className="text-primary font-medium group-hover:underline">
                   Read more ›
                 </span>

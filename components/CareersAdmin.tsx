@@ -6,6 +6,7 @@ import { useI18n } from "@/lib/i18n";
 import { JobPosting, CareersContent } from "@/lib/types/careers";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ChevronUp, ChevronDown } from "lucide-react";
 
 export default function CareersAdmin() {
   const { language } = useI18n();
@@ -1982,9 +1983,47 @@ function ContentEditor({
           {content.exploreLife.stories.map((story, index) => (
             <div key={index} className="border border-neutral-border rounded-lg p-4">
               <div className="flex justify-between items-center mb-3">
-                <h4 className="font-medium text-neutral-heading">
-                  Story {index + 1}
-                </h4>
+                <div className="flex items-center gap-2">
+                  <h4 className="font-medium text-neutral-heading">
+                    Story {index + 1}
+                  </h4>
+                  <div className="flex flex-col gap-0.5">
+                    <button
+                      onClick={() => {
+                        if (index > 0) {
+                          const newStories = [...content.exploreLife.stories];
+                          [newStories[index - 1], newStories[index]] = [newStories[index], newStories[index - 1]];
+                          onChange({
+                            ...content,
+                            exploreLife: { ...content.exploreLife, stories: newStories },
+                          });
+                        }
+                      }}
+                      disabled={index === 0}
+                      className="p-1 hover:bg-neutral-light rounded disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      title={currentLang === "en" ? "Move up" : "Yukarı taşı"}
+                    >
+                      <ChevronUp className="w-4 h-4 text-neutral-body" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (index < content.exploreLife.stories.length - 1) {
+                          const newStories = [...content.exploreLife.stories];
+                          [newStories[index], newStories[index + 1]] = [newStories[index + 1], newStories[index]];
+                          onChange({
+                            ...content,
+                            exploreLife: { ...content.exploreLife, stories: newStories },
+                          });
+                        }
+                      }}
+                      disabled={index === content.exploreLife.stories.length - 1}
+                      className="p-1 hover:bg-neutral-light rounded disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      title={currentLang === "en" ? "Move down" : "Aşağı taşı"}
+                    >
+                      <ChevronDown className="w-4 h-4 text-neutral-body" />
+                    </button>
+                  </div>
+                </div>
                 <button
                   onClick={() => {
                     const newStories = content.exploreLife.stories.filter((_, i) => i !== index);
@@ -2116,6 +2155,7 @@ function ContentEditor({
                 description: "",
                 descriptionEn: "",
                 url: "",
+                image: "",
               };
               onChange({
                 ...content,
