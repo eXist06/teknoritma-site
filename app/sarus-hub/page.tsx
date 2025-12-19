@@ -46,11 +46,22 @@ export default function SarusHubPage() {
       const params = new URLSearchParams();
       if (filters.type !== "all") params.append("type", filters.type);
       if (filters.search) params.append("search", filters.search);
-      if (filters.language !== "all") params.append("language", filters.language);
+      // Always filter for Turkish content on Turkish page
+      if (filters.language !== "all") {
+        params.append("language", filters.language);
+      } else {
+        params.append("language", "tr");
+      }
 
       const response = await fetch(`/api/sarus-hub/content?${params.toString()}`);
       const data = await response.json();
-      setItems(data.items || []);
+      
+      // Additional filter to ensure only Turkish and mixed language items are shown
+      const filteredItems = (data.items || []).filter(
+        (item: SarusHubItem) => item.language === "tr" || item.language === "mixed"
+      );
+      
+      setItems(filteredItems);
     } catch (error) {
       console.error("Error fetching items:", error);
     } finally {

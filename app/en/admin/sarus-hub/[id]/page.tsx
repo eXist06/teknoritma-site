@@ -134,9 +134,20 @@ export default function AdminSarusHubEditPageEN() {
         body: uploadFormData,
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { error: errorText || `HTTP ${response.status}: ${response.statusText}` };
+        }
+        throw new Error(errorData.error || errorData.message || `Upload failed: ${response.status}`);
+      }
+
       const data = await response.json();
 
-      if (response.ok && data.url) {
+      if (data.url) {
         if (setAsPrimary) {
           setFormData((prev) => ({ 
             ...prev, 
@@ -157,15 +168,12 @@ export default function AdminSarusHubEditPageEN() {
           inputElement.value = "";
         }
       } else {
-        alert(data.error || "Failed to upload image");
-        // Clear input on error
-        if (inputElement) {
-          inputElement.value = "";
-        }
+        throw new Error(data.error || "Failed to upload image: URL not received");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Image upload error:", error);
-      alert("An error occurred while uploading image");
+      const errorMessage = error?.message || error?.error || "An error occurred while uploading image";
+      alert(`Image upload error: ${errorMessage}`);
       // Clear input on error
       if (inputElement) {
         inputElement.value = "";
@@ -178,20 +186,36 @@ export default function AdminSarusHubEditPageEN() {
   const handleMultipleImageUpload = async (files: FileList, inputElement?: HTMLInputElement) => {
     setMultipleImagesUploading(true);
     try {
-      const uploadPromises = Array.from(files).map((file) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        return fetch("/api/sarus-hub/upload-image", {
-          method: "POST",
-          body: formData,
-        }).then((res) => res.json());
+      const uploadPromises = Array.from(files).map(async (file) => {
+        try {
+          const uploadFormData = new FormData();
+          uploadFormData.append("file", file);
+          const response = await fetch("/api/sarus-hub/upload-image", {
+            method: "POST",
+            body: uploadFormData,
+          });
+          
+          if (!response.ok) {
+            const errorText = await response.text();
+            let errorData;
+            try {
+              errorData = JSON.parse(errorText);
+            } catch {
+              errorData = { error: errorText || `HTTP ${response.status}` };
+            }
+            console.error(`Upload failed for ${file.name}:`, errorData);
+            return null;
+          }
+          
+          const data = await response.json();
+          return data.url ? data.url : null;
+        } catch (error) {
+          console.error(`Error uploading ${file.name}:`, error);
+          return null;
+        }
       });
 
-      const results = await Promise.all(uploadPromises);
-      const uploadedUrls = results
-        .filter((r) => r.url)
-        .map((r) => r.url);
-
+      const uploadedUrls = (await Promise.all(uploadPromises)).filter(Boolean) as string[];
       if (uploadedUrls.length > 0) {
         setFormData((prev) => {
           const currentImages = prev.images || [];
@@ -203,6 +227,11 @@ export default function AdminSarusHubEditPageEN() {
         // Clear input
         if (inputElement) {
           inputElement.value = "";
+        }
+        
+        // Inform user if some files failed to upload
+        if (uploadedUrls.length < files.length) {
+          alert(`${uploadedUrls.length}/${files.length} images uploaded successfully. Some images failed to upload.`);
         }
       } else {
         alert("No images were uploaded");

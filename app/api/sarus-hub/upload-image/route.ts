@@ -55,16 +55,52 @@ export async function POST(request: NextRequest) {
     const filename = `${timestamp}_${originalName}`;
     const filepath = path.join(uploadsDir, filename);
 
-    // Write file
-    await writeFile(filepath, buffer);
-
-    // Return public URL
-    const publicUrl = `/uploads/sarus-hub/${filename}`;
-
-    return NextResponse.json({ url: publicUrl, filename });
-  } catch (error) {
+    // Write file with better error handling
+    try {
+      await writeFile(filepath, buffer);
+      
+      // Verify file was written successfully
+      const fs = await import("fs");
+      if (!fs.existsSync(filepath)) {
+        throw new Error("File was not written successfully");
+      }
+      
+      // Return public URL
+      const publicUrl = `/uploads/sarus-hub/${filename}`;
+      
+      return NextResponse.json({ url: publicUrl, filename });
+    } catch (writeError: any) {
+      console.error("Error writing file:", writeError);
+      // Check if it's a permission error
+      if (writeError.code === "EACCES" || writeError.code === "EPERM") {
+        return NextResponse.json(
+          { error: "Permission denied. Please check directory permissions." },
+          { status: 500 }
+        );
+      }
+      // Check if it's a disk space error
+      if (writeError.code === "ENOSPC") {
+        return NextResponse.json(
+          { error: "Insufficient disk space." },
+          { status: 500 }
+        );
+      }
+      throw writeError; // Re-throw to be caught by outer catch
+    }
+  } catch (error: any) {
     console.error("Error uploading image:", error);
-    return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
+    console.error("Error details:", {
+      message: error?.message,
+      code: error?.code,
+      stack: error?.stack,
+    });
+    
+    // Return more detailed error message
+    const errorMessage = error?.message || "Failed to upload image";
+    return NextResponse.json(
+      { error: errorMessage, details: error?.code },
+      { status: 500 }
+    );
   }
 }
 

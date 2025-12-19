@@ -106,9 +106,20 @@ export default function AdminSarusHubEditPage() {
         body: uploadFormData,
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { error: errorText || `HTTP ${response.status}: ${response.statusText}` };
+        }
+        throw new Error(errorData.error || errorData.message || `Upload failed: ${response.status}`);
+      }
+
       const data = await response.json();
 
-      if (response.ok && data.url) {
+      if (data.url) {
         if (setAsPrimary) {
           setFormData((prev) => ({ 
             ...prev, 
@@ -129,15 +140,12 @@ export default function AdminSarusHubEditPage() {
           inputElement.value = "";
         }
       } else {
-        alert(data.error || "Resim yüklenemedi");
-        // Hata durumunda da input'u temizle
-        if (inputElement) {
-          inputElement.value = "";
-        }
+        throw new Error(data.error || "Resim yüklenemedi: URL alınamadı");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Image upload error:", error);
-      alert("Resim yüklenirken bir hata oluştu");
+      const errorMessage = error?.message || error?.error || "Resim yüklenirken bir hata oluştu";
+      alert(`Resim yükleme hatası: ${errorMessage}`);
       // Hata durumunda da input'u temizle
       if (inputElement) {
         inputElement.value = "";
@@ -151,14 +159,32 @@ export default function AdminSarusHubEditPage() {
     setMultipleImagesUploading(true);
     try {
       const uploadPromises = Array.from(files).map(async (file) => {
-        const uploadFormData = new FormData();
-        uploadFormData.append("file", file);
-        const response = await fetch("/api/sarus-hub/upload-image", {
-          method: "POST",
-          body: uploadFormData,
-        });
-        const data = await response.json();
-        return response.ok && data.url ? data.url : null;
+        try {
+          const uploadFormData = new FormData();
+          uploadFormData.append("file", file);
+          const response = await fetch("/api/sarus-hub/upload-image", {
+            method: "POST",
+            body: uploadFormData,
+          });
+          
+          if (!response.ok) {
+            const errorText = await response.text();
+            let errorData;
+            try {
+              errorData = JSON.parse(errorText);
+            } catch {
+              errorData = { error: errorText || `HTTP ${response.status}` };
+            }
+            console.error(`Upload failed for ${file.name}:`, errorData);
+            return null;
+          }
+          
+          const data = await response.json();
+          return data.url ? data.url : null;
+        } catch (error) {
+          console.error(`Error uploading ${file.name}:`, error);
+          return null;
+        }
       });
 
       const uploadedUrls = (await Promise.all(uploadPromises)).filter(Boolean) as string[];
@@ -173,6 +199,11 @@ export default function AdminSarusHubEditPage() {
         // Input'u temizle
         if (inputElement) {
           inputElement.value = "";
+        }
+        
+        // Eğer bazı dosyalar yüklenemediyse kullanıcıyı bilgilendir
+        if (uploadedUrls.length < files.length) {
+          alert(`${uploadedUrls.length}/${files.length} görsel başarıyla yüklendi. Bazı görseller yüklenemedi.`);
         }
       } else {
         alert("Hiçbir resim yüklenemedi");

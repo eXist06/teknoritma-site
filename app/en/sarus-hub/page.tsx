@@ -46,13 +46,13 @@ export default function SarusHubPageEN() {
       const params = new URLSearchParams();
       if (filters.type !== "all") params.append("type", filters.type);
       if (filters.search) params.append("search", filters.search);
-      if (filters.language !== "all") params.append("language", filters.language);
+      // Always filter for English content on English page
+      params.append("language", "en");
 
       const response = await fetch(`/api/sarus-hub/content?${params.toString()}`);
       const data = await response.json();
       
-      // Filter to show only English and mixed language items on English page
-      // API already includes English translations of Turkish items
+      // Additional filter to ensure only English and mixed language items are shown
       const filteredItems = (data.items || []).filter(
         (item: SarusHubItem) => item.language === "en" || item.language === "mixed"
       );

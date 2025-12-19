@@ -37,10 +37,13 @@ export async function generateStaticParams() {
   const { getAllItems } = await import("@/lib/db/sarus-hub");
   const { initializeDatabase } = await import("@/lib/db/schema");
   initializeDatabase();
-  const items = getAllItems({}, false); // Only published items
-  return items.map((item) => ({
-    slug: item.slug,
-  }));
+  // Only get English and mixed language items for English pages
+  const items = getAllItems({ language: "en" }, false); // Only published items
+  return items
+    .filter((item) => item.language === "en" || item.language === "mixed")
+    .map((item) => ({
+      slug: item.slug,
+    }));
 }
 
 export async function generateMetadata({
@@ -56,7 +59,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const item = getItemBySlug(slug);
   
-  if (!item || item.status !== "published") {
+  if (!item || item.status !== "published" || (item.language !== "en" && item.language !== "mixed")) {
     return {
       title: "Content Not Found",
     };
@@ -161,6 +164,21 @@ export default async function SarusHubDetailPageEN({
           )}
           <Link href={isPreview ? "/en/admin/sarus-hub" : "/en/sarus-hub"} className="text-primary hover:underline">
             {isPreview ? "Back to Admin Panel" : "Back to Sarus-HUB"}
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Check language - English page should only show English or mixed content
+  if (!isPreview && item.language !== "en" && item.language !== "mixed") {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-neutral-heading mb-4">Content Not Found</h1>
+          <p className="text-neutral-body mb-4">This content is not available in English.</p>
+          <Link href="/en/sarus-hub" className="text-primary hover:underline">
+            Back to Sarus-HUB
           </Link>
         </div>
       </div>

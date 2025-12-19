@@ -27,13 +27,14 @@
 # /etc/nginx/sites-available/teknoritma-site
 
 # =========================
-# 1) HTTP -> HTTPS (tek host'a)
+# 1) HTTP -> HTTPS (tek domain)
 # =========================
 server {
     listen 80;
     listen [::]:80;
 
     server_name teknoritma.com.tr www.teknoritma.com.tr;
+
     return 301 https://teknoritma.com.tr$request_uri;
 }
 
@@ -50,12 +51,6 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/teknoritma.com.tr/privkey.pem;
     include             /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam         /etc/letsencrypt/ssl-dhparams.pem;
-
-    # Redirect response'larında da header görünsün (bazı scanner'lar buna bakıyor)
-    add_header Strict-Transport-Security "max-age=15552000; includeSubDomains" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-    add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=()" always;
 
     return 301 https://teknoritma.com.tr$request_uri;
 }
@@ -74,21 +69,27 @@ server {
     include             /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam         /etc/letsencrypt/ssl-dhparams.pem;
 
+    # Dosya yükleme limiti (görseller için 10MB, videolar için 100MB)
     client_max_body_size 150M;
+    
+    # Buffer ayarları (büyük dosya yüklemeleri için)
+    client_body_buffer_size 128k;
+    client_body_temp_path /var/cache/nginx/client_temp;
 
     # -------------------------
-    # Security Headers
+    # Security headers
     # -------------------------
     add_header Strict-Transport-Security "max-age=15552000; includeSubDomains" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=()" always;
 
-    # Next.js kırmamak için şimdilik 'unsafe-inline' ve 'unsafe-eval' var.
-    add_header Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data: https:; font-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; connect-src 'self' https: wss:; form-action 'self' https://teknoritma.com.tr; upgrade-insecure-requests" always;
+    # CSP tek satır (boş dönmemesi için)
+    # Not: Next.js kırmamak için 'unsafe-inline' ve 'unsafe-eval' var.
+    add_header Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frameors 'none'; img-src 'self' data: https:; font-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; connect-src 'self' https: wss:; form-action 'self' https://teknoritma.com.tr; upgrade-insecure-requests" always;
 
     # -------------------------
-    # Reverse Proxy
+    # Reverse proxy
     # -------------------------
     location / {
         proxy_pass http://127.0.0.1:4000;
@@ -99,11 +100,19 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto https;
 
+        # Websocket / upgrade (Next.js dev değil ama güvenli dursun)
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
 
+        # Buffer ayarları (büyük dosya yüklemeleri için)
+        proxy_request_buffering on;
+        proxy_buffering off;
+        proxy_max_temp_file_size 0;
+
+        # Timeouts (büyük dosya yüklemeleri için artırıldı)
         proxy_read_timeout 300s;
         proxy_send_timeout 300s;
+        proxy_connect_timeout 60s;
     }
 }
 

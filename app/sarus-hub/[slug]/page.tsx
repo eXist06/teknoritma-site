@@ -37,10 +37,13 @@ export async function generateStaticParams() {
   const { getAllItems } = await import("@/lib/db/sarus-hub");
   const { initializeDatabase } = await import("@/lib/db/schema");
   initializeDatabase();
-  const items = getAllItems({}, false); // Only published items
-  return items.map((item) => ({
-    slug: item.slug,
-  }));
+  // Only get Turkish and mixed language items for Turkish pages
+  const items = getAllItems({ language: "tr" }, false); // Only published items
+  return items
+    .filter((item) => item.language === "tr" || item.language === "mixed")
+    .map((item) => ({
+      slug: item.slug,
+    }));
 }
 
 export async function generateMetadata({
@@ -56,7 +59,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const item = getItemBySlug(slug);
   
-  if (!item || item.status !== "published") {
+  if (!item || item.status !== "published" || (item.language !== "tr" && item.language !== "mixed")) {
     return {
       title: "İçerik Bulunamadı",
     };
@@ -161,6 +164,21 @@ export default async function SarusHubDetailPage({
           )}
           <Link href={isPreview ? "/admin/sarus-hub" : "/sarus-hub"} className="text-primary hover:underline">
             {isPreview ? "Admin paneline dön" : "Sarus-HUB'a dön"}
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Check language - Turkish page should only show Turkish or mixed content
+  if (!isPreview && item.language !== "tr" && item.language !== "mixed") {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-neutral-heading mb-4">İçerik Bulunamadı</h1>
+          <p className="text-neutral-body mb-4">Bu içerik Türkçe sayfasında mevcut değil.</p>
+          <Link href="/sarus-hub" className="text-primary hover:underline">
+            Sarus-HUB'a dön
           </Link>
         </div>
       </div>
