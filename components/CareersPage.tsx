@@ -377,10 +377,10 @@ export default function CareersPage() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`px-6 py-3 rounded-lg font-medium transition-all cursor-pointer ${
                   selectedCategory === category.id
-                    ? "bg-primary text-white"
-                    : "bg-white text-neutral-heading hover:bg-neutral-light border border-neutral-border"
+                    ? "bg-primary text-white shadow-md scale-105"
+                    : "bg-white text-neutral-heading hover:bg-primary/10 hover:border-primary/50 hover:shadow-md border border-neutral-border active:scale-95"
                 }`}
               >
                 <span className="font-bold mr-2">{category.number}</span>
@@ -1046,7 +1046,12 @@ export default function CareersPage() {
                 <h3 className="text-xl font-bold text-neutral-heading mb-2 group-hover:text-primary transition-colors">
                   {story.title}
                 </h3>
-                <p className="text-neutral-body mb-4 leading-relaxed">{story.description}</p>
+                <p className="text-neutral-body mb-4 leading-relaxed overflow-hidden" style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  textOverflow: 'ellipsis'
+                }}>{story.description}</p>
                 <span className="text-primary font-medium group-hover:underline">
                   {language === "en" ? "Read more ›" : "Devamını oku ›"}
                 </span>
