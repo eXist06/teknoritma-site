@@ -181,34 +181,40 @@ export default function CareersPage() {
         {
           title: "A day in the life as a Software Engineer",
           description: "Join our team member as they share what it's like to work in software development at Teknoritma's Ankara office.",
-          url: "/en/careers/stories/software-engineer-day"
+          url: "/en/careers/stories/software-engineer-day",
+          image: undefined
         },
         {
           title: "5 reasons to join Teknoritma",
           description: "There are countless reasons people choose Teknoritma; the collaborative people, the breadth and depth of opportunities, and so much more.",
-          url: "/en/careers/stories/5-reasons"
+          url: "/en/careers/stories/5-reasons",
+          image: undefined
         },
         {
           title: "Empowering growth: Career journey",
           description: "Embarking on a career journey with Teknoritma has been a transformative experience. Watch to learn more about the remarkable growth.",
-          url: "/en/careers/stories/career-journey"
+          url: "/en/careers/stories/career-journey",
+          image: undefined
         }
       ]
     : [
         {
           title: "Yazılım Mühendisi olarak bir gün",
           description: "Teknoritma'nın Ankara ofisinde yazılım geliştirmede çalışmanın nasıl bir şey olduğunu ekibimizden bir üye paylaşıyor.",
-          url: "/kariyer/hikayeler/yazilim-muhendisi-gunu"
+          url: "/kariyer/hikayeler/yazilim-muhendisi-gunu",
+          image: undefined
         },
         {
           title: "Teknoritma'ya katılmanın 5 nedeni",
           description: "İnsanların Teknoritma'yı seçmesinin sayısız nedeni var; işbirlikçi insanlar, fırsatların genişliği ve derinliği ve çok daha fazlası.",
-          url: "/kariyer/hikayeler/5-neden"
+          url: "/kariyer/hikayeler/5-neden",
+          image: undefined
         },
         {
           title: "Büyümeyi güçlendirmek: Kariyer yolculuğu",
           description: "Teknoritma ile bir kariyer yolculuğuna çıkmak dönüştürücü bir deneyim oldu. Dikkat çekici büyümeyi öğrenmek için izleyin.",
-          url: "/kariyer/hikayeler/kariyer-yolculugu"
+          url: "/kariyer/hikayeler/kariyer-yolculugu",
+          image: undefined
         }
       ]);
 
@@ -1040,8 +1046,18 @@ export default function CareersPage() {
                 transition={{ delay: index * 0.1, duration: 0.6 }}
                 className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow group"
               >
-                <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg h-48 mb-4 flex items-center justify-center">
-                  <span className="text-neutral-body">{story.title}</span>
+                <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg h-48 mb-4 overflow-hidden">
+                  {story.image ? (
+                    <img 
+                      src={story.image} 
+                      alt={story.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-neutral-body">{story.title}</span>
+                    </div>
+                  )}
                 </div>
                 <h3 className="text-xl font-bold text-neutral-heading mb-2 group-hover:text-primary transition-colors">
                   {story.title}
