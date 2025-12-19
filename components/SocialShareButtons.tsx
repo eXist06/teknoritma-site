@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 interface SocialShareButtonsProps {
   url: string;
   title: string;
@@ -11,17 +13,33 @@ export default function SocialShareButtons({
   title,
   summary,
 }: SocialShareButtonsProps) {
-  const fullUrl = typeof window !== "undefined" ? window.location.origin + url : url;
-  const encodedUrl = encodeURIComponent(fullUrl);
-  const encodedTitle = encodeURIComponent(title);
-  const encodedSummary = encodeURIComponent(summary || "");
+  const [shareLinks, setShareLinks] = useState({
+    linkedin: "#",
+    twitter: "#",
+    facebook: "#",
+    instagram: "#",
+  });
+  const [fullUrl, setFullUrl] = useState<string>("");
+  
+  useEffect(() => {
+    // Only set full URL on client side to avoid hydration mismatch
+    if (typeof window !== "undefined") {
+      const baseUrl = window.location.origin;
+      const completeUrl = url.startsWith("http") ? url : baseUrl + url;
+      setFullUrl(completeUrl);
+      
+      const encodedUrl = encodeURIComponent(completeUrl);
+      const encodedTitle = encodeURIComponent(title);
+      const encodedSummary = encodeURIComponent(summary || "");
 
-  const shareLinks = {
-    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-    twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-    instagram: `https://www.instagram.com/create/story/?media=${encodedUrl}`,
-  };
+      setShareLinks({
+        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+        twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+        instagram: `https://www.instagram.com/create/story/?media=${encodedUrl}`,
+      });
+    }
+  }, [url, title, summary]);
 
   const copyToClipboard = async () => {
     try {

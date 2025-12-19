@@ -10,6 +10,7 @@ interface SarusHubContentProps {
   images?: string[];
   imageDisplayStyle?: ImageDisplayStyle;
   video?: string;
+  skipPrimaryImage?: boolean;
 }
 
 export default function SarusHubContent({
@@ -19,6 +20,7 @@ export default function SarusHubContent({
   images,
   imageDisplayStyle = "cover",
   video,
+  skipPrimaryImage = false,
 }: SarusHubContentProps) {
   const [videoError, setVideoError] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -110,12 +112,16 @@ export default function SarusHubContent({
   }, [content]);
 
   // Determine which images to show
+  // If skipPrimaryImage is true, don't include primary image in allImages
   const allImages = images && images.length > 0 
     ? images 
-    : (primaryImage || image ? [primaryImage || image] : []);
+    : (skipPrimaryImage ? [] : (primaryImage || image ? [primaryImage || image] : []));
 
   const renderImages = () => {
     if (!allImages || allImages.length === 0) return null;
+    
+    // If skipPrimaryImage is true and display style is cover, don't render primary image
+    if (skipPrimaryImage && imageDisplayStyle === "cover") return null;
 
     switch (imageDisplayStyle) {
       case "gallery":

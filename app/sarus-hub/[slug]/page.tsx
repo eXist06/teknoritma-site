@@ -4,8 +4,9 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { SarusHubItem, SarusHubItemType } from "@/lib/types/sarus-hub";
 import SarusHubContent from "@/components/SarusHubContent";
+import SarusHubPrimaryMedia from "@/components/SarusHubPrimaryMedia";
+import SarusHubHero from "@/components/SarusHubHero";
 import SocialShareButtons from "@/components/SocialShareButtons";
-import ViewCounter from "@/components/ViewCounter";
 import { verifySarusHubRole } from "@/lib/utils/role-verification";
 
 const typeLabels: Record<SarusHubItemType, string> = {
@@ -190,93 +191,120 @@ export default async function SarusHubDetailPage({
           </p>
         </div>
       )}
-      <div className="max-w-4xl mx-auto px-4 md:px-8 py-16 md:py-24">
+      {/* Hero Section */}
+      <SarusHubHero language="tr" showLink={false} />
+      <div className="max-w-4xl mx-auto px-4 md:px-8 py-8 md:py-12">
         {/* Back link */}
         <Link
           href={isPreview ? "/admin/sarus-hub" : "/sarus-hub"}
-          className="inline-flex items-center text-sm text-neutral-body hover:text-primary mb-8"
+          className="inline-flex items-center text-sm text-neutral-body hover:text-primary mb-6"
         >
           ← {isPreview ? "Admin paneline dön" : "Sarus-HUB'a dön"}
         </Link>
 
-        {/* Header */}
+        {/* Primary Image/Video - Always at the top */}
+        <div className="mb-6">
+          <SarusHubPrimaryMedia
+            image={item.primaryImage || item.image}
+            video={item.video}
+            title={item.title}
+          />
+        </div>
+
+        {/* Article Header - New Layout */}
         <header className="mb-8">
-          <div className="mb-4 flex items-center gap-3 text-sm">
-            <span
-              className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs ring-1 ${typeColors[item.type]}`}
-            >
-              {typeLabels[item.type]}
-            </span>
-            <span className="text-neutral-body">{item.publishedAt ? formatDate(item.publishedAt) : ""}</span>
-            {item.readingMinutes && (
-              <span className="text-neutral-body">• {item.readingMinutes} dk okuma</span>
-            )}
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-neutral-heading mb-4">
+          {/* Title */}
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-5 leading-tight tracking-tight">
             {item.title}
           </h1>
-          <p className="text-lg text-neutral-body mb-6">{item.summary}</p>
 
-          {/* Meta info */}
-          <div className="flex flex-wrap gap-2 mb-6 text-sm text-neutral-body">
-            {item.hospital && (
-              <span className="rounded-full bg-neutral-light px-3 py-1">
-                🏥 {item.hospital}
+          {/* Date + Content Type + Social Share (Single Line) */}
+          <div className="flex items-center justify-between gap-4 mb-6 text-sm">
+            <div className="flex items-center gap-4">
+              <span className="text-neutral-600">{item.publishedAt ? formatDate(item.publishedAt) : ""}</span>
+              <span className="text-neutral-400">•</span>
+              <span
+                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ring-1 ${typeColors[item.type]}`}
+              >
+                {typeLabels[item.type]}
               </span>
-            )}
-            {item.country && (
-              <span className="rounded-full bg-neutral-light px-3 py-1">
-                🌍 {item.country}
-              </span>
-            )}
-            {item.segment && (
-              <span className="rounded-full bg-neutral-light px-3 py-1">
-                {item.segment}
-              </span>
-            )}
-            {item.author && (
-              <span className="rounded-full bg-neutral-light px-3 py-1">
-                ✍️ {item.author}
-              </span>
-            )}
+              {item.readingMinutes && (
+                <>
+                  <span className="text-neutral-400">•</span>
+                  <span className="text-neutral-600">{item.readingMinutes} dk okuma</span>
+                </>
+              )}
+            </div>
+            {/* Social Share Icons (Right aligned / Horizontal) */}
+            <div className="flex items-center">
+              <SocialShareButtons
+                url={`/sarus-hub/${item.slug}`}
+                title={item.title}
+                summary={item.summary}
+              />
+            </div>
           </div>
 
-          {/* Tags */}
-          {item.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-6">
+          {/* Lead Paragraph (Summary) */}
+          <p className="text-lg md:text-xl text-neutral-700 mb-8 leading-relaxed max-w-3xl">
+            {item.summary}
+          </p>
+
+          {/* Meta Information - Enterprise Style */}
+          {(item.hospital || item.country || item.segment) && (
+            <div className="border-t border-neutral-200 pt-6 mb-8">
+              <div className="flex flex-wrap gap-4 text-sm">
+                {item.hospital && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-neutral-500">🏥</span>
+                    <span className="text-neutral-700 font-medium">{item.hospital}</span>
+                  </div>
+                )}
+                {item.country && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-neutral-500">🌍</span>
+                    <span className="text-neutral-700 font-medium">{item.country}</span>
+                  </div>
+                )}
+                {item.segment && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-neutral-500">📊</span>
+                    <span className="text-neutral-700 font-medium">{item.segment}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </header>
+
+        {/* Main Content */}
+        <article className="prose prose-lg max-w-none mb-8">
+          <SarusHubContent
+            content={item.content}
+            image={undefined}
+            primaryImage={undefined}
+            images={item.images}
+            imageDisplayStyle={item.imageDisplayStyle}
+            video={undefined}
+            skipPrimaryImage={true}
+          />
+        </article>
+
+        {/* Tags - At the bottom */}
+        {item.tags.length > 0 && (
+          <div className="border-t border-neutral-200 pt-8">
+            <div className="flex flex-wrap gap-2">
               {item.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-primary/10 text-primary px-3 py-1 text-sm"
+                  className="inline-flex items-center rounded-md bg-neutral-100 px-3 py-1.5 text-sm font-medium text-neutral-700 border border-neutral-200"
                 >
                   #{tag}
                 </span>
               ))}
             </div>
-          )}
-
-          {/* Social share */}
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <SocialShareButtons
-              url={`/sarus-hub/${item.slug}`}
-              title={item.title}
-              summary={item.summary}
-            />
-            <ViewCounter slug={item.slug} initialCount={item.viewCount || 0} />
           </div>
-        </header>
-
-        {/* Content */}
-        <article className="prose prose-lg max-w-none">
-          <SarusHubContent
-            content={item.content}
-            image={item.image}
-            primaryImage={item.primaryImage}
-            images={item.images}
-            imageDisplayStyle={item.imageDisplayStyle}
-            video={item.video}
-          />
-        </article>
+        )}
       </div>
     </div>
   );
