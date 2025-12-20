@@ -78,6 +78,13 @@ export default function Hero() {
 
   return (
     <>
+    {/* SEO H1 - Görsel olarak gizli ama semantic olarak H1 */}
+    {language === "tr" && (
+      <h1 className="sr-only">HBYS ve Kurumsal Hastane Bilgi Sistemleri</h1>
+    )}
+    {language === "en" && (
+      <h1 className="sr-only">Sarus EMR & EHR – Enterprise Hospital Information System</h1>
+    )}
     <section
       id="hero"
       className={`relative min-h-[85vh] flex items-start overflow-visible ${
@@ -440,8 +447,8 @@ export default function Hero() {
                   className="text-xl md:text-2xl lg:text-3xl font-bold text-neutral-heading leading-tight max-w-2xl tracking-tight"
                 >
                   {language === "en"
-                    ? "Discover innovative solutions through the Sarus Digital Health Platform..."
-                    : "Sarus Dijital Sağlık Platformu aracılığıyla yenilikçi çözümler ile buluşun..."}
+                    ? "Sarus EMR & EHR unifies clinical, administrative, and financial workflows within a single Hospital Information System."
+                    : "Sarus HBYS (Hastane Bilgi Sistemi), klinik, idari ve finansal süreçleri tek bir platformda bütünleştirir. Sağlık tesisleri için uçtan uca entegre bir dijital sağlık bilişimi altyapısı sunar."}
                 </motion.p>
 
                 {/* CTAs */}
