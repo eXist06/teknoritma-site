@@ -3,9 +3,9 @@ import SarusCloudPage from "@/components/SarusCloudPage";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "Sarus Cloud - Cloud-Based Hospital Information System",
+  title: "Cloud EMR - Cloud-Based Hospital Information System | Sarus Cloud | Teknoritma",
   description:
-    "Sarus Cloud is a cloud-based hospital information system solution. Modern hospital management with low cost, high security, and scalability.",
+    "Sarus Cloud is a cloud-based hospital information system solution. Cloud EMR with low cost, high security, and scalability for modern hospital management. SaaS EMR.",
   keywords: [
     "cloud-based HIS",
     "cloud hospital information system",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Sarus Cloud - Cloud-Based Hospital Information System | Teknoritma",
+    title: "Cloud EMR - Cloud-Based Hospital Information System | Sarus Cloud | Teknoritma",
     description:
       "Sarus Cloud is a cloud-based hospital information system solution. Modern hospital management with low cost, high security, and scalability.",
     type: "website",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sarus Cloud - Cloud-Based Hospital Information System",
+    title: "Cloud EMR - Cloud-Based Hospital Information System | Sarus Cloud",
     description:
       "Sarus Cloud is a cloud-based hospital information system solution. Modern hospital management with low cost, high security, and scalability.",
   },
@@ -44,8 +44,38 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Sarus Cloud",
+  applicationCategory: "HealthcareApplication",
+  operatingSystem: "Web",
+  description:
+    "Sarus Cloud is a cloud-based hospital information system (HIS) solution. Modern hospital management with low cost, high security, and scalability. SaaS EMR platform.",
+  offers: {
+    "@type": "Offer",
+    category: "Enterprise Software",
+    priceCurrency: "USD",
+  },
+  provider: {
+    "@type": "Organization",
+    name: "Teknoritma",
+    url: SITE_URL,
+  },
+  inLanguage: "en-US",
+  url: `${SITE_URL}/en/products/sarus-cloud`,
+};
+
 export default function SarusCloudPageRoute() {
-  return <SarusCloudPage />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <SarusCloudPage />
+    </>
+  );
 }
 
 

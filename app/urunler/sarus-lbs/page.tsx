@@ -3,9 +3,9 @@ import SarusLbsPage from "@/components/SarusLbsPage";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "Sarus LBS - Laboratuvar Bilgi Sistemi",
+  title: "LBS - Laboratuvar Bilgi Sistemi | Sarus LBS | Teknoritma",
   description:
-    "Sarus LBS, laboratuvarlar için kapsamlı bir laboratuvar bilgi sistemi çözümüdür. Test yönetimi, sonuç raporlama ve kalite kontrolü için güvenilir platform.",
+    "LBS (Laboratuvar Bilgi Sistemi) çözümü olan Sarus LBS, laboratuvarlar için kapsamlı test yönetimi, sonuç raporlama ve kalite kontrolü sağlar. Laboratuvar otomasyon sistemi.",
   keywords: [
     "laboratuvar bilgi sistemi",
     "LBS",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Sarus LBS - Laboratuvar Bilgi Sistemi | Teknoritma",
+    title: "LBS - Laboratuvar Bilgi Sistemi | Sarus LBS | Teknoritma",
     description:
       "Sarus LBS, laboratuvarlar için kapsamlı bir laboratuvar bilgi sistemi çözümüdür. Test yönetimi, sonuç raporlama ve kalite kontrolü için güvenilir platform.",
     type: "website",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sarus LBS - Laboratuvar Bilgi Sistemi",
+    title: "LBS - Laboratuvar Bilgi Sistemi | Sarus LBS",
     description:
       "Sarus LBS, laboratuvarlar için kapsamlı bir laboratuvar bilgi sistemi çözümüdür.",
   },
@@ -44,8 +44,38 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Sarus LBS",
+  applicationCategory: "HealthcareApplication",
+  operatingSystem: "Web",
+  description:
+    "Sarus LBS, LBS (Laboratuvar Bilgi Sistemi) çözümüdür. Laboratuvarlar için kapsamlı test yönetimi, sonuç raporlama ve kalite kontrolü için güvenilir platform. Laboratuvar otomasyon sistemi.",
+  offers: {
+    "@type": "Offer",
+    category: "Enterprise Software",
+    priceCurrency: "TRY",
+  },
+  provider: {
+    "@type": "Organization",
+    name: "Teknoritma",
+    url: SITE_URL,
+  },
+  inLanguage: "tr-TR",
+  url: `${SITE_URL}/urunler/sarus-lbs`,
+};
+
 export default function SarusLbsPageRoute() {
-  return <SarusLbsPage />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <SarusLbsPage />
+    </>
+  );
 }
 
 

@@ -153,13 +153,13 @@ export default function SarusCloudPage() {
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-20 md:pt-24 md:pb-32 overflow-hidden bg-gradient-to-br from-background via-background-alt to-background">
+      <section className="relative pt-16 pb-20 md:pt-20 md:pb-32 overflow-hidden bg-gradient-to-br from-background via-background-alt to-background">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-10">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div
               initial={{ opacity: 0 }}
@@ -366,7 +366,7 @@ export default function SarusCloudPage() {
       </section>
 
       {/* Clinical Features Section */}
-      <section id="clinical-features" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background">
+      <section id="clinical-features" className="mx-auto max-w-7xl px-4 md:px-10 py-20 md:py-28 bg-background">
         <motion.div
           initial={{ opacity: 0 }}
           animate={mounted ? (isMobile ? { opacity: 1 } : {}) : {}}
@@ -385,7 +385,10 @@ export default function SarusCloudPage() {
             <span className="text-neutral-heading">{t("cloud.productName")}</span>{" "}
             <span className="text-neutral-heading">{t("cloud.why.title")}</span>
           </h2>
-          <div className="w-20 h-0.5 bg-primary mx-auto"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
+          <p className="text-lg text-neutral-body max-w-3xl mx-auto">
+            {t("cloud.why.subtitle")}
+          </p>
         </motion.div>
 
         {/* Cards Grid */}
@@ -499,7 +502,7 @@ export default function SarusCloudPage() {
       </section>
 
       {/* Platform Features Section */}
-      <section id="platform-features" className="mx-auto max-w-7xl px-4 md:px-10 py-24 md:py-36 bg-background-alt">
+      <section id="platform-features" className="mx-auto max-w-7xl px-4 md:px-10 py-20 md:py-28 bg-background-alt">
         <motion.div
           initial={{ opacity: 0, y: isMobile ? 0 : 30 }}
           animate={mounted && isMobile ? { opacity: 1 } : {}}
@@ -512,12 +515,12 @@ export default function SarusCloudPage() {
           }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
             <span className="text-primary">Sarus</span>{" "}
             <span className="text-neutral-heading">{t("cloud.productName")}</span>{" "}
             <span className="text-neutral-heading">{t("cloud.features.title")}</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
           <p className="text-lg text-neutral-body max-w-3xl mx-auto">
             {t("cloud.features.subtitle")}
           </p>
@@ -626,7 +629,7 @@ export default function SarusCloudPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
               <span className="text-primary">Sarus</span>{" "}
               <span className="text-neutral-heading">{t("cloud.productName")}</span>{" "}
               <span className="text-neutral-heading">{t("cloud.architecture.title")}</span>
@@ -697,7 +700,7 @@ export default function SarusCloudPage() {
       </section>
 
       {/* Use Cases Section */}
-      <section className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background-alt">
+      <section className="mx-auto max-w-7xl px-4 md:px-10 py-20 md:py-28 bg-background-alt">
         <motion.div
           initial={{ opacity: 0 }}
           animate={mounted && isMobile ? { opacity: 1 } : {}}
@@ -711,9 +714,10 @@ export default function SarusCloudPage() {
           suppressHydrationWarning
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
             {t("cloud.useCases.title")}
           </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
         </motion.div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -760,17 +764,18 @@ export default function SarusCloudPage() {
       </section>
 
       {/* Success Story Section */}
-      <section id="success-story" className="py-24 md:py-36 bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5">
-        <div className="max-w-7xl mx-auto px-5 md:px-10">
+      <section id="success-story" className="py-20 md:py-28 bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5">
+        <div className="max-w-7xl mx-auto px-4 md:px-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
               {t("cloud.successStory.title")}
             </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-4"></div>
             <p className="text-lg text-neutral-body max-w-4xl mx-auto leading-relaxed mb-4">
               {t("cloud.successStory.subtitle")}
             </p>

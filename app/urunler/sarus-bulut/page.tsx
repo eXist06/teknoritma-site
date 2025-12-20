@@ -3,9 +3,9 @@ import SarusCloudPage from "@/components/SarusCloudPage";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "Sarus Bulut - Bulut Tabanlı Hastane Bilgi Sistemi",
+  title: "Bulut HBYS - Bulut Tabanlı Hastane Bilgi Sistemi | Sarus Bulut | Teknoritma",
   description:
-    "Sarus Bulut, bulut tabanlı hastane bilgi sistemi çözümüdür. Düşük maliyet, yüksek güvenlik ve ölçeklenebilirlik ile modern hastane yönetimi.",
+    "Bulut HBYS çözümü olan Sarus Bulut, bulut tabanlı hastane bilgi sistemi ile düşük maliyet, yüksek güvenlik ve ölçeklenebilirlik sunar. SaaS hastane sistemi.",
   keywords: [
     "bulut tabanlı HIS",
     "cloud hospital information system",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Sarus Bulut - Bulut Tabanlı Hastane Bilgi Sistemi | Teknoritma",
+    title: "Bulut HBYS - Bulut Tabanlı Hastane Bilgi Sistemi | Sarus Bulut | Teknoritma",
     description:
       "Sarus Bulut, bulut tabanlı hastane bilgi sistemi çözümüdür. Düşük maliyet, yüksek güvenlik ve ölçeklenebilirlik ile modern hastane yönetimi.",
     type: "website",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sarus Bulut - Bulut Tabanlı Hastane Bilgi Sistemi",
+    title: "Bulut HBYS - Bulut Tabanlı Hastane Bilgi Sistemi | Sarus Bulut",
     description:
       "Sarus Bulut, bulut tabanlı hastane bilgi sistemi çözümüdür. Düşük maliyet, yüksek güvenlik ve ölçeklenebilirlik ile modern hastane yönetimi.",
   },
@@ -44,8 +44,38 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Sarus Bulut",
+  applicationCategory: "HealthcareApplication",
+  operatingSystem: "Web",
+  description:
+    "Sarus Bulut, bulut tabanlı hastane bilgi sistemi (HBYS) çözümüdür. Düşük maliyet, yüksek güvenlik ve ölçeklenebilirlik ile modern hastane yönetimi sağlar. SaaS hastane sistemi.",
+  offers: {
+    "@type": "Offer",
+    category: "Enterprise Software",
+    priceCurrency: "TRY",
+  },
+  provider: {
+    "@type": "Organization",
+    name: "Teknoritma",
+    url: SITE_URL,
+  },
+  inLanguage: "tr-TR",
+  url: `${SITE_URL}/urunler/sarus-bulut`,
+};
+
 export default function SarusBulutPage() {
-  return <SarusCloudPage />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <SarusCloudPage />
+    </>
+  );
 }
 
 

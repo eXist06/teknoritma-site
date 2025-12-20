@@ -233,13 +233,13 @@ export default function SarusHISPage() {
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative pt-24 pb-24 md:pt-32 md:pb-40 overflow-hidden bg-gradient-to-br from-background via-background-alt to-background">
+      <section className="relative pt-16 pb-20 md:pt-20 md:pb-32 overflow-hidden bg-gradient-to-br from-background via-background-alt to-background">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-10">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div
               initial={{ opacity: 0 }}
@@ -464,14 +464,14 @@ export default function SarusHISPage() {
       </section>
 
       {/* Enterprise Solutions */}
-      <section id="enterprise-solutions" className="py-24 md:py-36 bg-gradient-to-b from-background via-blue-50/20 to-background relative overflow-hidden">
+      <section id="enterprise-solutions" className="py-20 md:py-28 bg-gradient-to-b from-background via-blue-50/20 to-background relative overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-5 md:px-10 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10">
           <motion.div
             initial={{ opacity: 0 }}
             animate={mounted && isMobile ? { opacity: 1 } : {}}
@@ -487,11 +487,12 @@ export default function SarusHISPage() {
             }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
               <span className="text-primary">Sarus</span>{" "}
               <span className="text-neutral-heading">{language === "en" ? "EMR Solutions" : "HBS Çözümleri"}</span>
             </h2>
-            <p className="text-xl md:text-2xl text-neutral-body max-w-3xl mx-auto font-medium leading-relaxed">
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
+            <p className="text-lg text-neutral-body max-w-3xl mx-auto">
               {language === "en" ? "Comprehensive enterprise solutions for modern healthcare facilities" : "Modern sağlık kuruluşları için kapsamlı kurumsal çözümler"}
             </p>
           </motion.div>
@@ -502,7 +503,7 @@ export default function SarusHISPage() {
       </section>
 
       {/* Core Features Section */}
-      <section id="core-features" className="mx-auto max-w-7xl px-4 md:px-10 py-24 md:py-36 bg-background">
+      <section id="core-features" className="mx-auto max-w-7xl px-4 md:px-10 py-20 md:py-28 bg-background">
         <motion.div
           initial={{ opacity: 0 }}
           animate={isMobile ? { opacity: 1 } : {}}
@@ -518,12 +519,15 @@ export default function SarusHISPage() {
           }}
           className="mb-12 text-center"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
             <span className="text-primary">Sarus</span>{" "}
             <span className="text-neutral-heading">{t(`${translationKey}.productName`)}</span>{" "}
             <span className="text-neutral-heading">{language === "en" ? "Core Features" : "Temel Özellikler"}</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
+          <p className="text-lg text-neutral-body max-w-3xl mx-auto">
+            {language === "en" ? "Comprehensive EMR solution to optimize your clinical operations" : "Klinik operasyonlarınızı optimize etmek için kapsamlı HBS çözümü"}
+          </p>
         </motion.div>
 
         {/* Cards Grid */}
@@ -572,8 +576,8 @@ export default function SarusHISPage() {
       </section>
 
       {/* Success Story Section */}
-      <section id="success-story" className="relative py-24 md:py-36 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-5 md:px-10 space-y-20">
+      <section id="success-story" className="relative py-20 md:py-28 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 md:px-10 space-y-20">
           {/* Ankara City Hospital */}
           <div className="relative overflow-hidden rounded-2xl shadow-2xl">
             {/* Background Image */}

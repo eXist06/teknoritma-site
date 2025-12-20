@@ -54,7 +54,7 @@ export default function EnterpriseExperienceSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="max-w-xl self-start -mt-8 lg:-mt-16 pr-8 lg:pr-12"
+            className="max-w-xl self-start mt-6 lg:mt-12 pr-8 lg:pr-12"
           >
             {/* Title */}
             <motion.h2 

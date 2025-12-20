@@ -159,13 +159,13 @@ export default function SarusPacsPage() {
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-20 md:pt-24 md:pb-32 overflow-hidden bg-gradient-to-br from-background via-background-alt to-background">
+      <section className="relative pt-16 pb-20 md:pt-20 md:pb-32 overflow-hidden bg-gradient-to-br from-background via-background-alt to-background">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-10">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div
               initial={{ opacity: 0 }}
@@ -373,7 +373,7 @@ export default function SarusPacsPage() {
       </section>
 
       {/* Solutions Section */}
-      <section id="solutions" className="mx-auto max-w-7xl px-4 md:px-10 py-16 md:py-24 bg-background">
+      <section id="solutions" className="mx-auto max-w-7xl px-4 md:px-10 py-20 md:py-28 bg-background">
         <motion.div
           initial={{ opacity: 0 }}
           animate={mounted ? (isMobile ? { opacity: 1 } : {}) : {}}
@@ -391,10 +391,10 @@ export default function SarusPacsPage() {
             <span className="text-primary">Sarus</span>{" "}
             <span className="text-neutral-heading">{language === "en" ? "PACS Solutions" : "PACS Çözümleri"}</span>
           </h2>
-          <p className="text-lg md:text-xl text-neutral-body max-w-3xl mx-auto mt-4">
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
+          <p className="text-lg text-neutral-body max-w-3xl mx-auto">
             {t("pacs.solutions.subtitle")}
           </p>
-          <div className="w-20 h-0.5 bg-primary mx-auto mt-4"></div>
         </motion.div>
 
         {/* Solutions Cards Grid */}
@@ -554,7 +554,7 @@ export default function SarusPacsPage() {
       </section>
 
       {/* Core Features Section */}
-      <section id="core-features" className="mx-auto max-w-7xl px-4 md:px-10 py-24 md:py-36 bg-background">
+      <section id="core-features" className="mx-auto max-w-7xl px-4 md:px-10 py-20 md:py-28 bg-background">
         <motion.div
           initial={{ opacity: 0 }}
           animate={mounted && isMobile ? { opacity: 1 } : {}}
@@ -571,12 +571,15 @@ export default function SarusPacsPage() {
           suppressHydrationWarning
           className="mb-12 text-center"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 tracking-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
             <span className="text-primary">Sarus</span>{" "}
             <span className="text-neutral-heading">PACS</span>{" "}
             <span className="text-neutral-heading">{language === "en" ? "Core Features" : "Temel Özellikler"}</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
+          <p className="text-lg text-neutral-body max-w-3xl mx-auto">
+            {language === "en" ? "Comprehensive PACS solution for medical imaging management" : "Medikal görüntüleme yönetimi için kapsamlı PACS çözümü"}
+          </p>
         </motion.div>
 
         {/* Cards Grid */}
@@ -688,7 +691,7 @@ export default function SarusPacsPage() {
       </section>
 
       {/* Ecosystem */}
-      <section id="architecture" className="mx-auto max-w-6xl px-4 md:px-10 py-16 md:py-24 bg-background">
+      <section id="architecture" className="mx-auto max-w-6xl px-4 md:px-10 py-20 md:py-28 bg-background">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -962,7 +965,7 @@ export default function SarusPacsPage() {
       </section>
 
       {/* Use Cases */}
-      <section className="mx-auto max-w-6xl px-4 md:px-10 py-16 md:py-24 bg-background-alt">
+      <section className="mx-auto max-w-6xl px-4 md:px-10 py-20 md:py-28 bg-background-alt">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1021,7 +1024,7 @@ export default function SarusPacsPage() {
       </section>
 
       {/* Statistics Section */}
-      <section id="success-story" className="relative py-24 md:py-36 overflow-hidden">
+      <section id="success-story" className="relative py-20 md:py-28 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
@@ -1033,7 +1036,7 @@ export default function SarusPacsPage() {
           <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/40 via-neutral-800/35 to-neutral-900/40"></div>
         </div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

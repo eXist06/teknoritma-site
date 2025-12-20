@@ -81,7 +81,7 @@ export const translations: Record<string, any> = {
       mainProduct: "Ana Ürün",
       productName: "HBS",
       tagline: "Akıllı Hastane Bilgi Sistemi",
-      description: "Sarus HBS, hastanelerin klinik, idari ve finansal operasyonlarını tek bir entegre platform altında birleştirerek operasyonel verimliliği artıran, uçtan uca bir Hastane Bilgi Sistemidir.",
+      description: "Sarus HBS, hastanelerin tüm operasyonel süreçlerini uçtan uca yöneten, yüksek ölçeklenebilirliğe sahip entegre bir Hastane Bilgi Sistemi (HBYS) altyapısı sunar.",
       descriptionSecond: "%100 web tabanlı mimarisi sayesinde esnek, ölçeklenebilir ve merkezi olarak yönetilebilir bir yapı sunar. Gelişmiş akıllı iş akışları, karar destek mekanizmaları ve otomasyon yetenekleri ile modern sağlık kurumlarının dijital dönüşüm süreçlerini destekler; klinik kaliteyi, operasyonel sürekliliği ve mali kontrolü aynı anda güçlendirir.",
       expandText: "Genişlet",
       collapseText: "Daralt",
@@ -627,7 +627,7 @@ export const translations: Record<string, any> = {
       backToHome: "Ana Sayfaya Dön",
       productName: "Bulut",
       tagline: "Azure Ready, Multi-tenant Bulut SBS Çözümü",
-      description: "Sarus Bulut, ayaktan hasta bakımı için tasarlanmış, Azure Ready ve multi-tenant mimariye sahip modern bir SBS (Sağlık Bilgi Sistemi) çözümüdür. Kurumsal bulut (private cloud) özelliği ile kurumlara ait datacenter'lardan çalışabilen, ayrıca her türlü cloud ortamında çalışabilen esnek yapısı ile küçük kliniklerden büyük sağlık gruplarına kadar ölçeklenebilir.",
+      description: "Sarus Bulut, ayaktan hasta bakımı için tasarlanmış, Azure Ready ve multi-tenant mimariye sahip modern bir Klinik Bilgi Sistemi (KBS,AHBS) çözümüdür.",
       descriptionSecond: "Qatar MOPH projesi kapsamında yüzden fazla klinik için başarıyla çalışan Sarus Bulut, modern sağlık kurumlarının dijital dönüşüm ihtiyaçlarını karşılamak için tasarlanmıştır.",
       expandText: "Genişlet",
       collapseText: "Daralt",
@@ -635,6 +635,7 @@ export const translations: Record<string, any> = {
       explore: "İncele",
       why: {
         title: "Çözümleri",
+        subtitle: "Kapsamlı SBS çözümü ile klinik operasyonlarınızı optimize edin",
         clinicalOperations: {
           title: "Klinik İşlemler",
           description: "Kapsamlı klinik dokümantasyon, hasta kayıt yönetimi ve klinik iş akışları ile sağlık profesyonellerinin verimliliğini artırır.",
@@ -1039,7 +1040,7 @@ export const translations: Record<string, any> = {
       mainProduct: "Main Product",
       productName: "EMR",
       tagline: "Smart Hospital Information System",
-      description: "Sarus EMR is an end-to-end Hospital Information System that increases operational efficiency by unifying hospitals' clinical, administrative, and financial operations under a single integrated platform.",
+      description: "Sarus EMR/EHR (Electronic Medical Record/Electronic Health Record) is an integrated hospital information system that combines clinical, administrative, and financial operations in a single platform, increasing operational efficiency through an end-to-end Hospital Information System.",
       descriptionSecond: "Thanks to its 100% web-based architecture, it offers a flexible, scalable, and centrally manageable structure. With advanced intelligent workflows, decision support mechanisms, and automation capabilities, it supports the digital transformation processes of modern healthcare institutions; simultaneously strengthening clinical quality, operational continuity, and financial control.",
       expandText: "Expand",
       collapseText: "Collapse",
@@ -1592,6 +1593,7 @@ export const translations: Record<string, any> = {
       explore: "Explore",
       why: {
         title: "Solutions",
+        subtitle: "Optimize your clinical operations with comprehensive EMR solution",
         clinicalOperations: {
           title: "Clinical Operations",
           description: "Increases healthcare professionals' efficiency with comprehensive clinical documentation, patient record management, and clinical workflows.",
