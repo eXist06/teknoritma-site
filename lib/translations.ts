@@ -12,7 +12,7 @@ export const translations: Record<string, any> = {
         hbs: "Sarus HBS",
         cloud: "Sarus Bulut",
         pacs: "Sarus PACS",
-        lbs: "Sarus LBS",
+        lbs: "Sarus LIS",
         icp: "Sarus ICP",
       },
     },

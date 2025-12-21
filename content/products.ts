@@ -133,7 +133,7 @@ export const products: Product[] = [
   {
     id: "sarus-lbs",
     name: "Sarus LBS",
-    nameEn: "Sarus LBS",
+    nameEn: "Sarus LIS",
     tagline: "Laboratuvar Bilgi Sistemi",
     taglineEn: "Laboratory Information System",
     description:
