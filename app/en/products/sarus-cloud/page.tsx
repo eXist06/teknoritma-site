@@ -3,7 +3,7 @@ import SarusCloudPage from "@/components/SarusCloudPage";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "Cloud EMR - Cloud-Based Hospital Information System | Sarus Cloud | Teknoritma",
+  title: "Cloud EMR – Cloud-Based Hospital Information System | Sarus Cloud | Teknoritma",
   description:
     "Sarus Cloud is a cloud-based hospital information system solution. Cloud EMR with low cost, high security, and scalability for modern hospital management. SaaS EMR.",
   keywords: [
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Cloud EMR - Cloud-Based Hospital Information System | Sarus Cloud | Teknoritma",
+    title: "Cloud EMR – Cloud-Based Hospital Information System | Sarus Cloud | Teknoritma",
     description:
       "Sarus Cloud is a cloud-based hospital information system solution. Modern hospital management with low cost, high security, and scalability.",
     type: "website",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cloud EMR - Cloud-Based Hospital Information System | Sarus Cloud",
+    title: "Cloud EMR – Cloud-Based Hospital Information System | Sarus Cloud",
     description:
       "Sarus Cloud is a cloud-based hospital information system solution. Modern hospital management with low cost, high security, and scalability.",
   },

@@ -767,7 +767,7 @@ export const translations: Record<string, any> = {
     },
     lbs: {
       backToHome: "Ana Sayfaya Dön",
-      productName: "LBYS",
+      productName: "LBS",
       tagline: "Gelişmiş, sağlam, hızlı sonuç",
       description: "Sarus LBYS, hastaneler, entegre sağlık ağları ve her büyüklükteki laboratuvarlar için iş akışı verimliliğini artıran kapsamlı bir laboratuvar bilgi yönetim sistemidir. Yüksek hacimli çok merkezli organizasyonlar için özellikle faydalı olan ölçeklenebilir mimarisi ile laboratuvar operasyonlarınızı optimize edin.",
       descriptionSecond: "Sarus LBYS, numune girişinden sonuç raporlamaya, cihaz entegrasyonundan kalite kontrolüne kadar tüm laboratuvar süreçlerini tek bir platformda yönetmenizi sağlar.",
@@ -1725,7 +1725,7 @@ export const translations: Record<string, any> = {
     },
     lims: {
       backToHome: "Back to Home",
-      productName: "LIMS",
+      productName: "LIS",
       tagline: "Advanced, robust, fast results",
       description: "Sarus LIMS is a comprehensive laboratory information management system that improves workflow efficiencies for hospitals, Integrated Delivery Networks (IDNs), and laboratories of every size. With its scalable architecture, particularly beneficial for high-volume multisite organizations, optimize your laboratory operations.",
       descriptionSecond: "Sarus LIMS enables you to manage all laboratory processes from order entry to result reporting, instrument integration to quality control, all on a single platform.",

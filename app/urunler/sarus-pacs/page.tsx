@@ -3,7 +3,7 @@ import SarusPacsPageComponent from "@/components/SarusPacsPage";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "PACS - Görüntü Arşivleme ve İletişim Sistemi | Sarus PACS | Teknoritma",
+  title: "PACS – Görüntü Arşivleme ve İletişim Sistemi | Sarus PACS | Teknoritma",
   description:
     "PACS (Görüntü Arşivleme ve İletişim Sistemi) çözümü olan Sarus PACS, DICOM uyumlu görüntü yönetimi ve teleradyoloji özellikleri sunar. DICOM PACS sistemi.",
   keywords: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "PACS - Görüntü Arşivleme ve İletişim Sistemi | Sarus PACS | Teknoritma",
+    title: "PACS – Görüntü Arşivleme ve İletişim Sistemi | Sarus PACS | Teknoritma",
     description:
       "PACS (Görüntü Arşivleme ve İletişim Sistemi) çözümü olan Sarus PACS, DICOM uyumlu görüntü yönetimi ve teleradyoloji özellikleri sunar.",
     type: "website",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "PACS - Görüntü Arşivleme ve İletişim Sistemi | Sarus PACS",
+    title: "PACS – Görüntü Arşivleme ve İletişim Sistemi | Sarus PACS",
     description:
       "PACS (Görüntü Arşivleme ve İletişim Sistemi) çözümü olan Sarus PACS, DICOM uyumlu görüntü yönetimi ve teleradyoloji özellikleri sunar.",
   },

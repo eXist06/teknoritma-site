@@ -3,7 +3,7 @@ import SarusCloudPage from "@/components/SarusCloudPage";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "Bulut HBYS - Bulut Tabanlı Hastane Bilgi Sistemi | Sarus Bulut | Teknoritma",
+  title: "Bulut HBYS – Bulut Tabanlı Hastane Bilgi Sistemi | Sarus Bulut | Teknoritma",
   description:
     "Bulut HBYS çözümü olan Sarus Bulut, bulut tabanlı hastane bilgi sistemi ile düşük maliyet, yüksek güvenlik ve ölçeklenebilirlik sunar. SaaS hastane sistemi.",
   keywords: [
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Bulut HBYS - Bulut Tabanlı Hastane Bilgi Sistemi | Sarus Bulut | Teknoritma",
+    title: "Bulut HBYS – Bulut Tabanlı Hastane Bilgi Sistemi | Sarus Bulut | Teknoritma",
     description:
       "Sarus Bulut, bulut tabanlı hastane bilgi sistemi çözümüdür. Düşük maliyet, yüksek güvenlik ve ölçeklenebilirlik ile modern hastane yönetimi.",
     type: "website",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bulut HBYS - Bulut Tabanlı Hastane Bilgi Sistemi | Sarus Bulut",
+    title: "Bulut HBYS – Bulut Tabanlı Hastane Bilgi Sistemi | Sarus Bulut",
     description:
       "Sarus Bulut, bulut tabanlı hastane bilgi sistemi çözümüdür. Düşük maliyet, yüksek güvenlik ve ölçeklenebilirlik ile modern hastane yönetimi.",
   },

@@ -3,7 +3,7 @@ import SarusHISPage from "@/components/SarusHISPage";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "EMR - Electronic Medical Record | Sarus EMR | Teknoritma",
+  title: "EMR & EHR – Hospital Information System | Sarus EMR | Teknoritma",
   description:
     "Sarus EMR is an integrated hospital information system that combines clinical, administrative, and financial operations in a single platform. Web-based EMR solution.",
   keywords: [
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "EMR - Electronic Medical Record | Sarus EMR | Teknoritma",
+    title: "EMR & EHR – Hospital Information System | Sarus EMR | Teknoritma",
     description:
       "Sarus EMR is an integrated hospital information system that combines clinical, administrative, and financial operations in a single platform.",
     type: "website",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "EMR - Electronic Medical Record | Sarus EMR",
+    title: "EMR & EHR – Hospital Information System | Sarus EMR",
     description:
       "Sarus EMR is an integrated hospital information system that combines clinical, administrative, and financial operations in a single platform.",
   },

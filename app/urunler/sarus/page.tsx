@@ -3,7 +3,7 @@ import SarusHISPage from "@/components/SarusHISPage";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "HBYS - Hastane Bilgi Sistemi | Sarus HBS | Teknoritma",
+  title: "HBYS – Hastane Bilgi Sistemi | Sarus HBS | Teknoritma",
   description:
     "Sarus HBS, hastanelerin klinik, idari ve finansal operasyonlarını tek bir entegre platform altında birleştiren HBYS çözümüdür. Web tabanlı hastane bilgi sistemi.",
   keywords: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "HBYS - Hastane Bilgi Sistemi | Sarus HBS | Teknoritma",
+    title: "HBYS – Hastane Bilgi Sistemi | Sarus HBS | Teknoritma",
     description:
       "Sarus HBS, hastanelerin klinik, idari ve finansal operasyonlarını tek bir entegre platform altında birleştiren HBYS çözümüdür.",
     type: "website",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "HBYS - Hastane Bilgi Sistemi | Sarus HBS",
+    title: "HBYS – Hastane Bilgi Sistemi | Sarus HBS",
     description:
       "Sarus HBS, hastanelerin klinik, idari ve finansal operasyonlarını tek bir entegre platform altında birleştiren HBYS çözümüdür.",
   },

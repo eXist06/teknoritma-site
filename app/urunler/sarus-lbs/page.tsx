@@ -3,7 +3,7 @@ import SarusLbsPage from "@/components/SarusLbsPage";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "LBS - Laboratuvar Bilgi Sistemi | Sarus LBS | Teknoritma",
+  title: "LBS – Laboratuvar Bilgi Sistemi | Sarus LBS | Teknoritma",
   description:
     "LBS (Laboratuvar Bilgi Sistemi) çözümü olan Sarus LBS, laboratuvarlar için kapsamlı test yönetimi, sonuç raporlama ve kalite kontrolü sağlar. Laboratuvar otomasyon sistemi.",
   keywords: [
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "LBS - Laboratuvar Bilgi Sistemi | Sarus LBS | Teknoritma",
+    title: "LBS – Laboratuvar Bilgi Sistemi | Sarus LBS | Teknoritma",
     description:
       "Sarus LBS, laboratuvarlar için kapsamlı bir laboratuvar bilgi sistemi çözümüdür. Test yönetimi, sonuç raporlama ve kalite kontrolü için güvenilir platform.",
     type: "website",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "LBS - Laboratuvar Bilgi Sistemi | Sarus LBS",
+    title: "LBS – Laboratuvar Bilgi Sistemi | Sarus LBS",
     description:
       "Sarus LBS, laboratuvarlar için kapsamlı bir laboratuvar bilgi sistemi çözümüdür.",
   },

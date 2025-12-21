@@ -3,7 +3,7 @@ import SarusPacsPageComponent from "@/components/SarusPacsPage";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "PACS System - Picture Archiving and Communication System | Sarus PACS | Teknoritma",
+  title: "PACS System – Picture Archiving and Communication System | Sarus PACS | Teknoritma",
   description:
     "Sarus PACS is a PACS (Picture Archiving and Communication System) solution with DICOM-compliant image management and teleradiology features. Medical imaging system.",
   keywords: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "PACS System - Picture Archiving and Communication System | Sarus PACS | Teknoritma",
+    title: "PACS System – Picture Archiving and Communication System | Sarus PACS | Teknoritma",
     description:
       "Sarus PACS is a PACS (Picture Archiving and Communication System) solution with DICOM-compliant image management and teleradiology features.",
     type: "website",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "PACS System - Picture Archiving and Communication System | Sarus PACS",
+    title: "PACS System – Picture Archiving and Communication System | Sarus PACS",
     description:
       "Sarus PACS is a PACS (Picture Archiving and Communication System) solution with DICOM-compliant image management and teleradiology features.",
   },

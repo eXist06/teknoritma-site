@@ -3,7 +3,7 @@ import SarusLbsPage from "@/components/SarusLbsPage";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "LIS - Laboratory Information System | Sarus LIS | Teknoritma",
+  title: "LIS – Laboratory Information System | Sarus LIS | Teknoritma",
   description:
     "Sarus LIS is a Laboratory Information System (LIS) solution for laboratories. Comprehensive test management, result reporting, and quality control platform. LIMS software.",
   keywords: [
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "LIS - Laboratory Information System | Sarus LIS | Teknoritma",
+    title: "LIS – Laboratory Information System | Sarus LIS | Teknoritma",
     description:
       "Sarus LIS is a comprehensive laboratory information system solution for laboratories. Reliable platform for test management, result reporting, and quality control.",
     type: "website",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "LIS - Laboratory Information System | Sarus LIS",
+    title: "LIS – Laboratory Information System | Sarus LIS",
     description:
       "Sarus LIS is a comprehensive laboratory information system solution for laboratories.",
   },
