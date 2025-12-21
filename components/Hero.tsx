@@ -80,7 +80,7 @@ export default function Hero() {
     <>
     {/* SEO H1 - Görsel olarak gizli ama semantic olarak H1 */}
     {language === "tr" && (
-      <h1 className="sr-only">HBYS ve Kurumsal Hastane Bilgi Sistemleri</h1>
+      <h1 className="sr-only">Sarus Hastane Bilgi Sistemi (HBYS)</h1>
     )}
     {language === "en" && (
       <h1 className="sr-only">Sarus EMR & EHR – Enterprise Hospital Information System</h1>
