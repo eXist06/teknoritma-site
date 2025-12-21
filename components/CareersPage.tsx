@@ -567,15 +567,15 @@ export default function CareersPage() {
               >
                 <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg h-48 mb-6 overflow-hidden">
                   {card.image ? (
-                    <img src={card.image} alt={card.title} className="w-full h-full object-cover" />
+                    <img src={card.image} alt={language === "en" ? card.titleEn : card.title} className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-neutral-body">{card.title}</span>
+                      <span className="text-neutral-body">{language === "en" ? card.titleEn : card.title}</span>
                     </div>
                   )}
                 </div>
-                <h3 className="text-2xl font-bold text-neutral-heading mb-4">{card.title}</h3>
-                <p className="text-neutral-body mb-6 leading-relaxed">{card.description}</p>
+                <h3 className="text-2xl font-bold text-neutral-heading mb-4">{language === "en" ? card.titleEn : card.title}</h3>
+                <p className="text-neutral-body mb-6 leading-relaxed">{language === "en" ? card.descriptionEn : card.description}</p>
                 <a 
                   href={language === "en" 
                     ? (index === 0 ? "/en#about" : index === 1 ? "/en/careers#culture" : "/en/careers#belonging")
