@@ -71,13 +71,18 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href={`${basePath}#projects`} className="text-neutral-300 hover:text-white transition-colors">
-                  {t("footer.projects")}
+                <a href={language === "en" ? "/en/sarus-hub" : "/sarus-hub"} className="text-neutral-300 hover:text-white transition-colors">
+                  Sarus-HUB
                 </a>
               </li>
               <li>
-                <a href={`${basePath}#support`} className="text-neutral-300 hover:text-white transition-colors">
-                  {t("footer.support")}
+                <a href={language === "en" ? "/en/about" : "/hakkimizda"} className="text-neutral-300 hover:text-white transition-colors">
+                  {t("nav.about")}
+                </a>
+              </li>
+              <li>
+                <a href={language === "en" ? "/en/careers" : "/kariyer"} className="text-neutral-300 hover:text-white transition-colors">
+                  {t("nav.careers")}
                 </a>
               </li>
               <li>
