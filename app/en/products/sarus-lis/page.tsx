@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/config";
 export const metadata: Metadata = {
   title: "LIS – Laboratory Information System | Sarus LIS | Teknoritma",
   description:
-    "Sarus LIS is a Laboratory Information System (LIS) solution for laboratories. Comprehensive test management, result reporting, and quality control platform. LIMS software.",
+    "Sarus LIS is a Laboratory Information System (LIS) solution for laboratories. Comprehensive test management, result reporting, and quality control platform. LIS software.",
   keywords: [
     "laboratory information system",
     "LIS",

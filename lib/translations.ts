@@ -1727,8 +1727,8 @@ export const translations: Record<string, any> = {
       backToHome: "Back to Home",
       productName: "LIS",
       tagline: "Advanced, robust, fast results",
-      description: "Sarus LIMS is a comprehensive laboratory information management system that improves workflow efficiencies for hospitals, Integrated Delivery Networks (IDNs), and laboratories of every size. With its scalable architecture, particularly beneficial for high-volume multisite organizations, optimize your laboratory operations.",
-      descriptionSecond: "Sarus LIMS enables you to manage all laboratory processes from order entry to result reporting, instrument integration to quality control, all on a single platform.",
+      description: "Sarus LIS is a comprehensive laboratory information management system that improves workflow efficiencies for hospitals, Integrated Delivery Networks (IDNs), and laboratories of every size. With its scalable architecture, particularly beneficial for high-volume multisite organizations, optimize your laboratory operations.",
+      descriptionSecond: "Sarus LIS enables you to manage all laboratory processes from order entry to result reporting, instrument integration to quality control, all on a single platform.",
       expandText: "Expand",
       collapseText: "Collapse",
       requestDemo: "Request Demo",
@@ -1762,8 +1762,8 @@ export const translations: Record<string, any> = {
         },
       },
       features: {
-        title: "Sarus LIMS Solutions",
-        subtitle: "Optimize your laboratory operations with comprehensive LIMS solution",
+        title: "Sarus LIS Solutions",
+        subtitle: "Optimize your laboratory operations with comprehensive LIS solution",
         orderEntry: {
           title: "Order Entry",
           description: "Centralized order entry and management. Web-based access for placing orders from remote locations.",
@@ -1846,7 +1846,7 @@ export const translations: Record<string, any> = {
         },
         referenceLabs: {
           title: "Reference Laboratories",
-          description: "Scalable and reliable LIMS solution for high-volume reference laboratories.",
+          description: "Scalable and reliable LIS solution for high-volume reference laboratories.",
         },
         clinicLabs: {
           title: "Clinical Laboratories",
@@ -1854,7 +1854,7 @@ export const translations: Record<string, any> = {
         },
       },
       workflow: {
-        title: "Sarus LIMS Enterprise Workflow",
+        title: "Sarus LIS Enterprise Workflow",
         subtitle: "Manage comprehensive laboratory processes on a single platform",
         steps: {
           checkInSorting: {
@@ -1898,7 +1898,7 @@ export const translations: Record<string, any> = {
       successStory: {
         title: "Success Story",
         subtitle: "Ankara (Bilkent) City Hospital",
-        description: "Sarus LIMS operates at Ankara (Bilkent) City Hospital, one of the world's largest health campuses, with a daily capacity of processing hundreds of thousands of tests.",
+        description: "Sarus LIS operates at Ankara (Bilkent) City Hospital, one of the world's largest health campuses, with a daily capacity of processing hundreds of thousands of tests.",
         stats: {
           tests: "285,000",
           testsLabel: "Daily Test Workload",
@@ -1909,7 +1909,7 @@ export const translations: Record<string, any> = {
         },
       },
       cta: {
-        title: "Transform Your Laboratory Operations with Sarus LIMS",
+        title: "Transform Your Laboratory Operations with Sarus LIS",
         description: "Contact us to learn more about our comprehensive laboratory information management system solution or to request a demo.",
       },
     },

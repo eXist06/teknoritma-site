@@ -280,7 +280,7 @@ export default function SarusLbsPage() {
               <div className="relative w-full aspect-video bg-white/80 backdrop-blur-md rounded-2xl border border-neutral-border/50 shadow-xl overflow-hidden">
                 <img
                   src="/srslis.png"
-                  alt={language === "en" ? "Sarus LIMS Laboratory System" : "Sarus LBYS Laboratuvar Sistemi"}
+                  alt={language === "en" ? "Sarus LIS Laboratory System" : "Sarus LBYS Laboratuvar Sistemi"}
                   className="w-full h-full object-cover object-center"
                 />
               </div>
@@ -297,7 +297,7 @@ export default function SarusLbsPage() {
               {
                 id: "platform-features",
                 href: "#platform-features",
-                label: language === "en" ? "Sarus LIMS Solutions" : "Sarus LBYS Çözümleri",
+                label: language === "en" ? "Sarus LIS Solutions" : "Sarus LBYS Çözümleri",
                 icon: Layers,
               },
               {
@@ -391,7 +391,7 @@ export default function SarusLbsPage() {
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
             <span className="text-primary">Sarus</span>{" "}
-            <span className="text-neutral-heading">{language === "en" ? "LIMS Solutions" : "LBYS Çözümleri"}</span>
+            <span className="text-neutral-heading">{language === "en" ? "LIS Solutions" : "LBYS Çözümleri"}</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
           <p className="text-lg text-neutral-body max-w-3xl mx-auto">
@@ -610,11 +610,11 @@ export default function SarusLbsPage() {
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-heading mb-3">
             <span className="text-primary">Sarus</span>{" "}
-            <span className="text-neutral-heading">{language === "en" ? "LIMS Core Features" : "LBYS Temel Özellikler"}</span>
+            <span className="text-neutral-heading">{language === "en" ? "LIS Core Features" : "LBYS Temel Özellikler"}</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
           <p className="text-lg text-neutral-body max-w-3xl mx-auto">
-            {language === "en" ? "Comprehensive LIMS solution for laboratory management" : "Laboratuvar yönetimi için kapsamlı LBYS çözümü"}
+            {language === "en" ? "Comprehensive LIS solution for laboratory management" : "Laboratuvar yönetimi için kapsamlı LBYS çözümü"}
           </p>
         </motion.div>
 
