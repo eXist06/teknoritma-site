@@ -444,7 +444,7 @@ export default function Hero() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.6 }}
-                  className="text-xl md:text-2xl lg:text-3xl font-bold text-neutral-heading leading-tight max-w-2xl tracking-tight"
+                  className="text-lg md:text-xl lg:text-2xl font-normal text-neutral-heading leading-tight max-w-2xl tracking-tight"
                 >
                   {language === "en"
                     ? "Sarus EMR & EHR unifies clinical, administrative, and financial workflows within a single Hospital Information System."
