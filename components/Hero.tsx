@@ -188,7 +188,7 @@ export default function Hero() {
     )}
     <section
       id="hero"
-      className={`relative min-h-[85vh] flex items-start overflow-visible ${
+      className={`relative min-h-[70vh] md:min-h-[85vh] flex items-start overflow-hidden ${
         currentSlide === 0 
           ? "bg-transparent"
           : currentSlide === 2
@@ -201,7 +201,7 @@ export default function Hero() {
     >
       {/* Video Background - Only for slide 1 */}
       {mounted && currentSlide === 0 && (
-        <div className="absolute inset-0 overflow-visible pointer-events-none" suppressHydrationWarning>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" suppressHydrationWarning>
           <motion.div
             key={`video-slide-1-${currentSlide}`}
             initial={{ opacity: 0 }}
@@ -209,9 +209,9 @@ export default function Hero() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             suppressHydrationWarning
-            className="absolute inset-0 -bottom-1"
+            className="absolute inset-0"
           >
-            <div className="absolute left-0 top-0 right-0 bottom-0">
+            <div className="absolute inset-0 w-full h-full">
               <video
                 key={`video-${currentSlide}`}
                 ref={videoRef}
@@ -317,7 +317,7 @@ export default function Hero() {
 
       {/* Navigation Controls - Bottom center */}
       {mounted && (currentSlide === 0 ? videoStarted : true) && (
-        <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 md:gap-4">
+        <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 md:gap-4">
           {/* Previous Button */}
           <button
             onClick={prevSlide}
@@ -360,7 +360,7 @@ export default function Hero() {
 
       <div className="relative z-20 px-5 md:px-10 pt-8 md:pt-12 pb-6 md:pb-8 w-full h-full">
         {/* Carousel Container - Full width and height */}
-        <div className="relative w-full h-full min-h-[calc(85vh-8rem)]" suppressHydrationWarning>
+        <div className="relative w-full h-full min-h-[calc(70vh-4rem)] md:min-h-[calc(85vh-8rem)]" suppressHydrationWarning>
           <AnimatePresence mode="wait">
             {/* Slide 1: Sarus */}
             {mounted && currentSlide === 0 && (
@@ -371,7 +371,7 @@ export default function Hero() {
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 suppressHydrationWarning
-                className="max-w-2xl relative ml-8 md:ml-16 mt-8 md:mt-10"
+                className="max-w-2xl relative ml-4 md:ml-16 mt-4 md:mt-10"
               >
             {/* Title - Show in last 7 seconds of video */}
             {showSlogan && (
@@ -415,7 +415,7 @@ export default function Hero() {
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 suppressHydrationWarning
-                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-10 md:mt-12 z-30"
+                className="space-y-8 max-w-2xl relative ml-4 md:ml-16 mt-4 md:mt-12 z-30"
               >
                 {/* Title */}
                 <motion.h1
@@ -499,7 +499,7 @@ export default function Hero() {
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 suppressHydrationWarning
-                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-10 md:mt-12 z-30"
+                className="space-y-8 max-w-2xl relative ml-4 md:ml-16 mt-4 md:mt-12 z-30"
               >
                 {/* Title */}
                 <motion.h1
