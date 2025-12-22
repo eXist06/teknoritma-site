@@ -463,11 +463,11 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 30 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-4 md:mb-6 relative z-10"
+                className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-4 md:mb-6 relative z-10"
               >
-                <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl">Sarus</span>
+                <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black text-5xl sm:text-5xl md:text-6xl lg:text-7xl">Sarus</span>
                 {language === "en" ? (
-                  <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl flex flex-wrap items-baseline break-words overflow-visible gap-1 md:gap-1.5 max-w-4xl">
+                  <span className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl flex flex-wrap items-baseline break-words overflow-visible gap-1 md:gap-1.5 max-w-4xl">
                     <span className="whitespace-normal leading-normal text-neutral-heading mr-2 md:mr-2.5">{t("hero.titlePrefix")}</span>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent whitespace-normal break-words leading-normal">
                       {t("hero.titleHighlight")}
@@ -475,7 +475,7 @@ export default function Hero() {
                     <span className="whitespace-normal leading-normal text-neutral-heading -mt-2 md:-mt-3">{t("hero.titleSuffix")}</span>
                   </span>
                 ) : (
-                  <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl flex flex-col break-words overflow-visible gap-0.5 md:gap-1 max-w-4xl">
+                  <span className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl flex flex-col break-words overflow-visible gap-0.5 md:gap-1 max-w-4xl">
                     <span className="whitespace-normal leading-normal">{t("hero.titlePrefix")}</span>
                     <span className="whitespace-normal break-words leading-relaxed pb-1 md:pb-2 -mt-2 md:-mt-3 flex flex-wrap items-baseline gap-2 md:gap-2.5">
                       <span className="text-neutral-heading">dijital</span>
