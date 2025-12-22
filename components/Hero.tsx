@@ -5,10 +5,9 @@ import { metrics } from "@/content/site";
 import AnimatedCounter from "./AnimatedCounter";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Orb from "./Orb";
 import Threads from "./Threads";
-import TypewriterText from "./TypewriterText";
 import VantaGlobe from "./VantaGlobe";
 
 export default function Hero() {
@@ -19,7 +18,10 @@ export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [typewriterKey, setTypewriterKey] = useState(0); // Key to reset typewriters on slide change
+  const [videoDuration, setVideoDuration] = useState(18000); // Default 18 seconds
+  const [showSlogan, setShowSlogan] = useState(false);
+  const [videoStarted, setVideoStarted] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const totalSlides = 3;
 
   const nextSlide = () => {
@@ -39,22 +41,121 @@ export default function Hero() {
     setMounted(true);
   }, []);
 
-  // Auto-play carousel - change slide every 12 seconds
+  // Get video duration when video loads and handle video events
+  // This effect runs whenever currentSlide changes to 0 or videoRef changes
   useEffect(() => {
-    if (!mounted) return;
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % 3);
-    }, 12000); // 12 seconds
+    if (!mounted || currentSlide !== 0 || !videoRef.current) return;
+    
+    const video = videoRef.current;
+    
+    const handleLoadedMetadata = () => {
+      if (video.duration && !isNaN(video.duration) && isFinite(video.duration)) {
+        // Convert to milliseconds
+        const durationMs = Math.round(video.duration * 1000);
+        setVideoDuration(durationMs);
+      }
+    };
+    
+    const handleTimeUpdate = () => {
+      if (video.duration && !isNaN(video.duration) && isFinite(video.duration)) {
+        const currentTime = video.currentTime;
+        const duration = video.duration;
+        // Show slogan in last 7 seconds (5 + 2)
+        if (currentTime >= duration - 7) {
+          setShowSlogan(true);
+        } else if (currentTime < duration - 7) {
+          // Hide slogan if we're not in the last 7 seconds
+          setShowSlogan(false);
+        }
+      }
+    };
+    
+    const handleEnded = () => {
+      // When video ends, move to next slide immediately
+      // Only if we're still on slide 0 (prevent race conditions)
+      if (currentSlide === 0) {
+        setShowSlogan(false);
+        setCurrentSlide((prev) => (prev + 1) % 3);
+      }
+    };
+    
+    const handlePlay = () => {
+      // Ensure timeupdate fires when video starts playing
+      handleTimeUpdate();
+      // Mark video as started for navigation visibility
+      setVideoStarted(true);
+    };
+    
+    video.addEventListener('loadedmetadata', handleLoadedMetadata);
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    video.addEventListener('ended', handleEnded);
+    video.addEventListener('play', handlePlay);
+    
+    // If video already has metadata
+    if (video.readyState >= 1 && video.duration) {
+      handleLoadedMetadata();
+    }
+    
+    // Force initial timeupdate check
+    handleTimeUpdate();
+    
+    return () => {
+      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+      video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('play', handlePlay);
+    };
+  }, [mounted, currentSlide]);
 
-    return () => clearInterval(interval);
-  }, [mounted]);
-
-  // Reset typewriter effect when slide changes
+  // Reset slogan visibility and video state when slide changes
   useEffect(() => {
-    if (currentSlide === 0) {
-      setTypewriterKey((prev) => prev + 1);
+    if (currentSlide !== 0) {
+      setShowSlogan(false);
+      setVideoStarted(false);
+      // Pause video immediately when leaving slide 0 to prevent showing start frame
+      if (videoRef.current) {
+        videoRef.current.pause();
+        // Keep video at current position, don't reset to prevent showing start frame
+      }
+    } else {
+      // Reset video and slogan when returning to slide 0
+      setShowSlogan(false); // Reset slogan first - it will show again when video reaches last 7 seconds
+      
+      // Use a small delay to ensure video element is in DOM
+      const resetVideo = () => {
+        if (videoRef.current && currentSlide === 0) {
+          // Reset video to start
+          videoRef.current.currentTime = 0;
+          videoRef.current.playbackRate = 1.0; // Reset playback rate
+          
+          // Video element is recreated with new key, so we just need to ensure it plays
+          // The onCanPlay and onLoadedData handlers will handle playing
+          // Just ensure video is at the start
+          if (videoRef.current.currentTime > 0.1) {
+            videoRef.current.currentTime = 0;
+          }
+        }
+      };
+      
+      // Small delay to ensure DOM is ready
+      setTimeout(resetVideo, 100);
     }
   }, [currentSlide]);
+
+  // Auto-advance slides 2 and 3 after 12 seconds
+  useEffect(() => {
+    // Only auto-advance for slides 1 and 2 (currentSlide === 1 or 2)
+    if (currentSlide === 1 || currentSlide === 2) {
+      const timer = setTimeout(() => {
+        setCurrentSlide((prev) => (prev + 1) % totalSlides);
+      }, 12000); // 12 seconds
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [currentSlide, totalSlides]);
+
 
   // Touch handlers for swipe - only on carousel container
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -89,7 +190,7 @@ export default function Hero() {
       id="hero"
       className={`relative min-h-[85vh] flex items-start overflow-visible ${
         currentSlide === 0 
-          ? "bg-gradient-to-br from-background via-background-alt to-background"
+          ? "bg-transparent"
           : currentSlide === 2
           ? "bg-gradient-to-br from-background via-background-alt to-background"
           : "bg-white"
@@ -101,47 +202,51 @@ export default function Hero() {
       {/* Video Background - Only for slide 1 */}
       {mounted && currentSlide === 0 && (
         <div className="absolute inset-0 overflow-visible pointer-events-none" suppressHydrationWarning>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key="video-slide-1"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-              suppressHydrationWarning
-              className="absolute inset-0 -bottom-1"
-            >
-              <div className="absolute left-0 top-0 right-0 bottom-0">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover object-center"
-                  style={{ objectPosition: 'center top' }}
-                  preload="auto"
-                >
-                  <source src="/Teknoritma.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-              
-              {/* Ankara Şehir Hastanesi Label - Top Right on Mobile, Bottom Right on Desktop */}
-              {mounted && (
-                <div className="absolute top-4 right-4 md:top-auto md:bottom-6 lg:bottom-8 md:right-6 lg:right-8 z-10" suppressHydrationWarning>
-                  <div className="bg-black/40 backdrop-blur-sm px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-white/20">
-                    <p className="text-white/90 text-xs md:text-sm font-bold whitespace-nowrap">
-                      {language === "en" ? "Ankara City Hospital" : "Ankara Şehir Hastanesi"}
-                    </p>
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
-          
-          {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 -bottom-1 bg-gradient-to-r from-background via-background/85 to-transparent" />
-          <div className="absolute inset-0 -bottom-1 bg-gradient-to-b from-background/60 via-transparent to-background/60" />
+          <motion.div
+            key={`video-slide-1-${currentSlide}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            suppressHydrationWarning
+            className="absolute inset-0 -bottom-1"
+          >
+            <div className="absolute left-0 top-0 right-0 bottom-0">
+              <video
+                key={`video-${currentSlide}`}
+                ref={videoRef}
+                autoPlay
+                muted
+                playsInline
+                className="w-full h-full object-cover object-center"
+                preload="metadata"
+                onCanPlay={() => {
+                  // Ensure video plays when it's ready and we're on slide 0
+                  if (videoRef.current && currentSlide === 0) {
+                    // Only play if video is at the start (not at the end)
+                    if (videoRef.current.currentTime < 0.1 || videoRef.current.paused) {
+                      videoRef.current.play().catch(() => {
+                        // Ignore play errors
+                      });
+                    }
+                  }
+                }}
+                onLoadedData={() => {
+                  // When video data is loaded and we're on slide 0, ensure it plays
+                  if (videoRef.current && currentSlide === 0 && videoRef.current.paused) {
+                    videoRef.current.play().catch(() => {
+                      // Ignore play errors
+                    });
+                  }
+                }}
+              >
+                <source src="/web3.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              {/* Overlay for readability - applied to entire video */}
+              <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
+            </div>
+          </motion.div>
         </div>
       )}
 
@@ -211,45 +316,47 @@ export default function Hero() {
       </div>
 
       {/* Navigation Controls - Bottom center */}
-      <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 md:gap-4">
-        {/* Previous Button */}
-        <button
-          onClick={prevSlide}
-          className="p-2 md:p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-300 hover:scale-110"
-          aria-label="Previous slide"
-        >
-          <svg className="w-5 h-5 md:w-6 md:h-6 text-neutral-heading" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+      {mounted && (currentSlide === 0 ? videoStarted : true) && (
+        <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 md:gap-4">
+          {/* Previous Button */}
+          <button
+            onClick={prevSlide}
+            className="p-2 md:p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-300 hover:scale-110"
+            aria-label="Previous slide"
+          >
+            <svg className="w-5 h-5 md:w-6 md:h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* Dot Indicators */}
+          <div className="flex gap-2 items-center">
+            {Array.from({ length: totalSlides }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`transition-all duration-300 rounded-full ${
+                  currentSlide === index
+                    ? "w-2 h-2 bg-primary"
+                    : "w-2 h-2 bg-primary/50 hover:bg-primary/70"
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Next Button */}
+          <button
+            onClick={nextSlide}
+            className="p-2 md:p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-300 hover:scale-110"
+            aria-label="Next slide"
+          >
+            <svg className="w-5 h-5 md:w-6 md:h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
-
-        {/* Dot Indicators */}
-        <div className="flex gap-2 items-center">
-          {Array.from({ length: totalSlides }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`transition-all duration-300 rounded-full ${
-                currentSlide === index
-                  ? "w-2 h-2 bg-white"
-                  : "w-2 h-2 bg-white/50 hover:bg-white/70"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
         </div>
-
-        {/* Next Button */}
-        <button
-          onClick={nextSlide}
-          className="p-2 md:p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-300 hover:scale-110"
-          aria-label="Next slide"
-        >
-          <svg className="w-5 h-5 md:w-6 md:h-6 text-neutral-heading" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
+      )}
 
       <div className="relative z-20 px-5 md:px-10 pt-8 md:pt-12 pb-6 md:pb-8 w-full h-full">
         {/* Carousel Container - Full width and height */}
@@ -264,138 +371,40 @@ export default function Hero() {
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 suppressHydrationWarning
-                className="space-y-8 max-w-2xl relative ml-8 md:ml-16 mt-8 md:mt-10"
+                className="max-w-2xl relative ml-8 md:ml-16 mt-8 md:mt-10"
               >
-            {/* Title */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-6 md:mb-8"
-            >
-              <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black">Sarus</span>
-              {language === "en" ? (
-                <span className="text-4xl md:text-5xl lg:text-6xl flex flex-wrap items-baseline break-words overflow-visible gap-1 md:gap-1.5 max-w-4xl">
-                  <span className="whitespace-normal leading-normal text-neutral-heading mr-2 md:mr-2.5">{t("hero.titlePrefix")}</span>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent whitespace-normal break-words leading-normal">
-                    {t("hero.titleHighlight")}
+            {/* Title - Show in last 7 seconds of video */}
+            {showSlogan && (
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-6 md:mb-8 relative z-10"
+              >
+                <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black">Sarus</span>
+                {language === "en" ? (
+                  <span className="text-4xl md:text-5xl lg:text-6xl flex flex-wrap items-baseline break-words overflow-visible gap-1 md:gap-1.5 max-w-4xl">
+                    <span className="whitespace-normal leading-normal text-neutral-heading mr-2 md:mr-2.5">{t("hero.titlePrefix")}</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent whitespace-normal break-words leading-normal">
+                      {t("hero.titleHighlight")}
+                    </span>
+                    <span className="whitespace-normal leading-normal text-neutral-heading -mt-3 md:-mt-4">{t("hero.titleSuffix")}</span>
                   </span>
-                  <span className="whitespace-normal leading-normal text-neutral-heading -mt-3 md:-mt-4">{t("hero.titleSuffix")}</span>
-                </span>
-              ) : (
-                <span className="text-4xl md:text-5xl lg:text-6xl flex flex-col break-words overflow-visible gap-0.5 md:gap-1 max-w-4xl">
-                  <span className="whitespace-normal leading-normal">{t("hero.titlePrefix")}</span>
-                  <span className="whitespace-normal break-words leading-relaxed pb-1 md:pb-2 -mt-4 md:-mt-5 flex flex-wrap items-baseline gap-2 md:gap-2.5">
-                    <span className="text-neutral-heading">dijital</span>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">omurgası</span>
+                ) : (
+                  <span className="text-4xl md:text-5xl lg:text-6xl flex flex-col break-words overflow-visible gap-0.5 md:gap-1 max-w-4xl">
+                    <span className="whitespace-normal leading-normal">{t("hero.titlePrefix")}</span>
+                    <span className="whitespace-normal break-words leading-relaxed pb-1 md:pb-2 -mt-4 md:-mt-5 flex flex-wrap items-baseline gap-2 md:gap-2.5">
+                      <span className="text-neutral-heading">dijital</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">omurgası</span>
+                    </span>
                   </span>
-                </span>
-              )}
-            </motion.h1>
-
-            {/* Feature Highlights - Modern Bullet List with Typewriter Effect */}
-            <motion.ul
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-              className="flex flex-col gap-3 md:gap-4 -mt-2 md:-mt-3 list-none"
-            >
-              <motion.li
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6, duration: 0.5 }}
-                className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
-              >
-                <span className="text-xl mt-1">🏆</span>
-                <span className="font-bold text-[#B8860B]">
-                  <TypewriterText 
-                    key={`himss-${typewriterKey}`}
-                    text={t("hero.badges.himss")} 
-                    speed={40}
-                    delay={600}
-                  />
-                </span>
-              </motion.li>
-              <motion.li
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.7, duration: 0.5 }}
-                className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
-              >
-                <span className="text-primary text-xl mt-1">●</span>
-                <span className="font-medium">
-                  <TypewriterText 
-                    key={`robust-${typewriterKey}`}
-                    text={t("hero.badges.robust")} 
-                    speed={35}
-                    delay={2500}
-                  />
-                </span>
-              </motion.li>
-              <motion.li
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-                className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
-              >
-                <span className="text-primary text-xl mt-1">●</span>
-                <span className="font-medium">
-                  <TypewriterText 
-                    key={`support-${typewriterKey}`}
-                    text={t("hero.badges.support")} 
-                    speed={35}
-                    delay={5000}
-                  />
-                </span>
-              </motion.li>
-              <motion.li
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.9, duration: 0.5 }}
-                className="flex items-start gap-3 text-base md:text-lg text-neutral-heading"
-              >
-                <span className="text-primary text-xl mt-1">●</span>
-                <span className="font-medium">
-                  <TypewriterText 
-                    key={`ai-${typewriterKey}`}
-                    text={t("hero.badges.ai")} 
-                    speed={35}
-                    delay={7500}
-                  />
-                </span>
-              </motion.li>
-            </motion.ul>
-
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={mounted ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              suppressHydrationWarning
-              className="flex flex-wrap items-center gap-4 pt-2 mt-4 md:mt-5"
-            >
-              <Link href={`${basePath}/urunler/sarus`}>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all duration-300 shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40"
-                >
-                  {t("hero.primaryCta")}
-                  <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
-                </motion.button>
-              </Link>
-              <a href={`${basePath}#products`}>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 border-2 border-neutral-border text-neutral-heading rounded-full font-semibold hover:border-primary hover:text-primary transition-all duration-300 hover:bg-primary/5"
-                >
-                  {t("hero.secondaryCta")}
-                </motion.button>
-              </a>
-            </motion.div>
+                )}
+              </motion.h1>
+            )}
               </motion.div>
             )}
+            
 
             {/* Slide 2: Teknoritma */}
             {mounted && currentSlide === 1 && (
@@ -458,7 +467,7 @@ export default function Hero() {
                   transition={{ delay: 0.5, duration: 0.6 }}
                   className="flex flex-wrap items-center gap-4 pt-2 mt-4 md:mt-5"
                 >
-                  <a href={`${basePath}#about`}>
+                  <Link href={language === "en" ? "/en/products/sarus-emr" : "/urunler/sarus"}>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -467,7 +476,7 @@ export default function Hero() {
                       {language === "en" ? "Learn More" : "Daha Fazla Bilgi"}
                       <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
                     </motion.button>
-                  </a>
+                  </Link>
                   <a href={`${basePath}#contact`}>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
