@@ -21,6 +21,8 @@ export default function Hero() {
   const [videoDuration, setVideoDuration] = useState(18000); // Default 18 seconds
   const [showSlogan, setShowSlogan] = useState(false);
   const [videoStarted, setVideoStarted] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const totalSlides = 3;
 
@@ -36,9 +38,19 @@ export default function Hero() {
     setCurrentSlide(index);
   };
 
-  // Set mounted on client-side
+  // Set mounted on client-side and detect mobile
   useEffect(() => {
     setMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    window.addEventListener('orientationchange', checkMobile);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('orientationchange', checkMobile);
+    };
   }, []);
 
   // Get video duration when video loads and handle video events
@@ -84,12 +96,25 @@ export default function Hero() {
       handleTimeUpdate();
       // Mark video as started for navigation visibility
       setVideoStarted(true);
+      setVideoLoading(false);
+    };
+    
+    const handleWaiting = () => {
+      // Video is buffering
+      setVideoLoading(true);
+    };
+    
+    const handleCanPlayThrough = () => {
+      // Video can play through without stopping
+      setVideoLoading(false);
     };
     
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
     video.addEventListener('timeupdate', handleTimeUpdate);
     video.addEventListener('ended', handleEnded);
     video.addEventListener('play', handlePlay);
+    video.addEventListener('waiting', handleWaiting);
+    video.addEventListener('canplaythrough', handleCanPlayThrough);
     
     // If video already has metadata
     if (video.readyState >= 1 && video.duration) {
@@ -104,6 +129,8 @@ export default function Hero() {
       video.removeEventListener('timeupdate', handleTimeUpdate);
       video.removeEventListener('ended', handleEnded);
       video.removeEventListener('play', handlePlay);
+      video.removeEventListener('waiting', handleWaiting);
+      video.removeEventListener('canplaythrough', handleCanPlayThrough);
     };
   }, [mounted, currentSlide]);
 
@@ -120,6 +147,7 @@ export default function Hero() {
     } else {
       // Reset video and slogan when returning to slide 0
       setShowSlogan(false); // Reset slogan first - it will show again when video reaches last 7 seconds
+      setVideoLoading(true); // Show loading state when returning to slide 0
       
       // Use a small delay to ensure video element is in DOM
       const resetVideo = () => {
@@ -188,13 +216,21 @@ export default function Hero() {
     )}
     <section
       id="hero"
-      className={`relative min-h-[70vh] md:min-h-[85vh] flex items-start overflow-hidden ${
+      className={`relative flex items-start overflow-visible ${
         currentSlide === 0 
-          ? "bg-transparent"
+          ? "bg-black md:bg-transparent"
           : currentSlide === 2
           ? "bg-gradient-to-br from-background via-background-alt to-background"
           : "bg-white"
       }`}
+      style={mounted ? {
+        height: isMobile ? '100dvh' : 'auto',
+        minHeight: isMobile ? '100dvh' : '90vh',
+        maxHeight: isMobile ? '100dvh' : 'none',
+        ...(window.innerWidth >= 768 && !isMobile ? { minHeight: '85vh' } : {}),
+      } : {
+        minHeight: '90vh',
+      }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -202,6 +238,15 @@ export default function Hero() {
       {/* Video Background - Only for slide 1 */}
       {mounted && currentSlide === 0 && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none" suppressHydrationWarning>
+          {/* Video Loading Placeholder */}
+          {videoLoading && (
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 flex items-center justify-center z-10">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-neutral-heading text-sm font-medium">{language === "en" ? "Loading video..." : "Video yükleniyor..."}</p>
+              </div>
+            </div>
+          )}
           <motion.div
             key={`video-slide-1-${currentSlide}`}
             initial={{ opacity: 0 }}
@@ -209,18 +254,23 @@ export default function Hero() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             suppressHydrationWarning
-            className="absolute inset-0"
+            className="absolute inset-0 w-full h-full"
           >
-            <div className="absolute inset-0 w-full h-full">
+            <div className="absolute inset-0 w-full h-full overflow-hidden">
               <video
                 key={`video-${currentSlide}`}
                 ref={videoRef}
                 autoPlay
                 muted
                 playsInline
-                className="w-full h-full object-cover object-center"
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                }}
                 preload="metadata"
                 onCanPlay={() => {
+                  setVideoLoading(false);
                   // Ensure video plays when it's ready and we're on slide 0
                   if (videoRef.current && currentSlide === 0) {
                     // Only play if video is at the start (not at the end)
@@ -232,6 +282,7 @@ export default function Hero() {
                   }
                 }}
                 onLoadedData={() => {
+                  setVideoLoading(false);
                   // When video data is loaded and we're on slide 0, ensure it plays
                   if (videoRef.current && currentSlide === 0 && videoRef.current.paused) {
                     videoRef.current.play().catch(() => {
@@ -317,7 +368,7 @@ export default function Hero() {
 
       {/* Navigation Controls - Bottom center */}
       {mounted && (currentSlide === 0 ? videoStarted : true) && (
-        <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 md:gap-4">
+        <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 md:gap-4">
           {/* Previous Button */}
           <button
             onClick={prevSlide}
@@ -358,9 +409,37 @@ export default function Hero() {
         </div>
       )}
 
-      <div className="relative z-20 px-5 md:px-10 pt-8 md:pt-12 pb-6 md:pb-8 w-full h-full">
+      <div 
+        className="relative z-20 px-4 sm:px-5 md:px-10 w-full h-full"
+        style={mounted ? {
+          paddingTop: isMobile ? '1rem' : '1.5rem',
+          paddingBottom: isMobile ? '1rem' : '2rem',
+          height: isMobile ? 'calc(100dvh - 2rem)' : 'auto',
+          maxHeight: isMobile ? 'calc(100dvh - 2rem)' : 'none',
+        } : {
+          paddingTop: '1.5rem',
+          paddingBottom: '2rem',
+        }}
+      >
         {/* Carousel Container - Full width and height */}
-        <div className="relative w-full h-full min-h-[calc(70vh-4rem)] md:min-h-[calc(85vh-8rem)]" suppressHydrationWarning>
+        <div 
+          className={`relative w-full ${
+            isMobile ? 'flex flex-col justify-center' : ''
+          }`}
+          style={mounted ? {
+            height: isMobile ? 'calc(100dvh - 4rem)' : 'auto',
+            minHeight: isMobile 
+              ? 'calc(100dvh - 4rem)' 
+              : 'calc(90vh - 6rem)',
+            maxHeight: isMobile ? 'calc(100dvh - 4rem)' : 'none',
+            overflow: isMobile ? 'visible' : 'visible',
+            ...(window.innerWidth >= 768 && !isMobile ? { minHeight: 'calc(85vh - 6rem)' } : {}),
+            ...(window.innerWidth >= 1024 ? { minHeight: 'calc(85vh - 8rem)' } : {}),
+          } : {
+            minHeight: 'calc(90vh - 6rem)',
+          }}
+          suppressHydrationWarning
+        >
           <AnimatePresence mode="wait">
             {/* Slide 1: Sarus */}
             {mounted && currentSlide === 0 && (
@@ -371,7 +450,11 @@ export default function Hero() {
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 suppressHydrationWarning
-                className="max-w-2xl relative ml-4 md:ml-16 mt-4 md:mt-10"
+                className={`max-w-2xl relative ${
+                  isMobile 
+                    ? 'absolute bottom-20 left-4 right-4 sm:left-6 sm:right-6 z-20' 
+                    : 'ml-4 sm:ml-6 md:ml-8 lg:ml-16 mt-6 sm:mt-8 md:mt-10'
+                }`}
               >
             {/* Title - Show in last 7 seconds of video */}
             {showSlogan && (
@@ -380,21 +463,21 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 30 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-6 md:mb-8 relative z-10"
+                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-4 md:mb-6 relative z-10"
               >
-                <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black">Sarus</span>
+                <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl">Sarus</span>
                 {language === "en" ? (
-                  <span className="text-4xl md:text-5xl lg:text-6xl flex flex-wrap items-baseline break-words overflow-visible gap-1 md:gap-1.5 max-w-4xl">
+                  <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl flex flex-wrap items-baseline break-words overflow-visible gap-1 md:gap-1.5 max-w-4xl">
                     <span className="whitespace-normal leading-normal text-neutral-heading mr-2 md:mr-2.5">{t("hero.titlePrefix")}</span>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent whitespace-normal break-words leading-normal">
                       {t("hero.titleHighlight")}
                     </span>
-                    <span className="whitespace-normal leading-normal text-neutral-heading -mt-3 md:-mt-4">{t("hero.titleSuffix")}</span>
+                    <span className="whitespace-normal leading-normal text-neutral-heading -mt-2 md:-mt-3">{t("hero.titleSuffix")}</span>
                   </span>
                 ) : (
-                  <span className="text-4xl md:text-5xl lg:text-6xl flex flex-col break-words overflow-visible gap-0.5 md:gap-1 max-w-4xl">
+                  <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl flex flex-col break-words overflow-visible gap-0.5 md:gap-1 max-w-4xl">
                     <span className="whitespace-normal leading-normal">{t("hero.titlePrefix")}</span>
-                    <span className="whitespace-normal break-words leading-relaxed pb-1 md:pb-2 -mt-4 md:-mt-5 flex flex-wrap items-baseline gap-2 md:gap-2.5">
+                    <span className="whitespace-normal break-words leading-relaxed pb-1 md:pb-2 -mt-2 md:-mt-3 flex flex-wrap items-baseline gap-2 md:gap-2.5">
                       <span className="text-neutral-heading">dijital</span>
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">omurgası</span>
                     </span>
@@ -415,19 +498,23 @@ export default function Hero() {
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 suppressHydrationWarning
-                className="space-y-8 max-w-2xl relative ml-4 md:ml-16 mt-4 md:mt-12 z-30"
+                className={`space-y-4 sm:space-y-6 md:space-y-8 max-w-2xl relative z-30 ${
+                  isMobile 
+                    ? 'mx-4 sm:mx-6 mt-8 mb-8' 
+                    : 'ml-4 sm:ml-6 md:ml-8 lg:ml-16 mt-6 sm:mt-8 md:mt-10 lg:mt-12'
+                }`}
               >
                 {/* Title */}
                 <motion.h1
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.8 }}
-                  className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-6 md:mb-8"
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-4 md:mb-6"
                 >
-                  <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black">
+                  <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
                     Sarus
                   </span>
-                  <span className="text-4xl md:text-5xl lg:text-6xl flex flex-col break-words overflow-visible gap-0.5 md:gap-1 max-w-4xl">
+                  <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl flex flex-col break-words overflow-visible gap-0.5 md:gap-1 max-w-4xl">
                     <span className="whitespace-normal leading-normal text-neutral-heading">
                       {language === "en" 
                         ? (
@@ -453,7 +540,7 @@ export default function Hero() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.6 }}
-                  className="text-lg md:text-xl lg:text-2xl font-normal text-neutral-heading leading-tight max-w-2xl tracking-tight"
+                  className="text-lg sm:text-xl md:text-2xl font-normal text-neutral-heading leading-tight max-w-2xl tracking-tight"
                 >
                   {language === "en"
                     ? "Sarus EMR & EHR unifies clinical, administrative, and financial workflows within a single Hospital Information System."
@@ -465,7 +552,7 @@ export default function Hero() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.6 }}
-                  className="flex flex-wrap items-center gap-4 pt-2 mt-4 md:mt-5"
+                  className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2 mt-3 sm:mt-4 md:mt-5"
                 >
                   <Link href={language === "en" ? "/en/products/sarus-emr" : "/urunler/sarus"}>
                     <motion.button
@@ -499,20 +586,24 @@ export default function Hero() {
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 suppressHydrationWarning
-                className="space-y-8 max-w-2xl relative ml-4 md:ml-16 mt-4 md:mt-12 z-30"
+                className={`space-y-4 sm:space-y-6 md:space-y-8 max-w-2xl relative z-30 ${
+                  isMobile 
+                    ? 'mx-4 sm:mx-6 mt-8 mb-8' 
+                    : 'ml-4 sm:ml-6 md:ml-8 lg:ml-16 mt-6 sm:mt-8 md:mt-10 lg:mt-12'
+                }`}
               >
                 {/* Title */}
                 <motion.h1
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.8 }}
-                  className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-4 md:mb-6"
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-neutral-heading leading-[1.1] tracking-tight flex flex-col mb-4 md:mb-6"
                 >
-                  <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black">
+                  <span className="mb-1 md:mb-1.5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent uppercase tracking-[0.1em] md:tracking-[0.15em] font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
                     Sarus
                   </span>
                   {language === "tr" && (
-                    <span className="text-4xl md:text-5xl lg:text-6xl text-neutral-heading">
+                    <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-neutral-heading">
                       {t("hero.slide3.title")}
                     </span>
                   )}
@@ -524,7 +615,7 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3, duration: 0.6 }}
-                    className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-6 md:mb-8"
+                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-heading mb-4 md:mb-6"
                   >
                     {t("hero.slide3.subtitle")}
                   </motion.h2>
@@ -541,7 +632,7 @@ export default function Hero() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5, duration: 0.5 }}
-                    className="flex items-start gap-3 text-lg md:text-xl text-neutral-heading"
+                    className="flex items-start gap-3 text-lg sm:text-xl md:text-2xl text-neutral-heading"
                   >
                     <span className="text-primary text-xl md:text-2xl mt-0.5">●</span>
                     <span className="font-semibold leading-relaxed">{t("hero.slide3.bullets.multilang")}</span>
@@ -550,7 +641,7 @@ export default function Hero() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.6, duration: 0.5 }}
-                    className="flex items-start gap-3 text-lg md:text-xl text-neutral-heading"
+                    className="flex items-start gap-3 text-lg sm:text-xl md:text-2xl text-neutral-heading"
                   >
                     <span className="text-primary text-xl md:text-2xl mt-0.5">●</span>
                     <span className="font-semibold leading-relaxed">{t("hero.slide3.bullets.integration")}</span>
@@ -559,7 +650,7 @@ export default function Hero() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7, duration: 0.5 }}
-                    className="flex items-start gap-3 text-lg md:text-xl text-neutral-heading"
+                    className="flex items-start gap-3 text-lg sm:text-xl md:text-2xl text-neutral-heading"
                   >
                     <span className="text-primary text-xl md:text-2xl mt-0.5">●</span>
                     <span className="font-semibold leading-relaxed">{t("hero.slide3.bullets.project")}</span>
@@ -568,7 +659,7 @@ export default function Hero() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.8, duration: 0.5 }}
-                    className="flex items-start gap-3 text-lg md:text-xl text-neutral-heading"
+                    className="flex items-start gap-3 text-lg sm:text-xl md:text-2xl text-neutral-heading"
                   >
                     <span className="text-primary text-xl md:text-2xl mt-0.5">●</span>
                     <span className="font-semibold leading-relaxed">{t("hero.slide3.bullets.compliance")}</span>
@@ -580,7 +671,7 @@ export default function Hero() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6, duration: 0.6 }}
-                  className="flex flex-wrap items-center gap-4 pt-2 mt-4 md:mt-5"
+                  className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2 mt-3 sm:mt-4 md:mt-5"
                 >
                   <Link href={`${basePath}/urunler/sarus`}>
                     <motion.button
