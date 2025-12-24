@@ -235,7 +235,7 @@ export default function SarusLbsPage() {
 
               {/* Demo Request Button */}
               <div className="flex flex-wrap gap-4">
-                <Link href={`${basePath}/demo-talep`}>
+                <Link href={language === "en" ? "/en/request-demo" : "/demo-talep"}>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
