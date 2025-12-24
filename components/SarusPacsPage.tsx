@@ -1182,7 +1182,7 @@ export default function SarusPacsPage() {
             transition={{ delay: 0.2 }}
             className="mt-6 flex justify-center"
           >
-            <Link href={`${basePath}/demo-talep`}>
+            <Link href={language === "en" ? "/en/request-demo" : "/demo-talep"}>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

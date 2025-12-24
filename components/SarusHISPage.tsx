@@ -769,7 +769,7 @@ export default function SarusHISPage() {
             style={{ willChange: isMobile ? "opacity" : "opacity, transform" }}
             className="mt-6 flex justify-center"
           >
-            <Link href={`${basePath}/demo-talep`}>
+            <Link href={language === "en" ? "/en/request-demo" : "/demo-talep"}>
               <motion.button
                 whileHover={isMobile || prefersReducedMotion ? {} : { scale: 1.05 }}
                 whileTap={isMobile || prefersReducedMotion ? {} : { scale: 0.95 }}
