@@ -26,7 +26,7 @@ export default function SarusHubContent({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Handle images in rich text content
+  // Handle images in rich text content with lightbox
   useEffect(() => {
     if (!contentRef.current) return;
 
@@ -38,7 +38,7 @@ export default function SarusHubContent({
 
       img.setAttribute('data-error-handled', 'true');
       
-      // Apply auto-fit style to content images
+      // Apply responsive style to content images
       const imgElement = img as HTMLImageElement;
       imgElement.style.objectFit = 'contain';
       imgElement.style.maxWidth = '100%';
@@ -46,13 +46,52 @@ export default function SarusHubContent({
       imgElement.style.height = 'auto';
       imgElement.style.display = 'block';
       imgElement.style.margin = '0 auto';
+      imgElement.style.cursor = 'pointer';
+      
       // Remove fixed height constraints
       if (imgElement.style.height && imgElement.style.height !== 'auto') {
         imgElement.style.height = 'auto';
       }
-      if (!imgElement.classList.contains('bg-gradient-to-br')) {
-        imgElement.classList.add('bg-gradient-to-br', 'from-primary/5', 'to-accent/5');
-      }
+      
+      // Add lightbox click handler
+      const handleClick = (e: Event) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const target = e.target as HTMLImageElement;
+        const src = target.src;
+        
+        // Create lightbox overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'lightbox-overlay';
+        overlay.onclick = () => overlay.remove();
+        
+        const image = document.createElement('img');
+        image.src = src;
+        image.className = 'lightbox-image';
+        image.onclick = (e) => e.stopPropagation();
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'lightbox-close';
+        closeBtn.innerHTML = '×';
+        closeBtn.onclick = () => overlay.remove();
+        
+        overlay.appendChild(image);
+        overlay.appendChild(closeBtn);
+        document.body.appendChild(overlay);
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        
+        // Cleanup on remove
+        const observer = new MutationObserver(() => {
+          if (!document.body.contains(overlay)) {
+            document.body.style.overflow = '';
+            observer.disconnect();
+          }
+        });
+        observer.observe(document.body, { childList: true });
+      };
       
       const handleError = (e: Event) => {
         const target = e.target as HTMLImageElement;
@@ -84,15 +123,17 @@ export default function SarusHubContent({
         // Image loaded successfully, ensure it's visible
         const target = img as HTMLImageElement;
         target.style.display = "";
-        // Ensure auto-fit for content images
+        // Ensure responsive for content images
         target.style.objectFit = "contain";
         target.style.maxWidth = "100%";
         target.style.width = "auto";
         target.style.height = "auto";
         target.style.display = "block";
         target.style.margin = "0 auto";
+        target.style.cursor = "pointer";
       };
 
+      img.addEventListener('click', handleClick);
       img.addEventListener('error', handleError);
       img.addEventListener('load', handleLoad);
       
@@ -105,6 +146,7 @@ export default function SarusHubContent({
     // Cleanup function
     return () => {
       images.forEach((img) => {
+        img.removeEventListener('click', () => {});
         img.removeEventListener('error', () => {});
         img.removeEventListener('load', () => {});
       });
@@ -341,7 +383,7 @@ export default function SarusHubContent({
           prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-4
           prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-4
           prose-li:mb-2 prose-li:text-neutral-body
-          prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6"
+          prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:max-w-full prose-img:h-auto"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     </div>

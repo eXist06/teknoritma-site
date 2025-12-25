@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get("file") as File;
+    const size = formData.get("size") as string || "medium"; // Default to medium
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
@@ -59,16 +60,36 @@ export async function POST(request: NextRequest) {
     try {
       await writeFile(filepath, buffer);
       
-      // Verify file was written successfully
+      // Verify file was written successfully and is fully synced
       const fs = await import("fs");
+      const stats = await fs.promises.stat(filepath);
+      
       if (!fs.existsSync(filepath)) {
         throw new Error("File was not written successfully");
       }
       
-      // Return public URL
-      const publicUrl = `/uploads/sarus-hub/${filename}`;
+      // Verify file size matches (ensures file is fully written)
+      if (stats.size !== buffer.length) {
+        // Retry: wait a bit and check again (for production file system sync delays)
+        await new Promise(resolve => setTimeout(resolve, 100));
+        const retryStats = await fs.promises.stat(filepath);
+        if (retryStats.size !== buffer.length) {
+          throw new Error(`File size mismatch: expected ${buffer.length}, got ${retryStats.size}`);
+        }
+      }
       
-      return NextResponse.json({ url: publicUrl, filename });
+      // Ensure file is readable
+      try {
+        await fs.promises.access(filepath, fs.constants.R_OK);
+      } catch (accessError) {
+        throw new Error("File is not readable after write");
+      }
+      
+      // Return public URL with cache-busting timestamp
+      const timestamp = Date.now();
+      const publicUrl = `/uploads/sarus-hub/${filename}?t=${timestamp}`;
+      
+      return NextResponse.json({ url: publicUrl, filename, size });
     } catch (writeError: any) {
       console.error("Error writing file:", writeError);
       // Check if it's a permission error

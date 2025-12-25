@@ -48,6 +48,11 @@ export default function AdminSarusHubEditPageEN() {
   const [imageUploading, setImageUploading] = useState(false);
   const [videoUploading, setVideoUploading] = useState(false);
   const [multipleImagesUploading, setMultipleImagesUploading] = useState(false);
+  const [showSizeModal, setShowSizeModal] = useState(false);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [isPrimaryImage, setIsPrimaryImage] = useState(false);
+  const [pendingInputElement, setPendingInputElement] = useState<HTMLInputElement | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -140,10 +145,23 @@ export default function AdminSarusHubEditPageEN() {
       return;
     }
 
+    // Show size selection modal
+    setPendingFile(file);
+    setIsPrimaryImage(setAsPrimary);
+    setPendingInputElement(inputElement || null);
+    setShowSizeModal(true);
+  };
+
+  const handleImageUploadWithSize = async (file: File, selectedSize: string, setAsPrimary: boolean = false, inputElement?: HTMLInputElement | null) => {
     setImageUploading(true);
+    setShowSizeModal(false);
+    setPendingFile(null);
+    setPendingInputElement(null);
+    
     try {
       const uploadFormData = new FormData();
       uploadFormData.append("file", file);
+      uploadFormData.append("size", selectedSize);
 
       const response = await fetch("/api/sarus-hub/upload-image", {
         method: "POST",
@@ -219,12 +237,25 @@ export default function AdminSarusHubEditPageEN() {
       return;
     }
 
+    // Show size selection modal for multiple files
+    setPendingFiles(Array.from(files));
+    setPendingInputElement(inputElement || null);
+    setIsPrimaryImage(false);
+    setShowSizeModal(true);
+  };
+
+  const handleMultipleImageUploadWithSize = async (files: File[], selectedSize: string, inputElement?: HTMLInputElement | null) => {
     setMultipleImagesUploading(true);
+    setShowSizeModal(false);
+    setPendingFiles([]);
+    setPendingInputElement(null);
+    
     try {
-      const uploadPromises = Array.from(files).map(async (file) => {
+      const uploadPromises = files.map(async (file) => {
         try {
           const uploadFormData = new FormData();
           uploadFormData.append("file", file);
+          uploadFormData.append("size", selectedSize);
           const response = await fetch("/api/sarus-hub/upload-image", {
             method: "POST",
             body: uploadFormData,
@@ -663,7 +694,7 @@ export default function AdminSarusHubEditPageEN() {
               </label>
               {formData.primaryImage && (
                 <div className="relative mb-2">
-                  <img
+                <img
                     src={formData.primaryImage}
                     alt="Primary"
                     className="w-full h-64 object-cover rounded-lg border border-neutral-border"
@@ -875,6 +906,100 @@ export default function AdminSarusHubEditPageEN() {
           </div>
         </div>
       </div>
+
+      {/* Image Size Selection Modal */}
+      {showSizeModal && (pendingFile || pendingFiles.length > 0) && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => {
+          setShowSizeModal(false);
+          setPendingFile(null);
+          setPendingFiles([]);
+          setPendingInputElement(null);
+        }}>
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-xl font-bold text-neutral-heading mb-4">
+              Select Image Size
+            </h3>
+            <p className="text-sm text-neutral-body mb-6">
+              {pendingFiles.length > 0 
+                ? `Select size for ${pendingFiles.length} images:` 
+                : "Choose how the image should appear on the page:"}
+            </p>
+            
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <button
+                onClick={() => {
+                  if (pendingFile) {
+                    handleImageUploadWithSize(pendingFile, "small", isPrimaryImage, pendingInputElement);
+                  } else if (pendingFiles.length > 0) {
+                    handleMultipleImageUploadWithSize(pendingFiles, "small", pendingInputElement);
+                  }
+                }}
+                className="p-4 border-2 border-neutral-border rounded-lg hover:border-primary hover:bg-primary/5 transition-all text-left"
+              >
+                <div className="font-semibold text-neutral-heading mb-1">Small</div>
+                <div className="text-sm text-neutral-body">40%</div>
+              </button>
+              
+              <button
+                onClick={() => {
+                  if (pendingFile) {
+                    handleImageUploadWithSize(pendingFile, "medium", isPrimaryImage, pendingInputElement);
+                  } else if (pendingFiles.length > 0) {
+                    handleMultipleImageUploadWithSize(pendingFiles, "medium", pendingInputElement);
+                  }
+                }}
+                className="p-4 border-2 border-primary bg-primary/5 rounded-lg hover:bg-primary/10 transition-all text-left"
+              >
+                <div className="font-semibold text-neutral-heading mb-1">Medium</div>
+                <div className="text-sm text-neutral-body">60%</div>
+                <div className="text-xs text-primary mt-1">Recommended</div>
+              </button>
+              
+              <button
+                onClick={() => {
+                  if (pendingFile) {
+                    handleImageUploadWithSize(pendingFile, "large", isPrimaryImage, pendingInputElement);
+                  } else if (pendingFiles.length > 0) {
+                    handleMultipleImageUploadWithSize(pendingFiles, "large", pendingInputElement);
+                  }
+                }}
+                className="p-4 border-2 border-neutral-border rounded-lg hover:border-primary hover:bg-primary/5 transition-all text-left"
+              >
+                <div className="font-semibold text-neutral-heading mb-1">Large</div>
+                <div className="text-sm text-neutral-body">80%</div>
+              </button>
+              
+              <button
+                onClick={() => {
+                  if (pendingFile) {
+                    handleImageUploadWithSize(pendingFile, "full", isPrimaryImage, pendingInputElement);
+                  } else if (pendingFiles.length > 0) {
+                    handleMultipleImageUploadWithSize(pendingFiles, "full", pendingInputElement);
+                  }
+                }}
+                className="p-4 border-2 border-neutral-border rounded-lg hover:border-primary hover:bg-primary/5 transition-all text-left"
+              >
+                <div className="font-semibold text-neutral-heading mb-1">Full</div>
+                <div className="text-sm text-neutral-body">100%</div>
+              </button>
+            </div>
+            
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowSizeModal(false);
+                  setPendingFile(null);
+                  setPendingFiles([]);
+                  setPendingInputElement(null);
+                }}
+                className="flex-1 px-4 py-2 border border-neutral-border rounded-lg hover:bg-neutral-light transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -21,6 +21,8 @@ export default function RichTextEditor({
   const { language, t } = useI18n();
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [showSizeModal, setShowSizeModal] = useState(false);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
   
   // Default placeholder based on language
   const defaultPlaceholder = language === "en" ? "Write content..." : "İçerik yazın...";
@@ -37,12 +39,16 @@ export default function RichTextEditor({
       Image.configure({
         inline: true,
         allowBase64: true,
+        HTMLAttributes: {
+          class: 'prose-img',
+        },
       }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
           target: "_blank",
           rel: "noopener noreferrer",
+          class: "text-primary underline hover:text-primary-dark",
         },
       }),
     ],
@@ -77,11 +83,21 @@ export default function RichTextEditor({
       return;
     }
 
+    // Show size selection modal
+    setPendingFile(file);
+    setShowSizeModal(true);
+  };
+
+  const handleImageUploadWithSize = async (file: File, selectedSize: string) => {
     setUploading(true);
     setUploadProgress(0);
+    setShowSizeModal(false);
+    setPendingFile(null);
+    
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("size", selectedSize);
 
       const response = await fetch("/api/sarus-hub/upload-image", {
         method: "POST",
@@ -91,7 +107,9 @@ export default function RichTextEditor({
       const data = await response.json();
 
       if (response.ok && data.url && editor) {
-        editor.chain().focus().setImage({ src: data.url }).run();
+        // Insert image with size attribute using insertContent for data attributes
+        const imageHtml = `<img src="${data.url}" data-size="${selectedSize}" class="prose-img" alt="Uploaded image" />`;
+        editor.chain().focus().insertContent(imageHtml).run();
         setUploadProgress(100);
       } else {
         alert(data.error || (language === "en" ? "Failed to upload image" : "Resim yüklenemedi"));
@@ -281,6 +299,82 @@ export default function RichTextEditor({
         editor={editor}
         className="min-h-[300px] max-h-[600px] overflow-y-auto tiptap-editor"
       />
+
+      {/* Image Size Selection Modal */}
+      {showSizeModal && pendingFile && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => {
+          setShowSizeModal(false);
+          setPendingFile(null);
+        }}>
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-xl font-bold text-neutral-heading mb-4">
+              {language === "en" ? "Select Image Size" : "Görsel Boyutu Seçin"}
+            </h3>
+            <p className="text-sm text-neutral-body mb-6">
+              {language === "en" 
+                ? "Choose how the image should appear in the content:" 
+                : "Görselin içerikte nasıl görünmesini istediğinizi seçin:"}
+            </p>
+            
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <button
+                onClick={() => handleImageUploadWithSize(pendingFile, "small")}
+                className="p-4 border-2 border-neutral-border rounded-lg hover:border-primary hover:bg-primary/5 transition-all text-left"
+              >
+                <div className="font-semibold text-neutral-heading mb-1">
+                  {language === "en" ? "Small" : "Küçük"}
+                </div>
+                <div className="text-sm text-neutral-body">40%</div>
+              </button>
+              
+              <button
+                onClick={() => handleImageUploadWithSize(pendingFile, "medium")}
+                className="p-4 border-2 border-primary bg-primary/5 rounded-lg hover:bg-primary/10 transition-all text-left"
+              >
+                <div className="font-semibold text-neutral-heading mb-1">
+                  {language === "en" ? "Medium" : "Orta"}
+                </div>
+                <div className="text-sm text-neutral-body">60%</div>
+                <div className="text-xs text-primary mt-1">
+                  {language === "en" ? "Recommended" : "Önerilen"}
+                </div>
+              </button>
+              
+              <button
+                onClick={() => handleImageUploadWithSize(pendingFile, "large")}
+                className="p-4 border-2 border-neutral-border rounded-lg hover:border-primary hover:bg-primary/5 transition-all text-left"
+              >
+                <div className="font-semibold text-neutral-heading mb-1">
+                  {language === "en" ? "Large" : "Büyük"}
+                </div>
+                <div className="text-sm text-neutral-body">80%</div>
+              </button>
+              
+              <button
+                onClick={() => handleImageUploadWithSize(pendingFile, "full")}
+                className="p-4 border-2 border-neutral-border rounded-lg hover:border-primary hover:bg-primary/5 transition-all text-left"
+              >
+                <div className="font-semibold text-neutral-heading mb-1">
+                  {language === "en" ? "Full" : "Tam"}
+                </div>
+                <div className="text-sm text-neutral-body">100%</div>
+              </button>
+            </div>
+            
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowSizeModal(false);
+                  setPendingFile(null);
+                }}
+                className="flex-1 px-4 py-2 border border-neutral-border rounded-lg hover:bg-neutral-light transition-colors"
+              >
+                {language === "en" ? "Cancel" : "İptal"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

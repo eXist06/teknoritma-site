@@ -95,3 +95,108 @@
 .tiptap-editor .ProseMirror a:hover {
   color: var(--color-primary-dark) !important;
 }
+
+/* Preserve whitespace in editor */
+.tiptap-editor .ProseMirror {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Content area whitespace preservation - only for paragraphs */
+.prose p {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Preserve line breaks in content */
+.prose br {
+  display: block;
+  content: "";
+  margin-top: 0.5em;
+}
+
+/* Link styles in content */
+.prose a {
+  color: var(--color-primary) !important;
+  text-decoration: underline !important;
+  background-color: transparent !important;
+}
+
+.prose a:hover {
+  color: var(--color-primary-dark) !important;
+  text-decoration: underline !important;
+}
+
+/* Content images - responsive and clickable for lightbox */
+.prose img {
+  max-width: 100% !important;
+  height: auto !important;
+  cursor: pointer !important;
+  transition: transform 0.2s ease !important;
+}
+
+.prose img:hover {
+  transform: scale(1.02) !important;
+}
+
+/* Image size variants based on data-size attribute */
+.prose img[data-size="small"] {
+  max-width: 40% !important;
+  margin: 1rem auto !important;
+}
+
+.prose img[data-size="medium"] {
+  max-width: 60% !important;
+  margin: 1rem auto !important;
+}
+
+.prose img[data-size="large"] {
+  max-width: 80% !important;
+  margin: 1rem auto !important;
+}
+
+.prose img[data-size="full"] {
+  max-width: 100% !important;
+  margin: 1rem auto !important;
+}
+
+/* Lightbox styles */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.lightbox-image {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  cursor: default;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.lightbox-close:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
