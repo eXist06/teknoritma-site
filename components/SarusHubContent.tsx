@@ -331,7 +331,17 @@ export default function SarusHubContent({
       {/* Rich Text Content */}
       <div
         ref={contentRef}
-        className="prose prose-lg max-w-none prose-headings:text-neutral-heading prose-p:text-neutral-body prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-neutral-heading prose-img:rounded-lg prose-img:shadow-lg"
+        className="prose prose-lg max-w-none 
+          prose-headings:text-neutral-heading prose-headings:font-bold prose-headings:mt-8 prose-headings:mb-4
+          prose-h2:text-3xl prose-h2:font-bold prose-h2:mt-10 prose-h2:mb-5 prose-h2:leading-tight
+          prose-h3:text-2xl prose-h3:font-semibold prose-h3:mt-8 prose-h3:mb-4 prose-h3:leading-tight
+          prose-p:text-neutral-body prose-p:leading-relaxed prose-p:mb-4
+          prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+          prose-strong:text-neutral-heading prose-strong:font-semibold
+          prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-4
+          prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-4
+          prose-li:mb-2 prose-li:text-neutral-body
+          prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     </div>

@@ -124,6 +124,22 @@ export default function AdminSarusHubEditPageEN() {
   };
 
   const handleImageUpload = async (file: File, setAsPrimary: boolean = false, inputElement?: HTMLInputElement) => {
+    // Client-side validation
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
+    if (!validTypes.includes(file.type)) {
+      alert("Invalid file type. Only JPEG, PNG, WebP, and GIF images are allowed.");
+      if (inputElement) inputElement.value = "";
+      return;
+    }
+
+    // Validate file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+      alert("File size exceeds 10MB limit. Please use a smaller image.");
+      if (inputElement) inputElement.value = "";
+      return;
+    }
+
     setImageUploading(true);
     try {
       const uploadFormData = new FormData();
@@ -184,6 +200,25 @@ export default function AdminSarusHubEditPageEN() {
   };
 
   const handleMultipleImageUpload = async (files: FileList, inputElement?: HTMLInputElement) => {
+    // Client-side validation for all files
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    
+    const invalidFiles: string[] = [];
+    Array.from(files).forEach((file) => {
+      if (!validTypes.includes(file.type)) {
+        invalidFiles.push(`${file.name}: Invalid file type`);
+      } else if (file.size > maxSize) {
+        invalidFiles.push(`${file.name}: Exceeds 10MB limit`);
+      }
+    });
+
+    if (invalidFiles.length > 0) {
+      alert("Some files are invalid:\n" + invalidFiles.join("\n"));
+      if (inputElement) inputElement.value = "";
+      return;
+    }
+
     setMultipleImagesUploading(true);
     try {
       const uploadPromises = Array.from(files).map(async (file) => {
@@ -275,6 +310,22 @@ export default function AdminSarusHubEditPageEN() {
   };
 
   const handleVideoUpload = async (file: File, inputElement?: HTMLInputElement) => {
+    // Client-side validation
+    const validTypes = ["video/mp4", "video/webm", "video/quicktime"];
+    if (!validTypes.includes(file.type)) {
+      alert("Invalid file type. Only MP4, WebM, and QuickTime videos are allowed.");
+      if (inputElement) inputElement.value = "";
+      return;
+    }
+
+    // Validate file size (max 100MB)
+    const maxSize = 100 * 1024 * 1024; // 100MB
+    if (file.size > maxSize) {
+      alert("File size exceeds 100MB limit. Please use a smaller video.");
+      if (inputElement) inputElement.value = "";
+      return;
+    }
+
     setVideoUploading(true);
     try {
       const uploadFormData = new FormData();
@@ -654,7 +705,7 @@ export default function AdminSarusHubEditPageEN() {
               )}
               <input
                 type="file"
-                accept="image/*"
+                accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   const inputElement = e.target as HTMLInputElement;
@@ -665,6 +716,7 @@ export default function AdminSarusHubEditPageEN() {
                 disabled={imageUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
               />
+              <p className="text-xs text-neutral-body mt-1">Maximum file size: 10MB (JPEG, PNG, WebP, GIF)</p>
               {imageUploading && <p className="text-sm text-neutral-body mt-2">Uploading...</p>}
             </div>
 
@@ -728,7 +780,7 @@ export default function AdminSarusHubEditPageEN() {
               )}
               <input
                 type="file"
-                accept="image/*"
+                accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
                 multiple
                 onChange={(e) => {
                   const files = e.target.files;
@@ -740,6 +792,7 @@ export default function AdminSarusHubEditPageEN() {
                 disabled={multipleImagesUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
               />
+              <p className="text-xs text-neutral-body mt-1">Maximum file size: 10MB (JPEG, PNG, WebP, GIF)</p>
               {multipleImagesUploading && <p className="text-sm text-neutral-body mt-2">Uploading...</p>}
             </div>
 
@@ -785,7 +838,7 @@ export default function AdminSarusHubEditPageEN() {
               )}
               <input
                 type="file"
-                accept="video/*"
+                accept="video/mp4,video/webm,video/quicktime"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   const inputElement = e.target as HTMLInputElement;
@@ -796,6 +849,7 @@ export default function AdminSarusHubEditPageEN() {
                 disabled={videoUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
               />
+              <p className="text-xs text-neutral-body mt-1">Maximum file size: 100MB (MP4, WebM, QuickTime)</p>
               {videoUploading && <p className="text-sm text-neutral-body mt-2">Uploading...</p>}
             </div>
           </div>

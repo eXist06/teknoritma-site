@@ -5,6 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import { useState } from "react";
+import { useI18n } from "@/lib/i18n";
 
 interface RichTextEditorProps {
   content: string;
@@ -15,14 +16,24 @@ interface RichTextEditorProps {
 export default function RichTextEditor({
   content,
   onChange,
-  placeholder = "İçerik yazın...",
+  placeholder,
 }: RichTextEditorProps) {
+  const { language, t } = useI18n();
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  
+  // Default placeholder based on language
+  const defaultPlaceholder = language === "en" ? "Write content..." : "İçerik yazın...";
+  const finalPlaceholder = placeholder || defaultPlaceholder;
 
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3, 4, 5, 6],
+        },
+      }),
       Image.configure({
         inline: true,
         allowBase64: true,
@@ -48,12 +59,26 @@ export default function RichTextEditor({
   });
 
   const handleImageUpload = async (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      alert("Sadece resim dosyaları yüklenebilir.");
+    // Client-side validation
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
+    if (!validTypes.includes(file.type)) {
+      alert(language === "en" 
+        ? "Invalid file type. Only JPEG, PNG, WebP, and GIF images are allowed."
+        : "Geçersiz dosya türü. Sadece JPEG, PNG, WebP ve GIF görselleri yüklenebilir.");
+      return;
+    }
+
+    // Validate file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+      alert(language === "en"
+        ? "File size exceeds 10MB limit. Please use a smaller image."
+        : "Dosya boyutu 10MB limitini aşıyor. Lütfen daha küçük bir görsel kullanın.");
       return;
     }
 
     setUploading(true);
+    setUploadProgress(0);
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -67,14 +92,18 @@ export default function RichTextEditor({
 
       if (response.ok && data.url && editor) {
         editor.chain().focus().setImage({ src: data.url }).run();
+        setUploadProgress(100);
       } else {
-        alert(data.error || "Resim yüklenemedi");
+        alert(data.error || (language === "en" ? "Failed to upload image" : "Resim yüklenemedi"));
       }
     } catch (error) {
       console.error("Image upload error:", error);
-      alert("Resim yüklenirken bir hata oluştu");
+      alert(language === "en" 
+        ? "An error occurred while uploading the image"
+        : "Resim yüklenirken bir hata oluştu");
     } finally {
       setUploading(false);
+      setTimeout(() => setUploadProgress(0), 500);
     }
   };
 
@@ -145,19 +174,33 @@ export default function RichTextEditor({
         {/* Headings */}
         <button
           type="button"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          onClick={() => {
+            if (editor.isActive("heading", { level: 2 })) {
+              editor.chain().focus().setParagraph().run();
+            } else {
+              editor.chain().focus().setHeading({ level: 2 }).run();
+            }
+          }}
           className={`p-2 rounded hover:bg-neutral-border text-sm ${
             editor.isActive("heading", { level: 2 }) ? "bg-primary/20 text-primary" : ""
           }`}
+          title="Başlık 2 (H2)"
         >
           H2
         </button>
         <button
           type="button"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          onClick={() => {
+            if (editor.isActive("heading", { level: 3 })) {
+              editor.chain().focus().setParagraph().run();
+            } else {
+              editor.chain().focus().setHeading({ level: 3 }).run();
+            }
+          }}
           className={`p-2 rounded hover:bg-neutral-border text-sm ${
             editor.isActive("heading", { level: 3 }) ? "bg-primary/20 text-primary" : ""
           }`}
+          title="Başlık 3 (H3)"
         >
           H3
         </button>
@@ -168,7 +211,7 @@ export default function RichTextEditor({
         <button
           type="button"
           onClick={() => {
-            const url = window.prompt("Link URL:");
+            const url = window.prompt(language === "en" ? "Link URL:" : "Link URL:");
             if (url) {
               editor.chain().focus().setLink({ href: url }).run();
             }
@@ -176,15 +219,16 @@ export default function RichTextEditor({
           className={`p-2 rounded hover:bg-neutral-border ${
             editor.isActive("link") ? "bg-primary/20 text-primary" : ""
           }`}
+          title={language === "en" ? "Add link" : "Link ekle"}
         >
           🔗
         </button>
 
         {/* Image upload */}
-        <label className="cursor-pointer">
+        <label className="cursor-pointer relative" title={language === "en" ? "Upload image (max 10MB)" : "Görsel yükle (maks 10MB)"}>
           <input
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
             className="hidden"
             onChange={(e) => {
               const file = e.target.files?.[0];
@@ -201,6 +245,14 @@ export default function RichTextEditor({
           >
             {uploading ? "⏳" : "🖼️"}
           </span>
+          {uploading && uploadProgress > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-neutral-border rounded-full h-1">
+              <div 
+                className="bg-primary h-1 rounded-full transition-all duration-300"
+                style={{ width: `${uploadProgress}%` }}
+              />
+            </div>
+          )}
         </label>
 
         <div className="w-px h-6 bg-neutral-border" />
@@ -227,7 +279,7 @@ export default function RichTextEditor({
       {/* Editor */}
       <EditorContent
         editor={editor}
-        className="min-h-[300px] max-h-[600px] overflow-y-auto"
+        className="min-h-[300px] max-h-[600px] overflow-y-auto tiptap-editor"
       />
     </div>
   );

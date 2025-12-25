@@ -96,6 +96,22 @@ export default function AdminSarusHubEditPage() {
   };
 
   const handleImageUpload = async (file: File, setAsPrimary: boolean = false, inputElement?: HTMLInputElement) => {
+    // Client-side validation
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
+    if (!validTypes.includes(file.type)) {
+      alert("Geçersiz dosya türü. Sadece JPEG, PNG, WebP ve GIF görselleri yüklenebilir.");
+      if (inputElement) inputElement.value = "";
+      return;
+    }
+
+    // Validate file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+      alert("Dosya boyutu 10MB limitini aşıyor. Lütfen daha küçük bir görsel kullanın.");
+      if (inputElement) inputElement.value = "";
+      return;
+    }
+
     setImageUploading(true);
     try {
       const uploadFormData = new FormData();
@@ -156,6 +172,25 @@ export default function AdminSarusHubEditPage() {
   };
 
   const handleMultipleImageUpload = async (files: FileList, inputElement?: HTMLInputElement) => {
+    // Client-side validation for all files
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    
+    const invalidFiles: string[] = [];
+    Array.from(files).forEach((file) => {
+      if (!validTypes.includes(file.type)) {
+        invalidFiles.push(`${file.name}: Geçersiz dosya türü`);
+      } else if (file.size > maxSize) {
+        invalidFiles.push(`${file.name}: 10MB limitini aşıyor`);
+      }
+    });
+
+    if (invalidFiles.length > 0) {
+      alert("Bazı dosyalar geçersiz:\n" + invalidFiles.join("\n"));
+      if (inputElement) inputElement.value = "";
+      return;
+    }
+
     setMultipleImagesUploading(true);
     try {
       const uploadPromises = Array.from(files).map(async (file) => {
@@ -245,6 +280,22 @@ export default function AdminSarusHubEditPage() {
   };
 
   const handleVideoUpload = async (file: File, inputElement?: HTMLInputElement) => {
+    // Client-side validation
+    const validTypes = ["video/mp4", "video/webm", "video/quicktime"];
+    if (!validTypes.includes(file.type)) {
+      alert("Geçersiz dosya türü. Sadece MP4, WebM ve QuickTime videoları yüklenebilir.");
+      if (inputElement) inputElement.value = "";
+      return;
+    }
+
+    // Validate file size (max 100MB)
+    const maxSize = 100 * 1024 * 1024; // 100MB
+    if (file.size > maxSize) {
+      alert("Dosya boyutu 100MB limitini aşıyor. Lütfen daha küçük bir video kullanın.");
+      if (inputElement) inputElement.value = "";
+      return;
+    }
+
     setVideoUploading(true);
     try {
       const formData = new FormData();
@@ -612,7 +663,7 @@ export default function AdminSarusHubEditPage() {
               )}
               <input
                 type="file"
-                accept="image/*"
+                accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   const inputElement = e.target as HTMLInputElement;
@@ -623,6 +674,7 @@ export default function AdminSarusHubEditPage() {
                 disabled={imageUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
               />
+              <p className="text-xs text-neutral-body mt-1">Maksimum dosya boyutu: 10MB (JPEG, PNG, WebP, GIF)</p>
               {imageUploading && <p className="text-sm text-neutral-body mt-2">Yükleniyor...</p>}
             </div>
 
@@ -686,7 +738,7 @@ export default function AdminSarusHubEditPage() {
               )}
               <input
                 type="file"
-                accept="image/*"
+                accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
                 multiple
                 onChange={(e) => {
                   const files = e.target.files;
@@ -698,6 +750,7 @@ export default function AdminSarusHubEditPage() {
                 disabled={multipleImagesUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
               />
+              <p className="text-xs text-neutral-body mt-1">Maksimum dosya boyutu: 10MB (JPEG, PNG, WebP, GIF)</p>
               {multipleImagesUploading && <p className="text-sm text-neutral-body mt-2">Yükleniyor...</p>}
             </div>
 
@@ -743,7 +796,7 @@ export default function AdminSarusHubEditPage() {
               )}
               <input
                 type="file"
-                accept="video/*"
+                accept="video/mp4,video/webm,video/quicktime"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   const inputElement = e.target as HTMLInputElement;
@@ -754,6 +807,7 @@ export default function AdminSarusHubEditPage() {
                 disabled={videoUploading}
                 className="w-full px-4 py-2 border border-neutral-border rounded-lg"
               />
+              <p className="text-xs text-neutral-body mt-1">Maksimum dosya boyutu: 100MB (MP4, WebM, QuickTime)</p>
               {videoUploading && <p className="text-sm text-neutral-body mt-2">Yükleniyor...</p>}
             </div>
           </div>
