@@ -40,13 +40,26 @@ export default function SarusHubContent({
       
       // Apply responsive style to content images
       const imgElement = img as HTMLImageElement;
+      
+      // Check if image has data-size attribute
+      const dataSize = imgElement.getAttribute('data-size');
+      
+      // Eğer data-size yoksa, default olarak 'medium' ekle (eski görseller için)
+      if (!dataSize) {
+        imgElement.setAttribute('data-size', 'medium');
+      }
+      
+      // Sadece temel stilleri ekle - max-width'i CSS'e bırak
+      // Inline style ekleme, CSS !important kuralları çalışsın
       imgElement.style.objectFit = 'contain';
-      imgElement.style.maxWidth = '100%';
       imgElement.style.width = 'auto';
       imgElement.style.height = 'auto';
       imgElement.style.display = 'block';
       imgElement.style.margin = '0 auto';
       imgElement.style.cursor = 'pointer';
+      
+      // max-width'i inline style olarak EKLEMEYİN - CSS handle etsin
+      // CSS'teki !important kuralları çalışacak
       
       // Remove fixed height constraints
       if (imgElement.style.height && imgElement.style.height !== 'auto') {
@@ -123,14 +136,15 @@ export default function SarusHubContent({
         // Image loaded successfully, ensure it's visible
         const target = img as HTMLImageElement;
         target.style.display = "";
-        // Ensure responsive for content images
         target.style.objectFit = "contain";
-        target.style.maxWidth = "100%";
         target.style.width = "auto";
         target.style.height = "auto";
         target.style.display = "block";
         target.style.margin = "0 auto";
         target.style.cursor = "pointer";
+        
+        // max-width'i inline style olarak EKLEMEYİN - CSS handle etsin
+        // data-size attribute'u varsa CSS otomatik uygulayacak
       };
 
       img.addEventListener('click', handleClick);

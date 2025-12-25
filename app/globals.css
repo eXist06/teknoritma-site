@@ -130,34 +130,50 @@
 /* Content images - responsive and clickable for lightbox */
 .prose img {
   max-width: 100% !important;
+  width: auto !important;
   height: auto !important;
   cursor: pointer !important;
   transition: transform 0.2s ease !important;
+  display: block !important;
+  margin: 0 auto !important;
+  object-fit: contain !important;
 }
 
 .prose img:hover {
   transform: scale(1.02) !important;
 }
 
-/* Image size variants based on data-size attribute */
+/* Image size variants based on data-size attribute - INLINE STYLE'LARI OVERRIDE ET */
 .prose img[data-size="small"] {
   max-width: 40% !important;
+  width: auto !important;
+  height: auto !important;
   margin: 1rem auto !important;
+  display: block !important;
 }
 
 .prose img[data-size="medium"] {
   max-width: 60% !important;
+  width: auto !important;
+  height: auto !important;
   margin: 1rem auto !important;
+  display: block !important;
 }
 
 .prose img[data-size="large"] {
   max-width: 80% !important;
+  width: auto !important;
+  height: auto !important;
   margin: 1rem auto !important;
+  display: block !important;
 }
 
 .prose img[data-size="full"] {
   max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
   margin: 1rem auto !important;
+  display: block !important;
 }
 
 /* Lightbox styles */

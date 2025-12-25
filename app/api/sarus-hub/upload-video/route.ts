@@ -57,16 +57,59 @@ export async function POST(request: NextRequest) {
 
     // Write file with better error handling
     try {
+      const fs = await import("fs");
+      
+      // Write file
       await writeFile(filepath, buffer);
       
+      // Force file system sync in production (ensures file is fully written to disk)
+      if (process.env.NODE_ENV === "production") {
+        const fd = await fs.promises.open(filepath, "r");
+        try {
+          await fd.sync(); // Force sync to disk
+        } finally {
+          await fd.close();
+        }
+        // Additional wait for production file system sync delays
+        await new Promise(resolve => setTimeout(resolve, 300));
+      }
+      
       // Verify file was written successfully
-      const fs = await import("fs");
       if (!fs.existsSync(filepath)) {
         throw new Error("File was not written successfully");
       }
       
-      // Return public URL
-      const publicUrl = `/uploads/sarus-hub/videos/${filename}`;
+      // Verify file size matches
+      const stats = await fs.promises.stat(filepath);
+      if (stats.size !== buffer.length) {
+        // Retry: wait a bit and check again (for production file system sync delays)
+        await new Promise(resolve => setTimeout(resolve, 300));
+        const retryStats = await fs.promises.stat(filepath);
+        if (retryStats.size !== buffer.length) {
+          throw new Error(`File size mismatch: expected ${buffer.length}, got ${retryStats.size}`);
+        }
+      }
+      
+      // Ensure file is readable by actually reading a small portion
+      try {
+        await fs.promises.access(filepath, fs.constants.R_OK);
+        // Try to read first byte to ensure file is accessible
+        const testRead = await fs.promises.readFile(filepath, { encoding: null, flag: 'r' });
+        if (testRead.length !== buffer.length) {
+          throw new Error("File read size mismatch");
+        }
+      } catch (accessError) {
+        throw new Error("File is not readable after write");
+      }
+      
+      // In production, add extra delay to ensure Next.js static file serving picks up the file
+      if (process.env.NODE_ENV === "production") {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      // Return public URL with cache-busting timestamp
+      const urlTimestamp = Date.now();
+      const publicUrl = `/uploads/sarus-hub/videos/${filename}?t=${urlTimestamp}`;
       
       return NextResponse.json({ url: publicUrl, filename });
     } catch (writeError: any) {
