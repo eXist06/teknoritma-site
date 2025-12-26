@@ -56,7 +56,7 @@ export default function SarusHubContent({
       }
       
       // data-size attribute'una göre max-width'i inline style olarak ekle
-      // Bu Tailwind prose plugin'inin kurallarını override eder
+      // Inline style, CSS'teki !important kurallarından daha güçlüdür
       const sizeMap: Record<string, string> = {
         'small': '40%',
         'medium': '60%',
@@ -66,14 +66,25 @@ export default function SarusHubContent({
       
       const maxWidth = sizeMap[dataSize] || '60%';
       
-      // Inline style'ları ayarla
+      // Inline style'ları ayarla - inline style CSS'ten daha güçlü
+      // Önce mevcut style'ları temizle (özellikle max-width)
+      if (imgElement.style.maxWidth) {
+        imgElement.style.removeProperty('max-width');
+      }
+      
+      // Yeni style'ları ekle - inline style zaten CSS'ten daha güçlü
       imgElement.style.objectFit = 'contain';
       imgElement.style.width = 'auto';
       imgElement.style.height = 'auto';
       imgElement.style.display = 'block';
       imgElement.style.margin = '0 auto';
       imgElement.style.cursor = 'pointer';
-      imgElement.style.maxWidth = maxWidth; // data-size'a göre max-width ekle
+      imgElement.style.maxWidth = maxWidth; // data-size'a göre max-width ekle - inline style CSS'ten daha güçlü
+      
+      // Debug: Console'da kontrol et (production'da kaldırılabilir)
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Image size applied:', { dataSize, maxWidth, src: imgElement.src });
+      }
       
       // Remove fixed height constraints
       if (imgElement.style.height && imgElement.style.height !== 'auto') {
@@ -147,18 +158,26 @@ export default function SarusHubContent({
       };
 
       const handleLoad = () => {
-        // Image loaded successfully, ensure it's visible
+        // Image loaded successfully, ensure it's visible and apply size
         const target = img as HTMLImageElement;
-        target.style.display = "";
+        
+        // data-size attribute'una göre max-width'i tekrar uygula
+        const dataSize = target.getAttribute('data-size') || 'medium';
+        const sizeMap: Record<string, string> = {
+          'small': '40%',
+          'medium': '60%',
+          'large': '80%',
+          'full': '100%'
+        };
+        const maxWidth = sizeMap[dataSize] || '60%';
+        
+        target.style.display = "block";
         target.style.objectFit = "contain";
         target.style.width = "auto";
         target.style.height = "auto";
-        target.style.display = "block";
         target.style.margin = "0 auto";
         target.style.cursor = "pointer";
-        
-        // max-width'i inline style olarak EKLEMEYİN - CSS handle etsin
-        // data-size attribute'u varsa CSS otomatik uygulayacak
+        target.style.maxWidth = maxWidth; // data-size'a göre max-width ekle
       };
 
       img.addEventListener('click', handleClick);
