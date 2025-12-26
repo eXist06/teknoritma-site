@@ -43,8 +43,8 @@ export async function generateStaticParams() {
   return items
     .filter((item) => item.language === "en" || item.language === "mixed")
     .map((item) => ({
-      slug: item.slug,
-    }));
+    slug: item.slug,
+  }));
 }
 
 export async function generateMetadata({
@@ -242,17 +242,17 @@ export default async function SarusHubDetailPageEN({
             <div className="flex items-center gap-4">
               <span className="text-neutral-600">{item.publishedAt ? formatDate(item.publishedAt) : ""}</span>
               <span className="text-neutral-400">•</span>
-              <span
+            <span
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ring-1 ${typeColors[item.type]}`}
-              >
-                {typeLabels[item.type]}
-              </span>
-              {item.readingMinutes && (
+            >
+              {typeLabels[item.type]}
+            </span>
+            {item.readingMinutes && (
                 <>
                   <span className="text-neutral-400">•</span>
                   <span className="text-neutral-600">{item.readingMinutes} min read</span>
                 </>
-              )}
+            )}
               {!isPreview && (
                 <>
                   <span className="text-neutral-400">•</span>
@@ -279,25 +279,25 @@ export default async function SarusHubDetailPageEN({
           {(item.hospital || item.country || item.segment) && (
             <div className="border-t border-neutral-200 pt-6 mb-8">
               <div className="flex flex-wrap gap-4 text-sm">
-                {item.hospital && (
+            {item.hospital && (
                   <div className="flex items-center gap-2">
                     <span className="text-neutral-500">🏥</span>
                     <span className="text-neutral-700 font-medium">{item.hospital}</span>
                   </div>
-                )}
-                {item.country && (
+            )}
+            {item.country && (
                   <div className="flex items-center gap-2">
                     <span className="text-neutral-500">🌍</span>
                     <span className="text-neutral-700 font-medium">{item.country}</span>
                   </div>
-                )}
-                {item.segment && (
+            )}
+            {item.segment && (
                   <div className="flex items-center gap-2">
                     <span className="text-neutral-500">📊</span>
                     <span className="text-neutral-700 font-medium">{item.segment}</span>
                   </div>
-                )}
-              </div>
+            )}
+          </div>
             </div>
           )}
         </header>
@@ -320,7 +320,7 @@ export default async function SarusHubDetailPageEN({
         </article>
 
         {/* Tags - At the bottom */}
-        {item.tags.length > 0 && (
+          {item.tags.length > 0 && (
           <div className="border-t border-neutral-200 pt-8">
             <div className="flex flex-wrap gap-2">
               {item.tags.map((tag) => (

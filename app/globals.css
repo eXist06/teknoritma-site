@@ -166,12 +166,29 @@ div.prose.prose-lg h6 {
 
 /* Content area whitespace preservation - for all text elements */
 /* Prose class'larını override etmek için !important kullanıyoruz */
+/* Prose container'ının kendisine de uygula */
+.prose,
+div.prose,
+.prose.prose-lg,
+div.prose.prose-lg {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+/* Tüm child elementlere de uygula */
 .prose p,
 .prose div,
 .prose span,
 .prose li,
 .prose td,
 .prose th,
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6,
 .prose p *,
 .prose div *,
 .prose span * {
@@ -182,9 +199,11 @@ div.prose.prose-lg h6 {
 
 /* Preserve line breaks in content */
 .prose br {
-  display: block;
-  content: "";
-  margin-top: 0.5em;
+  display: block !important;
+  content: "" !important;
+  margin-top: 0.5em !important;
+  margin-bottom: 0.5em !important;
+  line-height: 1.5em !important;
 }
 
 /* Link styles in content */
