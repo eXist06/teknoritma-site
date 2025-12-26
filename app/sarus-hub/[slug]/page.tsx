@@ -307,8 +307,12 @@ export default async function SarusHubDetailPage({
           <SarusHubContent
             content={item.content}
             image={undefined}
-            primaryImage={undefined}
-            images={item.images}
+            primaryImage={item.primaryImage || item.image}
+            images={item.images ? item.images.filter(img => {
+              // Filter out primary image from additional images
+              const primaryImg = item.primaryImage || item.image;
+              return primaryImg ? img !== primaryImg : true;
+            }) : []}
             imageDisplayStyle={item.imageDisplayStyle}
             video={undefined}
             skipPrimaryImage={true}

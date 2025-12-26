@@ -138,14 +138,16 @@ export default function SarusHubHero({
     <div className="relative w-full h-[108px] md:h-[126px] overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-primary">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]" />
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-        <motion.h1 
-          className="mb-2 text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          Sarus Hub
-        </motion.h1>
+        <Link href={`/${language === "en" ? "en/" : ""}sarus-hub`}>
+          <motion.h1 
+            className="mb-2 text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight cursor-pointer hover:text-primary/90 transition-colors"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            Sarus Hub
+          </motion.h1>
+        </Link>
         <motion.p 
           className="text-base md:text-lg text-white/80 leading-relaxed font-normal tracking-normal max-w-2xl"
           initial={{ opacity: 0, y: 10 }}
