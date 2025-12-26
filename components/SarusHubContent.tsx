@@ -440,6 +440,7 @@ export default function SarusHubContent({
           prose-li:mb-2 prose-li:text-neutral-body
           prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:h-auto"
         dangerouslySetInnerHTML={{ __html: content }}
+        style={{ whiteSpace: 'pre-wrap' }}
       />
 
       {/* Additional Images Gallery - Show at the end of content */}

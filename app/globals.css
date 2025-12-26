@@ -197,6 +197,33 @@ div.prose.prose-lg {
   overflow-wrap: break-word !important;
 }
 
+/* Boş paragrafları görünür yap - TipTap boş satırları boş <p> tag'leri olarak kaydediyor */
+.prose p:empty {
+  min-height: 1.5em !important;
+  line-height: 1.5em !important;
+  margin-bottom: 1em !important;
+  margin-top: 0.5em !important;
+  display: block !important;
+  position: relative !important;
+}
+
+/* Boş paragrafları görünür yap - ::after ile görünür boşluk ekle */
+.prose p:empty::after {
+  content: "\00a0" !important; /* Non-breaking space */
+  visibility: visible !important;
+  display: inline-block !important;
+  width: 100% !important;
+  height: 1.5em !important;
+}
+
+/* Hard break (Shift+Enter) için stil */
+.prose .hard-break,
+.prose br.hard-break {
+  display: block !important;
+  margin-bottom: 0.5em !important;
+  line-height: 1.5em !important;
+}
+
 /* Preserve line breaks in content */
 .prose br {
   display: block !important;
