@@ -7,6 +7,7 @@ import SarusHubContent from "@/components/SarusHubContent";
 import SarusHubPrimaryMedia from "@/components/SarusHubPrimaryMedia";
 import SarusHubHero from "@/components/SarusHubHero";
 import SocialShareButtons from "@/components/SocialShareButtons";
+import ViewCounter from "@/components/ViewCounter";
 import { verifySarusHubRole } from "@/lib/utils/role-verification";
 
 const typeLabels: Record<SarusHubItemType, string> = {
@@ -236,7 +237,7 @@ export default async function SarusHubDetailPage({
             {item.title}
           </h1>
 
-          {/* Date + Content Type + Social Share (Single Line) */}
+          {/* Date + Content Type + View Count + Social Share (Single Line) */}
           <div className="flex items-center justify-between gap-4 mb-6 text-sm">
             <div className="flex items-center gap-4">
               <span className="text-neutral-600">{item.publishedAt ? formatDate(item.publishedAt) : ""}</span>
@@ -250,6 +251,12 @@ export default async function SarusHubDetailPage({
                 <>
                   <span className="text-neutral-400">•</span>
                   <span className="text-neutral-600">{item.readingMinutes} dk okuma</span>
+                </>
+              )}
+              {!isPreview && (
+                <>
+                  <span className="text-neutral-400">•</span>
+                  <ViewCounter slug={item.slug} initialCount={item.viewCount || 0} />
                 </>
               )}
             </div>

@@ -42,24 +42,38 @@ export default function SarusHubContent({
       const imgElement = img as HTMLImageElement;
       
       // Check if image has data-size attribute
-      const dataSize = imgElement.getAttribute('data-size');
+      let dataSize = imgElement.getAttribute('data-size');
       
       // Eğer data-size yoksa, default olarak 'medium' ekle (eski görseller için)
       if (!dataSize) {
-        imgElement.setAttribute('data-size', 'medium');
+        dataSize = 'medium';
+        imgElement.setAttribute('data-size', dataSize);
       }
       
-      // Sadece temel stilleri ekle - max-width'i CSS'e bırak
-      // Inline style ekleme, CSS !important kuralları çalışsın
+      // CSS class'ını ekle (prose-img zaten var ama emin olmak için)
+      if (!imgElement.classList.contains('prose-img')) {
+        imgElement.classList.add('prose-img');
+      }
+      
+      // data-size attribute'una göre max-width'i inline style olarak ekle
+      // Bu Tailwind prose plugin'inin kurallarını override eder
+      const sizeMap: Record<string, string> = {
+        'small': '40%',
+        'medium': '60%',
+        'large': '80%',
+        'full': '100%'
+      };
+      
+      const maxWidth = sizeMap[dataSize] || '60%';
+      
+      // Inline style'ları ayarla
       imgElement.style.objectFit = 'contain';
       imgElement.style.width = 'auto';
       imgElement.style.height = 'auto';
       imgElement.style.display = 'block';
       imgElement.style.margin = '0 auto';
       imgElement.style.cursor = 'pointer';
-      
-      // max-width'i inline style olarak EKLEMEYİN - CSS handle etsin
-      // CSS'teki !important kuralları çalışacak
+      imgElement.style.maxWidth = maxWidth; // data-size'a göre max-width ekle
       
       // Remove fixed height constraints
       if (imgElement.style.height && imgElement.style.height !== 'auto') {
@@ -397,7 +411,7 @@ export default function SarusHubContent({
           prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-4
           prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-4
           prose-li:mb-2 prose-li:text-neutral-body
-          prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:max-w-full prose-img:h-auto"
+          prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:h-auto"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     </div>

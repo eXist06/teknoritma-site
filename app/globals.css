@@ -128,7 +128,9 @@
 }
 
 /* Content images - responsive and clickable for lightbox */
-.prose img {
+/* Tailwind prose-img class'larını override etmek için daha spesifik selector */
+.prose img,
+img.prose-img {
   max-width: 100% !important;
   width: auto !important;
   height: auto !important;
@@ -144,7 +146,15 @@
 }
 
 /* Image size variants based on data-size attribute - INLINE STYLE'LARI OVERRIDE ET */
-.prose img[data-size="small"] {
+/* Daha spesifik selector'lar - Tailwind prose class'larını override etmek için */
+/* Tailwind prose plugin'inin max-width: 100% kuralını override etmek için çok spesifik selector'lar kullanıyoruz */
+.prose img[data-size="small"],
+.prose img.prose-img[data-size="small"],
+.prose .prose-img[data-size="small"],
+img.prose-img[data-size="small"],
+.prose-img[data-size="small"],
+div.prose img[data-size="small"],
+div.prose .prose-img[data-size="small"] {
   max-width: 40% !important;
   width: auto !important;
   height: auto !important;
@@ -152,7 +162,13 @@
   display: block !important;
 }
 
-.prose img[data-size="medium"] {
+.prose img[data-size="medium"],
+.prose img.prose-img[data-size="medium"],
+.prose .prose-img[data-size="medium"],
+img.prose-img[data-size="medium"],
+.prose-img[data-size="medium"],
+div.prose img[data-size="medium"],
+div.prose .prose-img[data-size="medium"] {
   max-width: 60% !important;
   width: auto !important;
   height: auto !important;
@@ -160,7 +176,13 @@
   display: block !important;
 }
 
-.prose img[data-size="large"] {
+.prose img[data-size="large"],
+.prose img.prose-img[data-size="large"],
+.prose .prose-img[data-size="large"],
+img.prose-img[data-size="large"],
+.prose-img[data-size="large"],
+div.prose img[data-size="large"],
+div.prose .prose-img[data-size="large"] {
   max-width: 80% !important;
   width: auto !important;
   height: auto !important;
@@ -168,7 +190,13 @@
   display: block !important;
 }
 
-.prose img[data-size="full"] {
+.prose img[data-size="full"],
+.prose img.prose-img[data-size="full"],
+.prose .prose-img[data-size="full"],
+img.prose-img[data-size="full"],
+.prose-img[data-size="full"],
+div.prose img[data-size="full"],
+div.prose .prose-img[data-size="full"] {
   max-width: 100% !important;
   width: auto !important;
   height: auto !important;
