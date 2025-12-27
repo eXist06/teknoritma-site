@@ -76,10 +76,6 @@ export async function generateMetadata({
     description: item.summary,
     alternates: {
       canonical: url,
-      languages: {
-        tr: url,
-        en: `${SITE_URL}/en/sarus-hub`, // Genel EN hub sayfası
-      },
     },
     openGraph: {
       title: item.title,
