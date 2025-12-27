@@ -67,16 +67,24 @@ export async function generateMetadata({
   }
 
   const { SITE_URL } = await import("@/lib/config");
+  
   const url = `${SITE_URL}/en/sarus-hub/${item.slug}`;
   const image = item.primaryImage || item.image ? `${SITE_URL}${item.primaryImage || item.image}` : undefined;
 
   return {
     title: item.title,
     description: item.summary,
+    alternates: {
+      canonical: url,
+      languages: {
+        en: url,
+        tr: `${SITE_URL}/sarus-hub`, // Genel TR hub sayfası
+      },
+    },
     openGraph: {
       title: item.title,
       description: item.summary,
-      url,
+      url, // canonical URL
       siteName: "Sarus-HUB",
       images: image ? [{ url: image }] : [],
       locale: "en_US",

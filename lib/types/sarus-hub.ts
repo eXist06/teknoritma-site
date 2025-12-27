@@ -28,6 +28,7 @@ export interface SarusHubItem {
   video?: string; // Video URL
   language: SarusHubItemLanguage;
   translationId?: string; // ID of the original item if this is a translation
+  translationGroupId?: string; // Group ID to link all translations together
   createdAt: string; // ISO string
   updatedAt: string; // ISO string
   viewCount?: number; // View statistics

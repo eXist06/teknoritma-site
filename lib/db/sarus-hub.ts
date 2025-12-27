@@ -90,6 +90,7 @@ export function getAllItems(filters?: SarusHubFilters, includeDrafts: boolean = 
       video: row.video || undefined,
       language: row.language as SarusHubItem['language'],
       translationId: row.translation_id || undefined,
+      translationGroupId: row.translation_group_id || undefined,
       viewCount: row.view_count || 0,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
@@ -133,6 +134,7 @@ export function getItemById(id: string): SarusHubItem | null {
     video: row.video || undefined,
       language: row.language as SarusHubItem['language'],
       translationId: row.translation_id || undefined,
+      translationGroupId: row.translation_group_id || undefined,
       viewCount: row.view_count || 0,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
@@ -175,6 +177,7 @@ export function getItemBySlug(slug: string): SarusHubItem | null {
     video: row.video || undefined,
       language: row.language as SarusHubItem['language'],
       translationId: row.translation_id || undefined,
+      translationGroupId: row.translation_group_id || undefined,
       viewCount: row.view_count || 0,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
@@ -205,14 +208,25 @@ export function createItem(item: Omit<SarusHubItem, 'id' | 'createdAt' | 'update
   // Remove primary image from images array if it's there
   const filteredImages = imagesArray.filter(img => img !== primaryImage);
   
+  // Determine translation_group_id
+  // If translationId is provided, use it as groupId
+  // Otherwise, if translationGroupId is provided, use it
+  // Otherwise, use the item's own id as groupId
+  let translationGroupId = item.translationGroupId || null;
+  if (item.translationId) {
+    translationGroupId = item.translationId;
+  } else if (!translationGroupId) {
+    translationGroupId = id;
+  }
+
   try {
     db.prepare(`
       INSERT INTO sarus_hub_items (
         id, type, title, slug, summary, content, hospital, country, segment,
         tags, published_at, featured, reading_minutes, status, author, 
         image, primary_image, images, image_display_style, video,
-        language, translation_id, view_count, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        language, translation_id, translation_group_id, view_count, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
     id,
     item.type,
@@ -236,6 +250,7 @@ export function createItem(item: Omit<SarusHubItem, 'id' | 'createdAt' | 'update
     item.video || null,
     item.language,
     item.translationId || null,
+    translationGroupId,
     item.viewCount || 0,
       now,
       now
@@ -282,6 +297,14 @@ export function updateItem(id: string, updates: Partial<SarusHubItem>): SarusHub
   const imagesArray = updated.images || [];
   const filteredImages = imagesArray.filter(img => img !== primaryImage);
   
+  // Determine translation_group_id
+  let translationGroupId = updated.translationGroupId || null;
+  if (updated.translationId) {
+    translationGroupId = updated.translationId;
+  } else if (!translationGroupId) {
+    translationGroupId = id;
+  }
+
   db.prepare(`
     UPDATE sarus_hub_items SET
       type = ?, title = ?, slug = ?, summary = ?, content = ?,
@@ -289,7 +312,7 @@ export function updateItem(id: string, updates: Partial<SarusHubItem>): SarusHub
       published_at = ?, featured = ?, reading_minutes = ?,
       status = ?, author = ?, image = ?, primary_image = ?, 
       images = ?, image_display_style = ?, video = ?,
-      language = ?, translation_id = ?, updated_at = ?
+      language = ?, translation_id = ?, translation_group_id = ?, updated_at = ?
     WHERE id = ?
   `).run(
     updated.type,
@@ -313,6 +336,7 @@ export function updateItem(id: string, updates: Partial<SarusHubItem>): SarusHub
     updated.video || null,
     updated.language,
     updated.translationId || null,
+    translationGroupId,
     updated.updatedAt,
     id
   );
@@ -344,6 +368,52 @@ export function incrementViewCount(slug: string): number {
   const row = db.prepare("SELECT view_count FROM sarus_hub_items WHERE slug = ?").get(slug) as any;
   db.close();
   return row.view_count;
+}
+
+/**
+ * Get all translations of an item by translation_group_id
+ */
+export function getTranslationsByGroupId(groupId: string): SarusHubItem[] {
+  const db = getDatabase();
+  const rows = db.prepare("SELECT * FROM sarus_hub_items WHERE translation_group_id = ?").all(groupId) as any[];
+  db.close();
+
+  return rows.map(row => {
+    const primaryImage = row.primary_image || row.image || undefined;
+    const images = JSON.parse(row.images || '[]');
+    const allImages = primaryImage && !images.includes(primaryImage) 
+      ? [primaryImage, ...images] 
+      : images.length > 0 ? images : (primaryImage ? [primaryImage] : []);
+
+    return {
+      id: row.id,
+      type: row.type as SarusHubItem['type'],
+      title: row.title,
+      slug: row.slug,
+      summary: row.summary,
+      content: row.content,
+      hospital: row.hospital || undefined,
+      country: row.country || undefined,
+      segment: row.segment || undefined,
+      tags: JSON.parse(row.tags || '[]'),
+      publishedAt: row.published_at || undefined,
+      featured: row.featured === 1,
+      readingMinutes: row.reading_minutes || undefined,
+      status: row.status as SarusHubItem['status'],
+      author: row.author || undefined,
+      image: row.image || undefined,
+      primaryImage,
+      images: allImages.length > 0 ? allImages : undefined,
+      imageDisplayStyle: (row.image_display_style || 'cover') as SarusHubItem['imageDisplayStyle'],
+      video: row.video || undefined,
+      language: row.language as SarusHubItem['language'],
+      translationId: row.translation_id || undefined,
+      translationGroupId: row.translation_group_id || undefined,
+      viewCount: row.view_count || 0,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    };
+  });
 }
 
 

@@ -91,13 +91,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Continue without dynamic content if database error occurs
   }
 
-  return routes.map((route) => ({
-    url: `${SITE_URL}${route.path}`,
-    lastModified: route.lastModified || new Date(),
-    changeFrequency: route.changefreq as "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never",
-    priority: route.priority,
-    alternates: {
-      languages: route.path.startsWith("/en")
+  return routes.map((route) => {
+    // For Sarus Hub detail pages, use general hub pages for hreflang
+    let alternates: { tr?: string; en?: string };
+    
+    if (route.path.startsWith("/sarus-hub/") && route.path !== "/sarus-hub") {
+      // TR detail page -> link to general EN hub
+      alternates = {
+        tr: `${SITE_URL}${route.path}`,
+        en: `${SITE_URL}/en/sarus-hub`,
+      };
+    } else if (route.path.startsWith("/en/sarus-hub/") && route.path !== "/en/sarus-hub") {
+      // EN detail page -> link to general TR hub
+      alternates = {
+        en: `${SITE_URL}${route.path}`,
+        tr: `${SITE_URL}/sarus-hub`,
+      };
+    } else {
+      // Other routes use route mapping
+      alternates = route.path.startsWith("/en")
         ? {
             tr: `${SITE_URL}${routeMapping[route.path] || route.path.replace("/en", "")}`,
             en: `${SITE_URL}${route.path}`,
@@ -105,7 +117,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         : {
             tr: `${SITE_URL}${route.path}`,
             en: `${SITE_URL}${routeMapping[route.path] || `/en${route.path}`}`,
-          },
-    },
-  }));
+          };
+    }
+    
+    return {
+      url: `${SITE_URL}${route.path}`,
+      lastModified: route.lastModified || new Date(),
+      changeFrequency: route.changefreq as "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never",
+      priority: route.priority,
+      alternates: {
+        languages: alternates,
+      },
+    };
+  });
 }

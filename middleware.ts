@@ -263,6 +263,9 @@ export async function middleware(request: NextRequest) {
   const pathLang = pathname.startsWith("/en") ? "en" : "tr";
   const currentCookie = request.cookies.get("lang_preference")?.value;
   
+  // Set x-lang header for server-side lang attribute in root layout
+  response.headers.set("x-lang", pathLang);
+  
   // Only update cookie if it's different or doesn't exist to prevent unnecessary cookie updates
   if (currentCookie !== pathLang) {
     response.cookies.set("lang_preference", pathLang, { 

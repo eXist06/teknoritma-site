@@ -47,12 +47,32 @@ export function initializeDatabase() {
       video TEXT,
       language TEXT NOT NULL DEFAULT 'tr' CHECK(language IN ('tr', 'en', 'mixed')),
       translation_id TEXT, -- ID of the original item if this is a translation
+      translation_group_id TEXT, -- Group ID to link all translations together
       view_count INTEGER DEFAULT 0,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL,
       FOREIGN KEY (translation_id) REFERENCES sarus_hub_items(id) ON DELETE CASCADE
     )
   `);
+
+  // Add translation_group_id column if it doesn't exist (for existing databases)
+  try {
+    const tableInfo = db.prepare("PRAGMA table_info(sarus_hub_items)").all() as any[];
+    const hasTranslationGroupId = tableInfo.some((col: any) => col.name === "translation_group_id");
+    
+    if (!hasTranslationGroupId) {
+      db.exec(`
+        ALTER TABLE sarus_hub_items 
+        ADD COLUMN translation_group_id TEXT
+      `);
+      db.exec(`
+        CREATE INDEX IF NOT EXISTS idx_translation_group_id ON sarus_hub_items(translation_group_id)
+      `);
+    }
+  } catch (error) {
+    // Column might already exist, ignore error
+    console.warn("Could not add translation_group_id column:", error);
+  }
 
   // Create indexes for better query performance
   db.exec(`
@@ -62,6 +82,7 @@ export function initializeDatabase() {
     CREATE INDEX IF NOT EXISTS idx_published_at ON sarus_hub_items(published_at);
     CREATE INDEX IF NOT EXISTS idx_language ON sarus_hub_items(language);
     CREATE INDEX IF NOT EXISTS idx_translation_id ON sarus_hub_items(translation_id);
+    CREATE INDEX IF NOT EXISTS idx_translation_group_id ON sarus_hub_items(translation_group_id);
   `);
 
   // Admin Users Table

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -80,11 +81,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Get language from middleware header
+  const headersList = await headers();
+  const lang = (headersList.get("x-lang") || "tr") as "tr" | "en";
+  
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -108,7 +113,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="tr" className="scroll-smooth" suppressHydrationWarning>
+    <html lang={lang} className="scroll-smooth" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
